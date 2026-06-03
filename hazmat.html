@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazmat Study App</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #111; color: #f0f0f0; min-height: 100vh; }
+.nav { background: #1a1a1a; border-bottom: 2px solid #c0392b; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 4px; overflow-x: auto; }
+.nav-btn { background: none; border: none; color: #aaa; padding: 8px 14px; cursor: pointer; font-size: 13px; border-radius: 6px; white-space: nowrap; transition: all 0.2s; }
+.nav-btn.active { background: #c0392b; color: white; }
+.nav-btn:hover:not(.active) { background: #2a2a2a; color: #fff; }
+.nav-title { color: #c0392b; font-weight: 700; font-size: 15px; letter-spacing: 1px; margin-right: 12px; white-space: nowrap; }
+.page { display: none; padding: 16px; max-width: 720px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* FLASHCARDS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.stat { background: #1e1e1e; border-radius: 8px; padding: 10px; text-align: center; }
+.stat .num { font-size: 20px; font-weight: 700; }
+.stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.stat.known .num { color: #27ae60; }
+.stat.unknown .num { color: #c0392b; }
+.stat.remaining .num { color: #f39c12; }
+.progress-bar { background: #2a2a2a; border-radius: 4px; height: 5px; margin-bottom: 12px; }
+.progress-fill { height: 100%; background: #c0392b; border-radius: 4px; transition: width 0.3s; }
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.filter-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+.filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+.search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
+.search-box:focus { outline: none; border-color: #c0392b; }
+.card-counter { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
+.card-wrap { perspective: 1000px; margin-bottom: 12px; cursor: pointer; }
+.card { width: 100%; min-height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; min-height: 180px; backface-visibility: hidden; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+.card-front { background: #1e1e1e; border: 1px solid #333; }
+.card-back { background: #0f2a1f; border: 1px solid #27ae60; transform: rotateY(180deg); }
+.card-ch { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.card-q { font-size: 16px; font-weight: 500; line-height: 1.5; }
+.card-a { font-size: 14px; line-height: 1.6; color: #d4f5e4; }
+.card-hint { font-size: 11px; color: #555; margin-top: 10px; text-align: center; }
+.card-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+.btn { padding: 9px 18px; border-radius: 7px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+.btn-green { background: #27ae60; color: white; }
+.btn-red { background: #c0392b; color: white; }
+.btn-gray { background: #333; color: #ccc; }
+.btn:hover { opacity: 0.85; }
+.deck-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sm-btn { background: #1e1e1e; border: 1px solid #444; color: #bbb; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.sm-btn:hover { border-color: #c0392b; color: #c0392b; }
+.done-screen { text-align: center; padding: 36px 16px; background: #1e1e1e; border-radius: 10px; }
+.done-screen h2 { color: #27ae60; font-size: 22px; margin-bottom: 10px; }
+.done-screen p { color: #999; margin-bottom: 18px; }
+
+/* REFERENCE */
+.ref-section { margin-bottom: 24px; }
+.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.ref-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+.ref-card.red { border-left: 3px solid #c0392b; }
+.ref-card.green { border-left: 3px solid #27ae60; }
+.ref-card.blue { border-left: 3px solid #2980b9; }
+.ref-card.yellow { border-left: 3px solid #f39c12; }
+.ref-card.purple { border-left: 3px solid #8e44ad; }
+.ref-card.orange { border-left: 3px solid #e67e22; }
+.ref-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ref-card p { font-size: 12px; color: #aaa; line-height: 1.5; }
+.ref-card .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 700; }
+.tag-red { background: #c0392b22; color: #e74c3c; }
+.tag-green { background: #27ae6022; color: #2ecc71; }
+.tag-blue { background: #2980b922; color: #3498db; }
+.tag-yellow { background: #f39c1222; color: #f39c12; }
+.tag-purple { background: #8e44ad22; color: #9b59b6; }
+.tag-orange { background: #e67e2222; color: #e67e22; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: #1e1e1e; }
+
+/* QUIZ */
+.quiz-setup { background: #1e1e1e; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.quiz-setup h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #c0392b; }
+.quiz-option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.quiz-opt { background: #2a2a2a; border: 1px solid #444; border-radius: 7px; padding: 10px 12px; cursor: pointer; font-size: 12px; color: #bbb; transition: all 0.2s; text-align: center; }
+.quiz-opt.selected { background: #c0392b22; border-color: #c0392b; color: #fff; }
+.quiz-opt:hover { border-color: #c0392b; }
+.quiz-start-btn { background: #c0392b; color: white; border: none; padding: 10px 24px; border-radius: 7px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+.quiz-start-btn:hover { background: #e74c3c; }
+.q-card { background: #1e1e1e; border-radius: 10px; padding: 18px; margin-bottom: 12px; }
+.q-num { font-size: 11px; color: #666; margin-bottom: 8px; }
+.q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
+.q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-opt { background: #2a2a2a; border: 1px solid #333; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-size: 13px; color: #ccc; transition: all 0.2s; text-align: left; }
+.q-opt:hover { border-color: #555; background: #333; }
+.q-opt.selected { border-color: #f39c12; background: #f39c1211; color: #fff; }
+.q-opt.correct { border-color: #27ae60; background: #27ae6022; color: #2ecc71; }
+.q-opt.wrong { border-color: #c0392b; background: #c0392b22; color: #e74c3c; }
+.q-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; }
+.q-feedback.correct { background: #27ae6022; color: #2ecc71; border: 1px solid #27ae6044; }
+.q-feedback.wrong { background: #c0392b22; color: #e74c3c; border: 1px solid #c0392b44; }
+.quiz-nav { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.quiz-score { text-align: center; background: #1e1e1e; border-radius: 10px; padding: 32px 20px; }
+.quiz-score h2 { font-size: 24px; margin-bottom: 8px; }
+.quiz-score .score-num { font-size: 48px; font-weight: 700; margin: 10px 0; }
+.score-pass { color: #27ae60; }
+.score-fail { color: #c0392b; }
+.q-progress { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 12px; }
+.q-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
+.q-dot.answered { background: #f39c12; }
+.q-dot.correct { background: #27ae60; }
+.q-dot.wrong { background: #c0392b; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <span class="nav-title">HAZMAT</span>
+  <button class="nav-btn active" onclick="showPage('flashcards',event)">Flashcards</button>
+  <button class="nav-btn" onclick="showPage('classes',event)">Hazard Classes</button>
+  <button class="nav-btn" onclick="showPage('containers',event)">Containers</button>
+  <button class="nav-btn" onclick="showPage('erg',event)">ERG Pages</button>
+  <button class="nav-btn" onclick="showPage('ppe',event)">PPE Classes</button>
+  <button class="nav-btn" onclick="showPage('quiz',event)">Quiz Mode</button>
+</div>
+
+<!-- FLASHCARDS PAGE -->
+<div id="page-flashcards" class="page active">
+  <div class="stats">
+    <div class="stat"><div class="num" id="s-total">0</div><div class="lbl">Total</div></div>
+    <div class="stat known"><div class="num" id="s-known">0</div><div class="lbl">Known</div></div>
+    <div class="stat unknown"><div class="num" id="s-unknown">0</div><div class="lbl">Review</div></div>
+    <div class="stat remaining"><div class="num" id="s-left">0</div><div class="lbl">Left</div></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="fc-progress" style="width:0%"></div></div>
+  <input class="search-box" type="text" id="fc-search" placeholder="Search flashcards..." oninput="fcSearchCards()">
+  <div class="filter-bar" id="fc-filters"></div>
+  <div class="card-counter" id="fc-counter"></div>
+  <div id="fc-main">
+    <div class="card-wrap" onclick="fcFlip()">
+      <div class="card" id="fc-card">
+        <div class="card-face card-front">
+          <div class="card-ch" id="fc-ch"></div>
+          <div class="card-q" id="fc-q"></div>
+          <div class="card-hint">tap to reveal answer</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-ch" id="fc-ch-b"></div>
+          <div class="card-a" id="fc-a"></div>
+          <div class="card-hint">tap to flip back</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-controls">
+      <button class="btn btn-red" onclick="fcMark('unknown')">Need Review</button>
+      <button class="btn btn-gray" onclick="fcNext()">Skip</button>
+      <button class="btn btn-green" onclick="fcMark('known')">Got It</button>
+    </div>
+    <div class="deck-controls">
+      <button class="sm-btn" onclick="fcReset()">Reset</button>
+      <button class="sm-btn" onclick="fcShuffle()">Shuffle</button>
+      <button class="sm-btn" onclick="fcStudyUnknown()">Review Only</button>
+    </div>
+  </div>
+  <div id="fc-done" class="done-screen" style="display:none">
+    <h2>Deck Complete!</h2>
+    <p id="fc-done-stats"></p>
+    <button class="btn btn-green" onclick="fcReset()" style="margin-right:8px">Start Over</button>
+    <button class="btn btn-red" onclick="fcStudyUnknown()">Review Missed</button>
+  </div>
+</div>
+
+<!-- HAZARD CLASSES PAGE -->
+<div id="page-classes" class="page">
+  <div class="ref-section">
+    <div class="ref-title">UN Hazard Classes 1-9</div>
+    <table class="ref-table">
+      <tr><th>Class</th><th>Name</th><th>Examples</th><th>Placard Color</th></tr>
+      <tr><td><b>1</b></td><td>Explosives</td><td>Dynamite, ammunition, fireworks</td><td>Orange</td></tr>
+      <tr><td><b>1.1</b></td><td>Mass explosion hazard</td><td>TNT, dynamite</td><td>Orange</td></tr>
+      <tr><td><b>1.2</b></td><td>Projection hazard</td><td>Ammunition</td><td>Orange</td></tr>
+      <tr><td><b>1.3</b></td><td>Fire hazard</td><td>Propellants</td><td>Orange</td></tr>
+      <tr><td><b>1.4</b></td><td>Minor explosion hazard</td><td>Small arms ammo</td><td>Orange</td></tr>
+      <tr><td><b>1.5</b></td><td>Very insensitive</td><td>Blasting agents</td><td>Orange</td></tr>
+      <tr><td><b>1.6</b></td><td>Extremely insensitive</td><td>Detonating substances</td><td>Orange</td></tr>
+      <tr><td><b>2.1</b></td><td>Flammable Gas</td><td>Propane, butane, hydrogen</td><td>Red</td></tr>
+      <tr><td><b>2.2</b></td><td>Non-Flammable Gas</td><td>Nitrogen, CO2, helium</td><td>Green</td></tr>
+      <tr><td><b>2.3</b></td><td>Toxic Gas</td><td>Chlorine, ammonia, phosgene</td><td>White</td></tr>
+      <tr><td><b>3</b></td><td>Flammable Liquids</td><td>Gasoline, acetone, ethanol</td><td>Red</td></tr>
+      <tr><td><b>4.1</b></td><td>Flammable Solids</td><td>Matches, metal powders</td><td>Red/White stripes</td></tr>
+      <tr><td><b>4.2</b></td><td>Spontaneously Combustible</td><td>White phosphorus, alkylaluminums</td><td>Red/White</td></tr>
+      <tr><td><b>4.3</b></td><td>Dangerous When Wet</td><td>Sodium, calcium carbide</td><td>Blue</td></tr>
+      <tr><td><b>5.1</b></td><td>Oxidizers</td><td>Ammonium nitrate, hydrogen peroxide</td><td>Yellow</td></tr>
+      <tr><td><b>5.2</b></td><td>Organic Peroxides</td><td>Benzoyl peroxide, MEKP</td><td>Yellow/Red</td></tr>
+      <tr><td><b>6.1</b></td><td>Toxic Substances</td><td>Pesticides, cyanides, arsenic</td><td>White</td></tr>
+      <tr><td><b>6.2</b></td><td>Infectious Substances</td><td>Medical waste, biological cultures</td><td>White</td></tr>
+      <tr><td><b>7</b></td><td>Radioactive Materials</td><td>Uranium, medical isotopes</td><td>Yellow/White</td></tr>
+      <tr><td><b>8</b></td><td>Corrosives</td><td>Sulfuric acid, sodium hydroxide</td><td>Black/White</td></tr>
+      <tr><td><b>9</b></td><td>Miscellaneous</td><td>Lithium batteries, dry ice, PCBs, marine pollutants</td><td>Black/White stripes</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">NFPA 704 Diamond System</div>
+    <div class="ref-grid">
+      <div class="ref-card blue"><span class="tag tag-blue">BLUE — Left</span><h3>Health Hazard</h3><p>0=Minimal, 1=Slight, 2=Moderate, 3=Serious, 4=Severe</p></div>
+      <div class="ref-card red"><span class="tag tag-red">RED — Top</span><h3>Flammability</h3><p>0=Will not burn, 1=Flash >200°F, 2=Flash 100-200°F, 3=Flash <100°F, 4=Flash <73°F</p></div>
+      <div class="ref-card yellow"><span class="tag tag-yellow">YELLOW — Right</span><h3>Instability/Reactivity</h3><p>0=Stable, 1=Unstable if heated, 2=Violent chemical change, 3=Explosive, 4=May detonate</p></div>
+      <div class="ref-card" style="border-left:3px solid #fff"><span class="tag" style="background:#ffffff22;color:#fff">WHITE — Bottom</span><h3>Special Hazards</h3><p>W = Water reactive, OX = Oxidizer, SA = Simple asphyxiant</p></div>
+    </div>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">GHS Hazard Categories</div>
+    <div class="ref-grid">
+      <div class="ref-card red"><h3>Signal Words</h3><p><b>DANGER</b> = most severe hazard<br><b>WARNING</b> = less severe hazard</p></div>
+      <div class="ref-card blue"><h3>SDS Sections</h3><p>16 required sections including identification, hazards, first aid, fire fighting, spill response, PPE, and more</p></div>
+      <div class="ref-card green"><h3>Purpose</h3><p>Standardize chemical classification and labeling worldwide for consistent hazard communication</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTAINERS PAGE -->
+<div id="page-containers" class="page">
+  <div class="ref-section">
+    <div class="ref-title">Fixed Facility Storage Tanks</div>
+    <table class="ref-table">
+      <tr><th>Type</th><th>Pressure</th><th>Shape</th><th>Contents</th></tr>
+      <tr><td>Atmospheric/Nonpressure</td><td>0-0.5 psi</td><td>Circular flat ends (cone roof, floating roof)</td><td>Flammable/combustible liquids</td></tr>
+      <tr><td>Low Pressure</td><td>0.5-15 psi</td><td>Horizontal cylinder flat ends</td><td>Flammable liquids, chemicals</td></tr>
+      <tr><td>Pressure Vessel</td><td>>15 psi</td><td>Spherical or horizontal rounded ends</td><td>Compressed gases, LPG</td></tr>
+      <tr><td>Cryogenic</td><td>Low (insulated)</td><td>Thermos bottle appearance, double-walled</td><td>Liquefied gases below -130°F</td></tr>
+      <tr><td>Dry Bulk</td><td>Atmospheric</td><td>Vertical cylinder with cone bottom</td><td>Powders, solids, grain</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">Cargo Tank Trucks</div>
+    <table class="ref-table">
+      <tr><th>Designation</th><th>Nickname</th><th>Pressure</th><th>Shape/ID</th><th>Contents</th></tr>
+      <tr><td>MC-306/DOT-406</td><td>Gasoline tanker</td><td>Low/atmospheric</td><td>Oval cross-section, rollover protection</td><td>Flammable/combustible liquids</td></tr>
+      <tr><td>MC-307/DOT-407</td><td>Chemical tanker</td><td>Low pressure</td><td>Rounded/horseshoe ends, rollover protection</td><td>Mild corrosives, food grade</td></tr>
+      <tr><td>MC-312/DOT-412</td><td>Corrosive tanker</td><td>Low pressure</td><td>Single compartment, smaller diameter, NO emergency shutoff</td><td>Corrosive liquids</td></tr>
+      <tr><td>MC-331/TC-331</td><td>High pressure</td><td>High pressure</td><td>Smooth sided, round ends, white/silver</td><td>Compressed gases (propane, anhydrous ammonia)</td></tr>
+      <tr><td>MC-338/TC-338</td><td>Cryogenic</td><td>Low (insulated)</td><td>Thermos bottle, vacuum-jacketed, stainless steel</td><td>Cryogenic liquids (LNG, LOX)</td></tr>
+      <tr><td>Tube Trailer</td><td>Compressed gas</td><td>High pressure</td><td>Multiple horizontal cylinders bundled on flatbed</td><td>Compressed gases</td></tr>
+      <tr><td>Dry Bulk</td><td>Pneumatic tanker</td><td>Atmospheric</td><td>V-shaped hopper bottom, rear air compressor</td><td>Powders, pellets, grain</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">Rail Tank Cars</div>
+    <table class="ref-table">
+      <tr><th>Type</th><th>Appearance</th><th>Contents</th><th>Key ID</th></tr>
+      <tr><td>Low Pressure Tank Car</td><td>Large diameter, dome on top</td><td>Flammable liquids, chemicals</td><td>DOT 111, most common</td></tr>
+      <tr><td>Pressure Tank Car</td><td>Smaller diameter, no dome, rounded ends</td><td>Compressed gases, LPG</td><td>DOT 112, 114 — large evacuation zones</td></tr>
+      <tr><td>Cryogenic Tank Car</td><td>Stainless inner tank, outer tank, vacuum insulated</td><td>Cryogenic liquids</td><td>30-day thermal protection</td></tr>
+      <tr><td>Dedicated Tank Car</td><td>Marked for specific product</td><td>Single specified product for life of car</td><td>Marked on car</td></tr>
+      <tr><td>Hazardous Waste</td><td>Standard appearance</td><td>Hazardous waste</td><td>Railcar number ends in W</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">Intermodal Containers</div>
+    <div class="ref-grid">
+      <div class="ref-card blue"><h3>Freight Container</h3><p>Rectangular, carries mixed cargo on pallets, drums, boxes</p></div>
+      <div class="ref-card green"><h3>Tank Container (T-code)</h3><p>Cylindrical tank in rectangular frame. T-code identifies hazmat rating.</p></div>
+      <div class="ref-card yellow"><h3>Emergency Shutoff ID</h3><p>Look for metal cable running down frame rail from liquid valve to fixed point</p></div>
+      <div class="ref-card purple"><h3>Required Markings</h3><p>T-code, UN number, owner ID, maximum gross weight — on two sides</p></div>
+    </div>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">Container Shapes Quick Reference</div>
+    <table class="ref-table">
+      <tr><th>Shape</th><th>Indicates</th></tr>
+      <tr><td>Rounded ends</td><td>Pressurized contents</td></tr>
+      <tr><td>Flat ends</td><td>Nonpressurized contents</td></tr>
+      <tr><td>Spherical</td><td>High pressure (LPG, gases)</td></tr>
+      <tr><td>Thermos bottle (double-walled)</td><td>Cryogenic contents</td></tr>
+      <tr><td>Vertical cylinder with cone bottom</td><td>Dry bulk solids/powders</td></tr>
+      <tr><td>Rectangular</td><td>Mixed cargo (intermodal freight)</td></tr>
+      <tr><td>Oval cross-section with rollover protection</td><td>MC-306 flammable liquid tanker</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ERG PAGES -->
+<div id="page-erg" class="page">
+  <div class="ref-section">
+    <div class="ref-title">ERG Color-Coded Sections</div>
+    <div class="ref-grid">
+      <div class="ref-card" style="border-left:3px solid #f5f500; background:#1e1e1e">
+        <span class="tag tag-yellow">YELLOW PAGES</span>
+        <h3>Index by ID Number</h3>
+        <p>Look up materials by 4-digit UN/NA identification number in numerical order. Points you to the correct guide number.</p>
+      </div>
+      <div class="ref-card blue">
+        <span class="tag tag-blue">BLUE PAGES</span>
+        <h3>Index by Name</h3>
+        <p>Look up materials alphabetically by proper shipping name. Points you to the correct guide number.</p>
+      </div>
+      <div class="ref-card orange">
+        <span class="tag tag-orange">ORANGE PAGES</span>
+        <h3>Action Guides</h3>
+        <p>The actual response guides. Contains: Potential Hazards, Public Safety, Emergency Response. Most useful section.</p>
+      </div>
+      <div class="ref-card green">
+        <span class="tag tag-green">GREEN PAGES</span>
+        <h3>Isolation Distances</h3>
+        <p>Table of Initial Isolation and Protective Action Distances for TIH materials and water-reactive materials. Use for green-highlighted materials.</p>
+      </div>
+      <div class="ref-card" style="border-left:3px solid #fff">
+        <span class="tag" style="background:#ffffff22;color:#fff">WHITE PAGES (FRONT)</span>
+        <h3>User Guide & Reference</h3>
+        <p>ERG User's Guide flowchart, how to use the ERG, placard/label reference tables, container profiles, pipeline markers.</p>
+      </div>
+      <div class="ref-card" style="border-left:3px solid #ccc">
+        <span class="tag" style="background:#cccccc22;color:#ccc">WHITE PAGES (BACK)</span>
+        <h3>WMD & Emergency Contacts</h3>
+        <p>WMD indicators, IED information, emergency response center contact numbers (CHEMTREC, CANUTEC, SETIQ).</p>
+      </div>
+    </div>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">ERG Key Facts</div>
+    <table class="ref-table">
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td>Inside cover</td><td>Key to reading and understanding shipping papers/documents</td></tr>
+      <tr><td>First page</td><td>ERG User's Guide decision-making flowchart</td></tr>
+      <tr><td>Green highlighted materials</td><td>TIH or water-reactive — refer to green pages for distances</td></tr>
+      <tr><td>P after guide number</td><td>Material polymerizes</td></tr>
+      <tr><td>Guide number + P</td><td>Example: 131P — polymerizable material</td></tr>
+      <tr><td>Small spill vs large spill</td><td>Large spill = more than 55 gallons (208 L)</td></tr>
+      <tr><td>Day vs Night distances</td><td>Both small and large spills divided into day/night protective distances</td></tr>
+      <tr><td>Initial isolation zone</td><td>Circle around spill — evacuate all persons</td></tr>
+      <tr><td>Protective action distance</td><td>Downwind distance — people may become incapacitated</td></tr>
+      <tr><td>Developed by</td><td>DOT (US), TC (Canada), SCT (Mexico)</td></tr>
+      <tr><td>Designed for use at</td><td>Transportation incidents — highways, railroads, pipelines</td></tr>
+      <tr><td>Most useful section</td><td>Orange-bordered pages (action guides)</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">How to Use the ERG — Step by Step</div>
+    <div class="ref-grid">
+      <div class="ref-card red"><h3>Step 1</h3><p>Identify the material — use placard, label, shipping papers, or orange panel UN number</p></div>
+      <div class="ref-card orange"><h3>Step 2</h3><p>Look up UN number in YELLOW pages or material name in BLUE pages to find guide number</p></div>
+      <div class="ref-card yellow"><h3>Step 3</h3><p>If material is highlighted GREEN, also check GREEN pages for isolation distances</p></div>
+      <div class="ref-card green"><h3>Step 4</h3><p>Turn to ORANGE pages — find the guide number. Read Potential Hazards, Public Safety, Emergency Response</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PPE CLASSES PAGE -->
+<div id="page-ppe" class="page">
+  <div class="ref-section">
+    <div class="ref-title">NFPA PPE Classes (CBRN Protective Ensembles)</div>
+    <table class="ref-table">
+      <tr><th>Class</th><th>OSHA/EPA Equiv.</th><th>Protection Level</th><th>Suit Type</th><th>Respiratory</th><th>Use When</th></tr>
+      <tr><td><b style="color:#e74c3c">Class 1</b></td><td>Level A</td><td>Highest skin + respiratory</td><td>Fully encapsulating vapor-protective suit</td><td>NIOSH CBRN SCBA (inside suit)</td><td>Unknown atmosphere, vapor/gas IDLH or above, highest hazard</td></tr>
+      <tr><td><b style="color:#e67e22">Class 2</b></td><td>Level B</td><td>Highest respiratory, less skin</td><td>Fully encapsulating OR nonencapsulating liquid splash suit</td><td>NIOSH CBRN SCBA (outside suit)</td><td>Liquid splash hazard, IDLH atmosphere, known material</td></tr>
+      <tr><td><b style="color:#f39c12">Class 3</b></td><td>Level C</td><td>Low vapor + liquid below IDLH</td><td>Chemical-resistant clothing, coveralls</td><td>NIOSH CBRN APR or PAPR</td><td>Known material, below IDLH, atmosphere monitored</td></tr>
+      <tr><td><b style="color:#27ae60">Class 4</b></td><td>Level D equiv.</td><td>Biological + radiological particulates below IDLH</td><td>Biological/radiological particulate resistant clothing</td><td>APR or PAPR</td><td>Biological or radiological particulate hazards only</td></tr>
+      <tr><td><b style="color:#3498db">Class 5</b></td><td>N/A</td><td>Thermal + chemical (flammable env.)</td><td>Similar to structural firefighter clothing but more splash protection</td><td>SCBA required</td><td>Flammable environments where chemical NOT toxic via skin</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">Respiratory Protection Types</div>
+    <table class="ref-table">
+      <tr><th>Type</th><th>Abbrev.</th><th>Air Source</th><th>Use When</th><th>Limitations</th></tr>
+      <tr><td>Self-Contained Breathing Apparatus</td><td>SCBA</td><td>Compressed air cylinder carried by user</td><td>IDLH, unknown atmosphere, hazmat entry</td><td>Finite air supply, heavy, limits mobility</td></tr>
+      <tr><td>Supplied-Air Respirator</td><td>SAR</td><td>Stationary source via air hose (up to 300 ft)</td><td>Extended work time needed, known atmosphere</td><td>Hose entanglement, NOT for firefighting</td></tr>
+      <tr><td>Air-Purifying Respirator</td><td>APR</td><td>Filters ambient air through canister/cartridge</td><td>Known contaminant, below IDLH, O2 ≥19.5%</td><td>Cartridge specific, limited service life, NOT for unknown atmospheres</td></tr>
+      <tr><td>Powered Air-Purifying Respirator</td><td>PAPR</td><td>Battery-powered blower pushes filtered air</td><td>Same as APR, better for beards/glasses</td><td>Battery dependent, bulkier than APR</td></tr>
+      <tr><td>Supplied-Air Hood</td><td>SAH</td><td>Powered or supplied air to loose-fitting hood</td><td>Users with beards, glasses, facial deformities</td><td>No fit testing required, battery dependent</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">Skin Protective Clothing Categories</div>
+    <div class="ref-grid">
+      <div class="ref-card red"><h3>Thermal Protective</h3><p>Structural firefighter clothing, proximity suits, fire-entry suits, flame-resistant clothing, low-temperature/cryogenic clothing</p></div>
+      <div class="ref-card blue"><h3>Chemical Protective (CPC)</h3><p>Vapor-protective (encapsulating), liquid splash-protective (encapsulating or nonencapsulating). No single CPC protects against all chemicals.</p></div>
+      <div class="ref-card green"><h3>Ballistic Protective</h3><p>Body armor, bomb suits. Protects against bullets, shrapnel, handheld weapons. Does NOT protect against chemical hazards.</p></div>
+    </div>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">CPC Failure Modes</div>
+    <div class="ref-grid">
+      <div class="ref-card red"><h3>Permeation</h3><p>Chemical passes through fabric at molecular level. No visible evidence. Decon will NOT stop permeation.</p></div>
+      <div class="ref-card orange"><h3>Degradation</h3><p>Physical or chemical breakdown of suit material. Signs: discoloration, swelling, loss of strength.</p></div>
+      <div class="ref-card yellow"><h3>Penetration</h3><p>Hazmat enters through a physical opening — rips, tears, cuts, unsealed seams, zippers.</p></div>
+    </div>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">PPE Selection Quick Guide</div>
+    <table class="ref-table">
+      <tr><th>Hazard</th><th>Minimum PPE</th></tr>
+      <tr><td>Unknown atmosphere / vapor hazard above IDLH</td><td>Class 1 (Level A) + SCBA inside suit</td></tr>
+      <tr><td>Liquid splash / IDLH / known material</td><td>Class 2 (Level B) + SCBA outside suit</td></tr>
+      <tr><td>Below IDLH / known material / monitored</td><td>Class 3 (Level C) + APR or PAPR</td></tr>
+      <tr><td>Biological or radiological particulates below IDLH</td><td>Class 4 + APR or PAPR</td></tr>
+      <tr><td>Flammable environment (not toxic via skin)</td><td>Class 5 + SCBA</td></tr>
+      <tr><td>Hazardous solids monitoring</td><td>Structural firefighter PPE + SCBA</td></tr>
+      <tr><td>Hazardous liquid monitoring</td><td>Class 2 (Level B)</td></tr>
+      <tr><td>Hazardous gas monitoring</td><td>Class 1 (Level A)</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- QUIZ PAGE -->
+<div id="page-quiz" class="page">
+  <div id="quiz-setup" class="quiz-setup">
+    <h2>Quiz Mode</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:12px">Select topics and number of questions</p>
+    <div style="font-size:12px;color:#aaa;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Topics</div>
+    <div class="quiz-option-grid" id="quiz-topic-opts"></div>
+    <div style="font-size:12px;color:#aaa;margin-bottom:8px;margin-top:12px;text-transform:uppercase;letter-spacing:1px">Number of Questions</div>
+    <div class="quiz-option-grid" id="quiz-num-opts">
+      <div class="quiz-opt selected" data-num="10" onclick="selectNum(this)">10 Questions</div>
+      <div class="quiz-opt" data-num="20" onclick="selectNum(this)">20 Questions</div>
+      <div class="quiz-opt" data-num="30" onclick="selectNum(this)">30 Questions</div>
+      <div class="quiz-opt" data-num="0" onclick="selectNum(this)">All Questions</div>
+    </div>
+    <button class="quiz-start-btn" style="margin-top:16px" onclick="startQuiz()">Start Quiz</button>
+  </div>
+  <div id="quiz-game" style="display:none">
+    <div class="q-progress" id="q-progress"></div>
+    <div id="quiz-questions"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-gray" id="q-prev-btn" onclick="qPrev()" style="display:none">Previous</button>
+      <button class="btn btn-green" id="q-next-btn" onclick="qNext()">Next</button>
+      <button class="btn btn-red" id="q-submit-btn" onclick="submitQuiz()" style="display:none">Submit Quiz</button>
+    </div>
+  </div>
+  <div id="quiz-score" class="quiz-score" style="display:none">
+    <h2>Quiz Complete</h2>
+    <div class="score-num" id="q-score-num"></div>
+    <p id="q-score-label"></p>
+    <p id="q-score-detail" style="color:#888;font-size:13px;margin-bottom:20px"></p>
+    <button class="btn btn-green" onclick="retryQuiz()" style="margin-right:8px">Retry</button>
+    <button class="btn btn-gray" onclick="backToSetup()">New Quiz</button>
+  </div>
+</div>
+
+<script>
+const FC_CARDS = [
+  {ch:"Ch1",q:"What is a hazardous material?",a:"Any substance that poses an unreasonable risk to health, safety, property, or the environment if not properly controlled."},
+  {ch:"Ch1",q:"What does CBRNE stand for?",a:"Chemical, Biological, Radiological, Nuclear, Explosive."},
+  {ch:"Ch1",q:"What are the mechanisms of harm from hazmat?",a:"Chemical, biological, radiological, thermal, mechanical, asphyxiation, and psychological."},
+  {ch:"Ch1",q:"What is the most common cause of hazmat incidents?",a:"Human error."},
+  {ch:"Ch2",q:"What are the seven clues to hazmat presence?",a:"Occupancy/location, container shape, markings/colors, placards/labels, shipping papers, senses from safe distance, monitoring/detection devices."},
+  {ch:"Ch2",q:"What are the four steps when a placard is present?",a:"Identify the placard, determine the hazard class, read the UN/NA number, reference the ERG."},
+  {ch:"Ch2",q:"What do NFPA 704 colors represent?",a:"Blue=health, Red=flammability, Yellow=instability, White=special hazards."},
+  {ch:"Ch2",q:"What is the purpose of GHS?",a:"To standardize chemical classification and labeling worldwide."},
+  {ch:"Ch2",q:"Where are shipping papers located on a truck?",a:"In the cab within reach of the driver."},
+  {ch:"Ch2",q:"What does a railcar number ending in W indicate?",a:"Hazardous waste."},
+  {ch:"Ch2",q:"What is the safest sense to use for hazmat ID?",a:"Sight — allows identification from a distance without contact."},
+  {ch:"Ch2",q:"How do labels differ from placards?",a:"Labels are smaller and on packages. Placards are larger and on vehicles or bulk containers."},
+  {ch:"Ch3",q:"Where is the key to reading shipping documents in the ERG?",a:"Inside cover of the ERG."},
+  {ch:"Ch3",q:"Where are the Protective Action Distances in the ERG?",a:"Green-bordered pages."},
+  {ch:"Ch3",q:"What do yellow-bordered ERG pages contain?",a:"Index of materials by UN/NA identification number."},
+  {ch:"Ch3",q:"What do blue-bordered ERG pages contain?",a:"Index of dangerous goods listed alphabetically by name."},
+  {ch:"Ch3",q:"What do orange-bordered ERG pages contain?",a:"Safety recommendations and general hazard information — the action guides."},
+  {ch:"Ch3",q:"What is an isolation perimeter?",a:"A boundary established to prevent unauthorized access to and egress from a hazmat scene."},
+  {ch:"Ch3",q:"What does P after a guide number in the ERG indicate?",a:"The material polymerizes."},
+  {ch:"Ch3",q:"Where is the ERG User's Guide flowchart?",a:"First page of the ERG."},
+  {ch:"Ch4",q:"What is the GEBMO sequence?",a:"Stress, breach, release, engulf, contact, harm."},
+  {ch:"Ch4",q:"What does vapor density less than one mean?",a:"The vapor rises and disperses upward into the atmosphere."},
+  {ch:"Ch4",q:"What does specific gravity less than one mean?",a:"The material floats on water."},
+  {ch:"Ch4",q:"What are the three types of container stress?",a:"Thermal, mechanical, and chemical."},
+  {ch:"Ch4",q:"What is flash point?",a:"Minimum temperature at which a liquid gives off sufficient vapors to form an ignitable mixture near its surface."},
+  {ch:"Ch4",q:"What is autoignition temperature?",a:"Temperature at which a fuel spontaneously ignites without an independent ignition source."},
+  {ch:"Ch4",q:"What is the difference between exposure and contamination?",a:"Exposure is contact with hazmat. Contamination is when the material deposits on or into a person or object."},
+  {ch:"Ch4",q:"What does LEL stand for?",a:"Lower Explosive Limit — minimum concentration of gas in air that will ignite."},
+  {ch:"Ch5",q:"What shape indicates a pressurized container?",a:"Rounded ends."},
+  {ch:"Ch5",q:"What does BLEVE stand for?",a:"Boiling Liquid Expanding Vapor Explosion."},
+  {ch:"Ch5",q:"What is a HHFT?",a:"High-Hazard Flammable Train — 20+ tank cars with flammable liquid in a continuous block or 35+ dispersed through a train."},
+  {ch:"Ch5",q:"What does the capacity stencil on a railcar indicate?",a:"The volume the tank car is rated to hold."},
+  {ch:"Ch5",q:"What is the ERG initial isolation zone for a cryogenic liquid tank car?",a:"1 mile (1.6 km)."},
+  {ch:"Ch5",q:"What cargo tank truck type carries flammable liquids like gasoline?",a:"MC-306/DOT-406 — oval cross section with rollover protection."},
+  {ch:"Ch5",q:"What cargo tank truck type carries compressed gases like propane?",a:"MC-331/TC-331 — smooth sided, round ends, white or silver."},
+  {ch:"Ch5",q:"What cargo tank truck type carries cryogenic liquids?",a:"MC-338/TC-338 — thermos bottle appearance, vacuum-jacketed, stainless steel."},
+  {ch:"Ch5",q:"Which cargo tank truck typically does NOT have an emergency shutoff device?",a:"MC-312/DOT-412 corrosive liquid tank."},
+  {ch:"Ch6",q:"What are the three levels of situational awareness?",a:"Level 1: Perception, Level 2: Comprehension, Level 3: Application/Projection."},
+  {ch:"Ch6",q:"What is a RED in the context of radiological weapons?",a:"Radiation Exposure Device — stationary gamma source placed to expose people over time."},
+  {ch:"Ch6",q:"What is an RDD?",a:"Radiological Dispersal Device — uses conventional explosives to scatter radioactive material."},
+  {ch:"Ch6",q:"What causes loss of situational awareness?",a:"Distraction, complacency, fixation, ambiguity, and overload."},
+  {ch:"Ch6",q:"What type of attack is most likely to be used by terrorists?",a:"Explosive attacks — considered conventional."},
+  {ch:"Ch7",q:"What are the three incident levels?",a:"Level I — local. Level II — hazmat team needed. Level III — unified command with state/federal."},
+  {ch:"Ch7",q:"What are the three operational modes?",a:"Nonintervention, defensive, and offensive."},
+  {ch:"Ch7",q:"What are the three incident priorities?",a:"Life safety, incident stabilization, protection of property and environment."},
+  {ch:"Ch8",q:"What are the four functional sections of ICS?",a:"Operations, Planning, Logistics, Finance/Administration."},
+  {ch:"Ch8",q:"What is the recommended ICS span of control?",a:"1:5 — one supervisor to five personnel."},
+  {ch:"Ch8",q:"What zone is decontamination ideally performed in?",a:"Warm zone."},
+  {ch:"Ch8",q:"When must an IC establish an Intelligence and Information Section?",a:"When criminal activity or WMD is suspected."},
+  {ch:"Ch9",q:"What are the three basic principles of decontamination?",a:"Get it off, keep it off, contain it."},
+  {ch:"Ch9",q:"What is the goal of emergency decontamination?",a:"Remove the contaminant as quickly as possible without regard for environment or property."},
+  {ch:"Ch9",q:"Where should the decon site be positioned?",a:"Upwind, uphill, and upstream from the contamination source."},
+  {ch:"Ch10",q:"What is permeation of CPC?",a:"Chemical passes through fabric at molecular level with no visible evidence."},
+  {ch:"Ch10",q:"What is a Class 1 PPE ensemble?",a:"Fully encapsulating vapor-protective suit with SCBA inside — highest protection. Equivalent to OSHA/EPA Level A."},
+  {ch:"Ch10",q:"What is a Class 2 PPE ensemble?",a:"Liquid splash suit with SCBA outside. Equivalent to OSHA/EPA Level B."},
+  {ch:"Ch10",q:"When should you NOT use APRs?",a:"In oxygen-deficient or IDLH atmospheres or when the contaminant is unknown."},
+  {ch:"Ch10",q:"What is the most significant route of entry for hazardous materials?",a:"Inhalation."},
+  {ch:"Ch11",q:"What is mass decontamination?",a:"Rapidly reducing or removing contaminants from large numbers of people when time does not allow thorough decon."},
+  {ch:"Ch11",q:"What are the four main categories of technical decon?",a:"Wet, dry, physical, and chemical methods."},
+  {ch:"Ch11",q:"What does adsorption mean?",a:"Hazardous liquid molecules physically adhere to the surface of the adsorbent material."},
+  {ch:"Ch11",q:"What does neutralization do?",a:"Changes the pH of a corrosive toward neutral (pH 7)."},
+  {ch:"Ch12",q:"What is normal atmospheric oxygen concentration?",a:"20.9% (209,000 ppm)."},
+  {ch:"Ch12",q:"What oxygen level indicates a deficient atmosphere?",a:"Below 20.9% — requires SCBA."},
+  {ch:"Ch12",q:"What oxygen level indicates an enriched atmosphere?",a:"Above 23.5% — increased fire and explosion risk."},
+  {ch:"Ch12",q:"What does a PID detect?",a:"Low to very low concentrations of many organic and some inorganic gases and vapors using UV light."},
+  {ch:"Ch12",q:"What is a bump test?",a:"Exposing the instrument to a known gas concentration to verify sensors and alarms work."},
+  {ch:"Ch12",q:"What does IDLH stand for?",a:"Immediately Dangerous to Life or Health."},
+  {ch:"Ch12",q:"What does a 1% drop in oxygen indicate?",a:"About 50,000 ppm of something else in the air — potentially a toxic contaminant."},
+  {ch:"Ch13",q:"What is diking?",a:"Using raised embankments or barriers to prevent movement of hazmat to another area."},
+  {ch:"Ch13",q:"What is diverting?",a:"Directing and controlling the flow of a liquid to an area producing less harm."},
+  {ch:"Ch13",q:"When would you use an overflow dam?",a:"When the material is heavier than water — water flows over while heavier material stays contained."},
+  {ch:"Ch13",q:"What type of nozzle is best for vapor suppression with foam?",a:"Air-aspirating nozzle."},
+  {ch:"Ch13",q:"What are the three foam application methods?",a:"Roll-on, bank-down (backsplash), and rain-down."},
+  {ch:"Ch13",q:"Why not extinguish fires around relief valves until leak is controlled?",a:"Unburned vapors may accumulate in low areas and ignite creating a larger event."},
+  {ch:"Ch13",q:"What Class fire extinguisher is required for flammable metal fires?",a:"Class D."},
+  {ch:"Ch14",q:"What are the four victim rescue priorities at a hazmat incident?",a:"1. Assist ambulatory to self-rescue. 2. Evacuate nonambulatory with signs of life from warm zone. 3. Same from hot zone. 4. Recover deceased."},
+  {ch:"Ch14",q:"What are the four triage categories?",a:"Priority 1 (immediate), Priority 2 (delayed), Priority 3 (minimal), Priority 4 (expectant/deceased)."},
+  {ch:"Ch14",q:"What is the difference between rescue and recovery?",a:"Rescue removes living victims. Recovery retrieves remains of deceased victims."},
+  {ch:"Ch14",q:"Where is medical triage conducted at a hazmat incident?",a:"In the cold zone after decontamination."},
+  {ch:"Ch15",q:"What are the three types of evidence?",a:"Direct evidence, physical evidence, and transient evidence."},
+  {ch:"Ch15",q:"What is transient evidence?",a:"A minute quantity of physical evidence that can easily change or be lost over time."},
+  {ch:"Ch15",q:"What are the four response phases at a criminal hazmat/WMD incident?",a:"Tactical, operational, crime scene, and remediation."},
+  {ch:"Ch15",q:"What is chain of custody?",a:"Documentation tracking evidence from discovery to disposal ensuring no tampering occurred."},
+  {ch:"Ch15",q:"Who investigates suspicious letters sent through the mail?",a:"The Postal Inspection Service (and potentially FBI or ATF)."},
+  {ch:"Ch15",q:"How is evidence decontaminated without destroying it?",a:"Only the exterior of the evidence packaging is decontaminated — never open interior packaging."},
+  {ch:"Ch16",q:"What should you do upon recognizing a possible drug lab?",a:"Leave immediately, call for resources, establish an isolation area, preserve evidence."},
+  {ch:"Ch16",q:"What are common booby traps at illicit labs?",a:"Explosives, weapons tied to doors, chemical bottles that mix when broken, trap doors, exposed wiring, motion-triggered devices."},
+  {ch:"Ch16",q:"What is ALARA?",a:"As Low As Reasonably Achievable — minimize radiation exposure through time, distance, and shielding."},
+  {ch:"Ch16",q:"What are clues to the presence of a meth lab?",a:"Excessive security, covered windows, strong solvent odor, ammonia smell, iodine-stained fixtures, excessive trash with precursor containers."},
+  {ch:"Ch16",q:"What makes fentanyl especially dangerous?",a:"A small amount can cause death and can be absorbed through skin, inhalation, ingestion, or mucous membranes."},
+  {ch:"Ch16",q:"What are indicators of a biological lab?",a:"Petri dishes, culture media, pressure cookers, biological safety cabinets, centrifuges, antibiotics, growth containers, respirators with HEPA filters."},
+  {ch:"Ch16",q:"What is an After Action Report?",a:"A report summarizing an incident, identifying lessons learned, and providing recommendations for correcting problems."},
+  {ch:"Ch16",q:"Who directs all on-site activities at an illicit laboratory?",a:"The law enforcement agency having jurisdiction."},
+];
+
+const QUIZ_QUESTIONS = [
+  // CH1 - Introduction
+  {topic:"Ch1 Intro",q:"What is a hazardous material?",opts:["Any substance that poses an unreasonable risk to health, safety, property, or the environment","Any substance that is flammable or explosive","Any substance stored in a large container","Any substance transported by truck or rail"],ans:0},
+  {topic:"Ch1 Intro",q:"What does CBRNE stand for?",opts:["Chemical, Biological, Radiological, Nuclear, Explosive","Containment, Breach, Release, Engulf, Exposure","Chemical, Base, Reactive, Neutral, Explosive","Corrosive, Biological, Radiological, Nuclear, Emergency"],ans:0},
+  {topic:"Ch1 Intro",q:"What is the most common cause of hazmat incidents?",opts:["Equipment failure","Transportation accidents","Human error","Intentional acts"],ans:2},
+  {topic:"Ch1 Intro",q:"Which of the following is NOT one of the mechanisms of harm from hazmat?",opts:["Chemical","Biological","Gravitational","Asphyxiation"],ans:2},
+  {topic:"Ch1 Intro",q:"What does WMD stand for?",opts:["Weapon of Mass Destruction","Waste Material Disposal","Widely Mobile Danger","Weapon of Maximum Damage"],ans:0},
+  {topic:"Ch1 Intro",q:"Why are hazmat incidents especially challenging?",opts:["They always involve fire","They are dangerous even in small amounts, hard to detect, and require special equipment","They only occur at fixed facilities","They require no special training"],ans:1},
+  // CH2 - Recognition
+  {topic:"Ch2 Recognition",q:"What are the seven clues to the presence of hazmat?",opts:["Occupancy, container shape, markings, placards, shipping papers, senses, monitoring devices","Color, smell, size, weight, shape, location, label","Placard, label, sign, color, smell, taste, touch","Container, product, location, weather, time, people, animals"],ans:0},
+  {topic:"Ch2 Recognition",q:"How do labels differ from placards?",opts:["Labels are larger and on vehicles; placards are smaller and on packages","Labels are smaller and on packages; placards are larger and on vehicles","They are the same thing","Labels are only used on rail cars"],ans:1},
+  {topic:"Ch2 Recognition",q:"What do the four NFPA 704 colors represent?",opts:["Fire, water, earth, air","Blue=health, Red=flammability, Yellow=instability, White=special hazards","Red=health, Blue=flammability, Yellow=reactivity, White=oxidizer","Blue=fire, Red=health, Yellow=special, White=reactivity"],ans:1},
+  {topic:"Ch2 Recognition",q:"What is the purpose of GHS?",opts:["To standardize chemical classification and labeling worldwide","To regulate transportation of hazardous materials","To train emergency responders","To identify pipeline contents"],ans:0},
+  {topic:"Ch2 Recognition",q:"Where are shipping papers located on a truck?",opts:["In the cargo area","In the cab within reach of the driver","On the outside of the trailer","In the engine compartment"],ans:1},
+  {topic:"Ch2 Recognition",q:"What does a railcar number ending in W indicate?",opts:["Hazardous material","Hazardous waste","Water reactive contents","Pressurized vessel"],ans:1},
+  {topic:"Ch2 Recognition",q:"Which sense is safest to use when identifying hazmat?",opts:["Touch","Smell","Taste","Sight"],ans:3},
+  {topic:"Ch2 Recognition",q:"What information is on every pipeline marker?",opts:["Product name only","Product name, company name, emergency contact number","UN number and hazard class","Pipeline diameter and pressure"],ans:1},
+  {topic:"Ch2 Recognition",q:"What are the nine UN hazard classes?",opts:["Explosives, gases, flammable liquids, flammable solids, oxidizers, toxic/infectious, radioactive, corrosives, miscellaneous","Fire, explosion, toxic, corrosive, reactive, biological, radiological, pressure, asphyxiation","Solid, liquid, gas, plasma, cryogenic, biological, radioactive, explosive, toxic","Class A through Class I"],ans:0},
+  {topic:"Ch2 Recognition",q:"What is bulk packaging?",opts:["Any package over 10 lbs","Packaging with capacity greater than 119 gallons for liquids or greater than 882 lbs for solids","Any package on a pallet","Any package requiring a placard"],ans:1},
+  {topic:"Ch2 Recognition",q:"Why must preincident surveys be continuously updated?",opts:["It is required by OSHA","Conditions, materials, and layouts change over time","Surveys expire after one year","Insurance requires it"],ans:1},
+  {topic:"Ch2 Recognition",q:"What clues indicate a cryogenic container?",opts:["Frost or ice buildup, venting vapor, double-walled construction","Round ends and high pressure markings","Yellow color and radioactive symbol","Corroded exterior and strong odor"],ans:0},
+  {topic:"Ch2 Recognition",q:"In NFPA 704, what does an OX in the white quadrant indicate?",opts:["Oxygen deficient","Oxidizer","Organic compound","Oil reactive"],ans:1},
+  {topic:"Ch2 Recognition",q:"What signal word in GHS indicates the most severe hazard?",opts:["Warning","Caution","Alert","Danger"],ans:3},
+  // CH3 - ERG
+  {topic:"Ch3 ERG",q:"Where in the ERG is the key to reading shipping papers?",opts:["Yellow pages","Blue pages","Inside cover","Green pages"],ans:2},
+  {topic:"Ch3 ERG",q:"What do the yellow-bordered ERG pages contain?",opts:["Alphabetical name index","UN number index","Action guides","Isolation distances"],ans:1},
+  {topic:"Ch3 ERG",q:"What do the blue-bordered ERG pages contain?",opts:["UN number index","Alphabetical name index","Action guides","WMD indicators"],ans:1},
+  {topic:"Ch3 ERG",q:"What do the orange-bordered ERG pages contain?",opts:["UN number index","Name index","Safety recommendations and action guides","Isolation distances"],ans:2},
+  {topic:"Ch3 ERG",q:"Where are the Table of Initial Isolation and Protective Action Distances?",opts:["Yellow pages","Blue pages","Orange pages","Green pages"],ans:3},
+  {topic:"Ch3 ERG",q:"What does a P following a guide number in the ERG indicate?",opts:["Poisonous material","The material polymerizes","Pressurized container","Polar solvent"],ans:1},
+  {topic:"Ch3 ERG",q:"The ERG is primarily designed for use at incidents occurring where?",opts:["Fixed facilities","Airports","Highways, railroads, and pipelines","Private dwellings"],ans:2},
+  {topic:"Ch3 ERG",q:"Where is the ERG User's Guide decision-making flowchart?",opts:["Inside cover","First page","Last page","Green pages"],ans:1},
+  {topic:"Ch3 ERG",q:"What do green-highlighted materials in the ERG indicate?",opts:["Non-toxic materials","TIH or water-reactive materials — refer to green pages","Safe to approach","Flammable gases only"],ans:1},
+  {topic:"Ch3 ERG",q:"A large spill in the ERG green pages is defined as more than:",opts:["10 gallons","55 gallons (208 L)","100 gallons","200 gallons"],ans:1},
+  {topic:"Ch3 ERG",q:"What is an isolation perimeter?",opts:["The hot zone boundary","A boundary to prevent unauthorized access to and egress from the scene","The area where decon takes place","The boundary of the cold zone"],ans:1},
+  {topic:"Ch3 ERG",q:"When should Awareness Level Personnel notify law enforcement?",opts:["After the hazmat is identified","As soon as criminal or terrorist activity is suspected","When victims are found","After establishing command"],ans:1},
+  {topic:"Ch3 ERG",q:"What are the three protective actions Awareness Level Personnel can take?",opts:["Identify, isolate, notify","Rescue, decon, treat","Contain, control, extinguish","Evacuate, shelter, suppress"],ans:0},
+  // CH4 - Properties
+  {topic:"Ch4 Properties",q:"What is the GEBMO sequence?",opts:["Get, Evacuate, Brief, Monitor, Operate","Stress, breach, release, engulf, contact, harm","Gas, Explosion, Burn, Move, Overwhelm","Generate, Evaluate, Brief, Mitigate, Operate"],ans:1},
+  {topic:"Ch4 Properties",q:"What does vapor density less than one indicate?",opts:["The vapor sinks to ground level","The vapor rises into the atmosphere","The material is heavier than water","The material is water soluble"],ans:1},
+  {topic:"Ch4 Properties",q:"What does specific gravity less than one mean?",opts:["The material sinks in water","The material floats on water","The material is a gas","The material is nonflammable"],ans:1},
+  {topic:"Ch4 Properties",q:"What are the three types of container stress?",opts:["Physical, chemical, biological","Thermal, mechanical, chemical","Heat, cold, pressure","Corrosive, reactive, flammable"],ans:1},
+  {topic:"Ch4 Properties",q:"What is flash point?",opts:["Temperature at which material spontaneously ignites","Temperature at which liquid produces ignitable vapors near surface","Temperature at which cryogens boil","The upper explosive limit"],ans:1},
+  {topic:"Ch4 Properties",q:"What is autoignition temperature?",opts:["Temperature at which liquid produces vapors","Temperature at which fuel spontaneously ignites without an ignition source","The lower explosive limit","Boiling point of a liquid"],ans:1},
+  {topic:"Ch4 Properties",q:"What does LEL stand for?",opts:["Lethal Exposure Limit","Lower Explosive Limit","Liquid Evaporation Level","Low Energy Level"],ans:1},
+  {topic:"Ch4 Properties",q:"What does UEL stand for?",opts:["Upper Explosive Limit","Unsafe Exposure Level","Universal Evaporation Limit","Upper Energy Level"],ans:0},
+  {topic:"Ch4 Properties",q:"What is the difference between exposure and contamination?",opts:["They are the same thing","Exposure is contact with hazmat; contamination is when material deposits on or into a person","Contamination is contact; exposure is when material enters the body","Exposure is internal; contamination is external only"],ans:1},
+  {topic:"Ch4 Properties",q:"What does IDLH stand for?",opts:["Immediately Dangerous to Life or Health","Initial Detection of Level Hazard","Incident Determination of Lethal Hazard","Immediately Dangerous to Living Humans"],ans:0},
+  {topic:"Ch4 Properties",q:"What is solubility?",opts:["How well two liquids mix together","How well a material dissolves in water","The weight of a vapor compared to air","The boiling point of a liquid"],ans:1},
+  {topic:"Ch4 Properties",q:"What is persistence related to?",opts:["High vapor pressure and low boiling point","Low vapor pressure and high boiling point — material stays around longer","High temperature and low humidity","The molecular weight of the substance"],ans:1},
+  {topic:"Ch4 Properties",q:"What is TWA?",opts:["Total Weight Average","Time-Weighted Average — max exposure over 8-hour workday without significant health effects","Toxicity Warning Alert","Threshold Weight Analysis"],ans:1},
+  {topic:"Ch4 Properties",q:"Container releases are classified according to:",opts:["The flammability of the contents","The type of reducing agent involved","How fast they occur","The material's persistence and viscosity"],ans:2},
+  {topic:"Ch4 Properties",q:"What state of matter is likely the most challenging at a hazmat incident?",opts:["Solid","Liquid","Gas","Plasma"],ans:2},
+  // CH5 - Containers
+  {topic:"Ch5 Containers",q:"What does BLEVE stand for?",opts:["Boiling Liquid Expanding Vapor Explosion","Biological Liquid Environmental Vapor Exposure","Burning Liquid Expanding Vapor Emergency","Boiling Liquid Evaporating Vapor Eruption"],ans:0},
+  {topic:"Ch5 Containers",q:"What shape indicates a pressurized container?",opts:["Flat ends","Rounded ends","Rectangular shape","Conical bottom"],ans:1},
+  {topic:"Ch5 Containers",q:"What shape indicates a cryogenic container?",opts:["Spherical","Rectangular","Thermos bottle appearance, double-walled","Oval cross-section"],ans:2},
+  {topic:"Ch5 Containers",q:"What does the capacity stencil on a railcar indicate?",opts:["The weight of the car","The volume the tank is rated to hold","The maximum speed","The product being carried"],ans:1},
+  {topic:"Ch5 Containers",q:"What is a HHFT?",opts:["High-Hazard Flammable Train — 20+ tank cars with flammable liquid in a block or 35+ dispersed","Heavy Hazmat Freight Tanker","High Heat Flammable Transport","Hazardous Heavy Freight Train"],ans:0},
+  {topic:"Ch5 Containers",q:"The MC-306/DOT-406 cargo tank carries what?",opts:["Compressed gases","Corrosive liquids","Flammable/combustible liquids","Cryogenic liquids"],ans:2},
+  {topic:"Ch5 Containers",q:"The MC-331 cargo tank is identified by what?",opts:["Oval cross-section with rollover protection","Smooth sided, round ends, white or silver","Thermos bottle appearance","Multiple horizontal cylinders on flatbed"],ans:1},
+  {topic:"Ch5 Containers",q:"Which cargo tank typically does NOT have an emergency shutoff?",opts:["MC-306","MC-307","MC-312","MC-331"],ans:2},
+  {topic:"Ch5 Containers",q:"The MC-338 cryogenic tanker is identified by what?",opts:["Smooth sided white tank","Thermos bottle appearance, vacuum-jacketed, stainless steel","Multiple cylinders on flatbed","Horseshoe-shaped ends"],ans:1},
+  {topic:"Ch5 Containers",q:"A railcar number ending in W indicates what?",opts:["Hazardous material","Hazardous waste","Water reactive","Pressurized vessel"],ans:1},
+  {topic:"Ch5 Containers",q:"How long are cryogenic tank cars designed to protect contents from ambient temperatures?",opts:["24 hours","72 hours","About 30 days","One year"],ans:2},
+  {topic:"Ch5 Containers",q:"Where are emergency shutoff devices on cargo tank trucks usually located?",opts:["Behind the driver's side cab","On the dashboard","Under the passenger seat","On the rear bumper"],ans:0},
+  {topic:"Ch5 Containers",q:"What is the ERG initial isolation zone for a pressure tank car involved in fire?",opts:["500 feet","1 mile (1.6 km)","2 miles","Half a mile"],ans:1},
+  {topic:"Ch5 Containers",q:"What is an intermodal container advantage?",opts:["They only carry one type of material","They can transfer between ships, trains, and trucks without unloading cargo","They are inexpensive to manufacture","They require no special placarding"],ans:1},
+  {topic:"Ch5 Containers",q:"What do required markings on intermodal hazmat containers include?",opts:["Just the UN number","T-code, UN number, owner ID, maximum gross weight on two sides","Color coding only","The driver's name and license number"],ans:1},
+  {topic:"Ch5 Containers",q:"What is a nonspec tank?",opts:["A tank not constructed to meet common MC or DOT/TC specifications","An international shipping container","A tank from the European Union","A tank not allowed to carry hazmat"],ans:0},
+  // CH6 - Criminal/Terrorist
+  {topic:"Ch6 Terrorism",q:"What are the three levels of situational awareness?",opts:["Low, medium, high","Level 1: Perception, Level 2: Comprehension, Level 3: Application/Projection","Awareness, understanding, action","See, think, act"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What is a RED in radiological weapons?",opts:["Radiological Explosive Device","Radiation Exposure Device — stationary gamma source to expose people","Remote Explosive Detonator","Radiological Emergency Detector"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What is an RDD?",opts:["Remote Detection Device","Radiological Dispersal Device — uses explosives to scatter radioactive material","Rapid Deployment Device","Residual Dose Detector"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What causes loss of situational awareness?",opts:["Too much information and too many personnel","Distraction, complacency, fixation, ambiguity, and overload","Proper training and equipment","Having a backup team"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What type of attack is most likely to be used by terrorists?",opts:["Chemical attack","Biological attack","Radiological attack","Explosive attack — considered conventional"],ans:3},
+  {topic:"Ch6 Terrorism",q:"What is an orphan container?",opts:["A container without a label","An abandoned container","A container that is no longer manufactured","An unsafe container"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What makes viruses an attractive biological weapon?",opts:["They are easy to produce","They do not respond to antibiotics","They are visible to the naked eye","They disperse slowly"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What should you do if you suspect WMD or terrorism?",opts:["Collect evidence immediately","Contact the FBI WMD Coordinator through local law enforcement","Evacuate the entire city","Set up a command post and wait"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What is fixation as a cause of lost situational awareness?",opts:["Being distracted by radio traffic","Being too focused on one element to the exclusion of all others","Being overloaded with information","Being too comfortable with the situation"],ans:1},
+  {topic:"Ch6 Terrorism",q:"What are indicators of a biological attack?",opts:["Large explosion and mushroom cloud","Large numbers with flu-like symptoms outside flu season, dead animals, abandoned spray devices","Vapor cloud and chemical smell","Shattered concrete and structural damage"],ans:1},
+  // CH7 - Planning
+  {topic:"Ch7 Planning",q:"What are the three incident levels?",opts:["Minor, moderate, major","Level I local, Level II hazmat team, Level III unified command with state/federal","Alpha, Bravo, Charlie","Code Red, Code Yellow, Code Blue"],ans:1},
+  {topic:"Ch7 Planning",q:"What are the three operational modes?",opts:["Active, passive, neutral","Offensive, defensive, nonintervention","Attack, retreat, hold","Aggressive, moderate, conservative"],ans:1},
+  {topic:"Ch7 Planning",q:"What are the three incident priorities?",opts:["Identification, isolation, notification","Life safety, incident stabilization, protection of property and environment","Rescue, decon, termination","Command, control, communicate"],ans:1},
+  {topic:"Ch7 Planning",q:"What is the purpose of the Site Safety Plan?",opts:["To document costs of the incident","To communicate the tactical plan for all activities in the control zone and provide safety/health risk analysis for each IAP strategy","To notify the public of the incident","To track personnel accountability"],ans:1},
+  {topic:"Ch7 Planning",q:"What are incident objectives?",opts:["Specific tasks assigned to individuals","Broad statements of what must be done to resolve an incident","The overall incident priorities","The operational mode selected"],ans:1},
+  {topic:"Ch7 Planning",q:"When is a nonintervention mode appropriate?",opts:["When there are many resources available","When explosions are imminent or the situation exceeds capabilities","When the material is identified","When victims need rescue"],ans:1},
+  {topic:"Ch7 Planning",q:"What is the most serious incident level?",opts:["Level I","Level II","Level III","Level IV"],ans:2},
+  // CH8 - ICS
+  {topic:"Ch8 ICS",q:"What are the four functional sections of ICS?",opts:["Command, Operations, Support, Finance","Operations, Planning, Logistics, Finance/Administration","Rescue, Decon, Safety, Medical","Entry, Backup, Decon, Command"],ans:1},
+  {topic:"Ch8 ICS",q:"What is the recommended ICS span of control?",opts:["1:3","1:5","1:7","1:10"],ans:1},
+  {topic:"Ch8 ICS",q:"What zone is decontamination ideally performed in?",opts:["Hot zone","Warm zone","Cold zone","Isolation zone"],ans:1},
+  {topic:"Ch8 ICS",q:"When must an IC establish an Intelligence and Information Section?",opts:["At every hazmat incident","When criminal activity or WMD is suspected","When the incident exceeds Level I","When media arrives on scene"],ans:1},
+  {topic:"Ch8 ICS",q:"What are the three types of decontamination?",opts:["Wet, dry, chemical","Emergency, mass, technical","Gross, fine, complete","Primary, secondary, tertiary"],ans:1},
+  {topic:"Ch8 ICS",q:"What is the goal of on-scene recovery?",opts:["To collect evidence","To terminate the incident","To return the scene to a safe condition","To document exposures"],ans:2},
+  {topic:"Ch8 ICS",q:"What are the three phases of termination?",opts:["Mitigation, recovery, critique","On-scene debriefing, postincident analysis, incident critique","Decon, demob, documentation","Rescue, stabilize, terminate"],ans:1},
+  {topic:"Ch8 ICS",q:"The isolation zone encompasses what?",opts:["Only the hot zone","The warm zone only","All control zones","Just the cold zone"],ans:2},
+  {topic:"Ch8 ICS",q:"What is the buddy system in hazmat?",opts:["Having a partner at all times — entry teams work in pairs","Sharing equipment between teams","Partnering with law enforcement","Coordinating with EMS"],ans:0},
+  {topic:"Ch8 ICS",q:"Operations level responders may perform damming, diking, or diverting because these are what type of control options?",opts:["Offensive","Complex","Defensive","Fundamental"],ans:2},
+  // CH9 - Emergency Decon
+  {topic:"Ch9 Decon",q:"What are the three basic principles of decontamination?",opts:["Identify, isolate, notify","Get it off, keep it off, contain it","Dilute, neutralize, dispose","Wash, rinse, dry"],ans:1},
+  {topic:"Ch9 Decon",q:"What is the goal of emergency decontamination?",opts:["To protect the environment","To remove the contaminant as quickly as possible regardless of environment or property","To perform technical decon procedures","To neutralize the contaminant chemically"],ans:1},
+  {topic:"Ch9 Decon",q:"Where should the decon site be positioned?",opts:["Downwind, downhill, downstream","Upwind, uphill, upstream","Adjacent to the hot zone","In the cold zone center"],ans:1},
+  {topic:"Ch9 Decon",q:"What is gross decon?",opts:["The final step of technical decon","The first phase — rapidly reducing significant surface contamination","Complete removal of all contaminants","Decon performed in the hot zone"],ans:1},
+  {topic:"Ch9 Decon",q:"What is off-gassing decon used for?",opts:["Corrosive materials","Volatile gases and vapors that quickly dissipate and could be more hazardous if wet decon is used","Radioactive materials","Biological agents"],ans:1},
+  {topic:"Ch9 Decon",q:"Can you be contaminated without being exposed?",opts:["No, they always occur together","Yes — you can have material on you without it entering your body","Only with radiological materials","Only with biological agents"],ans:1},
+  {topic:"Ch9 Decon",q:"Decon must be set up before personnel enter what zone?",opts:["Cold zone","Warm zone","Hot zone","Isolation zone"],ans:2},
+  {topic:"Ch9 Decon",q:"What clothing removal principle applies to victims?",opts:["Remove all clothing regardless of comfort","Remove as much as victims feel comfortable removing to avoid uncooperative behavior","Only remove outer layer","Clothing removal is never appropriate"],ans:1},
+  // CH10 - PPE
+  {topic:"Ch10 PPE",q:"Which PPE class provides the highest level of skin AND respiratory protection?",opts:["Class 2","Class 3","Class 1","Class 4"],ans:2},
+  {topic:"Ch10 PPE",q:"Class 1 PPE is equivalent to which OSHA/EPA level?",opts:["Level A","Level B","Level C","Level D"],ans:0},
+  {topic:"Ch10 PPE",q:"Class 2 PPE is equivalent to which OSHA/EPA level?",opts:["Level A","Level B","Level C","Level D"],ans:1},
+  {topic:"Ch10 PPE",q:"Which PPE class uses APR or PAPR below IDLH with known contaminants?",opts:["Class 1","Class 2","Class 3","Class 4"],ans:2},
+  {topic:"Ch10 PPE",q:"Class 4 PPE protects against which specific hazards?",opts:["Vapor and gas above IDLH","Liquid splash at IDLH","Biological and radiological particulates below IDLH","Flammable environments"],ans:2},
+  {topic:"Ch10 PPE",q:"What is permeation of CPC?",opts:["A physical tear or cut in the suit","Chemical passing through fabric at molecular level — no visible evidence","Breakdown of suit material causing discoloration","Entry through an unsealed seam"],ans:1},
+  {topic:"Ch10 PPE",q:"What is degradation of CPC?",opts:["Chemical passing through fabric","Physical or chemical breakdown of suit material — discoloration, swelling, loss of strength","Entry through a physical opening","Loss of respiratory protection"],ans:1},
+  {topic:"Ch10 PPE",q:"What is penetration of CPC?",opts:["Chemical passing through fabric at molecular level","Breakdown of suit material","Hazmat entering through a physical opening like a rip, tear, or cut","Loss of color or markings"],ans:2},
+  {topic:"Ch10 PPE",q:"When should APRs NOT be used?",opts:["In sunny weather","When the contaminant is known","In IDLH or oxygen-deficient atmospheres or unknown contaminant","When wearing structural firefighter clothing"],ans:2},
+  {topic:"Ch10 PPE",q:"What is the most significant route of entry for hazardous materials?",opts:["Absorption","Injection","Ingestion","Inhalation"],ans:3},
+  {topic:"Ch10 PPE",q:"What is the most serious heat-related disorder?",opts:["Heat cramps","Heat rash","Heat exhaustion","Heat stroke"],ans:3},
+  {topic:"Ch10 PPE",q:"What respiratory protection is worn INSIDE a Class 1 suit?",opts:["APR","PAPR","SCBA","SAR"],ans:2},
+  {topic:"Ch10 PPE",q:"Why should SARs NOT be used in firefighting operations?",opts:["They are too expensive","Heat, fire, or debris can damage the air supply hose creating a serious hazard","They do not provide enough air","They are too heavy for firefighting"],ans:1},
+  {topic:"Ch10 PPE",q:"What repeat sound exposure can cause structural damage to the inner ear?",opts:["Above 65 decibels","Above 75 decibels","Above 85 decibels","Above 95 decibels"],ans:2},
+  {topic:"Ch10 PPE",q:"What is the last item removed during PPE doffing?",opts:["Boots","Entry suit","Inner gloves","Respirator facepiece"],ans:2},
+  // CH11 - Mass/Technical Decon
+  {topic:"Ch11 Mass Decon",q:"What is mass decontamination?",opts:["Decon of one person at a time","Rapidly reducing or removing contaminants from large numbers of people when time does not allow thorough decon","Technical decon performed quickly","Decon of equipment and tools"],ans:1},
+  {topic:"Ch11 Mass Decon",q:"How is mass decon most often accomplished?",opts:["Chemical neutralization","Dry brushing","Simple water shower — dilution","Clothing removal only"],ans:2},
+  {topic:"Ch11 Mass Decon",q:"What are the four main categories of technical decon?",opts:["Emergency, mass, gross, technical","Wet, dry, physical, chemical","Absorption, adsorption, dilution, neutralization","Primary, secondary, tertiary, quaternary"],ans:1},
+  {topic:"Ch11 Mass Decon",q:"What does adsorption mean?",opts:["Hazmat soaks into the material like a sponge","Hazardous liquid molecules physically adhere to the surface of the adsorbent","Chemical reaction that neutralizes the hazmat","Evaporation of the hazardous material"],ans:1},
+  {topic:"Ch11 Mass Decon",q:"What does neutralization do?",opts:["Kills all microorganisms","Removes the hazmat physically","Changes the pH of a corrosive toward neutral (pH 7)","Evaporates the hazardous material"],ans:2},
+  {topic:"Ch11 Mass Decon",q:"What does sterilization do?",opts:["Reduces microorganisms to a safe level","Kills most microorganisms","Kills ALL microorganisms present","Physically removes contamination"],ans:2},
+  {topic:"Ch11 Mass Decon",q:"How should working animals be deconned?",opts:["They are exempt from decon","They are considered members of the public","They are considered responders and processed through the technical decon station","They are treated the same as equipment"],ans:2},
+  {topic:"Ch11 Mass Decon",q:"What should you do if someone is still contaminated after leaving the decon corridor?",opts:["Send them to the hospital","Release them with instructions","Redirect them back through the decon process","Perform emergency decon on them immediately"],ans:2},
+  {topic:"Ch11 Mass Decon",q:"Who should decon be set up for before entering the hot zone?",opts:["Only entry teams","Only victims","All personnel who may enter the hot zone","Only hazmat technicians"],ans:2},
+  {topic:"Ch11 Mass Decon",q:"What is an advantage of dry decon methods?",opts:["They are faster than wet methods","They do not create large amounts of contaminated liquid runoff","They neutralize the contaminant chemically","They work on all types of hazmat"],ans:1},
+  // CH12 - Detection
+  {topic:"Ch12 Detection",q:"What is normal atmospheric oxygen concentration?",opts:["15.9%","18.5%","20.9%","23.5%"],ans:2},
+  {topic:"Ch12 Detection",q:"At what oxygen level does an atmosphere become deficient requiring SCBA?",opts:["Below 23.5%","Below 20.9%","Below 19.5%","Below 16%"],ans:1},
+  {topic:"Ch12 Detection",q:"At what oxygen level does an atmosphere become enriched increasing fire/explosion risk?",opts:["Above 20.9%","Above 21.5%","Above 23.5%","Above 25%"],ans:2},
+  {topic:"Ch12 Detection",q:"What does a PID detect?",opts:["Radiation levels","Low to very low concentrations of organic and some inorganic gases and vapors","pH of corrosives","Oxygen levels"],ans:1},
+  {topic:"Ch12 Detection",q:"What is a bump test?",opts:["Zeroing the instrument in clean air","Exposing the instrument to a known gas concentration to verify sensors and alarms work","Testing the battery life","Calibrating to a known standard"],ans:1},
+  {topic:"Ch12 Detection",q:"What does a 1% drop in atmospheric oxygen indicate?",opts:["Normal variation","About 50,000 ppm of something else in the air — potentially a toxic contaminant","Oxygen enrichment hazard","Equipment malfunction"],ans:1},
+  {topic:"Ch12 Detection",q:"What is the primary equipment used to measure corrosivity at a hazmat incident?",opts:["LEL sensor","PID","pH paper","Oxygen detector"],ans:2},
+  {topic:"Ch12 Detection",q:"What does LD50 mean?",opts:["The dose that killed 100% of test animals","The dose that killed 50% of test animals — a measure of acute toxicity","The lethal dose for a 50 kg person","The level at which 50% show symptoms"],ans:1},
+  {topic:"Ch12 Detection",q:"What does TWA stand for in toxicology?",opts:["Total Weight Average","Time-Weighted Average — max exposure over 8-hour workday","Toxicity Warning Alert","Threshold Weight Analysis"],ans:1},
+  {topic:"Ch12 Detection",q:"Why should you never rely on one type of detection equipment?",opts:["It is too expensive to maintain","Each device has limitations and may not detect all hazards present","It is against OSHA regulations","The readings are always inaccurate"],ans:1},
+  {topic:"Ch12 Detection",q:"What instrument is used to track accumulated personal radiation dose?",opts:["Geiger counter","LEL sensor","Dosimeter","PID"],ans:2},
+  {topic:"Ch12 Detection",q:"What does STEL stand for?",opts:["Short-Term Exposure Limit","Sustained Toxicity Exposure Level","Standard Testing Evaluation Limit","Safe Threshold Exposure Level"],ans:0},
+  // CH13 - Product Control
+  {topic:"Ch13 Product Control",q:"What is diking?",opts:["Using water to dilute a spill","Using raised embankments or barriers to prevent hazmat movement to another area","Diverting flow to a storm drain","Applying foam to a liquid surface"],ans:1},
+  {topic:"Ch13 Product Control",q:"What is diverting?",opts:["Stopping the flow of a liquid","Directing and controlling the flow of a liquid to an area producing less harm","Absorbing a liquid spill","Neutralizing a corrosive"],ans:1},
+  {topic:"Ch13 Product Control",q:"When would you use an overflow dam?",opts:["When the material is lighter than water","When the material is heavier than water — water flows over while heavier material stays","When the material is water soluble","When the material is a gas"],ans:1},
+  {topic:"Ch13 Product Control",q:"When would you use an underflow dam?",opts:["When the material is heavier than water","When the material is lighter than water — water flows under while lighter material stays on top","When the material is water reactive","When the stream is very fast"],ans:1},
+  {topic:"Ch13 Product Control",q:"What type of nozzle is best for vapor suppression with foam?",opts:["Smooth bore","Water fog","Air-aspirating","Fixed gallonage"],ans:2},
+  {topic:"Ch13 Product Control",q:"What are the three foam application methods?",opts:["Spray, pour, inject","Roll-on, bank-down (backsplash), rain-down","Top-down, bottom-up, sideways","Direct, indirect, combination"],ans:1},
+  {topic:"Ch13 Product Control",q:"Why should fires around relief valves not be extinguished until the leak is controlled?",opts:["It is too dangerous to approach","Unburned vapors may accumulate in low areas and ignite creating a larger event","The foam will not work on the fire","The relief valve will reset automatically"],ans:1},
+  {topic:"Ch13 Product Control",q:"What Class fire extinguisher is required for flammable metal fires?",opts:["Class A","Class B","Class C","Class D"],ans:3},
+  {topic:"Ch13 Product Control",q:"What is vapor suppression?",opts:["Using ventilation to remove vapors","Using foam to blanket a liquid spill to prevent vapors from escaping and igniting","Spraying water to disperse vapors","Using fans to dilute vapor concentration"],ans:1},
+  {topic:"Ch13 Product Control",q:"What is vapor dispersion?",opts:["Using foam to suppress vapors","Using water spray to move and dilute airborne vapors reducing their concentration","Waiting for vapors to dissipate naturally","Using fans inside a structure"],ans:1},
+  {topic:"Ch13 Product Control",q:"Operations level responders may perform damming, diking, or diverting because these are:",opts:["Offensive control options","Defensive control options","Complex control options","Emergency control options"],ans:1},
+  {topic:"Ch13 Product Control",q:"Where is the MC-331 emergency shutoff device located?",opts:["Behind the passenger side cab","Left-front corner of the tank behind the driver","Beneath the cab","In the center of the tank"],ans:1},
+  {topic:"Ch13 Product Control",q:"What is absorption in product control?",opts:["Hazmat adhering to the surface of a material","Hazmat soaking into the interior spaces of an absorbent material","Hazmat being neutralized chemically","Hazmat evaporating from the surface"],ans:1},
+  // CH14 - Rescue
+  {topic:"Ch14 Rescue",q:"What are the four victim rescue priorities at a hazmat incident?",opts:["Rescue all victims in order of proximity","1.Assist ambulatory, 2.Evacuate nonambulatory from warm zone, 3.Evacuate nonambulatory from hot zone, 4.Recover deceased","Start with most severely injured","Rescue only those with signs of life"],ans:1},
+  {topic:"Ch14 Rescue",q:"What are the four triage priority categories?",opts:["Red, yellow, green, black","Priority 1 immediate, Priority 2 delayed, Priority 3 minimal, Priority 4 expectant","Critical, serious, stable, deceased","Life-threatening, serious, minor, expectant"],ans:1},
+  {topic:"Ch14 Rescue",q:"What is the difference between rescue and recovery?",opts:["They are the same thing","Rescue removes living victims; recovery retrieves remains of deceased victims","Rescue is for responders; recovery is for civilians","Rescue is offensive; recovery is defensive"],ans:1},
+  {topic:"Ch14 Rescue",q:"Where is medical triage conducted at a hazmat incident?",opts:["Hot zone as victims are found","Warm zone during decon","Cold zone after decontamination","Staging area before decon"],ans:2},
+  {topic:"Ch14 Rescue",q:"How many rescuers are typically needed to move a large adult?",opts:["One","Two","Three","Up to four"],ans:3},
+  {topic:"Ch14 Rescue",q:"What is a buddy assist?",opts:["A responder carrying a victim","Ambulatory victims with minor injuries helping each other to a safe area under direction of responders","A two-person carry technique","A rope-assisted rescue method"],ans:1},
+  {topic:"Ch14 Rescue",q:"At hazmat incidents, rescue priorities typically start at the outer edges because:",opts:["Those victims have the most serious injuries","Those victims are farthest from the release, had lowest exposure, and take least time to remove","It is easier to access victims there","Law enforcement requires it"],ans:1},
+  {topic:"Ch14 Rescue",q:"What makes non-line-of-sight nonambulatory victims the last to be rescued?",opts:["They are the least injured","They are generally closest to the hazmat source, had greatest exposure, and pose greatest danger to rescuers","They are always deceased","They are not a priority at hazmat incidents"],ans:1},
+  // CH15 - Evidence
+  {topic:"Ch15 Evidence",q:"What are the three types of evidence?",opts:["Physical, chemical, biological","Direct, physical, transient","Solid, liquid, gaseous","Primary, secondary, tertiary"],ans:1},
+  {topic:"Ch15 Evidence",q:"What is transient evidence?",opts:["Evidence found in vehicles","A minute quantity of physical evidence that can easily change or be lost over time","Evidence that moves from one location to another","Evidence collected from witnesses"],ans:1},
+  {topic:"Ch15 Evidence",q:"What are the four response phases at a criminal hazmat/WMD incident?",opts:["Tactical, operational, crime scene, remediation","Rescue, decon, evidence, termination","Scene, triage, treatment, transport","Identification, isolation, notification, termination"],ans:0},
+  {topic:"Ch15 Evidence",q:"What is chain of custody?",opts:["The order of command at an incident","Documentation tracking evidence from discovery to disposal ensuring no tampering occurred","The process of transferring command","A procedure for decontaminating suspects"],ans:1},
+  {topic:"Ch15 Evidence",q:"Who investigates suspicious letters sent through the mail?",opts:["FBI only","ATF only","The Postal Inspection Service (and potentially FBI or ATF)","Local law enforcement"],ans:2},
+  {topic:"Ch15 Evidence",q:"How is evidence decontaminated without destroying it?",opts:["Open the packaging and rinse with water","Only the exterior of the evidence packaging is decontaminated — never open interior packaging","Spray with bleach solution","Use UV light sterilization"],ans:1},
+  {topic:"Ch15 Evidence",q:"After life preservation and hazard mitigation, what is the top priority at criminal hazmat/WMD incidents?",opts:["Mass decon","Property preservation","Evidence preservation and public safety sampling","Environmental protection"],ans:2},
+  {topic:"Ch15 Evidence",q:"What allows firefighters to enter a building without a warrant?",opts:["Eminent domain","Exigent circumstances","A court order","Law enforcement permission"],ans:1},
+  {topic:"Ch15 Evidence",q:"During which response phase does law enforcement remove hostile threats?",opts:["Operational","Crime scene","Remediation","Tactical"],ans:3},
+  {topic:"Ch15 Evidence",q:"What must happen before field screening can begin?",opts:["All hazmat must be contained","Law enforcement must arrive","Public safety bomb technicians must clear the scene of potential explosives","Victims must be decontaminated"],ans:2},
+  {topic:"Ch15 Evidence",q:"If a first responder handles or collects evidence, they:",opts:["Must leave the scene immediately","Become a link in the custody chain","Are relieved of other duties","Must notify the media"],ans:1},
+  {topic:"Ch15 Evidence",q:"What must evidence labels include?",opts:["Just the item description","Unique ID number, date/time of collection, description, hazards, location found, collector's initials","Only the collector's name","The chain of custody number only"],ans:1},
+  // CH16 - Illicit Labs
+  {topic:"Ch16 Illicit Labs",q:"What should you do upon recognizing a possible drug lab?",opts:["Search the lab for evidence","Leave immediately, call for resources, establish isolation area, preserve evidence","Turn off all utilities","Collect samples for testing"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"Common booby traps at illicit labs include:",opts:["Security cameras only","Explosives, weapons tied to doors, chemical bottles that mix when broken, trap doors, exposed wiring, motion-triggered devices","Locked doors and guard dogs only","Laser tripwires and pressure plates only"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"What is ALARA?",opts:["Always Leave Area Rapidly Away","As Low As Reasonably Achievable — minimize radiation through time, distance, and shielding","Alert Level And Response Action","Approved Laboratory Analysis and Risk Assessment"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"What are clues to the presence of a meth lab?",opts:["Clean well-organized space with proper ventilation","Excessive security, covered windows, solvent odor, ammonia smell, iodine-stained fixtures, excessive trash with precursor containers","Presence of laboratory grade glassware only","Condensation on windows from grow lights"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"What makes fentanyl especially dangerous?",opts:["It has a strong distinctive odor","A small amount can cause death and can be absorbed through skin, inhalation, ingestion, or mucous membranes","It is always found in liquid form","It only affects people with prior opioid exposure"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"Who directs all on-site activities at an illicit laboratory?",opts:["The highest ranking fire officer","The hazmat technician","The law enforcement agency having jurisdiction","The IC"],ans:2},
+  {topic:"Ch16 Illicit Labs",q:"What is an After Action Report?",opts:["A press release about the incident","A report summarizing the incident, identifying lessons learned, and providing recommendations","A legal document for prosecution","A financial report on incident costs"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"What is the most common type of illicit lab encountered?",opts:["Biological lab","Explosives lab","Chemical warfare agent lab","Drug lab"],ans:3},
+  {topic:"Ch16 Illicit Labs",q:"After drug labs, what is the second most common type of illicit lab?",opts:["Biological","Chemical warfare agent","Explosives","Radiological"],ans:2},
+  {topic:"Ch16 Illicit Labs",q:"What are indicators of a biological lab?",opts:["Peroxide-based chemicals and acetone","Petri dishes, culture media, pressure cookers, biological safety cabinets, centrifuges, antibiotics, growth containers","Butane canisters and PVC pipes","Iodine-stained fixtures and solvent odor"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"What strategy keeps exposure to radiological materials as low as possible?",opts:["Wear maximum PPE and stay close to monitor","Decrease exposure time, increase distance from source, use shielding","Spray the source with water","Use positive pressure ventilation"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"What makes explosives lab materials especially dangerous?",opts:["They are always liquid","They are sensitive to heat, shock, friction, pressure, and electrostatic charge","They require specialized equipment to detect","They are only dangerous when combined with water"],ans:1},
+  {topic:"Ch16 Illicit Labs",q:"What makes BHO synthesis labs especially dangerous?",opts:["The toxic fumes from marijuana","The flammability of butane gas which can cause fires and explosions","The biological agents present","The radioactive isotopes used in extraction"],ans:1},
+  // HAZARD CLASSES REFERENCE
+  {topic:"Hazard Classes",q:"Which UN hazard class contains explosives?",opts:["Class 1","Class 2","Class 3","Class 4"],ans:0},
+  {topic:"Hazard Classes",q:"Which UN hazard class contains flammable liquids like gasoline?",opts:["Class 2","Class 3","Class 4","Class 5"],ans:1},
+  {topic:"Hazard Classes",q:"Which UN hazard class contains corrosives like sulfuric acid?",opts:["Class 6","Class 7","Class 8","Class 9"],ans:2},
+  {topic:"Hazard Classes",q:"Which UN hazard class contains radioactive materials?",opts:["Class 5","Class 6","Class 7","Class 8"],ans:2},
+  {topic:"Hazard Classes",q:"Class 2.3 is what type of gas?",opts:["Flammable","Non-flammable","Toxic","Inert"],ans:2},
+  {topic:"Hazard Classes",q:"Class 2.1 is what type of gas?",opts:["Flammable","Non-flammable","Toxic","Cryogenic"],ans:0},
+  {topic:"Hazard Classes",q:"Which class includes oxidizers?",opts:["Class 3","Class 4","Class 5","Class 6"],ans:2},
+  {topic:"Hazard Classes",q:"Lithium batteries and marine pollutants belong to which class?",opts:["Class 6","Class 7","Class 8","Class 9"],ans:3},
+  {topic:"Hazard Classes",q:"Which class includes dangerous when wet materials?",opts:["Class 4.1","Class 4.2","Class 4.3","Class 5.1"],ans:2},
+  {topic:"Hazard Classes",q:"Class 4.2 materials are described as:",opts:["Flammable solids","Spontaneously combustible","Dangerous when wet","Organic peroxides"],ans:1},
+  {topic:"Hazard Classes",q:"In NFPA 704, what does the BLUE quadrant represent?",opts:["Flammability","Reactivity","Health","Special hazards"],ans:2},
+  {topic:"Hazard Classes",q:"In NFPA 704, what does the RED quadrant represent?",opts:["Flammability","Reactivity","Health","Special hazards"],ans:0},
+  {topic:"Hazard Classes",q:"In NFPA 704, what does the YELLOW quadrant represent?",opts:["Flammability","Instability/Reactivity","Health","Special hazards"],ans:1},
+  {topic:"Hazard Classes",q:"In NFPA 704, what does a W in the white quadrant indicate?",opts:["Radioactive","Water reactive","Weak acid","Warning"],ans:1},
+  {topic:"Hazard Classes",q:"In NFPA 704, what does OX in the white quadrant indicate?",opts:["Oxygen deficient","Oxidizer","Organic compound","Oil reactive"],ans:1},
+  {topic:"Hazard Classes",q:"Class 6.2 materials are:",opts:["Toxic substances","Infectious substances","Organic peroxides","Radioactive materials"],ans:1},
+  {topic:"Hazard Classes",q:"What placard color is used for flammable liquids (Class 3)?",opts:["Yellow","Orange","Red","White"],ans:2},
+  {topic:"Hazard Classes",q:"What placard color is used for Class 4.3 dangerous when wet?",opts:["Red","Yellow","Blue","White"],ans:2},
+  {topic:"Hazard Classes",q:"What placard color is used for oxidizers (Class 5.1)?",opts:["Red","Yellow","Blue","Orange"],ans:1},
+  {topic:"Hazard Classes",q:"What placard color is used for Class 2.2 non-flammable gas?",opts:["Red","Yellow","Green","White"],ans:2},
+  // CONTAINERS REFERENCE
+  {topic:"Containers",q:"What shape indicates a pressurized container?",opts:["Flat ends","Rounded ends","Rectangular","Conical bottom"],ans:1},
+  {topic:"Containers",q:"What does a vertical cylinder with cone bottom typically contain?",opts:["Cryogenic liquid","Compressed gas","Dry bulk solids/powders","Flammable liquid"],ans:2},
+  {topic:"Containers",q:"What shape indicates a cryogenic container?",opts:["Spherical","Rectangular","Thermos bottle, double-walled","Oval cross-section"],ans:2},
+  {topic:"Containers",q:"The MC-306/DOT-406 cargo tank carries what type of material?",opts:["Compressed gases","Corrosive liquids","Flammable/combustible liquids","Cryogenic liquids"],ans:2},
+  {topic:"Containers",q:"The MC-331 cargo tank is identified by what features?",opts:["Oval cross-section with rollover protection","Smooth sided, round ends, white or silver","Thermos bottle appearance","Multiple horizontal cylinders on flatbed"],ans:1},
+  {topic:"Containers",q:"Which cargo tank typically does NOT have an emergency shutoff?",opts:["MC-306","MC-307","MC-312","MC-331"],ans:2},
+  {topic:"Containers",q:"The MC-338 cryogenic tanker is identified by what?",opts:["Smooth sided white tank","Thermos bottle, vacuum-jacketed, stainless steel","Multiple cylinders on flatbed","Horseshoe-shaped ends"],ans:1},
+  {topic:"Containers",q:"What is the MC-307/DOT-407 identified by?",opts:["Smooth sided round ends","Oval cross-section","Rounded or horseshoe-shaped ends, rollover protection","Multiple horizontal cylinders"],ans:2},
+  {topic:"Containers",q:"A railcar number ending in W indicates what?",opts:["Hazardous material","Hazardous waste","Water reactive","Pressurized vessel"],ans:1},
+  {topic:"Containers",q:"How many sides must intermodal hazmat containers display required markings?",opts:["One side","Two sides","Three sides","All four sides"],ans:1},
+  {topic:"Containers",q:"What is a spherical tank at a fixed facility most likely used for?",opts:["Atmospheric liquid storage","Low pressure liquids","High pressure/cryogenic storage","Dry bulk materials"],ans:2},
+  {topic:"Containers",q:"What does a circular tank with flat ends at a fixed facility store?",opts:["Cryogenic materials","Atmospheric to low pressure liquids","High pressure gases","Dry bulk solids"],ans:1},
+  {topic:"Containers",q:"Tube trailers carry what type of material?",opts:["Flammable liquids","Dry bulk","Compressed gases","Corrosive liquids"],ans:2},
+  {topic:"Containers",q:"What is a Dewar flask used for?",opts:["High pressure gas storage","Moving small quantities of cryogenic liquids within a facility","Corrosive liquid transport","Radioactive material storage"],ans:1},
+  // ERG REFERENCE
+  {topic:"ERG",q:"What information is found on the inside cover of the ERG?",opts:["WMD indicators","Key to reading shipping papers","Emergency contact numbers","Table of isolation distances"],ans:1},
+  {topic:"ERG",q:"Where are the Protective Action Distances in the ERG?",opts:["Yellow pages","Blue pages","Orange pages","Green pages"],ans:3},
+  {topic:"ERG",q:"What do the blue-bordered ERG pages contain?",opts:["UN number index","Alphabetical name index","Action guides","WMD indicators"],ans:1},
+  {topic:"ERG",q:"What do the yellow-bordered ERG pages contain?",opts:["Alphabetical name index","UN number index","Action guides","Isolation distances"],ans:1},
+  {topic:"ERG",q:"What do the orange-bordered ERG pages contain?",opts:["UN number index","Name index","Safety recommendations and action guides","Isolation distances"],ans:2},
+  {topic:"ERG",q:"The ERG is primarily designed for use at incidents occurring where?",opts:["Fixed facilities","Airports","Highways, railroads, and pipelines","Private dwellings"],ans:2},
+  {topic:"ERG",q:"What does a P following a guide number indicate?",opts:["Poisonous material","The material polymerizes","Pressurized container","Polar solvent"],ans:1},
+  {topic:"ERG",q:"A large spill in the ERG is defined as more than:",opts:["10 gallons","55 gallons (208 L)","100 gallons","200 gallons"],ans:1},
+  {topic:"ERG",q:"Where is the ERG User's Guide flowchart?",opts:["Inside cover","First page","Last page","Green pages"],ans:1},
+  {topic:"ERG",q:"What do green-highlighted materials in the ERG indicate?",opts:["Non-toxic materials","TIH or water-reactive — use green pages for distances","Safe to approach","Flammable gases only"],ans:1},
+  {topic:"ERG",q:"Where can you find emergency response center contact numbers like CHEMTREC?",opts:["Inside cover","Yellow pages","Inside back cover of the ERG","Green pages"],ans:2},
+  {topic:"ERG",q:"What is the initial isolation zone?",opts:["The entire hot zone","A circle around the spill where all persons should be evacuated","The downwind danger area","The warm zone boundary"],ans:1},
+  {topic:"ERG",q:"What is the protective action distance?",opts:["The initial isolation zone radius","An area downwind where persons may become incapacitated or suffer serious health effects","The distance to the command post","The perimeter of the cold zone"],ans:1},
+  // PPE CLASSES REFERENCE
+  {topic:"PPE Classes",q:"Which PPE class provides the highest level of skin AND respiratory protection?",opts:["Class 2","Class 3","Class 1","Class 4"],ans:2},
+  {topic:"PPE Classes",q:"Class 1 PPE is equivalent to which OSHA/EPA level?",opts:["Level A","Level B","Level C","Level D"],ans:0},
+  {topic:"PPE Classes",q:"Class 2 PPE is equivalent to which OSHA/EPA level?",opts:["Level A","Level B","Level C","Level D"],ans:1},
+  {topic:"PPE Classes",q:"Which PPE class uses APR or PAPR and is used below IDLH with known contaminants?",opts:["Class 1","Class 2","Class 3","Class 4"],ans:2},
+  {topic:"PPE Classes",q:"Class 4 PPE protects against which specific hazards?",opts:["Vapor and gas above IDLH","Liquid splash at IDLH","Biological and radiological particulates below IDLH","Flammable environments"],ans:2},
+  {topic:"PPE Classes",q:"What respiratory protection is worn INSIDE a Class 1 suit?",opts:["APR","PAPR","SCBA","SAR"],ans:2},
+  {topic:"PPE Classes",q:"What is permeation of CPC?",opts:["A physical tear or cut in the suit","Chemical passing through fabric at molecular level — no visible evidence","Breakdown of suit material","Entry through an unsealed seam"],ans:1},
+  {topic:"PPE Classes",q:"What is degradation of CPC?",opts:["Chemical passing through fabric","Physical or chemical breakdown of suit material — discoloration, swelling, loss of strength","Entry through a physical opening","Loss of respiratory protection"],ans:1},
+  {topic:"PPE Classes",q:"When should APRs NOT be used?",opts:["In sunny weather","When the contaminant is known","In IDLH or oxygen-deficient atmospheres or when contaminant is unknown","When wearing structural firefighter clothing"],ans:2},
+  {topic:"PPE Classes",q:"What is the most significant route of entry for hazardous materials?",opts:["Absorption","Injection","Ingestion","Inhalation"],ans:3},
+  {topic:"PPE Classes",q:"Class 5 PPE is designed for what type of environment?",opts:["High radiation areas","Biological hazard areas","Flammable environments where chemical is NOT toxic via skin","Cryogenic operations"],ans:2},
+  {topic:"PPE Classes",q:"What is the difference between SCBA and SAR?",opts:["SCBA uses filters; SAR uses compressed air","SCBA carries its own air supply; SAR receives air through a hose from a stationary source","They are the same thing","SCBA is for hazmat; SAR is for firefighting"],ans:1},
+];
+
+let fcDeck=[], fcIdx=0, fcKnown=new Set(), fcUnknown=new Set(), fcActive='all', fcFlipped=false;
+
+function fcGetId(i){return fcDeck[i]?fcDeck[i].ch+'::'+fcDeck[i].q:'';}
+function fcBuildFilters(){
+  const bar=document.getElementById('fc-filters'); bar.innerHTML='';
+  const all=document.createElement('button'); all.className='filter-btn active'; all.textContent='All';
+  all.onclick=()=>fcSetCh('all'); bar.appendChild(all);
+  [...new Set(FC_CARDS.map(c=>c.ch))].sort((a,b)=>+a.replace('Ch','')-+b.replace('Ch','')).forEach(ch=>{
+    const b=document.createElement('button'); b.className='filter-btn'; b.textContent=ch;
+    b.onclick=()=>fcSetCh(ch); bar.appendChild(b);
+  });
+}
+function fcSetCh(ch){
+  fcActive=ch;
+  document.querySelectorAll('#fc-filters .filter-btn').forEach((b,i)=>{
+    b.classList.toggle('active',(ch==='all'&&i===0)||b.textContent===ch);
+  });
+  fcReset();
+}
+function fcSearchCards(){fcBuildDeck();}
+function fcBuildDeck(){
+  let s=document.getElementById('fc-search').value.toLowerCase();
+  fcDeck=FC_CARDS.filter(c=>{
+    const mc=fcActive==='all'||c.ch===fcActive;
+    const ms=!s||c.q.toLowerCase().includes(s)||c.a.toLowerCase().includes(s);
+    return mc&&ms;
+  });
+  fcIdx=0;
+}
+function fcUpdateStats(){
+  const total=fcDeck.length;
+  const known=fcDeck.filter((_,i)=>fcKnown.has(fcGetId(i))).length;
+  const unknown=fcDeck.filter((_,i)=>fcUnknown.has(fcGetId(i))).length;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-known').textContent=known;
+  document.getElementById('s-unknown').textContent=unknown;
+  document.getElementById('s-left').textContent=total-known-unknown;
+  const pct=total>0?Math.round(((known+unknown)/total)*100):0;
+  document.getElementById('fc-progress').style.width=pct+'%';
+  document.getElementById('fc-counter').textContent='Card '+(fcIdx+1)+' of '+total;
+}
+function fcShow(){
+  if(!fcDeck.length)return;
+  const c=fcDeck[fcIdx];
+  document.getElementById('fc-ch').textContent=c.ch.replace('Ch','Chapter ');
+  document.getElementById('fc-ch-b').textContent=c.ch.replace('Ch','Chapter ');
+  document.getElementById('fc-q').textContent=c.q;
+  document.getElementById('fc-a').textContent=c.a;
+  fcFlipped=false;
+  document.getElementById('fc-card').classList.remove('flipped');
+  fcUpdateStats();
+  const done=fcDeck.every((_,i)=>fcKnown.has(fcGetId(i))||fcUnknown.has(fcGetId(i)));
+  if(done){fcShowDone();}
+}
+function fcFlip(){fcFlipped=!fcFlipped;document.getElementById('fc-card').classList.toggle('flipped',fcFlipped);}
+function fcMark(s){
+  const id=fcGetId(fcIdx);
+  if(s==='known'){fcKnown.add(id);fcUnknown.delete(id);}
+  else{fcUnknown.add(id);fcKnown.delete(id);}
+  fcNext();
+}
+function fcNext(){if(fcIdx<fcDeck.length-1){fcIdx++;}else{fcIdx=0;}fcShow();}
+function fcReset(){
+  fcKnown.clear();fcUnknown.clear();fcBuildDeck();fcShuffle();
+  document.getElementById('fc-main').style.display='block';
+  document.getElementById('fc-done').style.display='none';
+  fcShow();
+}
+function fcShuffle(){
+  for(let i=fcDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcDeck[i],fcDeck[j]]=[fcDeck[j],fcDeck[i]];}
+  fcIdx=0;fcShow();
+}
+function fcStudyUnknown(){
+  const missed=FC_CARDS.filter(c=>fcUnknown.has(c.ch+'::'+c.q));
+  if(!missed.length){alert('No review cards yet. Mark some as Need Review first.');return;}
+  fcDeck=[...missed];fcKnown.clear();fcUnknown.clear();fcIdx=0;
+  document.getElementById('fc-main').style.display='block';
+  document.getElementById('fc-done').style.display='none';
+  fcShow();
+}
+function fcShowDone(){
+  document.getElementById('fc-main').style.display='none';
+  document.getElementById('fc-done').style.display='block';
+  const known=fcKnown.size,total=fcDeck.length;
+  document.getElementById('fc-done-stats').textContent='You got '+known+' of '+total+' correct ('+Math.round(known/total*100)+'%).';
+}
+
+// QUIZ
+const TOPICS=[...new Set(QUIZ_QUESTIONS.map(q=>q.topic))];
+let selectedTopics=new Set(TOPICS), selectedNum=10;
+let quizDeck=[], qIdx=0, qAnswers=[], qAnswered=[];
+
+function buildQuizTopicOpts(){
+  const c=document.getElementById('quiz-topic-opts'); c.innerHTML='';
+  TOPICS.forEach(t=>{
+    const d=document.createElement('div');
+    d.className='quiz-opt selected'; d.textContent=t;
+    d.onclick=()=>{
+      if(selectedTopics.has(t)){if(selectedTopics.size>1)selectedTopics.delete(t);}
+      else selectedTopics.add(t);
+      d.classList.toggle('selected',selectedTopics.has(t));
+    };
+    c.appendChild(d);
+  });
+}
+function selectNum(el){
+  document.querySelectorAll('#quiz-num-opts .quiz-opt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedNum=parseInt(el.dataset.num)||0;
+}
+function startQuiz(){
+  let pool=QUIZ_QUESTIONS.filter(q=>selectedTopics.has(q.topic));
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  quizDeck=selectedNum>0?pool.slice(0,selectedNum):pool;
+  qIdx=0; qAnswers=new Array(quizDeck.length).fill(-1); qAnswered=new Array(quizDeck.length).fill(false);
+  document.getElementById('quiz-setup').style.display='none';
+  document.getElementById('quiz-game').style.display='block';
+  document.getElementById('quiz-score').style.display='none';
+  renderQ();
+}
+function renderQ(){
+  const total=quizDeck.length;
+  const prog=document.getElementById('q-progress'); prog.innerHTML='';
+  quizDeck.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='q-dot'+(qAnswered[i]?(qAnswers[i]===quizDeck[i].ans?' correct':' wrong'):(i===qIdx?' answered':''));
+    prog.appendChild(d);
+  });
+  const q=quizDeck[qIdx];
+  const container=document.getElementById('quiz-questions');
+  container.innerHTML='<div class="q-card"><div class="q-num">Question '+(qIdx+1)+' of '+total+' — '+q.topic+'</div><div class="q-text">'+q.q+'</div><div class="q-options" id="q-opts"></div><div id="q-fb"></div></div>';
+  const opts=document.getElementById('q-opts');
+  q.opts.forEach((opt,i)=>{
+    const b=document.createElement('button'); b.className='q-opt'; b.textContent=opt;
+    if(qAnswered[qIdx]){
+      if(i===q.ans)b.classList.add('correct');
+      else if(i===qAnswers[qIdx])b.classList.add('wrong');
+    } else {
+      if(i===qAnswers[qIdx])b.classList.add('selected');
+      b.onclick=()=>selectAnswer(i);
+    }
+    opts.appendChild(b);
+  });
+  if(qAnswered[qIdx]){
+    const fb=document.getElementById('q-fb');
+    if(qAnswers[qIdx]===q.ans){fb.className='q-feedback correct';fb.textContent='Correct!';}
+    else{fb.className='q-feedback wrong';fb.textContent='Incorrect. Correct answer: '+q.opts[q.ans];}
+  }
+  document.getElementById('q-prev-btn').style.display=qIdx>0?'block':'none';
+  const isLast=qIdx===total-1;
+  const allAnswered=qAnswered.every(a=>a);
+  document.getElementById('q-next-btn').style.display=(!isLast)?'block':'none';
+  document.getElementById('q-submit-btn').style.display=(isLast&&allAnswered)?'block':'none';
+}
+function selectAnswer(i){
+  if(qAnswered[qIdx])return;
+  qAnswers[qIdx]=i;
+  qAnswered[qIdx]=true;
+  renderQ();
+  if(qIdx===quizDeck.length-1){
+    setTimeout(()=>{document.getElementById('q-submit-btn').style.display='block';},300);
+  }
+}
+function qNext(){if(qIdx<quizDeck.length-1){qIdx++;renderQ();}}
+function qPrev(){if(qIdx>0){qIdx--;renderQ();}}
+function submitQuiz(){
+  const correct=qAnswers.filter((a,i)=>a===quizDeck[i].ans).length;
+  const total=quizDeck.length;
+  const pct=Math.round(correct/total*100);
+  document.getElementById('quiz-game').style.display='none';
+  document.getElementById('quiz-score').style.display='block';
+  const numEl=document.getElementById('q-score-num');
+  numEl.textContent=pct+'%';
+  numEl.className='score-num '+(pct>=70?'score-pass':'score-fail');
+  document.getElementById('q-score-label').textContent=pct>=70?'PASS — Great job!':'FAIL — Keep studying!';
+  document.getElementById('q-score-detail').textContent=correct+' of '+total+' correct';
+}
+function retryQuiz(){
+  qIdx=0; qAnswers=new Array(quizDeck.length).fill(-1); qAnswered=new Array(quizDeck.length).fill(false);
+  for(let i=quizDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[quizDeck[i],quizDeck[j]]=[quizDeck[j],quizDeck[i]];}
+  document.getElementById('quiz-game').style.display='block';
+  document.getElementById('quiz-score').style.display='none';
+  renderQ();
+}
+function backToSetup(){
+  document.getElementById('quiz-setup').style.display='block';
+  document.getElementById('quiz-game').style.display='none';
+  document.getElementById('quiz-score').style.display='none';
+}
+
+function showPage(id,e){let event=e||window.event;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+fcBuildFilters();
+fcBuildDeck();
+fcShuffle();
+buildQuizTopicOpts();
+</script>
+</body>
+</html>
