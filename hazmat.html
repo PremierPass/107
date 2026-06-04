@@ -1893,11 +1893,13 @@ function backToSetup(){
   document.getElementById('quiz-score').style.display='none';
 }
 
-function showPage(id,e){let event=e||window.event;
+function showPage(id,e){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  event.target.classList.add('active');
+  var pg = document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  var btn = (e && e.target) ? e.target : document.querySelector('.nav-btn[onclick*="'+id+'"]');
+  if(btn) btn.classList.add('active');
   if(id==='review') setTimeout(updateReviewPage, 50);
 }
 
