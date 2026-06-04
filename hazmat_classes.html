@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazmat — Hazard Classes</title>
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: #111 !important; color-scheme: dark; }
+body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: #f0f0f0; min-height: 100vh; }
+.nav { background: #1a1a1a; border-bottom: 2px solid #c0392b; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 4px; overflow-x: auto; }
+.nav-btn { background: none; border: none; color: #aaa; padding: 8px 14px; cursor: pointer; font-size: 13px; border-radius: 6px; white-space: nowrap; transition: all 0.2s; }
+.nav-btn.active { background: #c0392b; color: white; }
+.nav-btn:hover:not(.active) { background: #2a2a2a; color: #fff; }
+.nav-title { color: #c0392b; font-weight: 700; font-size: 15px; letter-spacing: 1px; margin-right: 12px; white-space: nowrap; }
+.page { display: none; padding: 16px; max-width: 720px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* FLASHCARDS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.stat { background: #1e1e1e; border-radius: 8px; padding: 10px; text-align: center; }
+.stat .num { font-size: 20px; font-weight: 700; }
+.stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.stat.known .num { color: #27ae60; }
+.stat.unknown .num { color: #c0392b; }
+.stat.remaining .num { color: #f39c12; }
+.progress-bar { background: #2a2a2a; border-radius: 4px; height: 5px; margin-bottom: 12px; }
+.progress-fill { height: 100%; background: #c0392b; border-radius: 4px; transition: width 0.3s; }
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.filter-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+.filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+.search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
+.search-box:focus { outline: none; border-color: #c0392b; }
+.card-counter { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
+.card-wrap { perspective: 1000px; margin-bottom: 12px; cursor: pointer; }
+.card { width: 100%; min-height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; min-height: 180px; backface-visibility: hidden; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+.card-front { background: #1e1e1e; border: 1px solid #333; }
+.card-back { background: #0f2a1f; border: 1px solid #27ae60; transform: rotateY(180deg); }
+.card-ch { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.card-q { font-size: 16px; font-weight: 500; line-height: 1.5; }
+.card-a { font-size: 14px; line-height: 1.6; color: #d4f5e4; }
+.card-hint { font-size: 11px; color: #555; margin-top: 10px; text-align: center; }
+.card-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+.btn { padding: 9px 18px; border-radius: 7px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+.btn-green { background: #27ae60; color: white; }
+.btn-red { background: #c0392b; color: white; }
+.btn-gray { background: #333; color: #ccc; }
+.btn:hover { opacity: 0.85; }
+.deck-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sm-btn { background: #1e1e1e; border: 1px solid #444; color: #bbb; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.sm-btn:hover { border-color: #c0392b; color: #c0392b; }
+.done-screen { text-align: center; padding: 36px 16px; background: #1e1e1e; border-radius: 10px; }
+.done-screen h2 { color: #27ae60; font-size: 22px; margin-bottom: 10px; }
+.done-screen p { color: #999; margin-bottom: 18px; }
+
+/* REFERENCE */
+.ref-section { margin-bottom: 24px; }
+.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.ref-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+.ref-card.red { border-left: 3px solid #c0392b; }
+.ref-card.green { border-left: 3px solid #27ae60; }
+.ref-card.blue { border-left: 3px solid #2980b9; }
+.ref-card.yellow { border-left: 3px solid #f39c12; }
+.ref-card.purple { border-left: 3px solid #8e44ad; }
+.ref-card.orange { border-left: 3px solid #e67e22; }
+.ref-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ref-card p { font-size: 12px; color: #aaa; line-height: 1.5; }
+.ref-card .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 700; }
+.tag-red { background: #c0392b22; color: #e74c3c; }
+.tag-green { background: #27ae6022; color: #2ecc71; }
+.tag-blue { background: #2980b922; color: #3498db; }
+.tag-yellow { background: #f39c1222; color: #f39c12; }
+.tag-purple { background: #8e44ad22; color: #9b59b6; }
+.tag-orange { background: #e67e2222; color: #e67e22; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: #1e1e1e; }
+
+/* QUIZ */
+.quiz-setup { background: #1e1e1e; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.quiz-setup h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #c0392b; }
+.quiz-option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.quiz-opt { background: #2a2a2a; border: 1px solid #444; border-radius: 7px; padding: 10px 12px; cursor: pointer; font-size: 12px; color: #bbb; transition: all 0.2s; text-align: center; }
+.quiz-opt.selected { background: #c0392b22; border-color: #c0392b; color: #fff; }
+.quiz-opt:hover { border-color: #c0392b; }
+.quiz-start-btn { background: #c0392b; color: white; border: none; padding: 10px 24px; border-radius: 7px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+.quiz-start-btn:hover { background: #e74c3c; }
+.q-card { background: #1e1e1e; border-radius: 10px; padding: 18px; margin-bottom: 12px; }
+.q-num { font-size: 11px; color: #666; margin-bottom: 8px; }
+.q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
+.q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-opt { background: #2a2a2a; border: 1px solid #333; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-size: 13px; color: #ccc; transition: all 0.2s; text-align: left; }
+.q-opt:hover { border-color: #555; background: #333; }
+.q-opt.selected { border-color: #f39c12; background: #f39c1211; color: #fff; }
+.q-opt.correct { border-color: #27ae60; background: #27ae6022; color: #2ecc71; }
+.q-opt.wrong { border-color: #c0392b; background: #c0392b22; color: #e74c3c; }
+.q-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; }
+.q-feedback.correct { background: #27ae6022; color: #2ecc71; border: 1px solid #27ae6044; }
+.q-feedback.wrong { background: #c0392b22; color: #e74c3c; border: 1px solid #c0392b44; }
+.quiz-nav { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.quiz-score { text-align: center; background: #1e1e1e; border-radius: 10px; padding: 32px 20px; }
+.quiz-score h2 { font-size: 24px; margin-bottom: 8px; }
+.quiz-score .score-num { font-size: 48px; font-weight: 700; margin: 10px 0; }
+.score-pass { color: #27ae60; }
+.score-fail { color: #c0392b; }
+.q-progress { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 12px; }
+.q-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
+.q-dot.answered { background: #f39c12; }
+.q-dot.correct { background: #27ae60; }
+.q-dot.wrong { background: #c0392b; }
+
+.placard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.placard-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.placard-img { width: 80px; height: 80px; margin-bottom: 8px; image-rendering: crisp-edges; }
+.placard-class { font-size: 11px; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.placard-name { font-size: 13px; font-weight: 600; margin: 2px 0; }
+.placard-desc { font-size: 11px; color: #888; line-height: 1.4; }
+
+.hclass-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.hclass-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.hclass-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.hclass-diamond { width: 64px; height: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(45deg); border-radius: 4px; border: 2px solid rgba(0,0,0,0.3); }
+.hclass-num { transform: rotate(-45deg); font-size: 18px; font-weight: 900; line-height: 1; }
+.hclass-dname { transform: rotate(-45deg); font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.hclass-info { flex: 1; }
+.hclass-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.hclass-examples { font-size: 11px; color: #888; margin-bottom: 3px; }
+.hclass-guide { font-size: 11px; color: #c0392b; font-weight: 600; }
+.hclass-tap { font-size: 10px; color: #555; margin-top: 4px; }
+.class-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 10px; }
+.class-modal.open { display: flex; }
+.modal-inner { background: #111; border-radius: 10px; max-width: 98vw; max-height: 95vh; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #333; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #1a1a1a; border-bottom: 1px solid #333; font-size: 13px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 1px; }
+.modal-close { background: #c0392b; border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.modal-body { overflow: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
+.modal-img { width: 100%; max-width: 1200px; display: block; border-radius: 6px; }
+
+.nfpa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.nfpa-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.nfpa-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.nfpa-swatch { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.2); }
+.nfpa-label { font-size: 12px; font-weight: 900; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+.nfpa-info { flex: 1; }
+.nfpa-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.nfpa-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.ppe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.ppe-card { background: #1e1e1e; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.ppe-card:hover { background: #252525; transform: translateY(-1px); }
+.ppe-badge { min-width: 80px; padding: 8px 6px; border-radius: 7px; text-align: center; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3; flex-shrink: 0; }
+.ppe-info { flex: 1; }
+.ppe-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.ppe-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.review-card { background: #1e1e1e; border: 1px solid #c0392b; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.review-card-ch { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.review-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.review-card-a { font-size: 13px; color: #27ae60; line-height: 1.5; }
+.missed-card { background: #1e1e1e; border: 1px solid #e74c3c; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.missed-card-topic { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.missed-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.missed-card-wrong { font-size: 12px; color: #e74c3c; margin-bottom: 4px; }
+.missed-card-correct { font-size: 12px; color: #27ae60; }
+.empty-state { text-align: center; padding: 32px; color: #555; font-size: 14px; }
+
+
+.nav a.nav-btn { text-decoration: none; display: inline-block; }
+.nav a.nav-btn:visited { color: #aaa; }
+.nav a.nav-btn.active { color: white; }
+
+</style>
+<style>
+  :root { color-scheme: dark !important; }
+  html, body { background-color: #111111 !important; color: #f0f0f0 !important; }
+  .ref-table td, .ref-table th { color: inherit; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <span class="nav-title">HAZMAT</span>
+  <a href="hazmat.html" class="nav-btn">Flashcards / Quiz</a>
+  <a href="hazmat_classes.html" class="nav-btn active">Hazard Classes</a>
+  <a href="hazmat_containers.html" class="nav-btn">Containers</a>
+  <a href="hazmat_erg.html" class="nav-btn">ERG Pages</a>
+  <a href="hazmat_ppe.html" class="nav-btn">PPE Classes</a>
+</div>
+<div style="max-width:720px;margin:0 auto;padding:16px;">
+<div id="page-classes" class="page">
+
+
+  <div class="ref-section">
+    <div class="ref-title">Hazmat Class Reference — Tap Any Class for Full Chart</div>
+    <div class="hclass-grid">
+
+      <div class="hclass-card" onclick="openClassModal('class1')">
+        <div class="hclass-diamond" style="background:#FF8000;color:#000">
+          <div class="hclass-num">1</div>
+          <div class="hclass-dname">EXPLOSIVES</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 1 — EXPLOSIVES</div>
+          <div class="hclass-examples">Dynamite, TNT, ammunition, fireworks</div>
+          <div class="hclass-guide">Guide 112-117</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class2')">
+        <div class="hclass-diamond" style="background:#CC0000;color:#fff">
+          <div class="hclass-num">2</div>
+          <div class="hclass-dname">GASES</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 2 — GASES</div>
+          <div class="hclass-examples">Propane, chlorine, nitrogen, ammonia</div>
+          <div class="hclass-guide">Guide 115-119</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class3')">
+        <div class="hclass-diamond" style="background:#CC0000;color:#fff">
+          <div class="hclass-num">3</div>
+          <div class="hclass-dname">FLAMMABLE LIQUIDS</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 3 — FLAMMABLE LIQUIDS</div>
+          <div class="hclass-examples">Gasoline, acetone, ethanol, diesel</div>
+          <div class="hclass-guide">Guide 128-129</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class4')">
+        <div class="hclass-diamond" style="background:#CC0000;color:#fff">
+          <div class="hclass-num">4</div>
+          <div class="hclass-dname">FLAMMABLE SOLIDS</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 4 — FLAMMABLE SOLIDS</div>
+          <div class="hclass-examples">Magnesium, sodium, white phosphorus</div>
+          <div class="hclass-guide">Guide 132-135</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class5')">
+        <div class="hclass-diamond" style="background:#CCCC00;color:#000">
+          <div class="hclass-num">5</div>
+          <div class="hclass-dname">OXIDIZERS</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 5 — OXIDIZERS & ORGANIC PEROXIDES</div>
+          <div class="hclass-examples">Ammonium nitrate, benzoyl peroxide</div>
+          <div class="hclass-guide">Guide 140-141</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class6')">
+        <div class="hclass-diamond" style="background:#333;color:#fff">
+          <div class="hclass-num">6</div>
+          <div class="hclass-dname">TOXIC</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 6 — TOXIC & INFECTIOUS</div>
+          <div class="hclass-examples">Cyanides, pesticides, clinical waste</div>
+          <div class="hclass-guide">Guide 153-154</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class7')">
+        <div class="hclass-diamond" style="background:#CCCC00;color:#000">
+          <div class="hclass-num">7</div>
+          <div class="hclass-dname">RADIOACTIVE</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 7 — RADIOACTIVE</div>
+          <div class="hclass-examples">Uranium, medical isotopes, waste</div>
+          <div class="hclass-guide">Guide 163</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class8')">
+        <div class="hclass-diamond" style="background:#222;color:#fff">
+          <div class="hclass-num">8</div>
+          <div class="hclass-dname">CORROSIVES</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 8 — CORROSIVES</div>
+          <div class="hclass-examples">Sulfuric acid, sodium hydroxide, bleach</div>
+          <div class="hclass-guide">Guide 156</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="hclass-card" onclick="openClassModal('class9')">
+        <div class="hclass-diamond" style="background:#fff;color:#000">
+          <div class="hclass-num">9</div>
+          <div class="hclass-dname">MISCELLANEOUS</div>
+        </div>
+        <div class="hclass-info">
+          <div class="hclass-name">Class 9 — MISCELLANEOUS</div>
+          <div class="hclass-examples">Lithium batteries, dry ice, marine pollutants</div>
+          <div class="hclass-guide">Guide 171</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="modal-class1" class="class-modal" onclick="closeModal(event, 'class1')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 1 — EXPLOSIVES</span>
+          <button class="modal-close" onclick="closeClassModal('class1')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class1_explosives.png" alt="Class 1 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class2" class="class-modal" onclick="closeModal(event, 'class2')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 2 — GASES</span>
+          <button class="modal-close" onclick="closeClassModal('class2')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class2_gases.png" alt="Class 2 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class3" class="class-modal" onclick="closeModal(event, 'class3')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 3 — FLAMMABLE LIQUIDS</span>
+          <button class="modal-close" onclick="closeClassModal('class3')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class3_flammable_liquids.png" alt="Class 3 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class4" class="class-modal" onclick="closeModal(event, 'class4')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 4 — FLAMMABLE SOLIDS</span>
+          <button class="modal-close" onclick="closeClassModal('class4')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class4_flammable_solids.png" alt="Class 4 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class5" class="class-modal" onclick="closeModal(event, 'class5')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 5 — OXIDIZERS & ORGANIC PEROXIDES</span>
+          <button class="modal-close" onclick="closeClassModal('class5')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class5_oxidizers.png" alt="Class 5 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class6" class="class-modal" onclick="closeModal(event, 'class6')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 6 — TOXIC & INFECTIOUS</span>
+          <button class="modal-close" onclick="closeClassModal('class6')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class6_toxic.png" alt="Class 6 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class7" class="class-modal" onclick="closeModal(event, 'class7')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 7 — RADIOACTIVE</span>
+          <button class="modal-close" onclick="closeClassModal('class7')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class7_radioactive.png" alt="Class 7 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class8" class="class-modal" onclick="closeModal(event, 'class8')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 8 — CORROSIVES</span>
+          <button class="modal-close" onclick="closeClassModal('class8')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class8_corrosives.png" alt="Class 8 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-class9" class="class-modal" onclick="closeModal(event, 'class9')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>Class 9 — MISCELLANEOUS</span>
+          <button class="modal-close" onclick="closeClassModal('class9')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/class9_miscellaneous.png" alt="Class 9 Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+  <div class="ref-section">
+    <div class="ref-title">UN Hazard Classes 1-9</div>
+    <table class="ref-table">
+      <tr><th>Class</th><th>Name</th><th>Examples</th><th>Placard Color</th></tr>
+      <tr><td><b>1</b></td><td>Explosives</td><td>Dynamite, ammunition, fireworks</td><td>Orange</td></tr>
+      <tr><td><b>1.1</b></td><td>Mass explosion hazard</td><td>TNT, dynamite</td><td>Orange</td></tr>
+      <tr><td><b>1.2</b></td><td>Projection hazard</td><td>Ammunition</td><td>Orange</td></tr>
+      <tr><td><b>1.3</b></td><td>Fire hazard</td><td>Propellants</td><td>Orange</td></tr>
+      <tr><td><b>1.4</b></td><td>Minor explosion hazard</td><td>Small arms ammo</td><td>Orange</td></tr>
+      <tr><td><b>1.5</b></td><td>Very insensitive</td><td>Blasting agents</td><td>Orange</td></tr>
+      <tr><td><b>1.6</b></td><td>Extremely insensitive</td><td>Detonating substances</td><td>Orange</td></tr>
+      <tr><td><b>2.1</b></td><td>Flammable Gas</td><td>Propane, butane, hydrogen</td><td>Red</td></tr>
+      <tr><td><b>2.2</b></td><td>Non-Flammable Gas</td><td>Nitrogen, CO2, helium</td><td>Green</td></tr>
+      <tr><td><b>2.3</b></td><td>Toxic Gas</td><td>Chlorine, ammonia, phosgene</td><td>White</td></tr>
+      <tr><td><b>3</b></td><td>Flammable Liquids</td><td>Gasoline, acetone, ethanol</td><td>Red</td></tr>
+      <tr><td><b>4.1</b></td><td>Flammable Solids</td><td>Matches, metal powders</td><td>Red/White stripes</td></tr>
+      <tr><td><b>4.2</b></td><td>Spontaneously Combustible</td><td>White phosphorus, alkylaluminums</td><td>Red/White</td></tr>
+      <tr><td><b>4.3</b></td><td>Dangerous When Wet</td><td>Sodium, calcium carbide</td><td>Blue</td></tr>
+      <tr><td><b>5.1</b></td><td>Oxidizers</td><td>Ammonium nitrate, hydrogen peroxide</td><td>Yellow</td></tr>
+      <tr><td><b>5.2</b></td><td>Organic Peroxides</td><td>Benzoyl peroxide, MEKP</td><td>Yellow/Red</td></tr>
+      <tr><td><b>6.1</b></td><td>Toxic Substances</td><td>Pesticides, cyanides, arsenic</td><td>White</td></tr>
+      <tr><td><b>6.2</b></td><td>Infectious Substances</td><td>Medical waste, biological cultures</td><td>White</td></tr>
+      <tr><td><b>7</b></td><td>Radioactive Materials</td><td>Uranium, medical isotopes</td><td>Yellow/White</td></tr>
+      <tr><td><b>8</b></td><td>Corrosives</td><td>Sulfuric acid, sodium hydroxide</td><td>Black/White</td></tr>
+      <tr><td><b>9</b></td><td>Miscellaneous</td><td>Lithium batteries, dry ice, PCBs, marine pollutants</td><td>Black/White stripes</td></tr>
+    </table>
+  </div>
+  
+  <div class="ref-section">
+    <div class="ref-title">NFPA 704 Diamond System — Tap Any Section for Full Chart</div>
+    <div class="nfpa-grid">
+
+      <div class="nfpa-card" onclick="openClassModal('nfpa_full')">
+        <div class="nfpa-swatch" style="background:#1a1a1a;color:#c0392b">
+          <div class="nfpa-label">NFPA 704</div>
+        </div>
+        <div class="nfpa-info">
+          <div class="nfpa-name">Full Diamond System</div>
+          <div class="nfpa-desc">Complete reference — all four quadrants, special symbols, awareness vs operations</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="nfpa-card" onclick="openClassModal('nfpa_blue')">
+        <div class="nfpa-swatch" style="background:#2980b9;color:#fff">
+          <div class="nfpa-label">BLUE</div>
+        </div>
+        <div class="nfpa-info">
+          <div class="nfpa-name">Health Hazard</div>
+          <div class="nfpa-desc">0=Minimal, 1=Slight, 2=Moderate, 3=Serious, 4=Deadly</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="nfpa-card" onclick="openClassModal('nfpa_red')">
+        <div class="nfpa-swatch" style="background:#c0392b;color:#fff">
+          <div class="nfpa-label">RED</div>
+        </div>
+        <div class="nfpa-info">
+          <div class="nfpa-name">Flammability Hazard</div>
+          <div class="nfpa-desc">0=Will not burn, 1=Preheat, 2=Heat required, 3=Ignites normal, 4=Extremely flammable</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="nfpa-card" onclick="openClassModal('nfpa_yellow')">
+        <div class="nfpa-swatch" style="background:#f39c12;color:#000">
+          <div class="nfpa-label">YELLOW</div>
+        </div>
+        <div class="nfpa-info">
+          <div class="nfpa-name">Instability / Reactivity</div>
+          <div class="nfpa-desc">0=Stable, 1=Unstable if heated, 2=Violent change, 3=Shock/heat detonate, 4=Detonates readily</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="nfpa-card" onclick="openClassModal('nfpa_white')">
+        <div class="nfpa-swatch" style="background:#ecf0f1;color:#000">
+          <div class="nfpa-label">WHITE</div>
+        </div>
+        <div class="nfpa-info">
+          <div class="nfpa-name">Special Hazards</div>
+          <div class="nfpa-desc">W=Water Reactive, OX=Oxidizer, SA=Simple Asphyxiant, COR, CRYO, BIO</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div id="modal-nfpa_full" class="class-modal" onclick="closeModal(event, 'nfpa_full')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>NFPA 704 — Full Diamond System</span>
+          <button class="modal-close" onclick="closeClassModal('nfpa_full')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/nfpa_full.png" alt="NFPA 704 — Full Diamond System" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-nfpa_blue" class="class-modal" onclick="closeModal(event, 'nfpa_blue')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>BLUE — Health Hazard</span>
+          <button class="modal-close" onclick="closeClassModal('nfpa_blue')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/nfpa_blue.png" alt="BLUE — Health Hazard" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-nfpa_red" class="class-modal" onclick="closeModal(event, 'nfpa_red')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>RED — Flammability Hazard</span>
+          <button class="modal-close" onclick="closeClassModal('nfpa_red')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/nfpa_red.png" alt="RED — Flammability Hazard" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-nfpa_yellow" class="class-modal" onclick="closeModal(event, 'nfpa_yellow')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>YELLOW — Instability / Reactivity</span>
+          <button class="modal-close" onclick="closeClassModal('nfpa_yellow')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/nfpa_yellow.png" alt="YELLOW — Instability / Reactivity" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-nfpa_white" class="class-modal" onclick="closeModal(event, 'nfpa_white')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>WHITE — Special Hazards</span>
+          <button class="modal-close" onclick="closeClassModal('nfpa_white')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/nfpa_white.png" alt="WHITE — Special Hazards" class="modal-img">
+        </div>
+      </div>
+    </div>
+</div>
+<script>
+
+function openClassModal(key) {
+  document.getElementById('modal-' + key).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeClassModal(key) {
+  document.getElementById('modal-' + key).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModal(event, key) {
+  if (event.target === document.getElementById('modal-' + key)) {
+    closeClassModal(key);
+  }
+}
+
+</script>
+</body>
+</html>

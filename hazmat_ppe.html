@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazmat — PPE Classes</title>
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: #111 !important; color-scheme: dark; }
+body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: #f0f0f0; min-height: 100vh; }
+.nav { background: #1a1a1a; border-bottom: 2px solid #c0392b; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 4px; overflow-x: auto; }
+.nav-btn { background: none; border: none; color: #aaa; padding: 8px 14px; cursor: pointer; font-size: 13px; border-radius: 6px; white-space: nowrap; transition: all 0.2s; }
+.nav-btn.active { background: #c0392b; color: white; }
+.nav-btn:hover:not(.active) { background: #2a2a2a; color: #fff; }
+.nav-title { color: #c0392b; font-weight: 700; font-size: 15px; letter-spacing: 1px; margin-right: 12px; white-space: nowrap; }
+.page { display: none; padding: 16px; max-width: 720px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* FLASHCARDS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.stat { background: #1e1e1e; border-radius: 8px; padding: 10px; text-align: center; }
+.stat .num { font-size: 20px; font-weight: 700; }
+.stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.stat.known .num { color: #27ae60; }
+.stat.unknown .num { color: #c0392b; }
+.stat.remaining .num { color: #f39c12; }
+.progress-bar { background: #2a2a2a; border-radius: 4px; height: 5px; margin-bottom: 12px; }
+.progress-fill { height: 100%; background: #c0392b; border-radius: 4px; transition: width 0.3s; }
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.filter-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+.filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+.search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
+.search-box:focus { outline: none; border-color: #c0392b; }
+.card-counter { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
+.card-wrap { perspective: 1000px; margin-bottom: 12px; cursor: pointer; }
+.card { width: 100%; min-height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; min-height: 180px; backface-visibility: hidden; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+.card-front { background: #1e1e1e; border: 1px solid #333; }
+.card-back { background: #0f2a1f; border: 1px solid #27ae60; transform: rotateY(180deg); }
+.card-ch { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.card-q { font-size: 16px; font-weight: 500; line-height: 1.5; }
+.card-a { font-size: 14px; line-height: 1.6; color: #d4f5e4; }
+.card-hint { font-size: 11px; color: #555; margin-top: 10px; text-align: center; }
+.card-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+.btn { padding: 9px 18px; border-radius: 7px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+.btn-green { background: #27ae60; color: white; }
+.btn-red { background: #c0392b; color: white; }
+.btn-gray { background: #333; color: #ccc; }
+.btn:hover { opacity: 0.85; }
+.deck-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sm-btn { background: #1e1e1e; border: 1px solid #444; color: #bbb; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.sm-btn:hover { border-color: #c0392b; color: #c0392b; }
+.done-screen { text-align: center; padding: 36px 16px; background: #1e1e1e; border-radius: 10px; }
+.done-screen h2 { color: #27ae60; font-size: 22px; margin-bottom: 10px; }
+.done-screen p { color: #999; margin-bottom: 18px; }
+
+/* REFERENCE */
+.ref-section { margin-bottom: 24px; }
+.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.ref-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+.ref-card.red { border-left: 3px solid #c0392b; }
+.ref-card.green { border-left: 3px solid #27ae60; }
+.ref-card.blue { border-left: 3px solid #2980b9; }
+.ref-card.yellow { border-left: 3px solid #f39c12; }
+.ref-card.purple { border-left: 3px solid #8e44ad; }
+.ref-card.orange { border-left: 3px solid #e67e22; }
+.ref-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ref-card p { font-size: 12px; color: #aaa; line-height: 1.5; }
+.ref-card .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 700; }
+.tag-red { background: #c0392b22; color: #e74c3c; }
+.tag-green { background: #27ae6022; color: #2ecc71; }
+.tag-blue { background: #2980b922; color: #3498db; }
+.tag-yellow { background: #f39c1222; color: #f39c12; }
+.tag-purple { background: #8e44ad22; color: #9b59b6; }
+.tag-orange { background: #e67e2222; color: #e67e22; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: #1e1e1e; }
+
+/* QUIZ */
+.quiz-setup { background: #1e1e1e; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.quiz-setup h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #c0392b; }
+.quiz-option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.quiz-opt { background: #2a2a2a; border: 1px solid #444; border-radius: 7px; padding: 10px 12px; cursor: pointer; font-size: 12px; color: #bbb; transition: all 0.2s; text-align: center; }
+.quiz-opt.selected { background: #c0392b22; border-color: #c0392b; color: #fff; }
+.quiz-opt:hover { border-color: #c0392b; }
+.quiz-start-btn { background: #c0392b; color: white; border: none; padding: 10px 24px; border-radius: 7px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+.quiz-start-btn:hover { background: #e74c3c; }
+.q-card { background: #1e1e1e; border-radius: 10px; padding: 18px; margin-bottom: 12px; }
+.q-num { font-size: 11px; color: #666; margin-bottom: 8px; }
+.q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
+.q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-opt { background: #2a2a2a; border: 1px solid #333; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-size: 13px; color: #ccc; transition: all 0.2s; text-align: left; }
+.q-opt:hover { border-color: #555; background: #333; }
+.q-opt.selected { border-color: #f39c12; background: #f39c1211; color: #fff; }
+.q-opt.correct { border-color: #27ae60; background: #27ae6022; color: #2ecc71; }
+.q-opt.wrong { border-color: #c0392b; background: #c0392b22; color: #e74c3c; }
+.q-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; }
+.q-feedback.correct { background: #27ae6022; color: #2ecc71; border: 1px solid #27ae6044; }
+.q-feedback.wrong { background: #c0392b22; color: #e74c3c; border: 1px solid #c0392b44; }
+.quiz-nav { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.quiz-score { text-align: center; background: #1e1e1e; border-radius: 10px; padding: 32px 20px; }
+.quiz-score h2 { font-size: 24px; margin-bottom: 8px; }
+.quiz-score .score-num { font-size: 48px; font-weight: 700; margin: 10px 0; }
+.score-pass { color: #27ae60; }
+.score-fail { color: #c0392b; }
+.q-progress { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 12px; }
+.q-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
+.q-dot.answered { background: #f39c12; }
+.q-dot.correct { background: #27ae60; }
+.q-dot.wrong { background: #c0392b; }
+
+.placard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.placard-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.placard-img { width: 80px; height: 80px; margin-bottom: 8px; image-rendering: crisp-edges; }
+.placard-class { font-size: 11px; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.placard-name { font-size: 13px; font-weight: 600; margin: 2px 0; }
+.placard-desc { font-size: 11px; color: #888; line-height: 1.4; }
+
+.hclass-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.hclass-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.hclass-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.hclass-diamond { width: 64px; height: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(45deg); border-radius: 4px; border: 2px solid rgba(0,0,0,0.3); }
+.hclass-num { transform: rotate(-45deg); font-size: 18px; font-weight: 900; line-height: 1; }
+.hclass-dname { transform: rotate(-45deg); font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.hclass-info { flex: 1; }
+.hclass-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.hclass-examples { font-size: 11px; color: #888; margin-bottom: 3px; }
+.hclass-guide { font-size: 11px; color: #c0392b; font-weight: 600; }
+.hclass-tap { font-size: 10px; color: #555; margin-top: 4px; }
+.class-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 10px; }
+.class-modal.open { display: flex; }
+.modal-inner { background: #111; border-radius: 10px; max-width: 98vw; max-height: 95vh; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #333; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #1a1a1a; border-bottom: 1px solid #333; font-size: 13px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 1px; }
+.modal-close { background: #c0392b; border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.modal-body { overflow: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
+.modal-img { width: 100%; max-width: 1200px; display: block; border-radius: 6px; }
+
+.nfpa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.nfpa-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.nfpa-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.nfpa-swatch { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.2); }
+.nfpa-label { font-size: 12px; font-weight: 900; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+.nfpa-info { flex: 1; }
+.nfpa-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.nfpa-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.ppe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.ppe-card { background: #1e1e1e; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.ppe-card:hover { background: #252525; transform: translateY(-1px); }
+.ppe-badge { min-width: 80px; padding: 8px 6px; border-radius: 7px; text-align: center; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3; flex-shrink: 0; }
+.ppe-info { flex: 1; }
+.ppe-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.ppe-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.review-card { background: #1e1e1e; border: 1px solid #c0392b; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.review-card-ch { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.review-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.review-card-a { font-size: 13px; color: #27ae60; line-height: 1.5; }
+.missed-card { background: #1e1e1e; border: 1px solid #e74c3c; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.missed-card-topic { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.missed-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.missed-card-wrong { font-size: 12px; color: #e74c3c; margin-bottom: 4px; }
+.missed-card-correct { font-size: 12px; color: #27ae60; }
+.empty-state { text-align: center; padding: 32px; color: #555; font-size: 14px; }
+
+
+.nav a.nav-btn { text-decoration: none; display: inline-block; }
+.nav a.nav-btn:visited { color: #aaa; }
+.nav a.nav-btn.active { color: white; }
+
+</style>
+<style>
+  :root { color-scheme: dark !important; }
+  html, body { background-color: #111111 !important; color: #f0f0f0 !important; }
+  .ref-table td, .ref-table th { color: inherit; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <span class="nav-title">HAZMAT</span>
+  <a href="hazmat.html" class="nav-btn">Flashcards / Quiz</a>
+  <a href="hazmat_classes.html" class="nav-btn">Hazard Classes</a>
+  <a href="hazmat_containers.html" class="nav-btn">Containers</a>
+  <a href="hazmat_erg.html" class="nav-btn">ERG Pages</a>
+  <a href="hazmat_ppe.html" class="nav-btn active">PPE Classes</a>
+</div>
+<div style="max-width:720px;margin:0 auto;padding:16px;">
+<div id="page-ppe" class="page">
+
+  <div class="ref-section">
+    <div class="ref-title">NFPA PPE Classes — Tap Any Class for Full Reference Chart</div>
+    <div class="ppe-grid">
+
+      <div class="ppe-card" onclick="openClassModal('ppe_all')" style="border: 2px solid #c0392b">
+        <div class="ppe-badge" style="background:#1a1a1a;color:#c0392b">ALL CLASSES</div>
+        <div class="ppe-info">
+          <div class="ppe-name">NFPA PPE Quick Reference</div>
+          <div class="ppe-desc">All 5 classes side by side with decision guide</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('ppe1')" style="border-left: 4px solid #c0392b">
+        <div class="ppe-badge" style="background:#c0392b;color:#fff">CLASS 1</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Maximum Protection</div>
+          <div class="ppe-desc">OSHA/EPA Level A — Fully encapsulating — SCBA inside — Unknown/IDLH</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('ppe2')" style="border-left: 4px solid #e67e22">
+        <div class="ppe-badge" style="background:#e67e22;color:#fff">CLASS 2</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Max Respiratory Protection</div>
+          <div class="ppe-desc">OSHA/EPA Level B — Splash suit — SCBA outside — Known material/IDLH</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('ppe3')" style="border-left: 4px solid #f39c12">
+        <div class="ppe-badge" style="background:#f39c12;color:#000">CLASS 3</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Low Vapor + Splash Protection</div>
+          <div class="ppe-desc">OSHA/EPA Level C — APR/PAPR — Known material — Below IDLH — Monitored air</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('ppe4')" style="border-left: 4px solid #27ae60">
+        <div class="ppe-badge" style="background:#27ae60;color:#fff">CLASS 4</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Bio + Radiological Particulate</div>
+          <div class="ppe-desc">APR/PAPR with HEPA — Biological or radiological particulates only</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('ppe5')" style="border-left: 4px solid #2980b9">
+        <div class="ppe-badge" style="background:#2980b9;color:#fff">CLASS 5</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Thermal + Chemical Splash</div>
+          <div class="ppe-desc">Structural gear + SCBA — Flammable environments — Chemical NOT toxic via skin</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="modal-ppe_all" class="class-modal" onclick="closeModal(event, 'ppe_all')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>ALL CLASSES — NFPA PPE Quick Reference</span>
+          <button class="modal-close" onclick="closeClassModal('ppe_all')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_fixed_facility.png" alt="NFPA PPE Quick Reference" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-ppe1" class="class-modal" onclick="closeModal(event, 'ppe1')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>CLASS 1 — Maximum Protection</span>
+          <button class="modal-close" onclick="closeClassModal('ppe1')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_cargo_trucks.png" alt="Maximum Protection" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-ppe2" class="class-modal" onclick="closeModal(event, 'ppe2')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>CLASS 2 — Max Respiratory Protection</span>
+          <button class="modal-close" onclick="closeClassModal('ppe2')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_rail_cars.png" alt="Max Respiratory Protection" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-ppe3" class="class-modal" onclick="closeModal(event, 'ppe3')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>CLASS 3 — Low Vapor + Splash Protection</span>
+          <button class="modal-close" onclick="closeClassModal('ppe3')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_intermodal.png" alt="Low Vapor + Splash Protection" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-ppe4" class="class-modal" onclick="closeModal(event, 'ppe4')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>CLASS 4 — Bio + Radiological Particulate</span>
+          <button class="modal-close" onclick="closeClassModal('ppe4')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_pipelines.png" alt="Bio + Radiological Particulate" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-ppe5" class="class-modal" onclick="closeModal(event, 'ppe5')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>CLASS 5 — Thermal + Chemical Splash</span>
+          <button class="modal-close" onclick="closeClassModal('ppe5')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_nonbulk.png" alt="Thermal + Chemical Splash" class="modal-img">
+        </div>
+      </div>
+    </div>
+
+
+  <div class="ref-section">
+    <div class="ref-title">PPE Reference Charts — Tap Any Card for Full Chart</div>
+    <div class="ppe-grid">
+
+      <div class="ppe-card" onclick="openClassModal('resp_types')" style="border-left: 4px solid #2980b9">
+        <div class="ppe-badge" style="background:#2980b9;color:#fff;font-size:10px;">RESPIRATORY</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Protection Types</div>
+          <div class="ppe-desc">SCBA, SAR, APR, PAPR, SAH — air source, use when, limitations</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('skin_protective')" style="border-left: 4px solid #c0392b">
+        <div class="ppe-badge" style="background:#c0392b;color:#fff;font-size:10px;">SKIN PROTECTION</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Clothing Categories</div>
+          <div class="ppe-desc">Thermal, Chemical Protective (CPC), Ballistic — types and key facts</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('cpc_failure')" style="border-left: 4px solid #e67e22">
+        <div class="ppe-badge" style="background:#e67e22;color:#fff;font-size:10px;">CPC FAILURE</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Modes</div>
+          <div class="ppe-desc">Permeation=Through, Degradation=Destroyed, Penetration=Hole</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('ppe_selection')" style="border-left: 4px solid #27ae60">
+        <div class="ppe-badge" style="background:#27ae60;color:#fff;font-size:10px;">PPE SELECTION</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Decision Guide</div>
+          <div class="ppe-desc">Flowchart + quick reference — Unknown=Class 1, Splash=Class 2, Monitored=Class 3, Bio/Rad=Class 4, Fire=Class 5</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="modal-resp_types" class="class-modal" onclick="closeModal(event, 'resp_types')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>RESPIRATORY — Protection Types</span>
+          <button class="modal-close" onclick="closeClassModal('resp_types')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_ton.png" alt="Protection Types" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-skin_protective" class="class-modal" onclick="closeModal(event, 'skin_protective')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>SKIN PROTECTION — Clothing Categories</span>
+          <button class="modal-close" onclick="closeClassModal('skin_protective')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_marine.png" alt="Clothing Categories" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-cpc_failure" class="class-modal" onclick="closeModal(event, 'cpc_failure')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>CPC FAILURE — Modes</span>
+          <button class="modal-close" onclick="closeClassModal('cpc_failure')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/erg_overview.png" alt="Modes" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-ppe_selection" class="class-modal" onclick="closeModal(event, 'ppe_selection')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>PPE SELECTION — Decision Guide</span>
+          <button class="modal-close" onclick="closeClassModal('ppe_selection')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/erg_flowchart.png" alt="Decision Guide" class="modal-img">
+        </div>
+      </div>
+    </div>
+
+</div>
+
+
+
+
+</div>
+<script>
+
+function openClassModal(key) {
+  document.getElementById('modal-' + key).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeClassModal(key) {
+  document.getElementById('modal-' + key).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModal(event, key) {
+  if (event.target === document.getElementById('modal-' + key)) {
+    closeClassModal(key);
+  }
+}
+
+</script>
+</body>
+</html>

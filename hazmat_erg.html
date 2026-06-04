@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazmat — ERG Pages</title>
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: #111 !important; color-scheme: dark; }
+body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: #f0f0f0; min-height: 100vh; }
+.nav { background: #1a1a1a; border-bottom: 2px solid #c0392b; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 4px; overflow-x: auto; }
+.nav-btn { background: none; border: none; color: #aaa; padding: 8px 14px; cursor: pointer; font-size: 13px; border-radius: 6px; white-space: nowrap; transition: all 0.2s; }
+.nav-btn.active { background: #c0392b; color: white; }
+.nav-btn:hover:not(.active) { background: #2a2a2a; color: #fff; }
+.nav-title { color: #c0392b; font-weight: 700; font-size: 15px; letter-spacing: 1px; margin-right: 12px; white-space: nowrap; }
+.page { display: none; padding: 16px; max-width: 720px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* FLASHCARDS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.stat { background: #1e1e1e; border-radius: 8px; padding: 10px; text-align: center; }
+.stat .num { font-size: 20px; font-weight: 700; }
+.stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.stat.known .num { color: #27ae60; }
+.stat.unknown .num { color: #c0392b; }
+.stat.remaining .num { color: #f39c12; }
+.progress-bar { background: #2a2a2a; border-radius: 4px; height: 5px; margin-bottom: 12px; }
+.progress-fill { height: 100%; background: #c0392b; border-radius: 4px; transition: width 0.3s; }
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.filter-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+.filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+.search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
+.search-box:focus { outline: none; border-color: #c0392b; }
+.card-counter { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
+.card-wrap { perspective: 1000px; margin-bottom: 12px; cursor: pointer; }
+.card { width: 100%; min-height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; min-height: 180px; backface-visibility: hidden; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+.card-front { background: #1e1e1e; border: 1px solid #333; }
+.card-back { background: #0f2a1f; border: 1px solid #27ae60; transform: rotateY(180deg); }
+.card-ch { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.card-q { font-size: 16px; font-weight: 500; line-height: 1.5; }
+.card-a { font-size: 14px; line-height: 1.6; color: #d4f5e4; }
+.card-hint { font-size: 11px; color: #555; margin-top: 10px; text-align: center; }
+.card-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+.btn { padding: 9px 18px; border-radius: 7px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+.btn-green { background: #27ae60; color: white; }
+.btn-red { background: #c0392b; color: white; }
+.btn-gray { background: #333; color: #ccc; }
+.btn:hover { opacity: 0.85; }
+.deck-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sm-btn { background: #1e1e1e; border: 1px solid #444; color: #bbb; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.sm-btn:hover { border-color: #c0392b; color: #c0392b; }
+.done-screen { text-align: center; padding: 36px 16px; background: #1e1e1e; border-radius: 10px; }
+.done-screen h2 { color: #27ae60; font-size: 22px; margin-bottom: 10px; }
+.done-screen p { color: #999; margin-bottom: 18px; }
+
+/* REFERENCE */
+.ref-section { margin-bottom: 24px; }
+.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.ref-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+.ref-card.red { border-left: 3px solid #c0392b; }
+.ref-card.green { border-left: 3px solid #27ae60; }
+.ref-card.blue { border-left: 3px solid #2980b9; }
+.ref-card.yellow { border-left: 3px solid #f39c12; }
+.ref-card.purple { border-left: 3px solid #8e44ad; }
+.ref-card.orange { border-left: 3px solid #e67e22; }
+.ref-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ref-card p { font-size: 12px; color: #aaa; line-height: 1.5; }
+.ref-card .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 700; }
+.tag-red { background: #c0392b22; color: #e74c3c; }
+.tag-green { background: #27ae6022; color: #2ecc71; }
+.tag-blue { background: #2980b922; color: #3498db; }
+.tag-yellow { background: #f39c1222; color: #f39c12; }
+.tag-purple { background: #8e44ad22; color: #9b59b6; }
+.tag-orange { background: #e67e2222; color: #e67e22; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: #1e1e1e; }
+
+/* QUIZ */
+.quiz-setup { background: #1e1e1e; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.quiz-setup h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #c0392b; }
+.quiz-option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.quiz-opt { background: #2a2a2a; border: 1px solid #444; border-radius: 7px; padding: 10px 12px; cursor: pointer; font-size: 12px; color: #bbb; transition: all 0.2s; text-align: center; }
+.quiz-opt.selected { background: #c0392b22; border-color: #c0392b; color: #fff; }
+.quiz-opt:hover { border-color: #c0392b; }
+.quiz-start-btn { background: #c0392b; color: white; border: none; padding: 10px 24px; border-radius: 7px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+.quiz-start-btn:hover { background: #e74c3c; }
+.q-card { background: #1e1e1e; border-radius: 10px; padding: 18px; margin-bottom: 12px; }
+.q-num { font-size: 11px; color: #666; margin-bottom: 8px; }
+.q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
+.q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-opt { background: #2a2a2a; border: 1px solid #333; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-size: 13px; color: #ccc; transition: all 0.2s; text-align: left; }
+.q-opt:hover { border-color: #555; background: #333; }
+.q-opt.selected { border-color: #f39c12; background: #f39c1211; color: #fff; }
+.q-opt.correct { border-color: #27ae60; background: #27ae6022; color: #2ecc71; }
+.q-opt.wrong { border-color: #c0392b; background: #c0392b22; color: #e74c3c; }
+.q-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; }
+.q-feedback.correct { background: #27ae6022; color: #2ecc71; border: 1px solid #27ae6044; }
+.q-feedback.wrong { background: #c0392b22; color: #e74c3c; border: 1px solid #c0392b44; }
+.quiz-nav { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.quiz-score { text-align: center; background: #1e1e1e; border-radius: 10px; padding: 32px 20px; }
+.quiz-score h2 { font-size: 24px; margin-bottom: 8px; }
+.quiz-score .score-num { font-size: 48px; font-weight: 700; margin: 10px 0; }
+.score-pass { color: #27ae60; }
+.score-fail { color: #c0392b; }
+.q-progress { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 12px; }
+.q-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
+.q-dot.answered { background: #f39c12; }
+.q-dot.correct { background: #27ae60; }
+.q-dot.wrong { background: #c0392b; }
+
+.placard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.placard-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.placard-img { width: 80px; height: 80px; margin-bottom: 8px; image-rendering: crisp-edges; }
+.placard-class { font-size: 11px; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.placard-name { font-size: 13px; font-weight: 600; margin: 2px 0; }
+.placard-desc { font-size: 11px; color: #888; line-height: 1.4; }
+
+.hclass-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.hclass-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.hclass-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.hclass-diamond { width: 64px; height: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(45deg); border-radius: 4px; border: 2px solid rgba(0,0,0,0.3); }
+.hclass-num { transform: rotate(-45deg); font-size: 18px; font-weight: 900; line-height: 1; }
+.hclass-dname { transform: rotate(-45deg); font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.hclass-info { flex: 1; }
+.hclass-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.hclass-examples { font-size: 11px; color: #888; margin-bottom: 3px; }
+.hclass-guide { font-size: 11px; color: #c0392b; font-weight: 600; }
+.hclass-tap { font-size: 10px; color: #555; margin-top: 4px; }
+.class-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 10px; }
+.class-modal.open { display: flex; }
+.modal-inner { background: #111; border-radius: 10px; max-width: 98vw; max-height: 95vh; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #333; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #1a1a1a; border-bottom: 1px solid #333; font-size: 13px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 1px; }
+.modal-close { background: #c0392b; border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.modal-body { overflow: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
+.modal-img { width: 100%; max-width: 1200px; display: block; border-radius: 6px; }
+
+.nfpa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.nfpa-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.nfpa-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.nfpa-swatch { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.2); }
+.nfpa-label { font-size: 12px; font-weight: 900; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+.nfpa-info { flex: 1; }
+.nfpa-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.nfpa-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.ppe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.ppe-card { background: #1e1e1e; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.ppe-card:hover { background: #252525; transform: translateY(-1px); }
+.ppe-badge { min-width: 80px; padding: 8px 6px; border-radius: 7px; text-align: center; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3; flex-shrink: 0; }
+.ppe-info { flex: 1; }
+.ppe-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.ppe-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.review-card { background: #1e1e1e; border: 1px solid #c0392b; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.review-card-ch { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.review-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.review-card-a { font-size: 13px; color: #27ae60; line-height: 1.5; }
+.missed-card { background: #1e1e1e; border: 1px solid #e74c3c; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.missed-card-topic { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.missed-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.missed-card-wrong { font-size: 12px; color: #e74c3c; margin-bottom: 4px; }
+.missed-card-correct { font-size: 12px; color: #27ae60; }
+.empty-state { text-align: center; padding: 32px; color: #555; font-size: 14px; }
+
+
+.nav a.nav-btn { text-decoration: none; display: inline-block; }
+.nav a.nav-btn:visited { color: #aaa; }
+.nav a.nav-btn.active { color: white; }
+
+</style>
+<style>
+  :root { color-scheme: dark !important; }
+  html, body { background-color: #111111 !important; color: #f0f0f0 !important; }
+  .ref-table td, .ref-table th { color: inherit; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <span class="nav-title">HAZMAT</span>
+  <a href="hazmat.html" class="nav-btn">Flashcards / Quiz</a>
+  <a href="hazmat_classes.html" class="nav-btn">Hazard Classes</a>
+  <a href="hazmat_containers.html" class="nav-btn">Containers</a>
+  <a href="hazmat_erg.html" class="nav-btn active">ERG Pages</a>
+  <a href="hazmat_ppe.html" class="nav-btn">PPE Classes</a>
+</div>
+<div style="max-width:720px;margin:0 auto;padding:16px;">
+<!-- ERG PAGES -->
+<div id="page-erg" class="page">
+
+  <div class="ref-section">
+    <div class="ref-title">ERG Reference Charts — Tap for Full Chart</div>
+    <div class="ppe-grid">
+
+      <div class="ppe-card" onclick="openClassModal('erg_overview')" style="border-left: 4px solid #c0392b">
+        <div class="ppe-badge" style="background:#c0392b;color:#fff;font-size:10px;">ERG OVERVIEW</div>
+        <div class="ppe-info">
+          <div class="ppe-name">Color Coded Pages + Key Facts</div>
+          <div class="ppe-desc">Yellow=Number, Blue=Name, Orange=Action, Green=Distance, White=Reference — CHEMTREC 1-800-424-9300</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+      <div class="ppe-card" onclick="openClassModal('erg_flowchart')" style="border-left: 4px solid #e67e22">
+        <div class="ppe-badge" style="background:#e67e22;color:#fff;font-size:10px;">ERG FLOWCHART</div>
+        <div class="ppe-info">
+          <div class="ppe-name">4-Step Process</div>
+          <div class="ppe-desc">Step 1 Identify → Step 2 Look Up → Step 3 Check Green Pages → Step 4 Orange Guide</div>
+          <div class="hclass-tap">Tap for full reference chart →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="modal-erg_overview" class="class-modal" onclick="closeModal(event, 'erg_overview')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>ERG OVERVIEW — Color Coded Pages + Key Facts</span>
+          <button class="modal-close" onclick="closeClassModal('erg_overview')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/ppe_selection.png" alt="Color Coded Pages + Key Facts" class="modal-img">
+        </div>
+      </div>
+    </div>
+    <div id="modal-erg_flowchart" class="class-modal" onclick="closeModal(event, 'erg_flowchart')">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <span>ERG FLOWCHART — 4-Step Process</span>
+          <button class="modal-close" onclick="closeClassModal('erg_flowchart')">✕</button>
+        </div>
+        <div class="modal-body">
+          <img src="https://drone-build-hub.replit.app/api/images/container_shapes.png" alt="4-Step Process" class="modal-img">
+        </div>
+      </div>
+    </div>
+  <div class="ref-section">
+    <div class="ref-title">ERG Color-Coded Sections</div>
+    <div class="ref-grid">
+      <div class="ref-card" style="border-left:3px solid #f5f500; background:#1e1e1e">
+        <span class="tag tag-yellow">YELLOW PAGES</span>
+        <h3>Index by ID Number</h3>
+        <p>Look up materials by 4-digit UN/NA identification number in numerical order. Points you to the correct guide number.</p>
+      </div>
+      <div class="ref-card blue">
+        <span class="tag tag-blue">BLUE PAGES</span>
+        <h3>Index by Name</h3>
+        <p>Look up materials alphabetically by proper shipping name. Points you to the correct guide number.</p>
+      </div>
+      <div class="ref-card orange">
+        <span class="tag tag-orange">ORANGE PAGES</span>
+        <h3>Action Guides</h3>
+        <p>The actual response guides. Contains: Potential Hazards, Public Safety, Emergency Response. Most useful section.</p>
+      </div>
+      <div class="ref-card green">
+        <span class="tag tag-green">GREEN PAGES</span>
+        <h3>Isolation Distances</h3>
+        <p>Table of Initial Isolation and Protective Action Distances for TIH materials and water-reactive materials. Use for green-highlighted materials.</p>
+      </div>
+      <div class="ref-card" style="border-left:3px solid #fff">
+        <span class="tag" style="background:#ffffff22;color:#fff">WHITE PAGES (FRONT)</span>
+        <h3>User Guide & Reference</h3>
+        <p>ERG User's Guide flowchart, how to use the ERG, placard/label reference tables, container profiles, pipeline markers.</p>
+      </div>
+      <div class="ref-card" style="border-left:3px solid #ccc">
+        <span class="tag" style="background:#cccccc22;color:#ccc">WHITE PAGES (BACK)</span>
+        <h3>WMD & Emergency Contacts</h3>
+        <p>WMD indicators, IED information, emergency response center contact numbers (CHEMTREC, CANUTEC, SETIQ).</p>
+      </div>
+    </div>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">ERG Key Facts</div>
+    <table class="ref-table">
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td>Inside cover</td><td>Key to reading and understanding shipping papers/documents</td></tr>
+      <tr><td>First page</td><td>ERG User's Guide decision-making flowchart</td></tr>
+      <tr><td>Green highlighted materials</td><td>TIH or water-reactive — refer to green pages for distances</td></tr>
+      <tr><td>P after guide number</td><td>Material polymerizes</td></tr>
+      <tr><td>Guide number + P</td><td>Example: 131P — polymerizable material</td></tr>
+      <tr><td>Small spill vs large spill</td><td>Large spill = more than 55 gallons (208 L)</td></tr>
+      <tr><td>Day vs Night distances</td><td>Both small and large spills divided into day/night protective distances</td></tr>
+      <tr><td>Initial isolation zone</td><td>Circle around spill — evacuate all persons</td></tr>
+      <tr><td>Protective action distance</td><td>Downwind distance — people may become incapacitated</td></tr>
+      <tr><td>Developed by</td><td>DOT (US), TC (Canada), SCT (Mexico)</td></tr>
+      <tr><td>Designed for use at</td><td>Transportation incidents — highways, railroads, pipelines</td></tr>
+      <tr><td>Most useful section</td><td>Orange-bordered pages (action guides)</td></tr>
+    </table>
+  </div>
+  <div class="ref-section">
+    <div class="ref-title">How to Use the ERG — Step by Step</div>
+    <div class="ref-grid">
+      <div class="ref-card red"><h3>Step 1</h3><p>Identify the material — use placard, label, shipping papers, or orange panel UN number</p></div>
+      <div class="ref-card orange"><h3>Step 2</h3><p>Look up UN number in YELLOW pages or material name in BLUE pages to find guide number</p></div>
+      <div class="ref-card yellow"><h3>Step 3</h3><p>If material is highlighted GREEN, also check GREEN pages for isolation distances</p></div>
+      <div class="ref-card green"><h3>Step 4</h3><p>Turn to ORANGE pages — find the guide number. Read Potential Hazards, Public Safety, Emergency Response</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PPE CLASSES PAGE -->
+
+</div>
+<script>
+
+function openClassModal(key) {
+  document.getElementById('modal-' + key).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeClassModal(key) {
+  document.getElementById('modal-' + key).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModal(event, key) {
+  if (event.target === document.getElementById('modal-' + key)) {
+    closeClassModal(key);
+  }
+}
+
+</script>
+</body>
+</html>
