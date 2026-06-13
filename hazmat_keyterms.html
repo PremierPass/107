@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hazmat — Key Terms</title>
+<style>
+  :root { color-scheme: dark !important; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { background-color:#111111 !important; color:#f0f0f0 !important; margin:0; padding:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+
+  /* Nav */
+  .nav { display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:10px 12px;
+    background:#1a1a1a; border-bottom:1px solid #2a2a2a; position:sticky; top:0; z-index:10; }
+  .nav-title { font-weight:800; letter-spacing:2px; color:#c0392b; margin-right:6px; font-size:15px; }
+  .nav a.nav-btn { text-decoration:none; display:inline-block; font-size:12px; color:#aaa;
+    padding:5px 9px; border-radius:7px; background:#222; }
+  .nav a.nav-btn.active { color:#fff; background:#c0392b; }
+
+  .wrap { max-width:720px; margin:0 auto; padding:16px; }
+  h1 { font-size:20px; margin:6px 0 2px; }
+  .sub { color:#888; font-size:13px; margin-bottom:14px; }
+
+  /* Chapter filter */
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .chip { font-size:12px; padding:6px 10px; border-radius:20px; background:#222; color:#bbb;
+    border:1px solid #2e2e2e; cursor:pointer; }
+  .chip.active { background:#ff5252; color:#fff; border-color:#c0392b; }
+
+  /* Controls */
+  .bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; }
+  .count { font-size:13px; color:#999; }
+  .btn { font-size:13px; padding:7px 12px; border-radius:8px; background:#262626; color:#eee;
+    border:1px solid #333; cursor:pointer; }
+  .btn:active { background:#333; }
+
+  /* Card */
+  .card { perspective:1200px; height:340px; margin-bottom:14px; }
+  .inner { position:relative; width:100%; height:100%; transition:transform .45s;
+    transform-style:preserve-3d; cursor:pointer; }
+  .inner.flipped { transform:rotateY(180deg); }
+  .face { position:absolute; inset:0; backface-visibility:hidden; border-radius:16px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; padding:26px;
+    text-align:center; border:1px solid #2e2e2e; }
+  .front { background:#1c1c1c; }
+  .back { background:#15201c; transform:rotateY(180deg); border-color:#1f3a2e; }
+  .tag { position:absolute; top:14px; left:16px; font-size:11px; font-weight:700; letter-spacing:1px;
+    color:#c0392b; }
+  .hint { position:absolute; bottom:14px; font-size:11px; color:#666; }
+  .term { font-size:23px; font-weight:700; line-height:1.25; }
+  .def { font-size:17px; line-height:1.5; color:#dfe; }
+
+  .move { display:flex; gap:10px; }
+  .move .btn { flex:1; }
+  .empty { text-align:center; color:#777; padding:40px 0; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <span class="nav-title">HAZMAT</span>
+  <a href="hazmat.html" class="nav-btn">Flashcards / Quiz</a>
+  <a href="hazmat_definitions.html" class="nav-btn">Definitions</a>
+  <a href="hazmat_classes.html" class="nav-btn">Hazard Classes</a>
+  <a href="hazmat_containers.html" class="nav-btn">Containers</a>
+  <a href="hazmat_erg.html" class="nav-btn">ERG Pages</a>
+  <a href="hazmat_ppe.html" class="nav-btn">PPE Classes</a>
+  <a href="hazmat_keyterms.html" class="nav-btn active">Key Terms</a>
+</div>
+
+<div class="wrap">
+  <h1>Key Terms</h1>
+  <div class="sub">Tap a card to flip. Filter by chapter, shuffle, swipe through.</div>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="bar">
+    <span class="count" id="count"></span>
+    <button class="btn" id="shuffle">🔀 Shuffle</button>
+  </div>
+
+  <div id="cardArea">
+    <div class="card">
+      <div class="inner" id="inner">
+        <div class="face front">
+          <span class="tag" id="tag"></span>
+          <div class="def" id="front"></div>
+          <span class="hint">tap to reveal term</span>
+        </div>
+        <div class="face back">
+          <span class="tag" id="tagB"></span>
+          <div class="term" id="back"></div>
+          <span class="hint">tap to flip back</span>
+        </div>
+      </div>
+    </div>
+    <div class="move">
+      <button class="btn" id="prev">← Prev</button>
+      <button class="btn" id="next">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CARDS = [
+// Ch1
+{ch:"Ch1",q:"Acute",a:"Sudden and short-term, usually from a single exposure."},
+{ch:"Ch1",q:"Acute Health Effects",a:"Health effects that appear quickly after a short exposure."},
+{ch:"Ch1",q:"Awareness Level Personnel",a:"Responders who may witness or discover a release and start the response — recognize, isolate, notify. No active control."},
+{ch:"Ch1",q:"Carcinogen",a:"Cancer-causing substance."},
+{ch:"Ch1",q:"CBRNE",a:"Chemical, Biological, Radiological, Nuclear, Explosive."},
+{ch:"Ch1",q:"Chronic",a:"Long-term or recurring."},
+{ch:"Ch1",q:"Chronic Health Effects",a:"Health effects from long-term or repeated exposure."},
+{ch:"Ch1",q:"Code of Federal Regulations (CFR)",a:"Codified U.S. federal rules. Title 49 covers hazmat transport."},
+{ch:"Ch1",q:"Contamination",a:"Presence of a hazardous material where it shouldn't be, especially on people or equipment."},
+{ch:"Ch1",q:"Cross Contamination",a:"Spread of contamination from one person or object to another."},
+{ch:"Ch1",q:"Dangerous Goods",a:"Canadian and international term for hazardous materials."},
+{ch:"Ch1",q:"Exposure",a:"Contact with a hazardous material."},
+{ch:"Ch1",q:"First Responder Operations Level",a:"Responders who act defensively to protect people, property, and environment without trying to stop the release."},
+{ch:"Ch1",q:"Hazard",a:"Condition or substance with the potential to cause harm."},
+{ch:"Ch1",q:"Hazardous Material (Hazmat)",a:"Substance that poses an unreasonable risk to health, safety, property, or environment."},
+{ch:"Ch1",q:"Hazardous Materials Incident",a:"Release or potential release of a hazardous material."},
+{ch:"Ch1",q:"Job Performance Requirement (JPR)",a:"Statement of a task, the tools/equipment, and the expected outcome, used to evaluate competency."},
+{ch:"Ch1",q:"Local Emergency Planning Committee (LEPC)",a:"Local body that develops hazmat emergency response plans for the community."},
+{ch:"Ch1",q:"Operations Mission-Specific Level",a:"Operations responders trained for specific tasks beyond basic defensive actions."},
+{ch:"Ch1",q:"Regulation",a:"Rule issued by a government agency that has the force of law."},
+{ch:"Ch1",q:"Risk-Based Response",a:"Decision-making approach that bases actions on the level of risk present."},
+{ch:"Ch1",q:"Routes of Exposure",a:"Ways a hazmat enters the body — inhalation, absorption, ingestion, injection."},
+{ch:"Ch1",q:"Situational Awareness",a:"Continuous awareness of surroundings to anticipate hazards."},
+{ch:"Ch1",q:"Standard",a:"Consensus document of criteria and best practices. Not law unless adopted."},
+{ch:"Ch1",q:"Standard Operating Procedures (SOPs)",a:"Written organizational rules for performing tasks."},
+{ch:"Ch1",q:"State Emergency Response Commission (SERC)",a:"State body that oversees LEPCs and hazmat planning."},
+{ch:"Ch1",q:"Weapon of Mass Destruction (WMD)",a:"Weapon capable of mass casualties — CBRNE."},
+// Ch2
+{ch:"Ch2",q:"Access Point",a:"Designated entry/exit to a control zone."},
+{ch:"Ch2",q:"Asphyxiant",a:"Gas or vapor that displaces oxygen or interferes with its uptake."},
+{ch:"Ch2",q:"Atmospheric Storage Tank",a:"Fixed tank operating at or near atmospheric pressure (0–0.5 psi)."},
+{ch:"Ch2",q:"Bill of Lading",a:"Shipping paper for road transport listing the contents."},
+{ch:"Ch2",q:"Binary Explosive",a:"Explosive made from two components mixed just before use."},
+{ch:"Ch2",q:"Boiling Liquid Expanding Vapor Explosion (BLEVE)",a:"Violent rupture of a pressure vessel holding a liquid heated above its boiling point."},
+{ch:"Ch2",q:"Bulk Packaging",a:"Large packaging with no intermediate container, above set volume/weight thresholds."},
+{ch:"Ch2",q:"CAS® Numbers",a:"Unique Chemical Abstracts Service number identifying a specific chemical."},
+{ch:"Ch2",q:"Caustic",a:"Strongly alkaline (basic) corrosive substance."},
+{ch:"Ch2",q:"Chemical-Protective Clothing (CPC)",a:"Clothing designed to shield against chemical hazards."},
+{ch:"Ch2",q:"Compatibility Group Letter",a:"Letter on explosives placards showing which explosives can be stored/transported together."},
+{ch:"Ch2",q:"Container",a:"Any vessel or receptacle that holds a material."},
+{ch:"Ch2",q:"Corrosive",a:"Substance that destroys or damages living tissue or materials on contact — an acid or base."},
+{ch:"Ch2",q:"Cryogenic Liquid",a:"Gas liquefied at extremely low temperature, below -150°C."},
+{ch:"Ch2",q:"Cryogenic Liquid Storage Tank",a:"Insulated fixed tank for storing cryogenic liquids."},
+{ch:"Ch2",q:"Cryogenic Liquid Tank Truck",a:"Insulated tank truck (MC-338) for hauling cryogens."},
+{ch:"Ch2",q:"Cryogens",a:"Cryogenic liquids — extremely cold liquefied gases."},
+{ch:"Ch2",q:"Division Number",a:"Subdivision of a UN hazard class showing the specific hazard."},
+{ch:"Ch2",q:"Elevated-Temperature Material",a:"Material transported at high temperature — e.g., liquid at or above 100°C."},
+{ch:"Ch2",q:"Emergency Response Guidebook (ERG)",a:"DOT guidebook for first responders at transportation hazmat incidents."},
+{ch:"Ch2",q:"Energetic",a:"Material capable of rapid energy release, such as explosives."},
+{ch:"Ch2",q:"Explosive",a:"Material that undergoes rapid chemical reaction producing heat, gas, and pressure."},
+{ch:"Ch2",q:"Fentanyl",a:"Powerful synthetic opioid, dangerous in very small amounts."},
+{ch:"Ch2",q:"Flammable",a:"Capable of igniting easily and burning rapidly."},
+{ch:"Ch2",q:"Flammable Liquid",a:"Liquid with a flash point below 100°F (37.8°C)."},
+{ch:"Ch2",q:"Fumigation",a:"Using a gas or vapor pesticide to treat an enclosed space."},
+{ch:"Ch2",q:"Globally Harmonized System (GHS)",a:"International system for classifying and labeling chemicals."},
+{ch:"Ch2",q:"Hazardous Atmosphere",a:"Atmosphere that's toxic, flammable, oxygen-deficient/enriched, or otherwise dangerous."},
+{ch:"Ch2",q:"Hydrocarbon",a:"Compound of hydrogen and carbon, such as fuels."},
+{ch:"Ch2",q:"Immediately Dangerous to Life and Health (IDLH)",a:"Exposure level that poses an immediate threat to life or causes permanent harm."},
+{ch:"Ch2",q:"Inhalation Hazard",a:"Material dangerous when breathed in."},
+{ch:"Ch2",q:"Isotope",a:"Variant of an element with the same protons but a different number of neutrons."},
+{ch:"Ch2",q:"Label",a:"Diamond marking on non-bulk packages showing the hazard class."},
+{ch:"Ch2",q:"Local Emergency Response Plan (LERP)",a:"Community plan for responding to hazmat incidents."},
+{ch:"Ch2",q:"Marking",a:"Required descriptive text, numbers, or symbols on packages and containers."},
+{ch:"Ch2",q:"Maximum Safe Storage Temperature (MSST)",a:"Highest temperature at which a material can be safely stored."},
+{ch:"Ch2",q:"Miosis",a:"Pinpoint pupils — a sign of nerve agent exposure."},
+{ch:"Ch2",q:"Nonbulk Packaging",a:"Smaller packaging below bulk thresholds."},
+{ch:"Ch2",q:"Nonpressure Storage Tank",a:"Atmospheric storage tank operating at low or no pressure."},
+{ch:"Ch2",q:"Occupancy",a:"The use or purpose of a building or area."},
+{ch:"Ch2",q:"Olfactory Fatigue",a:"Loss of the ability to smell an odor after exposure — dangerous because you stop detecting the hazard."},
+{ch:"Ch2",q:"Orange Panel",a:"Orange placard panel displaying the UN ID number (international)."},
+{ch:"Ch2",q:"Organic Peroxide",a:"Oxygen-rich, unstable compound prone to reaction or explosion (Class 5.2)."},
+{ch:"Ch2",q:"Packaging",a:"Container plus components used to hold or transport a material."},
+{ch:"Ch2",q:"Personal Protective Equipment (PPE)",a:"Gear worn to protect against hazards."},
+{ch:"Ch2",q:"Pesticides",a:"Chemicals used to kill pests. Often toxic."},
+{ch:"Ch2",q:"Placard",a:"Diamond sign at least 10.8 in per side on vehicles/containers showing hazard class."},
+{ch:"Ch2",q:"Poison",a:"Substance that causes injury or death by chemical action."},
+{ch:"Ch2",q:"Preincident Survey",a:"Pre-planning visit to gather info on a facility before an emergency."},
+{ch:"Ch2",q:"Pressure Vessel",a:"Container designed to hold contents at high pressure."},
+{ch:"Ch2",q:"Pressurized Container",a:"Container holding a material under pressure."},
+{ch:"Ch2",q:"Reporting Marks",a:"Letters/numbers on rail cars used to ID contents. Same as railcar initials and numbers."},
+{ch:"Ch2",q:"Safety Data Sheet (SDS)",a:"Document with detailed hazard, handling, and emergency info on a chemical."},
+{ch:"Ch2",q:"Self-Accelerating Decomposition Temperature (SADT)",a:"Lowest temperature at which a material self-decomposes, accelerating on its own."},
+{ch:"Ch2",q:"Signal Word",a:"GHS word — 'Danger' or 'Warning' — indicating hazard severity."},
+{ch:"Ch2",q:"Structural Fire Fighting Protective Clothing",a:"Standard bunker gear. Limited hazmat protection."},
+{ch:"Ch2",q:"Thermal Runaway",a:"Self-accelerating reaction where rising heat speeds the reaction, producing more heat — can lead to explosion."},
+{ch:"Ch2",q:"Toxic",a:"Capable of causing injury or death through chemical action."},
+{ch:"Ch2",q:"Transportation Mode",a:"Method of transport — highway, rail, air, water, or pipeline."},
+{ch:"Ch2",q:"UN/NA Identification Number",a:"4-digit number identifying a hazardous material in transport."},
+{ch:"Ch2",q:"Vapor Explosion",a:"Explosion of an ignited vapor cloud."},
+{ch:"Ch2",q:"Waybill",a:"Shipping paper used in rail transport."},
+{ch:"Ch2",q:"Wireless Information System for Emergency Responders (WISER)",a:"Software tool providing hazmat info to responders."},
+// Ch3
+{ch:"Ch3",q:"Decontamination",a:"Removing or neutralizing contaminants from people, equipment, and environment."},
+{ch:"Ch3",q:"Defending in Place",a:"Protecting occupants by keeping them in a safe part of a structure rather than evacuating."},
+{ch:"Ch3",q:"Emergency Response Plan",a:"Plan outlining how an organization responds to emergencies."},
+{ch:"Ch3",q:"Evacuation",a:"Moving people out of a threatened area to safety."},
+{ch:"Ch3",q:"Incidental Release",a:"Small release that can be safely handled by employees in the area. Doesn't require emergency response."},
+{ch:"Ch3",q:"Inhibitor",a:"Substance added to prevent or slow an unwanted reaction like polymerization."},
+{ch:"Ch3",q:"Initial Isolation Distance",a:"Radius around a release, in all directions, where everyone is kept out."},
+{ch:"Ch3",q:"Initial Isolation Zone",a:"Circular area around a release where people are evacuated or kept out."},
+{ch:"Ch3",q:"Isolation Perimeter",a:"Outer boundary controlling access to the incident."},
+{ch:"Ch3",q:"Monomer",a:"Small molecule that can bond with others to form a polymer."},
+{ch:"Ch3",q:"Polymerization",a:"Reaction where monomers link into a polymer. Can release dangerous heat and pressure."},
+{ch:"Ch3",q:"Protective Action Distance",a:"Downwind area where people may be harmed and protective action is needed."},
+{ch:"Ch3",q:"Self-Contained Breathing Apparatus (SCBA)",a:"Respirator with a personal air supply carried by the user."},
+{ch:"Ch3",q:"Sheltering in Place",a:"Directing people to stay indoors and seal the space until the hazard passes."},
+{ch:"Ch3",q:"Stabilizer",a:"Substance added to keep a material from reacting or decomposing."},
+{ch:"Ch3",q:"Street Clothes",a:"Everyday clothing. No protection."},
+{ch:"Ch3",q:"Toxic Inhalation Hazard (TIH)",a:"Material poisonous when inhaled. Requires large protective distances."},
+// Ch4
+{ch:"Ch4",q:"Acid",a:"Substance with pH below 7. Donates hydrogen ions."},
+{ch:"Ch4",q:"Activation Energy",a:"Minimum energy needed to start a chemical reaction."},
+{ch:"Ch4",q:"Acute Exposure",a:"Short, single exposure to a hazard."},
+{ch:"Ch4",q:"Aerosol",a:"Fine solid or liquid particles suspended in gas."},
+{ch:"Ch4",q:"Allergen",a:"Substance that triggers an allergic reaction."},
+{ch:"Ch4",q:"Alpha Radiation",a:"Heavy, low-penetrating radiation. Stopped by paper or skin but dangerous if internal."},
+{ch:"Ch4",q:"Asphyxiant",a:"Gas that displaces oxygen or blocks its use."},
+{ch:"Ch4",q:"Autoignition Temperature",a:"Lowest temperature at which a material ignites without an external spark or flame."},
+{ch:"Ch4",q:"Bacteria",a:"Single-celled microorganisms. Some cause disease."},
+{ch:"Ch4",q:"Base",a:"Substance with pH above 7. Accepts hydrogen ions. Aka alkali."},
+{ch:"Ch4",q:"Basic Solution",a:"Solution with pH above 7."},
+{ch:"Ch4",q:"Beta Radiation",a:"Light, moderately penetrating radiation. Stopped by thin metal or plastic."},
+{ch:"Ch4",q:"Biological Agent",a:"Living organism or toxin used to cause disease or death."},
+{ch:"Ch4",q:"Biological Hazards",a:"Hazards from living organisms or their products."},
+{ch:"Ch4",q:"Biological Toxins",a:"Poisonous substances produced by living organisms."},
+{ch:"Ch4",q:"Boiling Point",a:"Temperature at which a liquid turns to vapor."},
+{ch:"Ch4",q:"Breach",a:"Failure or opening in a container that lets contents escape."},
+{ch:"Ch4",q:"Carbon Dioxide (CO2)",a:"Colorless, odorless gas. Simple asphyxiant."},
+{ch:"Ch4",q:"Carbon Monoxide (CO)",a:"Colorless, odorless toxic gas. Chemical asphyxiant."},
+{ch:"Ch4",q:"Chemical Properties",a:"How a material reacts or changes chemically."},
+{ch:"Ch4",q:"Combustible Liquid",a:"Liquid with a flash point at or above 100°F (37.8°C)."},
+{ch:"Ch4",q:"Compressed Gas",a:"Gas stored under pressure in a container."},
+{ch:"Ch4",q:"Concentration",a:"Amount of a substance in a given volume."},
+{ch:"Ch4",q:"Condensation",a:"Gas or vapor changing to liquid."},
+{ch:"Ch4",q:"Contagious",a:"Capable of spreading from person to person."},
+{ch:"Ch4",q:"Contaminant",a:"Substance present where it doesn't belong."},
+{ch:"Ch4",q:"Convulsant",a:"Substance that causes convulsions or seizures."},
+{ch:"Ch4",q:"Degradation",a:"Breakdown of a material's properties."},
+{ch:"Ch4",q:"Deposition",a:"Gas changing directly to a solid."},
+{ch:"Ch4",q:"Dispersion",a:"How a hazmat spreads through the environment."},
+{ch:"Ch4",q:"Dose",a:"Amount of a substance a person is exposed to."},
+{ch:"Ch4",q:"Electron",a:"Negatively charged subatomic particle."},
+{ch:"Ch4",q:"Engulfment",a:"Being surrounded or buried by a material."},
+{ch:"Ch4",q:"Etiological Hazards",a:"Hazards from disease-causing microorganisms."},
+{ch:"Ch4",q:"Fire Point",a:"Temperature at which a liquid produces enough vapor to sustain burning. Slightly above flash point."},
+{ch:"Ch4",q:"Flammable Liquid",a:"Liquid with a flash point below 100°F."},
+{ch:"Ch4",q:"Flash Point",a:"Lowest temperature at which a liquid gives off enough vapor to flash ignite — not sustained burning."},
+{ch:"Ch4",q:"Freezing",a:"Liquid changing to solid."},
+{ch:"Ch4",q:"Gamma Radiation",a:"High-energy, highly penetrating radiation. Needs lead or concrete to stop."},
+{ch:"Ch4",q:"Gas",a:"State of matter with no fixed shape or volume."},
+{ch:"Ch4",q:"General Emergency Behavior Model (GEBMO)",a:"Model describing how hazmat behaves once released."},
+{ch:"Ch4",q:"Hazard and Risk Assessment",a:"Evaluating hazards and the risk they pose to guide action."},
+{ch:"Ch4",q:"Hemispheric Release",a:"Release that spreads as a dome or half-sphere from the source."},
+{ch:"Ch4",q:"Ignition Temperature",a:"Minimum temperature for a material to ignite and sustain combustion."},
+{ch:"Ch4",q:"Immiscible",a:"Doesn't mix with water."},
+{ch:"Ch4",q:"Infectious",a:"Capable of causing infection."},
+{ch:"Ch4",q:"Inhibitor",a:"Substance that slows or prevents a reaction."},
+{ch:"Ch4",q:"Inverse Square Law",a:"Radiation intensity decreases with the square of the distance from the source."},
+{ch:"Ch4",q:"Ionizing Radiation",a:"Radiation energetic enough to strip electrons from atoms — alpha, beta, gamma, neutron, x-ray."},
+{ch:"Ch4",q:"Irritant",a:"Substance causing temporary inflammation of skin, eyes, or airways."},
+{ch:"Ch4",q:"Limits of Recovery",a:"Boundaries beyond which a release can no longer be controlled or recovered."},
+{ch:"Ch4",q:"Liquefied Gas",a:"Gas stored as a liquid under pressure or cold."},
+{ch:"Ch4",q:"Liquid",a:"State of matter with fixed volume but no fixed shape."},
+{ch:"Ch4",q:"Lower Explosive Limit (LEL)",a:"Lowest gas/vapor concentration in air that will ignite."},
+{ch:"Ch4",q:"Lower Flammable Limit (LFL)",a:"Same as LEL — minimum concentration for ignition."},
+{ch:"Ch4",q:"Melting",a:"Solid changing to liquid."},
+{ch:"Ch4",q:"Mercaptan",a:"Sulfur compound added to odorless gases to give a detectable smell."},
+{ch:"Ch4",q:"Micrometer",a:"One-millionth of a meter. Used to measure particle size."},
+{ch:"Ch4",q:"Miscibility",a:"Ability of liquids to mix."},
+{ch:"Ch4",q:"Molecular Weight (MW)",a:"Mass of a molecule."},
+{ch:"Ch4",q:"Multigas Detector",a:"Instrument that measures several gases at once — O2, LEL, CO, H2S."},
+{ch:"Ch4",q:"Neutron Radiation",a:"Highly penetrating radiation made of neutrons. Needs hydrogen-rich shielding."},
+{ch:"Ch4",q:"Nonflammable",a:"Will not burn easily."},
+{ch:"Ch4",q:"Nonionizing Radiation",a:"Lower-energy radiation that doesn't ionize atoms — radio, microwave, etc."},
+{ch:"Ch4",q:"Odorized",a:"A normally odorless gas given an added smell for detection."},
+{ch:"Ch4",q:"Pathogen",a:"Disease-causing microorganism."},
+{ch:"Ch4",q:"Persistence",a:"How long a substance stays in the environment before breaking down or dissipating."},
+{ch:"Ch4",q:"pH",a:"Scale (0–14) measuring acidity/alkalinity. 7 is neutral."},
+{ch:"Ch4",q:"Photon",a:"Particle of electromagnetic energy or light."},
+{ch:"Ch4",q:"Physical Properties",a:"Characteristics observed without changing the material chemically — boiling point, density, etc."},
+{ch:"Ch4",q:"Plume",a:"Airborne cloud of released gas/vapor moving downwind."},
+{ch:"Ch4",q:"Polar Solvent",a:"Water-soluble flammable liquid (alcohols, ketones). Needs alcohol-resistant foam."},
+{ch:"Ch4",q:"Pressure",a:"Force per unit area."},
+{ch:"Ch4",q:"Radioactive Material (RAM)",a:"Material that emits ionizing radiation."},
+{ch:"Ch4",q:"Reactive Material",a:"Material that readily undergoes chemical reaction."},
+{ch:"Ch4",q:"Reactivity",a:"Tendency of a material to undergo chemical reaction."},
+{ch:"Ch4",q:"Reducing Agent",a:"Substance that donates electrons in a reaction — gets oxidized."},
+{ch:"Ch4",q:"Saponification",a:"Reaction of a fat with a base to form soap."},
+{ch:"Ch4",q:"Situational Awareness",a:"Continuous awareness of conditions to anticipate hazards."},
+{ch:"Ch4",q:"Size-up",a:"Ongoing evaluation of incident conditions to guide decisions."},
+{ch:"Ch4",q:"Solid",a:"State of matter with fixed shape and volume."},
+{ch:"Ch4",q:"Solubility",a:"How much of a substance dissolves in a solvent."},
+{ch:"Ch4",q:"Specific Gravity",a:"Weight of a liquid compared to water. Below 1 floats, above 1 sinks."},
+{ch:"Ch4",q:"Strong Oxidizer",a:"Substance that readily gives up oxygen, intensifying fire."},
+{ch:"Ch4",q:"Sublimate",a:"Solid changing directly to gas without becoming liquid."},
+{ch:"Ch4",q:"Systemic Effect",a:"Effect on the whole body or an organ system, away from the point of contact."},
+{ch:"Ch4",q:"Toxicity",a:"Degree to which a substance can harm the body."},
+{ch:"Ch4",q:"Upper Explosive Limit (UEL)",a:"Highest gas/vapor concentration in air that will still ignite. Above it, too rich to burn."},
+{ch:"Ch4",q:"Upper Flammable Limit (UFL)",a:"Same as UEL."},
+{ch:"Ch4",q:"Vapor Density",a:"Weight of a vapor compared to air. Below 1 rises, above 1 sinks."},
+{ch:"Ch4",q:"Vapor Expansion Ratio",a:"Volume increase when a liquefied gas turns to vapor."},
+{ch:"Ch4",q:"Vaporization",a:"Liquid changing to vapor or gas."},
+{ch:"Ch4",q:"Vapor Pressure",a:"Pressure exerted by a vapor above its liquid. Higher means more volatile."},
+{ch:"Ch4",q:"Vector",a:"Living carrier (insect or animal) that transmits disease."},
+{ch:"Ch4",q:"Virus",a:"Microscopic infectious agent that replicates inside host cells."},
+{ch:"Ch4",q:"Viscosity",a:"A liquid's resistance to flow."},
+{ch:"Ch4",q:"X-Rays",a:"High-energy ionizing electromagnetic radiation."},
+// Ch5
+{ch:"Ch5",q:"Atmospheric Pressure",a:"Pressure exerted by the weight of the atmosphere — about 14.7 psi at sea level."},
+{ch:"Ch5",q:"Boilover",a:"Burning oil in a tank violently ejected when water at the bottom boils to steam and rapidly expands."},
+{ch:"Ch5",q:"Capacity Stencil",a:"Stencil on a tank car showing its volume capacity."},
+{ch:"Ch5",q:"Carboy",a:"Glass, plastic, or metal container, often in a protective box, for corrosives and other liquids — usually 5–15 gallons."},
+{ch:"Ch5",q:"Confined Space",a:"Space large enough to enter but with limited entry/exit and not designed for continuous occupancy."},
+{ch:"Ch5",q:"Cylinder",a:"Portable pressure vessel for compressed gases."},
+{ch:"Ch5",q:"Dedicated Tank Cars",a:"Rail tank cars marked and used to carry one specific product."},
+{ch:"Ch5",q:"Dewar",a:"Insulated container for holding cryogenic liquids."},
+{ch:"Ch5",q:"Excepted Packaging",a:"Packaging for very low-activity radioactive materials. Minimal regulatory requirements."},
+{ch:"Ch5",q:"Froth-Overs",a:"Frothing overflow when water mixes with hot viscous oil and flashes to steam. Less violent than a boilover."},
+{ch:"Ch5",q:"Gauge Pressure",a:"Pressure relative to atmospheric. Negative gauge pressure means vacuum."},
+{ch:"Ch5",q:"High-Hazard Flammable Trains (HHFT)",a:"20+ continuous tank cars of flammable liquid, or 35+ dispersed through the train."},
+{ch:"Ch5",q:"Intermediate Bulk Container (IBC)",a:"Rigid or flexible portable container, max 3,000 L / 793 gal / 106 ft³."},
+{ch:"Ch5",q:"Intermodal Container",a:"Freight container built to move between two or more transport modes."},
+{ch:"Ch5",q:"Maximum Allowable Working Pressure (MAWP)",a:"A percentage of test pressure — the max the weakest component can safely hold."},
+{ch:"Ch5",q:"Pressure",a:"Force per unit area, measured in psi or kPa."},
+{ch:"Ch5",q:"Pressure Relief Device",a:"Valve or device that limits or vents pressure in a vessel."},
+{ch:"Ch5",q:"Pressure Tanks",a:"Fixed storage tanks — low-pressure storage tanks and pressure vessels."},
+{ch:"Ch5",q:"Railcar Initials and Numbers",a:"Stenciled letters/numbers used to ID a tank car's contents via the railroad or shipper. Aka Reporting Marks."},
+{ch:"Ch5",q:"Refrigerated Intermodal Container",a:"Intermodal container with its own refrigeration unit. Aka Reefer."},
+{ch:"Ch5",q:"Slop-Overs",a:"Burning oil forced over a tank's edge by water heated to boiling beneath the oil surface."},
+{ch:"Ch5",q:"Specification Marking",a:"Stencil showing the standard a tank car or container was built to."},
+{ch:"Ch5",q:"T-code",a:"Portable tank instruction code for intermodal hazmat containers. Replaced the IMO type listings."},
+// Ch6
+{ch:"Ch6",q:"Biological Agent",a:"Living organism or toxin used to cause disease or death — bacteria, virus, or toxin."},
+{ch:"Ch6",q:"Blister Agent",a:"Chemical warfare agent that burns and blisters skin and tissue (e.g., mustard). Aka vesicant."},
+{ch:"Ch6",q:"Blood Agent",a:"Chemical agent that disrupts the blood's use of oxygen (e.g., cyanide, hydrogen cyanide)."},
+{ch:"Ch6",q:"Booby Trap",a:"Concealed device designed to harm responders when triggered."},
+{ch:"Ch6",q:"Chemical Agent",a:"Toxic chemical used to kill, injure, or incapacitate."},
+{ch:"Ch6",q:"Chemical Asphyxiant",a:"Substance that interferes with the body's ability to use oxygen (e.g., CO, cyanide)."},
+{ch:"Ch6",q:"Chemical Attack",a:"Deliberate release of a chemical agent to cause harm."},
+{ch:"Ch6",q:"Choking Agent",a:"Agent that damages the respiratory tract and floods the lungs (e.g., chlorine, phosgene)."},
+{ch:"Ch6",q:"Evidence",a:"Material or info used to prove facts in an investigation."},
+{ch:"Ch6",q:"Homemade Explosive (HME)",a:"Explosive made from readily available materials, often in illicit settings."},
+{ch:"Ch6",q:"Improvised Explosive Device (IED)",a:"Homemade bomb built and deployed outside military spec."},
+{ch:"Ch6",q:"Incapacitant",a:"Agent meant to temporarily disable rather than kill."},
+{ch:"Ch6",q:"Incendiary Device",a:"Device designed to start a fire."},
+{ch:"Ch6",q:"Military Explosives",a:"Explosives manufactured to military specifications."},
+{ch:"Ch6",q:"Mobile Data Terminal (MDT)",a:"In-vehicle computer for receiving and sending incident data."},
+{ch:"Ch6",q:"Munitions",a:"Military weapons, ammunition, and equipment."},
+{ch:"Ch6",q:"Nerve Agent",a:"Chemical agent that disrupts the nervous system by blocking acetylcholinesterase (e.g., sarin, VX)."},
+{ch:"Ch6",q:"Pandemic",a:"Disease outbreak spread across a wide area — multiple countries or worldwide."},
+{ch:"Ch6",q:"Person-Borne Improvised Explosive Device (PBIED)",a:"IED carried or worn on a person — a suicide vest."},
+{ch:"Ch6",q:"Public Safety Bomb Technician",a:"Trained, certified responder who handles and renders safe explosive devices."},
+{ch:"Ch6",q:"Radiation-Exposure Device (RED)",a:"Hidden radioactive source meant to expose people to radiation without their knowledge."},
+{ch:"Ch6",q:"Radiological Dispersal Device (RDD)",a:"Device that spreads radioactive material — a 'dirty bomb.'"},
+{ch:"Ch6",q:"Riot Control Agent",a:"Irritant used to disperse crowds (e.g., tear gas, CS, OC)."},
+{ch:"Ch6",q:"Secondary Device",a:"Explosive set to detonate after the first, targeting responders."},
+{ch:"Ch6",q:"Situational Awareness",a:"Continuous awareness of surroundings and conditions to anticipate hazards."},
+{ch:"Ch6",q:"Size-Up",a:"Ongoing evaluation of incident conditions to guide decisions."},
+{ch:"Ch6",q:"Toxic Industrial Materials (TIM)",a:"Industrial chemicals toxic enough to be a hazard or weapon. Aka TICs."},
+{ch:"Ch6",q:"Vehicle-Borne Improvised Explosive Device (VBIED)",a:"IED built into a vehicle — a car bomb."},
+{ch:"Ch6",q:"Vomiting Agent",a:"Agent that causes nausea and vomiting to incapacitate."},
+// Ch7
+{ch:"Ch7",q:"Defensive Mode",a:"Strategy of containing the hazard from a distance without direct contact."},
+{ch:"Ch7",q:"Hazard and Risk Assessment",a:"Evaluating the hazards present and the risk to responders/public to guide action."},
+{ch:"Ch7",q:"Incident Action Plan (IAP)",a:"Documented objectives and strategy for an operational period."},
+{ch:"Ch7",q:"Incident Objectives",a:"Goals to be achieved at the incident, set by command."},
+{ch:"Ch7",q:"Nonintervention Mode",a:"Taking no action other than isolating the area and letting the incident run its course."},
+{ch:"Ch7",q:"Offensive Mode",a:"Aggressive strategy involving direct action to control the hazard."},
+{ch:"Ch7",q:"Operational Period",a:"Set time span for which incident objectives and the IAP apply."},
+{ch:"Ch7",q:"Site Safety Plan (SSP)",a:"Required plan documenting hazards, zones, PPE, and safety procedures for the incident."},
+{ch:"Ch7",q:"Societal Restoration",a:"Returning the community or area to normal after an incident."},
+{ch:"Ch7",q:"Strategy",a:"Overall plan to control the incident."},
+{ch:"Ch7",q:"Tactics",a:"Specific actions and operations used to carry out the strategy."},
+// Ch8
+{ch:"Ch8",q:"Buddy System",a:"Working in pairs so responders can monitor and assist each other."},
+{ch:"Ch8",q:"Chemical-Protective Clothing (CPC)",a:"Clothing designed to shield against chemical hazards."},
+{ch:"Ch8",q:"Cold Zone",a:"Clean support area where command and resources operate. No contamination."},
+{ch:"Ch8",q:"Command Post (CP)",a:"Location where the incident commander manages the incident."},
+{ch:"Ch8",q:"Command Staff",a:"The IC's direct staff — safety officer, liaison officer, and PIO."},
+{ch:"Ch8",q:"Control Zones",a:"Designated hot, warm, and cold zones used to control contamination."},
+{ch:"Ch8",q:"Damming",a:"Building a barrier to stop or redirect liquid flow."},
+{ch:"Ch8",q:"Debriefing",a:"Post-incident meeting to share information and address responder needs."},
+{ch:"Ch8",q:"Decontamination",a:"Removing or neutralizing contaminants from people, equipment, and the environment."},
+{ch:"Ch8",q:"Decontamination Corridor",a:"Controlled path in the warm zone where contaminated personnel are decontaminated."},
+{ch:"Ch8",q:"Diking",a:"Building a raised barrier to hold back or divert a liquid."},
+{ch:"Ch8",q:"Diverting",a:"Redirecting a flowing liquid away from an area."},
+{ch:"Ch8",q:"Emergency Decontamination",a:"Rapid decon to remove the immediate threat, without a formal corridor."},
+{ch:"Ch8",q:"High Temperature-Protective Clothing",a:"Clothing for short exposure to high heat — proximity and entry suits."},
+{ch:"Ch8",q:"Hot Zone",a:"Area of greatest contamination immediately around the release. Aka exclusion zone."},
+{ch:"Ch8",q:"Incident Commander (IC)",a:"Person in overall charge of the incident."},
+{ch:"Ch8",q:"Incident Command System (ICS)",a:"Standardized management structure for emergency response."},
+{ch:"Ch8",q:"Incident Critique",a:"Review of an incident to identify lessons learned."},
+{ch:"Ch8",q:"Initial Isolation Zone",a:"Circular area around a release where everyone is kept out or evacuated."},
+{ch:"Ch8",q:"Intrinsically Safe",a:"Equipment that won't release enough energy to ignite a flammable atmosphere."},
+{ch:"Ch8",q:"Liaison Officer",a:"Command staff member who coordinates with outside agencies."},
+{ch:"Ch8",q:"Liquid Splash-Protective Clothing",a:"Protects against liquid splashes, not vapors."},
+{ch:"Ch8",q:"Mass Decontamination",a:"Rapid decon of large numbers of people, usually with water."},
+{ch:"Ch8",q:"Mayday",a:"Radio signal that a responder is in distress or trapped."},
+{ch:"Ch8",q:"Postincident Analysis (PIA)",a:"Structured review after an incident to evaluate the response."},
+{ch:"Ch8",q:"Preliminary Exposure Reduction",a:"Initial steps to reduce contamination before formal decon."},
+{ch:"Ch8",q:"Protective Action Distance",a:"Downwind distance where people may be harmed and protective action is needed."},
+{ch:"Ch8",q:"Public Information Officer (PIO)",a:"Command staff member who handles media and public information."},
+{ch:"Ch8",q:"Retention",a:"Holding a spilled liquid in place using a constructed barrier or pit."},
+{ch:"Ch8",q:"Safe Refuge",a:"Area in the warm zone where potentially contaminated victims wait for decon or assessment."},
+{ch:"Ch8",q:"Safety Officer",a:"Command staff member responsible for responder safety. Can stop unsafe operations."},
+{ch:"Ch8",q:"Staging Area",a:"Location where resources wait for assignment."},
+{ch:"Ch8",q:"Structural Firefighters' Protective Clothing",a:"Standard bunker gear — limited hazmat protection (Level D)."},
+{ch:"Ch8",q:"Technical Decontamination",a:"Thorough, formal decon process for responders and equipment."},
+{ch:"Ch8",q:"Termination",a:"Formal end of the incident, including demobilization and documentation."},
+{ch:"Ch8",q:"Unified Command",a:"ICS structure where multiple agencies share command."},
+{ch:"Ch8",q:"Vapor-Protective Clothing",a:"Gas-tight suit protecting against vapors and gases (Level A)."},
+{ch:"Ch8",q:"Warm Zone",a:"Transition and decon area between hot and cold zones. Aka contamination reduction zone."},
+// Ch10
+{ch:"Ch10",q:"Air-Purifying Respirators (APRs)",a:"Filter contaminants from ambient air through a cartridge or canister. Need adequate oxygen — won't work in IDLH or oxygen-deficient atmospheres."},
+{ch:"Ch10",q:"Atmosphere-Supplying Respirator",a:"Supplies clean breathing air from a source independent of the surrounding air. Includes SCBA and SAR."},
+{ch:"Ch10",q:"Breakthrough",a:"When a chemical permeates through protective clothing material and reaches the inside."},
+{ch:"Ch10",q:"Chemical Degradation",a:"Loss of a protective material's physical properties from contact with a chemical."},
+{ch:"Ch10",q:"Class 1 Ensemble",a:"Highest level — vapor-tight total encapsulating suit with SCBA. Comparable to EPA Level A."},
+{ch:"Ch10",q:"Class 2 Ensemble",a:"Liquid splash-protective, non-vapor-tight, worn with SCBA. Comparable to Level B."},
+{ch:"Ch10",q:"Class 3 Ensemble",a:"Lower-level liquid splash protection, worn with APR or PAPR. Comparable to Level C."},
+{ch:"Ch10",q:"Class 4 Ensemble",a:"Protection against biological/radiological particulates and limited hazards."},
+{ch:"Ch10",q:"Class 5 Ensemble",a:"Flammable-environment protection based on structural firefighting gear with enhancements. Used when the chemical isn't toxic through skin."},
+{ch:"Ch10",q:"Closed-Circuit SCBA",a:"Recycles exhaled air — scrubs CO2 and adds oxygen. Longer duration (rebreather)."},
+{ch:"Ch10",q:"Emergency Escape Bottle",a:"Small air cylinder giving a few minutes of air to escape a hazardous atmosphere."},
+{ch:"Ch10",q:"Encapsulating",a:"Suit that completely encloses the wearer, including the breathing apparatus."},
+{ch:"Ch10",q:"Exercise-Induced Rhabdomyolysis (EIR)",a:"Muscle breakdown from overexertion that releases harmful proteins into the blood and can damage the kidneys."},
+{ch:"Ch10",q:"Flame-Resistant (FR)",a:"Material that resists ignition and self-extinguishes."},
+{ch:"Ch10",q:"Frostbite",a:"Freezing of skin and tissue from cold exposure."},
+{ch:"Ch10",q:"Heat Exhaustion",a:"Heat illness from water/salt loss — heavy sweating, weakness, nausea. Less severe than heat stroke."},
+{ch:"Ch10",q:"Heat Rash",a:"Skin irritation from prolonged sweating in the heat."},
+{ch:"Ch10",q:"Heat Stroke",a:"Most severe heat illness — body can't regulate temperature. Life-threatening, needs immediate cooling."},
+{ch:"Ch10",q:"Hypothermia",a:"Dangerous drop in core body temperature from cold exposure."},
+{ch:"Ch10",q:"Level A PPE",a:"Highest skin, eye, and respiratory protection. Vapor-tight encapsulating suit plus SCBA."},
+{ch:"Ch10",q:"Level B PPE",a:"Highest respiratory protection (SCBA) with lesser skin/splash protection. Non-encapsulating."},
+{ch:"Ch10",q:"Level C PPE",a:"Splash protection with an air-purifying respirator. Used when the contaminant is known and below IDLH."},
+{ch:"Ch10",q:"Level D PPE",a:"Basic work uniform — no respiratory or significant skin protection. Standard structural gear falls here."},
+{ch:"Ch10",q:"Liquid Splash-Protective Clothing",a:"Protects against liquid chemical splashes but not vapors or gases."},
+{ch:"Ch10",q:"Open-Circuit SCBA",a:"Vents exhaled air to the atmosphere. Most common firefighting SCBA."},
+{ch:"Ch10",q:"Penetration",a:"Movement of a chemical through openings or closures in protective clothing — zippers, seams, etc."},
+{ch:"Ch10",q:"Permeation",a:"A chemical passing through protective material at the molecular level."},
+{ch:"Ch10",q:"Physical Degradation",a:"Loss of protective properties from physical damage — tears, abrasion, punctures."},
+{ch:"Ch10",q:"Positive-Pressure SCBA",a:"Keeps higher pressure inside the facepiece than outside, so any leak pushes out instead of in."},
+{ch:"Ch10",q:"Powered Air-Purifying Respirator (PAPR)",a:"Battery-powered blower that forces filtered air into the facepiece or hood."},
+{ch:"Ch10",q:"Supplied Air Respirator (SAR)",a:"Air supplied through a hose from a remote source. Aka airline respirator."},
+{ch:"Ch10",q:"Tinnitus",a:"Ringing in the ears, often from noise exposure."},
+{ch:"Ch10",q:"Vapor-Protective Clothing",a:"Gas-tight suit protecting against vapors and gases. Required for Level A."},
+// Ch11
+{ch:"Ch11",q:"Absorbent",a:"Material that soaks up and holds a liquid by drawing it in."},
+{ch:"Ch11",q:"Absorption",a:"Soaking up a liquid hazmat with an absorbent material."},
+{ch:"Ch11",q:"Ambulatory",a:"Victims who can walk and follow directions on their own."},
+{ch:"Ch11",q:"Chemical Degradation",a:"Using chemicals to alter or reduce the hazard of a contaminant during decon."},
+{ch:"Ch11",q:"Disinfection",a:"Process that kills most pathogenic microorganisms on surfaces."},
+{ch:"Ch11",q:"Mass Casualty Incident",a:"Incident with more victims than available resources can handle at once."},
+{ch:"Ch11",q:"Neutralization",a:"Raising or lowering the pH of a corrosive to bring it toward neutral (7)."},
+{ch:"Ch11",q:"Nonambulatory",a:"Victims who can't walk or move on their own."},
+{ch:"Ch11",q:"Sanitization",a:"Reducing microorganisms to safe levels."},
+{ch:"Ch11",q:"Simple Triage and Rapid Treatment (START)",a:"Rapid system to sort victims by severity of injury."},
+{ch:"Ch11",q:"Solidification",a:"Turning a liquid hazmat into a solid to make handling and removal easier."},
+{ch:"Ch11",q:"Sterilization",a:"Destroying all microorganisms, including spores."},
+{ch:"Ch11",q:"Triage",a:"Sorting and prioritizing victims by severity of injury and likelihood of survival."},
+// Ch12
+{ch:"Ch12",q:"Action Level",a:"Concentration of a substance at which specific response actions must be taken."},
+{ch:"Ch12",q:"Calibration",a:"Adjusting an instrument against a known standard so readings are accurate."},
+{ch:"Ch12",q:"Concentration",a:"Amount of a substance present in a given volume."},
+{ch:"Ch12",q:"Correction Factor",a:"Multiplier applied to a meter reading to account for a gas different from the calibration gas."},
+{ch:"Ch12",q:"Dose",a:"Total amount of a substance a person is exposed to."},
+{ch:"Ch12",q:"Dose-Response Relationship",a:"Principle that the effect increases with the amount of exposure."},
+{ch:"Ch12",q:"Dosimeter",a:"Device that measures accumulated radiation dose over time."},
+{ch:"Ch12",q:"Exposure Limit",a:"Maximum concentration of a substance a person should be exposed to."},
+{ch:"Ch12",q:"Field Test",a:"On-scene test to identify or characterize an unknown material."},
+{ch:"Ch12",q:"Gray (Gy)",a:"SI unit of absorbed radiation dose. 1 Gy = 100 rad."},
+{ch:"Ch12",q:"Hydronium",a:"Positively charged ion (H3O+) — indicates an acid."},
+{ch:"Ch12",q:"Hydroxide",a:"Negatively charged ion (OH-) — indicates a base."},
+{ch:"Ch12",q:"Infrared Thermometer",a:"Measures surface temperature without contact."},
+{ch:"Ch12",q:"Instrument Response Time",a:"Time for a monitor to detect and display a reading after exposure."},
+{ch:"Ch12",q:"Interference",a:"When another substance affects the accuracy of a meter reading."},
+{ch:"Ch12",q:"Ionization Potential",a:"Energy needed to ionize a substance. Must be below the lamp's eV for a PID to detect it."},
+{ch:"Ch12",q:"Lethal Concentration (LC)",a:"Airborne concentration of a substance that kills."},
+{ch:"Ch12",q:"Lethal Dose (LD)",a:"Amount of a substance that kills by ingestion, absorption, or injection."},
+{ch:"Ch12",q:"Lower Explosive Limit (LEL) Sensor",a:"Detects combustible gas concentration as a percent of the lower explosive limit."},
+{ch:"Ch12",q:"Median Lethal Concentration, 50% Kill (LC50)",a:"Concentration in air that kills 50% of the test population."},
+{ch:"Ch12",q:"Median Lethal Dose, 50% Kill (LD50)",a:"Dose that kills 50% of the test population."},
+{ch:"Ch12",q:"Millirem (mrem)",a:"One-thousandth of a rem."},
+{ch:"Ch12",q:"Oxygen-Deficient Atmosphere",a:"Oxygen below 19.5%."},
+{ch:"Ch12",q:"Oxygen-Enriched Atmosphere",a:"Oxygen above 23.5%. Increases fire and explosion risk."},
+{ch:"Ch12",q:"Parts Per Billion (ppb)",a:"Concentration unit — one part per billion."},
+{ch:"Ch12",q:"Parts Per Million (ppm)",a:"Concentration unit — one part per million."},
+{ch:"Ch12",q:"Percent by Volume (%)",a:"Concentration of a gas as a percentage of total air volume."},
+{ch:"Ch12",q:"Permissible Exposure Limit (PEL)",a:"OSHA's legal max exposure limit, usually an 8-hour TWA."},
+{ch:"Ch12",q:"Photoionization Detector (PID)",a:"Uses UV light to detect volatile organic compounds and toxics."},
+{ch:"Ch12",q:"Radiation Absorbed Dose (rad)",a:"Unit of absorbed radiation dose."},
+{ch:"Ch12",q:"Reagent",a:"Substance used in a chemical test to detect or identify another substance."},
+{ch:"Ch12",q:"Recommended Exposure Limit (REL)",a:"NIOSH-recommended exposure limit."},
+{ch:"Ch12",q:"Roentgen Equivalent in Man (rem)",a:"Unit of radiation dose that accounts for biological effect."},
+{ch:"Ch12",q:"Roentgen (R)",a:"Unit measuring radiation exposure in air."},
+{ch:"Ch12",q:"Short-Term Exposure Limit (STEL)",a:"Max exposure allowed over a short period, usually 15 minutes."},
+{ch:"Ch12",q:"Sievert (Sv)",a:"SI unit of radiation dose equivalent. 1 Sv = 100 rem."},
+{ch:"Ch12",q:"Time-Weighted Average (TWA)",a:"Average exposure over a work shift, usually 8 hours."},
+{ch:"Ch12",q:"Zeroing",a:"Setting a meter to read zero in a clean atmosphere before use."},
+// Ch13
+{ch:"Ch13",q:"Absorbent",a:"Material that soaks up a liquid."},
+{ch:"Ch13",q:"Absorption",a:"Using an absorbent to soak up a liquid hazmat."},
+{ch:"Ch13",q:"Adsorbent",a:"Material that holds a hazmat on its surface — doesn't soak it in."},
+{ch:"Ch13",q:"Adsorption",a:"Process where a hazmat adheres to the surface of a material."},
+{ch:"Ch13",q:"Aeration",a:"Introducing air into foam solution to expand it."},
+{ch:"Ch13",q:"Air-Aspirating Foam Nozzle",a:"Nozzle that mixes air into foam solution for high-quality finished foam."},
+{ch:"Ch13",q:"Aqueous Film Forming Foam (AFFF)",a:"Class B foam that forms a film over a flammable liquid to suppress vapors."},
+{ch:"Ch13",q:"Bank-Down Method",a:"Applying foam off a wall or object so it flows down and across a spill."},
+{ch:"Ch13",q:"Class B Foam Concentrate",a:"Foam for flammable and combustible liquid fires."},
+{ch:"Ch13",q:"Confinement",a:"Keeping a hazmat in a defined area after release, without contacting it."},
+{ch:"Ch13",q:"Containment",a:"Stopping a hazmat from leaking or escaping its container."},
+{ch:"Ch13",q:"Containment Dam",a:"Barrier built to hold back a liquid hazmat."},
+{ch:"Ch13",q:"Control",a:"Offensive or defensive actions to confine, contain, or stop a hazmat release."},
+{ch:"Ch13",q:"Dilution",a:"Adding water to reduce the concentration of a water-soluble hazmat."},
+{ch:"Ch13",q:"Drainage Time",a:"Time for foam to break down and release its water."},
+{ch:"Ch13",q:"Eduction",a:"Drawing foam concentrate into a water stream using a venturi (pressure drop)."},
+{ch:"Ch13",q:"Expansion Ratio",a:"Volume of finished foam compared to the volume of foam solution."},
+{ch:"Ch13",q:"Immiscible",a:"Doesn't mix with water."},
+{ch:"Ch13",q:"Intrinsically Safe",a:"Equipment designed not to release enough energy to ignite a flammable atmosphere."},
+{ch:"Ch13",q:"Negative-Pressure Ventilation",a:"Using fans or smoke ejectors to pull contaminated air out."},
+{ch:"Ch13",q:"Neutralization",a:"Bringing a corrosive toward neutral pH."},
+{ch:"Ch13",q:"Overflow Dam",a:"For hazmat heavier than water — clean water flows over the top while the heavier product is trapped behind/below."},
+{ch:"Ch13",q:"Polar Solvent",a:"Water-soluble flammable liquid (alcohols, ketones). Requires alcohol-resistant foam."},
+{ch:"Ch13",q:"Positive-Pressure Ventilation",a:"Using fans to push fresh air in and force contaminated air out."},
+{ch:"Ch13",q:"Proportioning",a:"Mixing the correct ratio of foam concentrate to water."},
+{ch:"Ch13",q:"Rain-Down Method",a:"Applying foam up into the air so it falls gently onto a spill."},
+{ch:"Ch13",q:"Roll-On Method",a:"Applying foam onto the ground in front of a spill so it rolls across the surface."},
+{ch:"Ch13",q:"Underflow Dam",a:"For hazmat lighter than water (floats) — water flows underneath through pipes while the floating product is held back on top."},
+{ch:"Ch13",q:"Vapor Dispersion",a:"Using water spray or ventilation to spread and lower the concentration of vapors."},
+{ch:"Ch13",q:"Vapor Suppression",a:"Reducing vapor release, e.g., with a foam blanket."},
+{ch:"Ch13",q:"Ventilation",a:"Controlled movement of air or vapors to remove or redirect them."},
+// Ch14
+{ch:"Ch14",q:"Line-of-Sight",a:"Keeping rescuers and victims within visual contact."},
+{ch:"Ch14",q:"Recovery",a:"Retrieving bodies or property when no live rescue is possible — no urgency to save life."},
+{ch:"Ch14",q:"Rescue",a:"Operation to save endangered living victims."},
+{ch:"Ch14",q:"Self-Rescue",a:"A victim's ability to escape the hazard area on their own."},
+{ch:"Ch14",q:"SKED®",a:"Flexible drag/litter device for moving victims through confined or technical spaces."},
+{ch:"Ch14",q:"Stokes Basket",a:"Rigid basket litter used to package and move a patient over rough terrain or by rope."},
+// Ch15
+{ch:"Ch15",q:"Case Identifier",a:"Unique number or code assigned to track an evidence case."},
+{ch:"Ch15",q:"Chain of Custody",a:"Documented record of everyone who handled evidence from collection to disposition."},
+{ch:"Ch15",q:"Cross-Contamination",a:"Transfer of a contaminant from one item or sample to another, compromising evidence."},
+{ch:"Ch15",q:"Direct Evidence",a:"Evidence that proves a fact without inference, such as an eyewitness account."},
+{ch:"Ch15",q:"Discovery",a:"Legal process of exchanging evidence between parties before trial."},
+{ch:"Ch15",q:"Evidence",a:"Information or material used to prove or disprove facts in an investigation."},
+{ch:"Ch15",q:"Exigent Circumstances",a:"Emergency situation that justifies action without a warrant."},
+{ch:"Ch15",q:"Field Screening",a:"On-scene testing to characterize and prioritize samples."},
+{ch:"Ch15",q:"Final Disposition",a:"Ultimate handling of evidence — return, destruction, or retention."},
+{ch:"Ch15",q:"Forensic Evidence",a:"Evidence analyzed scientifically for legal proceedings."},
+{ch:"Ch15",q:"Physical Evidence",a:"Tangible objects collected at a scene."},
+{ch:"Ch15",q:"Public Safety Sample",a:"Sample collected to identify a hazard and protect responders/public, vs. for legal use."},
+{ch:"Ch15",q:"Transient Evidence",a:"Temporary evidence that's easily lost or altered — odors, temperature, etc."},
+// Ch16
+{ch:"Ch16",q:"Autoclave",a:"Device using pressurized steam to sterilize equipment."},
+{ch:"Ch16",q:"Cannabinoid",a:"Compound found in cannabis, such as THC."},
+{ch:"Ch16",q:"Cell Lysis Equipment",a:"Lab equipment used to break open cells, e.g., in biological labs."},
+{ch:"Ch16",q:"Glovebox",a:"Sealed enclosure with built-in gloves for handling hazardous materials safely."},
+{ch:"Ch16",q:"Methamphetamine (Meth)",a:"Illicit stimulant drug produced in clandestine labs."},
+{ch:"Ch16",q:"Meth Cook",a:"Person who manufactures methamphetamine."},
+{ch:"Ch16",q:"Organophosphate Pesticides",a:"Pesticides that inhibit acetylcholinesterase — nerve-agent-like toxicity."},
+{ch:"Ch16",q:"Phosphine",a:"Toxic, flammable gas. Byproduct of some meth cooks and fumigation."},
+{ch:"Ch16",q:"Remediation",a:"Cleanup and restoration of a contaminated site."},
+];
+
+// Chapters in order
+const CHAPTERS = ["All"];
+for (let i=1;i<=16;i++){ if (CARDS.some(c=>c.ch==="Ch"+i)) CHAPTERS.push("Ch"+i); }
+
+let filter = "All";
+let deck = [];
+let idx = 0;
+
+const chips = document.getElementById('chips');
+const inner = document.getElementById('inner');
+const tag = document.getElementById('tag');
+const tagB = document.getElementById('tagB');
+const front = document.getElementById('front');
+const back = document.getElementById('back');
+const count = document.getElementById('count');
+
+function buildChips(){
+  chips.innerHTML = '';
+  CHAPTERS.forEach(ch=>{
+    const el = document.createElement('div');
+    el.className = 'chip' + (ch===filter?' active':'');
+    el.textContent = ch;
+    el.onclick = ()=>{ filter=ch; idx=0; rebuild(); };
+    chips.appendChild(el);
+  });
+}
+
+function rebuild(){
+  deck = filter==="All" ? CARDS.slice() : CARDS.filter(c=>c.ch===filter);
+  buildChips();
+  render();
+}
+
+function render(){
+  if (!deck.length){ count.textContent='No cards'; return; }
+  if (idx>=deck.length) idx=0;
+  const c = deck[idx];
+  inner.classList.remove('flipped');
+  tag.textContent = c.ch;
+  tagB.textContent = c.ch;
+  front.textContent = c.a;
+  back.textContent = c.q;
+  count.textContent = (idx+1)+' / '+deck.length;
+}
+
+function shuffle(){
+  for(let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]]; }
+  idx=0; render();
+}
+
+inner.onclick = ()=> inner.classList.toggle('flipped');
+document.getElementById('next').onclick = ()=>{ idx=(idx+1)%deck.length; render(); };
+document.getElementById('prev').onclick = ()=>{ idx=(idx-1+deck.length)%deck.length; render(); };
+document.getElementById('shuffle').onclick = shuffle;
+
+// Swipe
+let sx=0;
+document.getElementById('cardArea').addEventListener('touchstart',e=>{ sx=e.touches[0].clientX; },{passive:true});
+document.getElementById('cardArea').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>50){ if(dx<0){ idx=(idx+1)%deck.length; } else { idx=(idx-1+deck.length)%deck.length; } render(); }
+});
+
+rebuild();
+</script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazmat — Definitions</title>
+<style>
+
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: #111 !important; color-scheme: dark; }
+body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: #f0f0f0; min-height: 100vh; }
+.nav { background: #1a1a1a; border-bottom: 2px solid #c0392b; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 4px; overflow-x: auto; }
+.nav-btn { background: none; border: none; color: #aaa; padding: 8px 14px; cursor: pointer; font-size: 13px; border-radius: 6px; white-space: nowrap; transition: all 0.2s; }
+.nav-btn.active { background: #c0392b; color: white; }
+.nav-btn:hover:not(.active) { background: #2a2a2a; color: #fff; }
+.nav-title { color: #c0392b; font-weight: 700; font-size: 15px; letter-spacing: 1px; margin-right: 12px; white-space: nowrap; }
+.page { display: none; padding: 16px; max-width: 720px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* FLASHCARDS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.stat { background: #1e1e1e; border-radius: 8px; padding: 10px; text-align: center; }
+.stat .num { font-size: 20px; font-weight: 700; }
+.stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.stat.known .num { color: #27ae60; }
+.stat.unknown .num { color: #c0392b; }
+.stat.remaining .num { color: #f39c12; }
+.progress-bar { background: #2a2a2a; border-radius: 4px; height: 5px; margin-bottom: 12px; }
+.progress-fill { height: 100%; background: #c0392b; border-radius: 4px; transition: width 0.3s; }
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.filter-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+.filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+.search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
+.search-box:focus { outline: none; border-color: #c0392b; }
+.card-counter { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
+.card-wrap { perspective: 1000px; margin-bottom: 12px; cursor: pointer; }
+.card { width: 100%; min-height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; min-height: 180px; backface-visibility: hidden; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+.card-front { background: #1e1e1e; border: 1px solid #333; }
+.card-back { background: #0f2a1f; border: 1px solid #27ae60; transform: rotateY(180deg); }
+.card-ch { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.card-q { font-size: 16px; font-weight: 500; line-height: 1.5; }
+.card-a { font-size: 14px; line-height: 1.6; color: #d4f5e4; }
+.card-hint { font-size: 11px; color: #555; margin-top: 10px; text-align: center; }
+.card-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+.btn { padding: 9px 18px; border-radius: 7px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+.btn-green { background: #27ae60; color: white; }
+.btn-red { background: #c0392b; color: white; }
+.btn-gray { background: #333; color: #ccc; }
+.btn:hover { opacity: 0.85; }
+.deck-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sm-btn { background: #1e1e1e; border: 1px solid #444; color: #bbb; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.sm-btn:hover { border-color: #c0392b; color: #c0392b; }
+.done-screen { text-align: center; padding: 36px 16px; background: #1e1e1e; border-radius: 10px; }
+.done-screen h2 { color: #27ae60; font-size: 22px; margin-bottom: 10px; }
+.done-screen p { color: #999; margin-bottom: 18px; }
+
+/* REFERENCE */
+.ref-section { margin-bottom: 24px; }
+.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.ref-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+.ref-card.red { border-left: 3px solid #c0392b; }
+.ref-card.green { border-left: 3px solid #27ae60; }
+.ref-card.blue { border-left: 3px solid #2980b9; }
+.ref-card.yellow { border-left: 3px solid #f39c12; }
+.ref-card.purple { border-left: 3px solid #8e44ad; }
+.ref-card.orange { border-left: 3px solid #e67e22; }
+.ref-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ref-card p { font-size: 12px; color: #aaa; line-height: 1.5; }
+.ref-card .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 700; }
+.tag-red { background: #c0392b22; color: #e74c3c; }
+.tag-green { background: #27ae6022; color: #2ecc71; }
+.tag-blue { background: #2980b922; color: #3498db; }
+.tag-yellow { background: #f39c1222; color: #f39c12; }
+.tag-purple { background: #8e44ad22; color: #9b59b6; }
+.tag-orange { background: #e67e2222; color: #e67e22; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: #1e1e1e; }
+
+/* QUIZ */
+.quiz-setup { background: #1e1e1e; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.quiz-setup h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #c0392b; }
+.quiz-option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.quiz-opt { background: #2a2a2a; border: 1px solid #444; border-radius: 7px; padding: 10px 12px; cursor: pointer; font-size: 12px; color: #bbb; transition: all 0.2s; text-align: center; }
+.quiz-opt.selected { background: #c0392b22; border-color: #c0392b; color: #fff; }
+.quiz-opt:hover { border-color: #c0392b; }
+.quiz-start-btn { background: #c0392b; color: white; border: none; padding: 10px 24px; border-radius: 7px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+.quiz-start-btn:hover { background: #e74c3c; }
+.q-card { background: #1e1e1e; border-radius: 10px; padding: 18px; margin-bottom: 12px; }
+.q-num { font-size: 11px; color: #666; margin-bottom: 8px; }
+.q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
+.q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-opt { background: #2a2a2a; border: 1px solid #333; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-size: 13px; color: #ccc; transition: all 0.2s; text-align: left; }
+.q-opt:hover { border-color: #555; background: #333; }
+.q-opt.selected { border-color: #f39c12; background: #f39c1211; color: #fff; }
+.q-opt.correct { border-color: #27ae60; background: #27ae6022; color: #2ecc71; }
+.q-opt.wrong { border-color: #c0392b; background: #c0392b22; color: #e74c3c; }
+.q-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; }
+.q-feedback.correct { background: #27ae6022; color: #2ecc71; border: 1px solid #27ae6044; }
+.q-feedback.wrong { background: #c0392b22; color: #e74c3c; border: 1px solid #c0392b44; }
+.quiz-nav { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.quiz-score { text-align: center; background: #1e1e1e; border-radius: 10px; padding: 32px 20px; }
+.quiz-score h2 { font-size: 24px; margin-bottom: 8px; }
+.quiz-score .score-num { font-size: 48px; font-weight: 700; margin: 10px 0; }
+.score-pass { color: #27ae60; }
+.score-fail { color: #c0392b; }
+.q-progress { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 12px; }
+.q-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
+.q-dot.answered { background: #f39c12; }
+.q-dot.correct { background: #27ae60; }
+.q-dot.wrong { background: #c0392b; }
+
+.placard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.placard-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.placard-img { width: 80px; height: 80px; margin-bottom: 8px; image-rendering: crisp-edges; }
+.placard-class { font-size: 11px; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.placard-name { font-size: 13px; font-weight: 600; margin: 2px 0; }
+.placard-desc { font-size: 11px; color: #888; line-height: 1.4; }
+
+.hclass-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.hclass-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.hclass-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.hclass-diamond { width: 64px; height: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(45deg); border-radius: 4px; border: 2px solid rgba(0,0,0,0.3); }
+.hclass-num { transform: rotate(-45deg); font-size: 18px; font-weight: 900; line-height: 1; }
+.hclass-dname { transform: rotate(-45deg); font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.hclass-info { flex: 1; }
+.hclass-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.hclass-examples { font-size: 11px; color: #888; margin-bottom: 3px; }
+.hclass-guide { font-size: 11px; color: #c0392b; font-weight: 600; }
+.hclass-tap { font-size: 10px; color: #555; margin-top: 4px; }
+.class-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 10px; }
+.class-modal.open { display: flex; }
+.modal-inner { background: #111; border-radius: 10px; max-width: 98vw; max-height: 95vh; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #333; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #1a1a1a; border-bottom: 1px solid #333; font-size: 13px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 1px; }
+.modal-close { background: #c0392b; border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.modal-body { overflow: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
+.modal-img { width: 100%; max-width: 1200px; display: block; border-radius: 6px; }
+
+.nfpa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.nfpa-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.nfpa-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.nfpa-swatch { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.2); }
+.nfpa-label { font-size: 12px; font-weight: 900; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+.nfpa-info { flex: 1; }
+.nfpa-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.nfpa-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.ppe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.ppe-card { background: #1e1e1e; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.ppe-card:hover { background: #252525; transform: translateY(-1px); }
+.ppe-badge { min-width: 80px; padding: 8px 6px; border-radius: 7px; text-align: center; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3; flex-shrink: 0; }
+.ppe-info { flex: 1; }
+.ppe-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.ppe-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.review-card { background: #1e1e1e; border: 1px solid #c0392b; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.review-card-ch { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.review-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.review-card-a { font-size: 13px; color: #27ae60; line-height: 1.5; }
+.missed-card { background: #1e1e1e; border: 1px solid #e74c3c; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.missed-card-topic { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.missed-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.missed-card-wrong { font-size: 12px; color: #e74c3c; margin-bottom: 4px; }
+.missed-card-correct { font-size: 12px; color: #27ae60; }
+.empty-state { text-align: center; padding: 32px; color: #555; font-size: 14px; }
+
+.nav a.nav-btn { text-decoration: none; display: inline-block; }
+.nav a.nav-btn:visited { color: #aaa; }
+
+.nav a.nav-btn { text-decoration: none; display: inline-block; }
+.nav a.nav-btn:visited { color: #aaa; }
+.nav a.nav-btn.active { color: white; }
+.def-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
+.def-card:hover { border-color: #c0392b; background: #252525; }
+.def-card.revealed { border-color: #27ae60; background: #0f2a1f; }
+.def-term { font-size: 16px; font-weight: 700; color: #f0f0f0; margin-bottom: 4px; }
+.def-ch { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+.def-definition { font-size: 14px; color: #27ae60; line-height: 1.5; display: none; margin-top: 8px; border-top: 1px solid #333; padding-top: 8px; }
+.def-hint { font-size: 11px; color: #555; margin-top: 6px; }
+.def-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+.def-stat { background: #1e1e1e; border-radius: 8px; padding: 10px; text-align: center; }
+.def-stat .num { font-size: 20px; font-weight: 700; }
+.def-stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.alphabet-filter { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+.alpha-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 700; }
+.alpha-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+</style>
+<style>
+  :root { color-scheme: dark !important; }
+  html, body { background-color: #111111 !important; color: #f0f0f0 !important; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <span class="nav-title">HAZMAT</span>
+  <a href="hazmat.html" class="nav-btn" style="text-decoration:none;">Flashcards / Quiz</a>
+  <a href="hazmat_definitions.html" class="nav-btn active" style="text-decoration:none;">Definitions</a>
+  <a href="hazmat_classes.html" class="nav-btn" style="text-decoration:none;">Hazard Classes</a>
+  <a href="hazmat_containers.html" class="nav-btn" style="text-decoration:none;">Containers</a>
+  <a href="hazmat_erg.html" class="nav-btn" style="text-decoration:none;">ERG Pages</a>
+  <a href="hazmat_ppe.html" class="nav-btn" style="text-decoration:none;">PPE Classes</a>
+  <a href="hazmat_keyterms.html" class="nav-btn" style="text-decoration:none;">Key Terms</a>
+</div>
+
+<div style="max-width:720px;margin:0 auto;padding:16px;">
+  <div class="def-stats">
+    <div class="def-stat"><div class="num" id="d-total">0</div><div class="lbl">Total</div></div>
+    <div class="def-stat" style="border:1px solid #27ae60"><div class="num" style="color:#27ae60" id="d-known">0</div><div class="lbl">Known</div></div>
+    <div class="def-stat" style="border:1px solid #f39c12"><div class="num" style="color:#f39c12" id="d-left">0</div><div class="lbl">Left</div></div>
+  </div>
+
+  <input class="search-box" type="text" id="def-search" placeholder="Search terms..." oninput="filterDefs()">
+
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+    <button class="filter-btn active" onclick="filterChapter('all',this)">All</button>
+    <button class="filter-btn" onclick="filterChapter('Ch1',this)">Ch1</button>
+    <button class="filter-btn" onclick="filterChapter('Ch2',this)">Ch2</button>
+    <button class="filter-btn" onclick="filterChapter('Ch3',this)">Ch3</button>
+    <button class="filter-btn" onclick="filterChapter('Ch4',this)">Ch4</button>
+    <button class="filter-btn" onclick="filterChapter('Ch5',this)">Ch5</button>
+    <button class="filter-btn" onclick="filterChapter('Ch6',this)">Ch6</button>
+    <button class="filter-btn" onclick="filterChapter('Ch7',this)">Ch7</button>
+    <button class="filter-btn" onclick="filterChapter('Ch8',this)">Ch8</button>
+    <button class="filter-btn" onclick="filterChapter('Ch9',this)">Ch9</button>
+    <button class="filter-btn" onclick="filterChapter('Ch10',this)">Ch10</button>
+    <button class="filter-btn" onclick="filterChapter('Ch11',this)">Ch11</button>
+    <button class="filter-btn" onclick="filterChapter('Ch12',this)">Ch12</button>
+    <button class="filter-btn" onclick="filterChapter('Ch13',this)">Ch13</button>
+    <button class="filter-btn" onclick="filterChapter('Ch14',this)">Ch14</button>
+    <button class="filter-btn" onclick="filterChapter('Ch15',this)">Ch15</button>
+    <button class="filter-btn" onclick="filterChapter('Ch16',this)">Ch16</button>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <button class="sm-btn" onclick="revealAll()">Reveal All</button>
+    <button class="sm-btn" onclick="hideAll()">Hide All</button>
+    <button class="sm-btn" onclick="resetKnown()">Reset</button>
+  </div>
+
+  <div id="def-list"></div>
+</div>
+
+<script>
+const DEFINITIONS = [
+  // CH1 - Introduction
+  {term:"Hazardous Material",def:"Any substance or material that poses an unreasonable risk to health, safety, property, or the environment when transported in commerce.",ch:"Ch1"},
+  {term:"WMD",def:"Weapon of Mass Destruction — a weapon designed to cause death or serious bodily injury to a significant number of people through toxic chemicals, biological agents, radiation, or explosives.",ch:"Ch1"},
+  {term:"CBRNE",def:"Chemical, Biological, Radiological, Nuclear, Explosive — categories of weapons of mass destruction.",ch:"Ch1"},
+  {term:"Acute Exposure",def:"A single exposure to a hazardous material over a short period of time, typically less than 24 hours.",ch:"Ch1"},
+  {term:"Chronic Exposure",def:"Repeated exposures to a hazardous material over a long period of time.",ch:"Ch1"},
+  {term:"Inhalation",def:"The most significant route of entry — breathing hazardous vapors, gases, dusts, or fumes into the lungs.",ch:"Ch1"},
+  {term:"Absorption",def:"Entry of a hazardous material through the skin or mucous membranes into the body.",ch:"Ch1"},
+  {term:"Ingestion",def:"Entry of a hazardous material into the body by swallowing.",ch:"Ch1"},
+  {term:"Injection",def:"Entry of a hazardous material into the body through a puncture wound or cut.",ch:"Ch1"},
+  // CH2 - Recognition
+  {term:"Placard",def:"A diamond-shaped sign at least 10.8 inches on each side placed on vehicles transporting hazardous materials to identify the hazard class.",ch:"Ch2"},
+  {term:"Label",def:"A smaller diamond-shaped marker placed on individual packages containing hazardous materials — smaller than a placard.",ch:"Ch2"},
+  {term:"UN Number",def:"A four-digit United Nations identification number assigned to hazardous materials for international transportation identification.",ch:"Ch2"},
+  {term:"NA Number",def:"North America identification number — used for materials hazardous in North America but not assigned a UN number.",ch:"Ch2"},
+  {term:"SDS",def:"Safety Data Sheet — a document containing information about a chemical's properties, hazards, safe handling, storage, and emergency procedures. Required under GHS.",ch:"Ch2"},
+  {term:"GHS",def:"Globally Harmonized System — an international standard for classifying and labeling chemicals to ensure consistent hazard communication worldwide.",ch:"Ch2"},
+  {term:"NFPA 704",def:"A standard system used at fixed facilities to identify health, flammability, instability, and special hazards using a diamond with four colored quadrants rated 0-4.",ch:"Ch2"},
+  {term:"Packing Group",def:"A classification indicating the degree of danger of a hazardous material — PG I is greatest danger, PG II is medium danger, PG III is minor danger.",ch:"Ch2"},
+  {term:"Shipping Papers",def:"Documents required for hazardous materials transportation identifying the proper shipping name, hazard class, UN number, packing group, and quantity.",ch:"Ch2"},
+  {term:"Bill of Lading",def:"Shipping papers used for road and rail transportation of hazardous materials.",ch:"Ch2"},
+  {term:"Cargo Manifest",def:"Shipping papers used for marine vessel transportation — the marine equivalent of a bill of lading.",ch:"Ch2"},
+  {term:"Air Waybill",def:"Shipping papers used for aircraft transportation of hazardous materials.",ch:"Ch2"},
+  // CH3 - ERG
+  {term:"ERG",def:"Emergency Response Guidebook — a reference guide developed by DOT, TC, and SCT for first responders during the initial phase of a hazardous materials transportation incident.",ch:"Ch3"},
+  {term:"Initial Isolation Zone",def:"A circle around a hazmat spill where all persons should be evacuated — the immediate danger area.",ch:"Ch3"},
+  {term:"Protective Action Distance",def:"The downwind area from a hazmat spill where people may become incapacitated or suffer serious health effects — larger than the initial isolation zone.",ch:"Ch3"},
+  {term:"TIH",def:"Toxic Inhalation Hazard — materials that are poisonous when inhaled and require special handling and large evacuation zones. Also called PIH.",ch:"Ch3"},
+  {term:"CHEMTREC",def:"Chemical Transportation Emergency Center — a 24-hour emergency hotline (1-800-424-9300) providing chemical hazard information and emergency response guidance.",ch:"Ch3"},
+  {term:"CANUTEC",def:"Canadian Transport Emergency Centre — Canada's 24-hour emergency response information service, the Canadian equivalent of CHEMTREC.",ch:"Ch3"},
+  {term:"Evacuation",def:"Moving people away from a hazardous area to a safe location.",ch:"Ch3"},
+  {term:"Shelter in Place",def:"Directing people to go inside quickly and remain inside a room or building until the danger passes — used when evacuation would be more dangerous.",ch:"Ch3"},
+  // CH4 - Properties
+  {term:"Flash Point",def:"The minimum temperature at which a liquid gives off sufficient vapors to form an ignitable mixture near its surface when exposed to an ignition source.",ch:"Ch4"},
+  {term:"Autoignition Temperature",def:"The temperature at which a fuel spontaneously ignites without an external ignition source.",ch:"Ch4"},
+  {term:"LEL",def:"Lower Explosive Limit — the minimum concentration of a gas or vapor in air that will support ignition. Below this level the mixture is too lean to burn.",ch:"Ch4"},
+  {term:"UEL",def:"Upper Explosive Limit — the maximum concentration of a gas or vapor in air that will support ignition. Above this level the mixture is too rich to burn.",ch:"Ch4"},
+  {term:"Vapor Density",def:"The weight of a vapor or gas compared to an equal volume of air. Greater than 1 means the vapor sinks; less than 1 means it rises.",ch:"Ch4"},
+  {term:"Specific Gravity",def:"The weight of a liquid compared to an equal volume of water. Greater than 1 means the material sinks in water; less than 1 means it floats.",ch:"Ch4"},
+  {term:"Vapor Pressure",def:"The pressure exerted by vapors against the sides of a closed container — higher vapor pressure means more vapors are released at a given temperature.",ch:"Ch4"},
+  {term:"Boiling Point",def:"The temperature at which a liquid changes to a gas at atmospheric pressure.",ch:"Ch4"},
+  {term:"Solubility",def:"The ability of a substance to dissolve in water — expressed as miscible (fully mixes), slightly soluble, or insoluble.",ch:"Ch4"},
+  {term:"Polymerization",def:"A runaway exothermic chemical reaction where molecules link together releasing large amounts of heat — can cause container rupture or explosion.",ch:"Ch4"},
+  {term:"Cryogenic Liquid",def:"A liquid with a boiling point below -130°F (-90°C) such as liquid nitrogen, liquid oxygen, LNG, and liquid argon.",ch:"Ch4"},
+  {term:"IDLH",def:"Immediately Dangerous to Life or Health — the maximum concentration of a hazardous substance from which one could escape within 30 minutes without escape-impairing symptoms.",ch:"Ch4"},
+  {term:"TWA",def:"Time-Weighted Average — the average maximum concentration of a hazardous substance to which a worker may be exposed over an 8-hour workday without significant health effects.",ch:"Ch4"},
+  {term:"STEL",def:"Short-Term Exposure Limit — the maximum concentration of a hazardous substance for continuous 15-minute exposure.",ch:"Ch4"},
+  {term:"PEL",def:"Permissible Exposure Limit — OSHA's legal limit for workplace chemical exposure over an 8-hour day.",ch:"Ch4"},
+  {term:"Exposure",def:"Contact with a hazardous material by any route of entry — does not necessarily mean contamination has occurred.",ch:"Ch4"},
+  {term:"Contamination",def:"The deposit of hazardous material on or into a person, object, or area. Primary contamination comes from the source; secondary contamination is transferred from a contaminated person or object.",ch:"Ch4"},
+  {term:"GEBMO",def:"Stress, Breach, Release, Engulf, Contact, Harm — a model describing how containers fail and materials harm people.",ch:"Ch4"},
+  // CH5 - Containers
+  {term:"BLEVE",def:"Boiling Liquid Expanding Vapor Explosion — occurs when a container holding a pressurized liquid fails catastrophically, resulting in rapid vaporization and explosive release.",ch:"Ch5"},
+  {term:"MC-306/DOT-406",def:"Cargo tank truck used to transport flammable and combustible liquids — identified by oval cross-section and rollover protection. Also called a gasoline tanker.",ch:"Ch5"},
+  {term:"MC-307/DOT-407",def:"Cargo tank truck used to transport mild corrosives and food grade materials — identified by rounded/horseshoe-shaped ends and rollover protection.",ch:"Ch5"},
+  {term:"MC-312/DOT-412",def:"Cargo tank truck used to transport corrosive liquids — identified by smaller diameter, single compartment, and NO emergency shutoff device.",ch:"Ch5"},
+  {term:"MC-331/TC-331",def:"High pressure cargo tank truck used to transport compressed gases such as propane and anhydrous ammonia — identified by smooth sides, rounded ends, and white/silver color.",ch:"Ch5"},
+  {term:"MC-338/TC-338",def:"Cryogenic cargo tank truck — identified by thermos bottle appearance, vacuum-jacketed insulation, and stainless steel construction.",ch:"Ch5"},
+  {term:"DOT 111",def:"The most common low pressure railroad tank car — identified by large diameter dome on top. Used to transport flammable liquids and chemicals.",ch:"Ch5"},
+  {term:"IBC",def:"Intermediate Bulk Container — a portable packaging with maximum capacity of 793 gallons, often on a pallet. Also called a tote.",ch:"Ch5"},
+  {term:"T-Code",def:"A portable tank instruction code on intermodal containers that identifies the hazmat rating of the container.",ch:"Ch5"},
+  {term:"HHFT",def:"High-Hazard Flammable Train — a train with 20 or more tank cars loaded with flammable liquid in a continuous block or 35 or more cars dispersed through the train.",ch:"Ch5"},
+  {term:"Carboy",def:"A glass or plastic jug of 5-15 gallons usually used for corrosives, cushioned in a protective box or basket.",ch:"Ch5"},
+  {term:"Dewar Flask",def:"An insulated flask used to move small quantities of cryogenic liquids within a facility.",ch:"Ch5"},
+  // CH6 - Criminal/Terrorist
+  {term:"RED",def:"Radiation Exposure Device — a stationary gamma source placed to silently expose people to radiation over time without their knowledge.",ch:"Ch6"},
+  {term:"RDD",def:"Radiological Dispersal Device — a dirty bomb that uses conventional explosives to scatter radioactive material over a wide area.",ch:"Ch6"},
+  {term:"IND",def:"Improvised Nuclear Device — a crude nuclear weapon capable of producing a nuclear detonation.",ch:"Ch6"},
+  {term:"Secondary Device",def:"An explosive device placed to injure or kill responders who arrive after an initial incident — common tactic at terrorist incidents.",ch:"Ch6"},
+  {term:"TRACEM",def:"Thermal, Radiological, Asphyxiation, Chemical, Etiological, Mechanical — the categories of harm from WMD attacks.",ch:"Ch6"},
+  {term:"Nerve Agent",def:"A chemical warfare agent that disrupts the nervous system by inhibiting acetylcholinesterase — examples include sarin, VX, and novichok.",ch:"Ch6"},
+  {term:"Blister Agent",def:"A chemical warfare agent that causes severe blistering of skin and mucous membranes — examples include mustard gas and lewisite.",ch:"Ch6"},
+  {term:"Blood Agent",def:"A chemical warfare agent that prevents cells from using oxygen — examples include hydrogen cyanide and cyanogen chloride.",ch:"Ch6"},
+  {term:"Choking Agent",def:"A chemical warfare agent that damages the respiratory tract causing pulmonary edema — examples include chlorine and phosgene.",ch:"Ch6"},
+  {term:"Orphan Container",def:"An abandoned container found at an incident scene with no identifying information.",ch:"Ch6"},
+  // CH7 - Planning
+  {term:"Level I Incident",def:"A hazmat incident that can be handled safely by local first responders with basic hazmat training — typically a minor spill or release.",ch:"Ch7"},
+  {term:"Level II Incident",def:"A hazmat incident requiring a hazmat team and specialized resources beyond local capabilities.",ch:"Ch7"},
+  {term:"Level III Incident",def:"A major hazmat incident requiring unified command with state and federal resources.",ch:"Ch7"},
+  {term:"IAP",def:"Incident Action Plan — a written plan developed by the IC setting overall incident objectives, strategies, tactics, and resources for a specific operational period.",ch:"Ch7"},
+  {term:"Nonintervention Mode",def:"An operational mode where responders take no action and stay back — used when explosions are imminent or the situation exceeds capabilities.",ch:"Ch7"},
+  {term:"Defensive Mode",def:"An operational mode where responders control the incident without contacting the hazmat — confine and contain without entry.",ch:"Ch7"},
+  {term:"Offensive Mode",def:"An operational mode involving direct high-risk intervention — used by hazmat technicians when properly equipped and the risk is justified.",ch:"Ch7"},
+  {term:"Risk-Based Response",def:"A systematic approach to evaluating hazards, risks, and benefits before selecting a response option.",ch:"Ch7"},
+  // CH8 - ICS
+  {term:"ICS",def:"Incident Command System — a standardized on-scene emergency management system providing a common organizational structure for managing incidents.",ch:"Ch8"},
+  {term:"NIMS",def:"National Incident Management System — a standardized approach to incident management used by all levels of government.",ch:"Ch8"},
+  {term:"Span of Control",def:"The number of personnel one supervisor can effectively manage — optimal ratio is 1:5 (one supervisor to five personnel).",ch:"Ch8"},
+  {term:"Hot Zone",def:"The exclusion zone — the area immediately surrounding a hazmat release where contamination exists and only properly protected personnel may enter.",ch:"Ch8"},
+  {term:"Warm Zone",def:"The contamination reduction zone — the area between the hot and cold zones where decontamination takes place.",ch:"Ch8"},
+  {term:"Cold Zone",def:"The support zone — the clean area outside the warm zone where the command post, staging, medical monitoring, and rehab are located.",ch:"Ch8"},
+  {term:"Unified Command",def:"An ICS structure used when multiple agencies have jurisdictional responsibility — all agencies contribute to a single IAP.",ch:"Ch8"},
+  // CH9 - Decon
+  {term:"Decontamination",def:"The physical and/or chemical process of reducing and preventing the spread of contaminants from persons and equipment.",ch:"Ch9"},
+  {term:"Gross Decon",def:"The first phase of technical decontamination — rapid reduction of significant surface contamination before more thorough decon.",ch:"Ch9"},
+  {term:"Emergency Decon",def:"Rapid removal of a contaminant from a victim as quickly as possible without regard for the environment or property protection — life safety only.",ch:"Ch9"},
+  {term:"Mass Decon",def:"Rapidly reducing or removing contaminants from large numbers of people when time and victim numbers do not allow thorough decontamination.",ch:"Ch9"},
+  {term:"Technical Decon",def:"A thorough decontamination process using physical and/or chemical methods to fully remove or neutralize contaminants from responders and their equipment.",ch:"Ch9"},
+  {term:"Cross-Contamination",def:"The transfer of contaminants from a contaminated person or object to a clean person or object.",ch:"Ch9"},
+  {term:"Off-Gassing",def:"The release of absorbed chemicals from a person's clothing or body — requires special decon approach for volatile materials.",ch:"Ch9"},
+  // CH10 - PPE
+  {term:"SCBA",def:"Self-Contained Breathing Apparatus — provides compressed air from a cylinder carried by the user. Required for IDLH and unknown atmospheres.",ch:"Ch10"},
+  {term:"SAR",def:"Supplied-Air Respirator — provides air from a stationary source via an air hose up to 300 feet. Must carry emergency escape bottle. NOT for firefighting.",ch:"Ch10"},
+  {term:"APR",def:"Air-Purifying Respirator — filters ambient air through a canister or cartridge. Only used when contaminant is known, below IDLH, and oxygen is at least 19.5%.",ch:"Ch10"},
+  {term:"PAPR",def:"Powered Air-Purifying Respirator — a battery-powered blower system that delivers filtered air. Does not require fit testing.",ch:"Ch10"},
+  {term:"CPC",def:"Chemical Protective Clothing — clothing designed to protect against chemical hazards. No single CPC protects against all chemicals.",ch:"Ch10"},
+  {term:"Permeation",def:"A chemical passing through CPC fabric at the molecular level with no visible evidence. Decontamination will NOT stop permeation.",ch:"Ch10"},
+  {term:"Degradation",def:"Physical or chemical breakdown of CPC material — visible signs include discoloration, swelling, stiffening, and loss of strength.",ch:"Ch10"},
+  {term:"Penetration",def:"Hazardous material entering through a physical opening in CPC — rips, tears, cuts, punctures, unsealed seams, or open zippers.",ch:"Ch10"},
+  {term:"Class 1 PPE",def:"Fully encapsulating vapor-protective suit with SCBA worn inside — highest level of skin and respiratory protection. Equivalent to OSHA/EPA Level A.",ch:"Ch10"},
+  {term:"Class 2 PPE",def:"Liquid splash-protective suit with SCBA worn outside — highest respiratory protection with less skin protection than Class 1. Equivalent to OSHA/EPA Level B.",ch:"Ch10"},
+  {term:"Class 3 PPE",def:"Chemical-resistant clothing with APR or PAPR — used for known materials below IDLH with monitored atmosphere. Equivalent to OSHA/EPA Level C.",ch:"Ch10"},
+  {term:"Class 4 PPE",def:"Biological and radiological particulate-resistant clothing with APR or PAPR with HEPA filters — protects against biological agents and radiological particulates only.",ch:"Ch10"},
+  {term:"Class 5 PPE",def:"Structural firefighter gear with SCBA and enhanced splash protection — for flammable environments where the chemical is NOT toxic via skin absorption.",ch:"Ch10"},
+  {term:"Heat Stroke",def:"The most serious heat-related disorder — characterized by high body temperature, hot red skin, rapid pulse, and possible unconsciousness. Life threatening.",ch:"Ch10"},
+  {term:"Rehabilitation",def:"Rest, rehydration, and medical monitoring for responders between work cycles at a hazmat incident.",ch:"Ch10"},
+  // CH11 - Decon
+  {term:"Adsorption",def:"A decontamination method where hazardous liquid molecules physically adhere to the outer surface of an adsorbent material rather than being absorbed into it.",ch:"Ch11"},
+  {term:"Neutralization",def:"A chemical decontamination method that changes the pH of a corrosive material toward neutral (pH 7) to make it less hazardous.",ch:"Ch11"},
+  {term:"Sterilization",def:"A decontamination method that kills ALL microorganisms present — the highest level of biological decontamination.",ch:"Ch11"},
+  {term:"Disinfection",def:"A decontamination method that kills most microorganisms but not necessarily all spores — used for equipment exposed to biological agents.",ch:"Ch11"},
+  {term:"Bag and Tag",def:"The process of separating personal effects and clothing into clearly marked bags with the victim's name or unique ID number for return after decon.",ch:"Ch11"},
+  // CH12 - Detection
+  {term:"PID",def:"Photoionization Detector — detects low to very low concentrations of many organic and some inorganic gases and vapors using ultraviolet light.",ch:"Ch12"},
+  {term:"Dosimeter",def:"A device worn by personnel to measure accumulated personal radiation dose over time.",ch:"Ch12"},
+  {term:"Bump Test",def:"Exposing a detection instrument to a known concentration of gas to verify sensors and alarms are functioning properly.",ch:"Ch12"},
+  {term:"Action Level",def:"A measurement threshold that triggers a specific response action such as removing personnel, adjusting PPE, or evacuating an area.",ch:"Ch12"},
+  {term:"Response Curve",def:"A manufacturer-provided chart used to convert LEL sensor readings when detecting a gas different from the calibration gas.",ch:"Ch12"},
+  {term:"Rad",def:"Radiation Absorbed Dose — measures the amount of radiation energy absorbed by a material.",ch:"Ch12"},
+  {term:"Rem",def:"Roentgen Equivalent in Man — measures radiation absorbed dose as it relates to biological effect on the human body.",ch:"Ch12"},
+  {term:"LD50",def:"Lethal Dose 50 — the dose of a substance that kills 50% of a test population. A measure of acute toxicity — smaller value means more toxic.",ch:"Ch12"},
+  // CH13 - Product Control
+  {term:"Containment",def:"Leak control — stopping the release of a hazardous material at its source.",ch:"Ch13"},
+  {term:"Confinement",def:"Spill control — limiting the spread of a hazardous material that has already been released without stopping the leak at its source.",ch:"Ch13"},
+  {term:"Diking",def:"Using raised embankments or barriers to prevent the movement of a hazardous liquid to another area.",ch:"Ch13"},
+  {term:"Diverting",def:"Directing and controlling the flow of a released liquid hazardous material to an area that will produce less harm.",ch:"Ch13"},
+  {term:"Retention",def:"Holding or containing a released hazardous liquid in an area until it can be absorbed, neutralized, or removed.",ch:"Ch13"},
+  {term:"Vapor Suppression",def:"Using foam to blanket a flammable liquid spill to prevent vapors from escaping and igniting.",ch:"Ch13"},
+  {term:"Vapor Dispersion",def:"Using water spray or ventilation to move and dilute airborne vapors to reduce their concentration.",ch:"Ch13"},
+  {term:"AFFF",def:"Aqueous Film-Forming Foam — a Class B foam used for hydrocarbon fires. NOT effective on polar solvents or alcohol-based fuels.",ch:"Ch13"},
+  {term:"Overflow Dam",def:"A dam that allows water to flow over while retaining material heavier than water at the bottom.",ch:"Ch13"},
+  {term:"Underflow Dam",def:"A dam that allows water to flow underneath while retaining material lighter than water that floats on top.",ch:"Ch13"},
+  // CH14 - Rescue
+  {term:"Triage",def:"The process of sorting multiple victims into priority categories based on the severity of their injuries to determine treatment order.",ch:"Ch14"},
+  {term:"START Triage",def:"Simple Triage and Rapid Treatment — a rapid mass casualty triage system using respirations, perfusion, and mental status to sort victims.",ch:"Ch14"},
+  {term:"Priority 1",def:"Immediate — life-threatening injuries requiring immediate intervention. Red tag.",ch:"Ch14"},
+  {term:"Priority 2",def:"Delayed — serious but not immediately life-threatening injuries. Yellow tag.",ch:"Ch14"},
+  {term:"Priority 3",def:"Minimal — minor injuries, walking wounded who can wait for treatment. Green tag.",ch:"Ch14"},
+  {term:"Priority 4",def:"Expectant — deceased or injuries so severe that survival is unlikely even with treatment. Black tag.",ch:"Ch14"},
+  {term:"Victim Recovery",def:"Nonemergency operations directed at locating and retrieving the remains of deceased victims at a hazmat scene — begins after rescue operations conclude.",ch:"Ch14"},
+  {term:"Buddy Assist",def:"Ambulatory victims with minor injuries helping each other to a safe area under the direction of responders.",ch:"Ch14"},
+  // CH15 - Evidence
+  {term:"Chain of Custody",def:"Documentation tracking evidence from discovery to disposal ensuring no tampering or contamination has occurred — required for court admissibility.",ch:"Ch15"},
+  {term:"Transient Evidence",def:"A minute quantity of physical evidence that can easily change or be lost over time — requires immediate documentation.",ch:"Ch15"},
+  {term:"Direct Evidence",def:"Evidence found through the five physical senses to which a person can directly attest without need for inference or support.",ch:"Ch15"},
+  {term:"Physical Evidence",def:"Tangible material objects that can be observed, photographed, measured, collected, and examined in a laboratory.",ch:"Ch15"},
+  {term:"Exigent Circumstances",def:"Legal authority allowing fire and emergency services personnel to enter a property to protect public welfare without a warrant — such as entering a burning building.",ch:"Ch15"},
+  {term:"Public Safety Sample",def:"A sample collected to determine contaminants present, inform medical treatment, and determine appropriate decon and mitigation methods — not for criminal prosecution.",ch:"Ch15"},
+  {term:"Control Sample",def:"An unused container or tool from each lot of collection equipment placed in an evidence container — proves collection equipment was uncontaminated before use.",ch:"Ch15"},
+  {term:"Environmental Crime",def:"Illegal use and intentional release or disposal of hazardous substances that pollute air, water, or soil — typically falls under EPA jurisdiction.",ch:"Ch15"},
+  // CH16 - Illicit Labs
+  {term:"Illicit Laboratory",def:"A clandestine facility used to illegally manufacture drugs, explosives, chemical agents, or biological agents.",ch:"Ch16"},
+  {term:"Fentanyl",def:"A synthetic opioid approximately 100 times more potent than morphine — can be absorbed through skin, inhalation, ingestion, or mucous membranes. Extremely dangerous in small amounts.",ch:"Ch16"},
+  {term:"Carfentanil",def:"A synthetic opioid approximately 100 times more potent than fentanyl — used as a large animal tranquilizer. Extremely dangerous to humans even in tiny amounts.",ch:"Ch16"},
+  {term:"NPS",def:"New Psychoactive Substances — synthetic drugs designed to mimic controlled substances, including synthetic cannabinoids (spice/K2) and synthetic cathinones (bath salts).",ch:"Ch16"},
+  {term:"BHO",def:"Butane Hash Oil — a marijuana concentrate produced using butane gas. The flammability of butane has caused numerous fires and explosions during production.",ch:"Ch16"},
+  {term:"ALARA",def:"As Low As Reasonably Achievable — the principle of minimizing radiation exposure through decreasing exposure time, increasing distance, and using shielding.",ch:"Ch16"},
+  {term:"After Action Report",def:"A report summarizing an incident, identifying lessons learned, and providing recommendations for correcting problems identified during the response.",ch:"Ch16"},
+  {term:"Booby Trap",def:"A concealed device designed to injure or kill persons who disturb it — common at illicit laboratory scenes.",ch:"Ch16"},
+];
+
+
+
+let activeChapter = 'all';
+let searchTerm = '';
+let knownDefs = new Set();
+
+function filterDefs() {
+  searchTerm = document.getElementById('def-search').value.toLowerCase();
+  renderDefs();
+}
+
+function filterChapter(ch, btn) {
+  activeChapter = ch;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDefs();
+}
+
+function renderDefs() {
+  const filtered = DEFINITIONS.filter(d => {
+    const matchCh = activeChapter === 'all' || d.ch === activeChapter;
+    const matchSearch = !searchTerm || d.term.toLowerCase().includes(searchTerm) || d.def.toLowerCase().includes(searchTerm);
+    return matchCh && matchSearch;
+  });
+
+  const sorted = [...filtered].sort((a,b) => a.term.localeCompare(b.term));
+
+  document.getElementById('d-total').textContent = DEFINITIONS.length;
+  document.getElementById('d-known').textContent = knownDefs.size;
+  document.getElementById('d-left').textContent = DEFINITIONS.length - knownDefs.size;
+
+  const list = document.getElementById('def-list');
+  list.innerHTML = sorted.map(d => {
+    const isKnown = knownDefs.has(d.term);
+    return `<div class="def-card ${isKnown ? 'revealed' : ''}" onclick="toggleDef(this,'${d.term.replace(/'/g,"\'")}')">
+      <div class="def-ch">${d.ch.replace('Ch','Chapter ')}</div>
+      <div class="def-term">${d.term}</div>
+      <div class="def-definition" style="display:${isKnown ? 'block' : 'none'}">${d.def}</div>
+      <div class="def-hint">${isKnown ? '✓ Known — tap to hide' : 'Tap to reveal definition'}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDef(card, term) {
+  const defEl = card.querySelector('.def-definition');
+  const hintEl = card.querySelector('.def-hint');
+  const isShowing = defEl.style.display !== 'none';
+  
+  if (isShowing) {
+    defEl.style.display = 'none';
+    card.classList.remove('revealed');
+    hintEl.textContent = 'Tap to reveal definition';
+    knownDefs.delete(term);
+  } else {
+    defEl.style.display = 'block';
+    card.classList.add('revealed');
+    hintEl.textContent = '✓ Known — tap to hide';
+    knownDefs.add(term);
+  }
+  
+  document.getElementById('d-known').textContent = knownDefs.size;
+  document.getElementById('d-left').textContent = DEFINITIONS.length - knownDefs.size;
+}
+
+function revealAll() {
+  document.querySelectorAll('.def-card').forEach(card => {
+    const defEl = card.querySelector('.def-definition');
+    const hintEl = card.querySelector('.def-hint');
+    const termEl = card.querySelector('.def-term');
+    defEl.style.display = 'block';
+    card.classList.add('revealed');
+    hintEl.textContent = '✓ Known — tap to hide';
+    knownDefs.add(termEl.textContent);
+  });
+  document.getElementById('d-known').textContent = knownDefs.size;
+  document.getElementById('d-left').textContent = DEFINITIONS.length - knownDefs.size;
+}
+
+function hideAll() {
+  document.querySelectorAll('.def-card').forEach(card => {
+    card.querySelector('.def-definition').style.display = 'none';
+    card.classList.remove('revealed');
+    card.querySelector('.def-hint').textContent = 'Tap to reveal definition';
+  });
+  knownDefs.clear();
+  document.getElementById('d-known').textContent = 0;
+  document.getElementById('d-left').textContent = DEFINITIONS.length;
+}
+
+function resetKnown() {
+  knownDefs.clear();
+  renderDefs();
+}
+
+renderDefs();
+</script>
+</body>
+</html>
