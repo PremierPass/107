@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bowie County A-F Accountability Ratings — 2024-25</title>
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --sub:#5a5a5a;
+    --line:#dcdcdc;
+    --bg:#ffffff;
+    --panel:#f7f7f7;
+    --a:#2e7d4f;
+    --b:#6a9c3f;
+    --c:#c99a2e;
+    --d:#c46b2e;
+    --f:#c03c2e;
+    --nr:#8a8a8a;
+    --pend:#b8b0d8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    padding:2rem 1.5rem 3rem;
+  }
+  .wrap{max-width:960px;margin:0 auto;}
+  h1{font-size:22px;font-weight:600;margin:0 0 4px;}
+  p.sub{font-size:14px;color:var(--sub);margin:0 0 1.5rem;line-height:1.5;}
+
+  .card{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:1.25rem;
+    margin-bottom:1.25rem;
+    background:var(--panel);
+  }
+  .card h2{font-size:15px;font-weight:600;margin:0 0 10px;}
+  .card p.desc{font-size:13px;color:var(--sub);margin:0 0 12px;line-height:1.5;}
+
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  label.filebtn, button{
+    font-size:13px;
+    font-weight:500;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    padding:8px 14px;
+    cursor:pointer;
+  }
+  button.secondary{background:transparent;color:var(--ink);border:1px solid var(--line);}
+  input[type=file]{display:none;}
+  textarea{
+    width:100%;
+    min-height:100px;
+    font-family:ui-monospace,monospace;
+    font-size:12px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px;
+    margin-top:10px;
+  }
+  .pastewrap{display:none;}
+  .pastewrap.open{display:block;}
+
+  .maprow{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:10px;
+    margin-top:14px;
+  }
+  .mapfield label{display:block;font-size:11px;color:var(--sub);margin-bottom:4px;}
+  select, input[type=text]{
+    width:100%;
+    font-size:13px;
+    padding:7px 8px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:#fff;
+  }
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+  .controls select, .controls input{max-width:220px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{
+    text-align:left;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--sub);
+    border-bottom:2px solid var(--ink);
+    padding:6px 8px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  tbody td{padding:7px 8px;border-bottom:1px solid var(--line);}
+  tbody tr:hover{background:#f0f0f0;}
+  .badge{
+    display:inline-block;
+    min-width:22px;
+    text-align:center;
+    font-weight:600;
+    font-size:12px;
+    padding:2px 7px;
+    border-radius:4px;
+    color:#fff;
+  }
+  .bg-a{background:var(--a);} .bg-b{background:var(--b);} .bg-c{background:var(--c);}
+  .bg-d{background:var(--d);} .bg-f{background:var(--f);} .bg-nr{background:var(--nr);}
+  .bg-pend{background:var(--pend);color:var(--ink);}
+
+  .empty{text-align:center;padding:2rem 1rem;color:var(--sub);font-size:13px;line-height:1.6;}
+
+  .districtref{font-size:12px;line-height:1.9;columns:2;color:var(--sub);}
+  .districtref b{color:var(--ink);}
+
+  .sourcenote{font-size:11px;color:var(--sub);margin-top:10px;}
+  .sourcenote a{color:var(--ink);}
+
+  @media (max-width:600px){ .districtref{columns:1;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bowie County A-F accountability ratings — 2024-25</h1>
+  <p class="sub">Overall TEA accountability ratings for Bowie County campuses plus Premier HS. 29 of 44 campuses confirmed from TEA-sourced data; the rest are marked pending until confirmed.</p>
+
+  <div class="card">
+    <h2>Campus list</h2>
+    <p class="desc" id="tableDesc">Loading...</p>
+    <div class="controls" id="controlsRow" style="display:none;">
+      <input type="text" id="searchBox" placeholder="Search campus or district...">
+      <select id="districtFilter"><option value="">All districts</option></select>
+      <select id="ratingFilter"><option value="">All ratings</option></select>
+      <select id="levelFilter">
+        <option value="">View all</option>
+        <option value="Elementary">Elementary</option>
+        <option value="Middle">Middle</option>
+        <option value="High">High</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div id="tableHolder">
+      <div class="empty" id="emptyState">Loading...</div>
+    </div>
+    <p class="sourcenote">Sources: <a href="https://schools.texastribune.org/" target="_blank">Texas Tribune Schools Explorer</a> (TEA-sourced 2024-25 A-F ratings) and TEA STAAR performance export. Confirmed ratings shown as of the data pull date; verify against <a href="https://txschools.gov" target="_blank">TXschools.gov</a> for official record. Not Rated (NR) campuses are genuinely confirmed as not rated by TEA. Pending (?) campuses haven't been confirmed yet. Click a campus name to open its official TEA School Report Card.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var rows = [];
+  var rawRows = [];
+  var mapping = {id:null, camp:null, dist:null, rate:null};
+  var sortState = {col:'score', dir:-1};
+
+  var gradeColors = {A:'#2e7d4f',B:'#6a9c3f',C:'#c99a2e',D:'#c46b2e',F:'#c03c2e',NR:'#8a8a8a',PEND:'#8a7fc9'};
+  var gradeToScore = {A:100,B:80,C:60,D:40,F:20,NR:0,PEND:-10};
+
+  var DEFAULT_DATA = [{"CAMPUS": "019901001", "CAMPNAME": "Dekalb H S", "DISTNAME": "Dekalb ISD", "RATING": "B"}, {"CAMPUS": "019901041", "CAMPNAME": "James L Germany Middle", "DISTNAME": "Dekalb ISD", "RATING": "C"}, {"CAMPUS": "019901102", "CAMPNAME": "Dekalb El", "DISTNAME": "Dekalb ISD", "RATING": "B"}, {"CAMPUS": "019902002", "CAMPNAME": "Hooks H S", "DISTNAME": "Hooks ISD", "RATING": "B"}, {"CAMPUS": "019902041", "CAMPNAME": "Hooks J H", "DISTNAME": "Hooks ISD", "RATING": "B"}, {"CAMPUS": "019902102", "CAMPNAME": "Hooks El", "DISTNAME": "Hooks ISD", "RATING": "A"}, {"CAMPUS": "019903001", "CAMPNAME": "Maud School", "DISTNAME": "Maud ISD", "RATING": "A"}, {"CAMPUS": "019905001", "CAMPNAME": "New Boston H S", "DISTNAME": "New Boston ISD", "RATING": "A"}, {"CAMPUS": "019905041", "CAMPNAME": "New Boston Middle", "DISTNAME": "New Boston ISD", "RATING": "A"}, {"CAMPUS": "019905101", "CAMPNAME": "Crestview El", "DISTNAME": "New Boston ISD", "RATING": "C"}, {"CAMPUS": "019906001", "CAMPNAME": "Redwater H S", "DISTNAME": "Redwater ISD", "RATING": "B"}, {"CAMPUS": "019906041", "CAMPNAME": "Redwater J H", "DISTNAME": "Redwater ISD", "RATING": "A"}, {"CAMPUS": "019906101", "CAMPNAME": "Redwater El", "DISTNAME": "Redwater ISD", "RATING": "PEND"}, {"CAMPUS": "019906102", "CAMPNAME": "Redwater Int", "DISTNAME": "Redwater ISD", "RATING": "PEND"}, {"CAMPUS": "019907002", "CAMPNAME": "Texas H S", "DISTNAME": "Texarkana ISD", "RATING": "B"}, {"CAMPUS": "019907003", "CAMPNAME": "Options Early Graduation H S", "DISTNAME": "Texarkana ISD", "RATING": "A"}, {"CAMPUS": "019907006", "CAMPNAME": "Digital Academy Of Texas", "DISTNAME": "Texarkana ISD", "RATING": "C"}, {"CAMPUS": "019907042", "CAMPNAME": "Texas Middle", "DISTNAME": "Texarkana ISD", "RATING": "F"}, {"CAMPUS": "019907105", "CAMPNAME": "Highland Park El", "DISTNAME": "Texarkana ISD", "RATING": "F"}, {"CAMPUS": "019907107", "CAMPNAME": "Theron Jones Early Literacy Center", "DISTNAME": "Texarkana ISD", "RATING": "NR"}, {"CAMPUS": "019907108", "CAMPNAME": "Westlawn El", "DISTNAME": "Texarkana ISD", "RATING": "F"}, {"CAMPUS": "019907109", "CAMPNAME": "Nash El", "DISTNAME": "Texarkana ISD", "RATING": "C"}, {"CAMPUS": "019907111", "CAMPNAME": "Spring Lake Park El", "DISTNAME": "Texarkana ISD", "RATING": "D"}, {"CAMPUS": "019907113", "CAMPNAME": "Wake Village El", "DISTNAME": "Texarkana ISD", "RATING": "B"}, {"CAMPUS": "019907115", "CAMPNAME": "Paul Laurence Dunbar Early Education Center", "DISTNAME": "Texarkana ISD", "RATING": "NR"}, {"CAMPUS": "019907116", "CAMPNAME": "Martha & Josh Morriss Math & Engineering El", "DISTNAME": "Texarkana ISD", "RATING": "A"}, {"CAMPUS": "019907117", "CAMPNAME": "Waggoner Creek El", "DISTNAME": "Texarkana ISD", "RATING": "C"}, {"CAMPUS": "019908001", "CAMPNAME": "Liberty-Eylau H S", "DISTNAME": "Liberty-Eylau ISD", "RATING": "D"}, {"CAMPUS": "019908041", "CAMPNAME": "Liberty-Eylau Middle", "DISTNAME": "Liberty-Eylau ISD", "RATING": "PEND"}, {"CAMPUS": "019908102", "CAMPNAME": "Liberty-Eylau Early Childhood Center", "DISTNAME": "Liberty-Eylau ISD", "RATING": "D"}, {"CAMPUS": "019908103", "CAMPNAME": "Liberty-Eylau El", "DISTNAME": "Liberty-Eylau ISD", "RATING": "D"}, {"CAMPUS": "019909001", "CAMPNAME": "James Bowie H S", "DISTNAME": "Simms ISD", "RATING": "PEND"}, {"CAMPUS": "019909041", "CAMPNAME": "James Bowie Middle", "DISTNAME": "Simms ISD", "RATING": "PEND"}, {"CAMPUS": "019909101", "CAMPNAME": "James Bowie El", "DISTNAME": "Simms ISD", "RATING": "PEND"}, {"CAMPUS": "019910101", "CAMPNAME": "Malta El", "DISTNAME": "Malta ISD", "RATING": "PEND"}, {"CAMPUS": "019911041", "CAMPNAME": "Red Lick Middle", "DISTNAME": "Red Lick ISD", "RATING": "PEND"}, {"CAMPUS": "019911101", "CAMPNAME": "Red Lick El", "DISTNAME": "Red Lick ISD", "RATING": "PEND"}, {"CAMPUS": "019912001", "CAMPNAME": "Pleasant Grove H S", "DISTNAME": "Pleasant Grove ISD", "RATING": "PEND"}, {"CAMPUS": "019912041", "CAMPNAME": "Pleasant Grove Middle", "DISTNAME": "Pleasant Grove ISD", "RATING": "PEND"}, {"CAMPUS": "019912102", "CAMPNAME": "Margaret Fischer Davis El", "DISTNAME": "Pleasant Grove ISD", "RATING": "PEND"}, {"CAMPUS": "019912200", "CAMPNAME": "Pleasant Grove Int", "DISTNAME": "Pleasant Grove ISD", "RATING": "PEND"}, {"CAMPUS": "019913101", "CAMPNAME": "Hubbard ISD", "DISTNAME": "Hubbard ISD", "RATING": "PEND"}, {"CAMPUS": "019914101", "CAMPNAME": "Leary El", "DISTNAME": "Leary ISD", "RATING": "PEND"}, {"CAMPUS": "072801148", "CAMPNAME": "Premier H S Of Texarkana", "DISTNAME": "Premier High Schools", "RATING": "A"}];
+
+  function parseCSV(text){
+    var lines = text.replace(/\r/g,'').split('\n').filter(function(l){return l.trim().length;});
+    if(!lines.length) return {headers:[], rows:[]};
+    var headers = splitLine(lines[0]);
+    var out = [];
+    for(var i=1;i<lines.length;i++){
+      var cells = splitLine(lines[i]);
+      if(cells.length === 1 && cells[0] === '') continue;
+      var obj = {};
+      for(var j=0;j<headers.length;j++){ obj[headers[j]] = (cells[j]||'').trim(); }
+      out.push(obj);
+    }
+    return {headers:headers, rows:out};
+  }
+
+  function splitLine(line){
+    var result = [];
+    var cur = '';
+    var inQuotes = false;
+    for(var i=0;i<line.length;i++){
+      var c = line[i];
+      if(c === '"'){ inQuotes = !inQuotes; continue; }
+      if(c === ',' && !inQuotes){ result.push(cur); cur=''; continue; }
+      cur += c;
+    }
+    result.push(cur);
+    return result.map(function(s){return s.trim();});
+  }
+
+  function classifyLevel(campName, campId){
+    var n = campName.toUpperCase();
+    var campusNum = (campId || '').slice(-3);
+    if(/\bH\s?S\b|HIGH SCHOOL/.test(n)) return 'High';
+    if(/\bJ\s?H\b|JUNIOR HIGH|MIDDLE/.test(n)) return 'Middle';
+    if(/\bEL\b|ELEMENTARY|\bINT\b|INTERMEDIATE|EARLY (EDUCATION|LITERACY|CHILDHOOD)/.test(n)) return 'Elementary';
+    if(campusNum){
+      var num = parseInt(campusNum, 10);
+      if(num >= 1 && num <= 39) return 'High';
+      if(num >= 40 && num <= 69) return 'Middle';
+      if(num >= 100) return 'Elementary';
+    }
+    return 'Other';
+  }
+
+  function normalizeRating(val){
+    if(!val) return 'NR';
+    var v = val.trim().toUpperCase();
+    if(v === 'PEND' || v === 'PENDING' || v === '?') return 'PEND';
+    if(v.indexOf('A') === 0) return 'A';
+    if(v.indexOf('B') === 0) return 'B';
+    if(v.indexOf('C') === 0) return 'C';
+    if(v.indexOf('D') === 0) return 'D';
+    if(v.indexOf('F') === 0) return 'F';
+    return 'NR';
+  }
+
+  function applyMapping(){
+    rows = rawRows.map(function(r){
+      var rate = normalizeRating(mapping.rate ? r[mapping.rate] : '');
+      return {
+        id: mapping.id ? r[mapping.id] : '',
+        camp: mapping.camp ? r[mapping.camp] : (mapping.id ? r[mapping.id] : 'Unknown campus'),
+        dist: mapping.dist ? r[mapping.dist] : '',
+        rate: rate,
+        score: gradeToScore[rate],
+        level: classifyLevel(mapping.camp ? r[mapping.camp] : '', mapping.id ? r[mapping.id] : '')
+      };
+    }).filter(function(r){ return r.camp || r.id; });
+    populateFilters();
+    render();
+  }
+
+  function populateFilters(){
+    var distSel = document.getElementById('districtFilter');
+    var rateSel = document.getElementById('ratingFilter');
+    var dists = Array.from(new Set(rows.map(function(r){return r.dist;}).filter(Boolean))).sort();
+    var rates = ['A','B','C','D','F','NR','PEND'];
+    distSel.innerHTML = '<option value="">All districts</option>' + dists.map(function(d){return '<option value="'+esc(d)+'">'+esc(d)+'</option>';}).join('');
+    rateSel.innerHTML = '<option value="">All ratings</option>' + rates.map(function(r){return '<option value="'+r+'">'+r+'</option>';}).join('');
+    document.getElementById('controlsRow').style.display = 'flex';
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function getFiltered(){
+    var search = document.getElementById('searchBox').value.trim().toLowerCase();
+    var distF = document.getElementById('districtFilter').value;
+    var rateF = document.getElementById('ratingFilter').value;
+    var levelF = document.getElementById('levelFilter').value;
+    return rows.filter(function(r){
+      if(distF && r.dist !== distF) return false;
+      if(rateF && r.rate !== rateF) return false;
+      if(levelF && r.level !== levelF) return false;
+      if(search && (r.camp||'').toLowerCase().indexOf(search) === -1 && (r.dist||'').toLowerCase().indexOf(search) === -1) return false;
+      return true;
+    });
+  }
+
+  function render(){
+    var filtered = getFiltered();
+    renderTable(filtered);
+  }
+
+  function renderTable(filtered){
+    document.getElementById('tableDesc').textContent = filtered.length + ' of ' + rows.length + ' campuses. Click a column to sort.';
+
+    if(sortState.col){
+      filtered = filtered.slice().sort(function(a,b){
+        var av = a[sortState.col], bv = b[sortState.col];
+        if(sortState.col === 'score'){ return (av - bv) * sortState.dir; }
+        return String(av||'').localeCompare(String(bv||'')) * sortState.dir;
+      });
+    }
+
+    var holder = document.getElementById('tableHolder');
+    if(!filtered.length){
+      holder.innerHTML = '<div class="empty">No campuses match the current filters.</div>';
+      return;
+    }
+    var html = '<table><thead><tr>';
+    html += '<th data-col="camp">Campus</th>';
+    html += '<th data-col="dist">District</th>';
+    html += '<th data-col="id">Campus ID</th>';
+    html += '<th data-col="score">Rating</th>';
+    html += '</tr></thead><tbody>';
+    filtered.forEach(function(r){
+      html += '<tr>';
+      var srcUrl = 'https://rptsvr1.tea.texas.gov/cgi/sas/broker?_service=marykay&_program=perfrept.perfmast.sas&_debug=0&ccyy=2025&lev=C&id=' + encodeURIComponent(r.id) + '&prgopt=reports%2Fsrc%2Fsrc.sas';
+      html += '<td><a href="'+srcUrl+'" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">'+esc(r.camp)+'</a></td>';
+      html += '<td>'+esc(r.dist)+'</td>';
+      html += '<td>'+esc(r.id)+'</td>';
+      var label = r.rate === 'PEND' ? '?' : (r.rate === 'NR' ? '-' : r.rate);
+      html += '<td><span class="badge bg-'+r.rate.toLowerCase()+'">'+label+'</span></td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    holder.innerHTML = html;
+
+    holder.querySelectorAll('th[data-col]').forEach(function(th){
+      th.addEventListener('click', function(){
+        var col = this.getAttribute('data-col');
+        if(sortState.col === col){ sortState.dir *= -1; } else { sortState.col = col; sortState.dir = col === 'score' ? -1 : 1; }
+        render();
+      });
+    });
+  }
+
+  function render(){
+    var filtered = getFiltered();
+    renderTable(filtered);
+  }
+
+  function loadData(headers, dataRows){
+    rawRows = dataRows;
+    mapping = {id:'CAMPUS', camp:'CAMPNAME', dist:'DISTNAME', rate:'RATING'};
+    applyMapping();
+  }
+
+  document.getElementById('searchBox').addEventListener('input', render);
+  document.getElementById('districtFilter').addEventListener('change', render);
+  document.getElementById('ratingFilter').addEventListener('change', render);
+  document.getElementById('levelFilter').addEventListener('change', render);
+
+  loadData(['CAMPUS','CAMPNAME','DISTNAME','RATING'], DEFAULT_DATA);
+})();
+</script>
+</body>
+</html>
