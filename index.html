@@ -765,418 +765,1042 @@
         { id: 87, category: "Weather", acs: "UA.III.A.K2", question: "In a TAF, 'FM' (From) indicates:", options: ["Rapid change in conditions", "Gradual change", "Temporary change"], answer: "Rapid change in conditions", explanation: "FM indicates a rapid/significant change occurring at that time.", img: null },
         { id: 88, category: "Weather", acs: "UA.III.A.K2", question: "In a TAF, 'BECMG' (Becoming) indicates:", options: ["Gradual change over time", "Rapid change", "Probability"], answer: "Gradual change over time", explanation: "BECMG indicates a gradual change over the specified period.", img: null },
         { id: 89, category: "Weather", acs: "UA.III.B.K1", question: "Low-level wind shear is most dangerous during:", options: ["Takeoff and Landing", "Cruise", "Hover"], answer: "Takeoff and Landing", explanation: "Sudden changes in lift near the ground can cause accidents.", img: null },
-        { id: 90, category: "Weather", acs: "UA.III.B.K1", question: "Dew point is:", options: ["Temperature at which air becomes saturated", "Temperature of the rain", "Freezing point"], answer: "Temperature at which air becomes saturated", explanation: "When Temp and Dew Point are close (within 3°C), expect fog or clouds.", img: null },
-        { id: 91, category: "Weather", acs: "UA.III.B.K1", question: "Standard temperature at sea level is:", options: ["15°C (59°F)", "0°C (32°F)", "20°C (68°F)"], answer: "15°C (59°F)", explanation: "Standard Day: 15°C and 29.92 Hg.", img: null },
-        { id: 92, category: "Weather", acs: "UA.III.B.K1", question: "What is a Microburst?", options: ["Intense downdraft < 2.5 miles wide", "Small tornado", "Gust of wind"], answer: "Intense downdraft < 2.5 miles wide", explanation: "Microbursts cause severe downdrafts and wind shear, very dangerous.", img: null },
-        { id: 93, category: "Weather", acs: "UA.III.B.K1", question: "Ceiling is defined as the lowest layer of:", options: ["Broken (BKN) or Overcast (OVC)", "Scattered (SCT)", "Few (FEW)"], answer: "Broken (BKN) or Overcast (OVC)", explanation: "A ceiling is the lowest layer of BKN or OVC clouds.", img: null },
-        { id: 94, category: "Weather", acs: "UA.III.B.K1", question: "Nimbus clouds indicate:", options: ["Rain/Precipitation", "Stability", "High altitude"], answer: "Rain/Precipitation", explanation: "Nimbus means rain (e.g., Cumulonimbus).", img: null },
-        { id: 95, category: "Weather", acs: "UA.III.B.K1", question: "Steam fog occurs when:", options: ["Cold, dry air moves over warm water", "Warm air moves over cold land", "Ground cools at night"], answer: "Cold, dry air moves over warm water", explanation: "Common in autumn over lakes (sea smoke).", img: null },
-        { id: 96, category: "Weather", acs: "UA.III.A.K2", question: "METAR 'SKC' means:", options: ["Sky Clear", "Sky Cloudy", "Smoke"], answer: "Sky Clear", explanation: "SKC = Sky Clear (human observation). CLR = Clear (automated).", img: null },
-        { id: 97, category: "Weather", acs: "UA.III.A.K2", question: "Does 'FEW' or 'SCT' constitute a ceiling?", options: ["No", "Yes", "Depends on height"], answer: "No", explanation: "Only BKN or OVC constitute a ceiling.", img: null },
-        { id: 98, category: "Weather", acs: "UA.III.B.K1", question: "The most dangerous icing type is:", options: ["Clear Ice", "Rime Ice", "Mixed Ice"], answer: "Clear Ice", explanation: "Clear ice is heavy, hard to see, and disrupts airflow significantly.", img: null },
-        { id: 99, category: "Weather", acs: "UA.III.B.K1", question: "What causes weather?", options: ["Uneven heating of the earth's surface", "Rotation of the earth", "Ocean currents"], answer: "Uneven heating of the earth's surface", explanation: "Solar heating differences drive circulation and weather patterns.", img: null },
-        { id: 100, category: "Weather", acs: "UA.III.B.K1", question: "Sea Breeze blows from:", options: ["Sea to Land (during day)", "Land to Sea", "North to South"], answer: "Sea to Land (during day)", explanation: "Land heats faster than water, rising air over land pulls cool air from the sea.", img: null },
+        { id: 90, category: "Weather", acs: "UA.III.B.K1", question: "Dew point is:", options: ["Temperature at which air becomes saturated", "Current air temperature", "Freezing point"], answer: "Temperature at which air becomes saturated", explanation: "When temperature drops to the dew point, water condenses, forming dew, fog, or clouds.", img: null },
+        { id: 91, category: "Weather", acs: "UA.III.B.K1", question: "If Temperature and Dew Point converge, what can you expect?", options: ["Fog or Clouds", "Clear skies", "High winds"], answer: "Fog or Clouds", explanation: "A small Temp-Dew Point spread means the air is near saturation.", img: null },
+        { id: 92, category: "Weather", acs: "UA.III.A.K2", question: "METAR 'P0002' means:", options: ["0.02 inches of precipitation in last hour", "Pressure 00.02", "Probability 2%"], answer: "0.02 inches of precipitation in last hour", explanation: "P followed by 4 digits indicates precipitation in hundredths of an inch.", img: null },
+        { id: 93, category: "Weather", acs: "UA.III.A.K2", question: "What does 'A2992' mean in a METAR?", options: ["Altimeter 29.92 inHg", "Altitude 2,992 ft", "Visibility 29.92"], answer: "Altimeter 29.92 inHg", explanation: "A stands for Altimeter setting in inches of mercury.", img: null },
+        { id: 94, category: "Weather", acs: "UA.III.A.K2", question: "What does 'TSRA' mean?", options: ["Thunderstorm with Rain", "Tropical Storm", "Tower Rain"], answer: "Thunderstorm with Rain", explanation: "TS = Thunderstorm, RA = Rain.", img: null },
+        { id: 95, category: "Weather", acs: "UA.III.A.K2", question: "What does 'BR' mean in a METAR?", options: ["Mist", "Broken Clouds", "Breeze"], answer: "Mist", explanation: "BR is the code for Mist (French 'Brume').", img: null },
+        { id: 96, category: "Weather", acs: "UA.III.B.K1", question: "A 'Temperature Inversion' results in:", options: ["Stable air, poor visibility", "Unstable air", "Thunderstorms"], answer: "Stable air, poor visibility", explanation: "An inversion traps pollutants and moisture near the surface, creating haze/fog.", img: null },
+        { id: 97, category: "Weather", acs: "UA.III.B.K1", question: "Which front moves the fastest?", options: ["Cold Front", "Warm Front", "Stationary Front"], answer: "Cold Front", explanation: "Cold fronts are dense and push under warm air, typically moving faster than warm fronts.", img: null },
+        { id: 98, category: "Weather", acs: "UA.III.B.K1", question: "Squall lines are associated with:", options: ["Fast-moving cold fronts", "Warm fronts", "High pressure"], answer: "Fast-moving cold fronts", explanation: "Squall lines are narrow bands of intense thunderstorms often ahead of cold fronts.", img: null },
+        { id: 99, category: "Weather", acs: "UA.III.A.K2", question: "TAF reports are valid for:", options: ["Usually 24 or 30 hours", "1 hour", "7 days"], answer: "Usually 24 or 30 hours", explanation: "Terminal Aerodrome Forecasts are generally issued 4 times daily and valid for 24/30 hours.", img: null },
+        { id: 100, category: "Weather", acs: "UA.III.A.K2", question: "A METAR is issued:", options: ["Hourly (or special)", "Daily", "Weekly"], answer: "Hourly (or special)", explanation: "METARs are routine observations issued hourly, plus SPECI reports for sudden changes.", img: null },
 
-        // --- PERFORMANCE / LOADING ---
-        { id: 101, category: "Performance", acs: "UA.IV.A.K1", question: "If the center of gravity (CG) is too far aft (back), the aircraft becomes:", options: ["Less stable and harder to recover from stall", "More stable", "Nose heavy"], answer: "Less stable and harder to recover from stall", explanation: "Aft CG makes the aircraft tail heavy, reducing stability and making stall recovery difficult.", img: null },
-        { id: 102, category: "Performance", acs: "UA.IV.A.K2", question: "When loading a drone with a camera, you must ensure:", options: ["It does not adversely affect the Center of Gravity", "It is taped securely", "It faces forward"], answer: "It does not adversely affect the Center of Gravity", explanation: "You must ensure the load is secure and does not upset the weight and balance (CG).", img: null },
-        { id: 103, category: "Performance", acs: "UA.IV.B.K1", question: "The four forces acting on an aircraft in flight are:", options: ["Lift, Weight, Thrust, Drag", "Lift, Gravity, Power, Friction", "Speed, Mass, Power, Drag"], answer: "Lift, Weight, Thrust, Drag", explanation: "These are the four aerodynamic forces.", img: null },
-        { id: 104, category: "Performance", acs: "UA.V.F.K2", question: "What happens to the battery in cold weather?", options: ["Capacity is reduced", "Capacity increases", "No effect"], answer: "Capacity is reduced", explanation: "Chemical reactions slow down in cold, reducing battery discharge rate and total capacity.", img: null },
-        { id: 105, category: "Performance", acs: "UA.IV.A.K1", question: "Load Factor increases during:", options: ["Turns / Maneuvers", "Straight and level flight", "Hovering"], answer: "Turns / Maneuvers", explanation: "Banking the aircraft increases the G-force (load factor) on the wings/rotors.", img: null },
-        { id: 106, category: "Performance", acs: "UA.IV.A.K1", question: "In a 60-degree bank, the load factor is:", options: ["2 Gs", "1 G", "1.5 Gs"], answer: "2 Gs", explanation: "At 60 degrees of bank, the effective weight of the aircraft doubles (2 Gs).", img: null },
-        { id: 107, category: "Performance", acs: "UA.I.B.K22", question: "Before every flight, the remote pilot must ensure the aircraft is:", options: ["In a condition for safe operation", "Registered", "Fully charged"], answer: "In a condition for safe operation", explanation: "This is the overarching requirement for preflight inspections.", img: null },
-        { id: 108, category: "Performance", acs: "UA.V.F.K2", question: "Lithium batteries should be stored:", options: ["In a cool, dry place", "Fully charged", "In the drone"], answer: "In a cool, dry place", explanation: "Batteries should be stored at storage voltage in a cool, safe environment.", img: null },
-        { id: 109, category: "Performance", acs: "UA.I.B.K20", question: "Who is responsible for the performance of the sUAS?", options: ["Remote Pilot in Command", "Visual Observer", "The Owner"], answer: "Remote Pilot in Command", explanation: "The Remote PIC is directly responsible for, and is the final authority as to the operation of that aircraft.", img: null },
-        { id: 110, category: "Performance", acs: "UA.IV.B.K1", question: "Exceeding the critical angle of attack causes a:", options: ["Stall", "Spin", "Dive"], answer: "Stall", explanation: "A stall occurs when the wing exceeds its critical angle of attack and smooth airflow is disrupted.", img: null },
-        { id: 111, category: "Performance", acs: "UA.IV.A.K1", question: "Forward CG (nose heavy) causes:", options: ["Higher stall speed, slower cruise", "Lower stall speed", "Instability"], answer: "Higher stall speed, slower cruise", explanation: "A nose-heavy aircraft is stable but flies slower and stalls at a higher speed due to increased drag/load.", img: null },
-        { id: 112, category: "Performance", acs: "UA.IV.A.K1", question: "If you increase weight, what happens to performance?", options: ["Decreased maneuverability and shorter flight time", "Increased speed", "Better stability"], answer: "Decreased maneuverability and shorter flight time", explanation: "Heavier aircraft require more power (draining battery) and turn slower.", img: null },
-        { id: 113, category: "Performance", acs: "UA.IV.B.K1", question: "To recover from a stall, you must:", options: ["Decrease Angle of Attack (nose down)", "Pull up", "Increase power only"], answer: "Decrease Angle of Attack (nose down)", explanation: "You must break the stall by lowering the nose to restore smooth airflow.", img: null },
-        { id: 114, category: "Performance", acs: "UA.IV.B.K1", question: "During a turn, the vertical component of lift:", options: ["Decreases", "Increases", "Stays same"], answer: "Decreases", explanation: "Lift is divided into vertical and horizontal. You must add power/pitch to maintain altitude.", img: null },
-        { id: 115, category: "Performance", acs: "UA.V.F.K2", question: "A damaged LiPo battery can cause:", options: ["In-flight fire", "Loss of link", "GPS failure"], answer: "In-flight fire", explanation: "Punctured or swollen LiPos can spontaneously combust.", img: null },
+        // --- LOADING & PERFORMANCE ---
+        { id: 101, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "If the Center of Gravity (CG) is too far aft, the aircraft will be:", options: ["Unstable and difficult to recover from stalls", "More stable", "Nose heavy"], answer: "Unstable and difficult to recover from stalls", explanation: "An aft CG makes the aircraft less stable and can make stall recovery impossible.", img: null },
+        { id: 102, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "If the CG is too far forward, the aircraft will:", options: ["Require more lift/drag and may lack elevator authority", "Be unstable", "Fly faster"], answer: "Require more lift/drag and may lack elevator authority", explanation: "Forward CG creates a nose-heavy condition. The tail must push down more, increasing effective weight/drag.", img: null },
+        { id: 103, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "The 'Moment' of a load is calculated by:", options: ["Weight x Arm", "Weight / Arm", "Arm / Weight"], answer: "Weight x Arm", explanation: "Moment = Weight × Arm (distance from datum).", img: null },
+        { id: 104, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "High Density Altitude causes:", options: ["Reduced propeller and wing efficiency", "Increased lift", "Better battery life"], answer: "Reduced propeller and wing efficiency", explanation: "Thin air at high density altitude reduces thrust and lift.", img: null },
+        { id: 105, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "What factors increase Density Altitude?", options: ["High Temp, High Humidity, High Elevation", "Low Temp, Low Elevation", "High Pressure"], answer: "High Temp, High Humidity, High Elevation", explanation: "Hot, High, Humid = High Density Altitude (poor performance).", img: null },
+        { id: 106, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "Adding weight to a drone will:", options: ["Increase stall speed and decrease flight time", "Decrease stall speed", "Increase flight time"], answer: "Increase stall speed and decrease flight time", explanation: "More weight requires more lift/thrust, consuming more power and increasing stall speed for fixed wings.", img: null },
+        { id: 107, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "Battery performance is significantly reduced by:", options: ["Cold Temperatures", "Warm Temperatures", "High Humidity"], answer: "Cold Temperatures", explanation: "Lithium batteries lose voltage/capacity in cold weather.", img: null },
+        { id: 108, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "What is 'Load Factor'?", options: ["Ratio of lift to weight (G-force)", "Cargo weight", "Battery capacity"], answer: "Ratio of lift to weight (G-force)", explanation: "Load factor is the ratio of aerodynamic load (lift) to gross weight. 2G = twice the weight.", img: null },
+        { id: 109, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "A 60-degree bank turn produces approximately how much load factor?", options: ["2 Gs", "1.4 Gs", "3 Gs"], answer: "2 Gs", explanation: "At 60 degrees of bank, load factor doubles (2G), increasing stall speed.", img: null },
+        { id: 110, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "Increased load factor causes stall speed to:", options: ["Increase", "Decrease", "Stay same"], answer: "Increase", explanation: "The wing must produce more lift to support the effective weight, so it stalls at a higher speed.", img: null },
+        { id: 111, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "Best practice for LiPo battery storage is:", options: ["Storage charge (~50-60%) in cool place", "Fully charged", "Fully drained"], answer: "Storage charge (~50-60%) in cool place", explanation: "Storing LiPos at full charge or empty damages them. Use storage voltage (~3.8V/cell).", img: null },
+        { id: 112, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "A damaged/swollen LiPo battery should be:", options: ["Removed from service and disposed safely", "Charged slowly", "Used until dead"], answer: "Removed from service and disposed safely", explanation: "Swelling indicates internal damage and fire risk.", img: null },
+        { id: 113, category: "Loading & Performance", acs: "UA.IV.A.K2", question: "Which environmental factor affects battery voltage?", options: ["Temperature", "Wind direction", "Cloud cover"], answer: "Temperature", explanation: "Cold weather causes voltage sag in lithium batteries.", img: null },
+        { id: 114, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "Manufacturer weight limits should be:", options: ["Strictly followed", "Exceeded by 10%", "Ignored for short flights"], answer: "Strictly followed", explanation: "Operating outside manufacturer limits can compromise flight control and violates safe operation requirements.", img: null },
+        { id: 115, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "A 'Datum' is:", options: ["Reference point for measuring arms", "Total weight", "CG location"], answer: "Reference point for measuring arms", explanation: "The Datum is the imaginary vertical plane from which all horizontal distances (arms) are measured.", img: null },
+        { id: 116, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "To calculate CG location:", options: ["Total Moment / Total Weight", "Total Weight / Total Moment", "Weight x Arm"], answer: "Total Moment / Total Weight", explanation: "CG = Sum of Moments divided by Total Weight.", img: null },
+        { id: 117, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "A drone operated above its maximum takeoff weight may:", options: ["Fail to maintain altitude or control", "Fly faster", "Have better stability"], answer: "Fail to maintain altitude or control", explanation: "Excess weight can overload motors and reduce control authority.", img: null },
+        { id: 118, category: "Loading & Performance", acs: "UA.IV.A.K2", question: "Wind affects battery consumption by:", options: ["Increasing power needed to hold position/fly upwind", "Decreasing power usage", "No effect"], answer: "Increasing power needed to hold position/fly upwind", explanation: "Motors must work harder against wind, increasing current draw.", img: null },
+        { id: 119, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "An aft CG generally results in:", options: ["Lower stability", "Higher stability", "No effect"], answer: "Lower stability", explanation: "Aft CG reduces the restoring tendency of the aircraft, making it pitch-sensitive.", img: null },
+        { id: 120, category: "Loading & Performance", acs: "UA.IV.A.K1", question: "The term 'Arm' refers to:", options: ["Distance from datum to weight", "Weight of item", "Center of lift"], answer: "Distance from datum to weight", explanation: "Arm is the horizontal distance from the reference datum to the center of gravity of an item.", img: null },
 
-        // --- OPERATIONS / PHYSIOLOGY / ADM ---
-        { id: 116, category: "Operations", acs: "UA.V.E.K1", question: "What is 'CRM'?", options: ["Crew Resource Management", "Certified Remote Manager", "Crew Radio Method"], answer: "Crew Resource Management", explanation: "CRM is the effective use of all resources (people, info, hardware) to ensure safety.", img: null },
-        { id: 117, category: "Operations", acs: "UA.V.D.K3", question: "Hyperventilation is caused by:", options: ["Stress/Anxiety leading to insufficient CO2", "Lack of Oxygen", "Carbon Monoxide"], answer: "Stress/Anxiety leading to insufficient CO2", explanation: "Breathing too fast removes too much CO2. Treatment: Slow breathing or talk aloud.", img: null },
-        { id: 118, category: "Operations", acs: "UA.V.D.K3", question: "Acute fatigue is:", options: ["Short term (tired after a long day)", "Long term burnout", "Disease related"], answer: "Short term (tired after a long day)", explanation: "Acute fatigue is remedied by a good night's sleep. Chronic fatigue requires medical help.", img: null },
-        { id: 119, category: "Operations", acs: "UA.V.E.K2", question: "What is the 'IMSAFE' checklist?", options: ["Illness, Medication, Stress, Alcohol, Fatigue, Emotion", "Inspection, Maintenance...", "Instrument, Map..."], answer: "Illness, Medication, Stress, Alcohol, Fatigue, Emotion", explanation: "A self-assessment tool for pilot physical/mental readiness.", img: null },
-        { id: 120, category: "Operations", acs: "UA.V.E.K5", question: "Which hazardous attitude is 'I can do it' (taking risks)?", options: ["Macho", "Invulnerability", "Impulsivity"], answer: "Macho", explanation: "Macho: 'I can do it' / Trying to impress. Antidote: Taking chances is foolish.", img: null },
-        { id: 121, category: "Operations", acs: "UA.V.E.K5", question: "Which hazardous attitude is 'What's the use?'", options: ["Resignation", "Anti-authority", "Impulsivity"], answer: "Resignation", explanation: "Resignation: Feeling helpless. Antidote: I am not helpless, I can make a difference.", img: null },
-        { id: 122, category: "Operations", acs: "UA.V.E.K5", question: "Which hazardous attitude is 'It won't happen to me'?", options: ["Invulnerability", "Macho", "Impulsivity"], answer: "Invulnerability", explanation: "Antidote: It could happen to me.", img: null },
-        { id: 123, category: "Operations", acs: "UA.V.E.K5", question: "Which hazardous attitude is 'Do it quickly'?", options: ["Impulsivity", "Anti-authority", "Macho"], answer: "Impulsivity", explanation: "Antidote: Not so fast, think first.", img: null },
-        { id: 124, category: "Operations", acs: "UA.V.E.K5", question: "Which hazardous attitude is 'Don't tell me what to do'?", options: ["Anti-authority", "Macho", "Resignation"], answer: "Anti-authority", explanation: "Antidote: Follow the rules. They are usually right.", img: null },
-        { id: 125, category: "Operations", acs: "UA.I.B.K10", question: "Who can be a Visual Observer?", options: ["Anyone capable of maintaining VLOS", "Only a certified pilot", "Only the owner"], answer: "Anyone capable of maintaining VLOS", explanation: "There is no certificate for a VO, but they must be competent and briefed.", img: null },
-        { id: 126, category: "Operations", acs: "UA.V.C.K1", question: "Scanning at night should use:", options: ["Off-center viewing", "Direct viewing", "Sunglasses"], answer: "Off-center viewing", explanation: "Use peripheral vision (rods) at night. Look 5-10 degrees off center.", img: null },
-        { id: 127, category: "Operations", acs: "UA.V.C.K1", question: "Autokinesis is:", options: ["Stationary light appears to move when stared at", "False horizon", "Flicker vertigo"], answer: "Stationary light appears to move when stared at", explanation: "At night, a static light may seem to move if you stare at it. Don't stare.", img: null },
-        { id: 128, category: "Operations", acs: "UA.V.E.K1", question: "The 'DECIDE' model is for:", options: ["Aeronautical Decision Making", "Weather checking", "Landing"], answer: "Aeronautical Decision Making", explanation: "Detect, Estimate, Choose, Identify, Do, Evaluate.", img: null },
-        { id: 129, category: "Operations", acs: "UA.V.E.K2", question: "The 'PAVE' checklist covers:", options: ["Pilot, Aircraft, EnVironment, External Pressures", "Pilot, Altitude, Velocity, Energy", "People, Area, Visuals, Emergency"], answer: "Pilot, Aircraft, EnVironment, External Pressures", explanation: "Risk assessment tool for the flight.", img: null },
-        { id: 130, category: "Operations", acs: "UA.V.F.K1", question: "If you lose GPS, you should:", options: ["Fly manually (ATTI mode)", "Press Return to Home", "Wait"], answer: "Fly manually (ATTI mode)", explanation: "If GPS fails, RTH may not work. You must be able to fly manually.", img: null },
-        { id: 131, category: "Operations", acs: "UA.V.F.K1", question: "A 'Lost Link' procedure should be:", options: ["Pre-programmed (RTH)", "Panic", "Land immediately where it is"], answer: "Pre-programmed (RTH)", explanation: "The drone should automatically execute a safe procedure (like Return to Home) on link loss.", img: null },
-        { id: 132, category: "Operations", acs: "UA.I.B.K6", question: "Can you drop objects from a drone?", options: ["Yes, if it creates no undue hazard", "No, never", "Only feathers"], answer: "Yes, if it creates no undue hazard", explanation: "Dropping objects is allowed if you ensure it doesn't hurt anyone or damage property.", img: null },
-        { id: 133, category: "Operations", acs: "UA.I.A.K4", question: "When are you required to report an accident?", options: ["Serious injury or >$500 damage", "Any crash", "Only if drone is destroyed"], answer: "Serious injury or >$500 damage", explanation: "Report if: Serious injury (hospitalization) OR damage >$500 (excluding drone cost).", img: null },
-        { id: 134, category: "Operations", acs: "UA.V.C.K1", question: "How long does it take for eyes to adapt to darkness?", options: ["30 minutes", "5 minutes", "1 hour"], answer: "30 minutes", explanation: "Dark adaptation takes about 30 minutes. Avoid bright lights.", img: null },
-        { id: 135, category: "Operations", acs: "UA.V.E.K3", question: "What is 'Situational Awareness'?", options: ["Accurate perception of operational conditions", "Knowing where north is", "Listening to radio"], answer: "Accurate perception of operational conditions", explanation: "Knowing what is happening around you.", img: null },
-        { id: 136, category: "Operations", acs: "UA.V.F.K1", question: "A 'Fly-away' is:", options: ["Uncontrolled flight", "A controlled landing", "A type of maneuver"], answer: "Uncontrolled flight", explanation: "When the drone stops responding and flies off (often interference or GPS error).", img: null },
-        { id: 137, category: "Operations", acs: "UA.II.A.K3", question: "Which resource provides the most up-to-date info on TFRs?", options: ["FSS (Flight Service Station) / FAA website", "Last year's chart", "Google Maps"], answer: "FSS (Flight Service Station) / FAA website", explanation: "Always check official sources like 1800wxbrief or FAA drone zone/B4UFLY.", img: null },
-        { id: 138, category: "Operations", acs: "UA.I.B.K11", question: "Can a remote pilot operate more than one drone at a time?", options: ["No", "Yes", "Up to 5"], answer: "No", explanation: "Part 107 prohibits operating multiple sUAS simultaneously (swarming) without a waiver.", img: null },
-        { id: 139, category: "Operations", acs: "UA.I.B.K21", question: "The maximum height above a structure (within 400ft radius) is:", options: ["400 feet above the structure", "400 feet MSL", "500 feet AGL"], answer: "400 feet above the structure", explanation: "You can fly 400ft above the top of the tower.", img: null },
-        { id: 140, category: "Operations", acs: "UA.V.D.K4", question: "Dehydration can cause:", options: ["Dizziness, headache, fatigue", "Better vision", "Hyperventilation"], answer: "Dizziness, headache, fatigue", explanation: "Drink water. Dehydration impairs judgement.", img: null },
-        { id: 141, category: "Operations", acs: "UA.II.A.K2", question: "A 'VOR' is used for:", options: ["Radio Navigation (Manned)", "Drone control", "Weather"], answer: "Radio Navigation (Manned)", explanation: "VOR stations are for manned aircraft nav. You see them on charts (Compass rose).", img: null },
-        { id: 142, category: "Operations", acs: "UA.II.A.K3", question: "IR (Instrument Routes) MTRs are flown:", options: ["Regardless of weather (IFR)", "Only in good weather", "Only at night"], answer: "Regardless of weather (IFR)", explanation: "IR = Instrument Route. VR = Visual Route.", img: null },
-        { id: 143, category: "Operations", acs: "UA.V.D.K3", question: "How do you avoid 'flicker vertigo'?", options: ["Don't look through propeller blades at light", "Close eyes", "Wear green glasses"], answer: "Don't look through propeller blades at light", explanation: "Flashing lights (4-20Hz) can cause nausea or seizures.", img: null },
-        { id: 144, category: "Operations", acs: "UA.I.B.K1", question: "Who can grant a Waiver?", options: ["The FAA", "ATC", "Police"], answer: "The FAA", explanation: "Waivers (e.g., for BVLOS) are issued by the FAA, not local ATC.", img: null },
-        { id: 145, category: "Operations", acs: "UA.II.B.K2", question: "A 'NOTAM' is a:", options: ["Notice to Air Missions", "Notice to Air Men", "Note of Time and Mass"], answer: "Notice to Air Missions", explanation: "Provides time-critical info (closed runways, tower lights out, etc.).", img: null },
-        
-        // --- EXTRA PRACTICE MIX ---
-        { id: 146, category: "Mix", acs: "UA.II.A.K2", question: "Chart Supplement provides:", options: ["Detailed airport info", "Weather forecast", "Rules"], answer: "Detailed airport info", explanation: "It lists hours, frequencies, runways, and remarks for airports.", img: null },
-        { id: 147, category: "Mix", acs: "UA.V.B.K1", question: "Frequency 122.9 is often:", options: ["MULTICOM", "Emergency", "Military"], answer: "MULTICOM", explanation: "Used at airports with no Tower and no specific CTAF listed.", img: null },
-        { id: 148, category: "Mix", acs: "UA.II.A.K2", question: "Latitude lines run:", options: ["Parallel to Equator (East/West)", "Pole to Pole", "Vertical"], answer: "Parallel to Equator (East/West)", explanation: "Latitude = Ladder (Steps go up/down). Measures North/South distance.", img: null },
-        { id: 149, category: "Mix", acs: "UA.II.A.K2", question: "Longitude lines run:", options: ["Pole to Pole (North/South)", "Parallel to Equator", "Horizontal"], answer: "Pole to Pole (North/South)", explanation: "Longitude (Long way). Measures East/West distance.", img: null },
-        { id: 150, category: "Mix", acs: "UA.II.A.K2", question: "Each tick mark on a Lat/Long line represents:", options: ["1 Minute", "1 Degree", "10 Seconds"], answer: "1 Minute", explanation: "There are 60 minutes in a degree. Ticks often mark minutes.", img: null },
-        { id: 151, category: "Mix", acs: "UA.II.A.K2", question: "A Blue airport symbol means:", options: ["Control Tower (Controlled)", "No Tower", "Private"], answer: "Control Tower (Controlled)", explanation: "Blue = Control Tower. Magenta = Non-towered.", img: null },
-        { id: 152, category: "Mix", acs: "UA.II.A.K2", question: "A Magenta airport symbol means:", options: ["No Control Tower", "Controlled", "Military"], answer: "No Control Tower", explanation: "Magenta = Non-towered (uncontrolled) airport.", img: null },
-        { id: 153, category: "Mix", acs: "UA.II.A.K2", question: "VFR cruising altitudes (manned) start at:", options: ["3,000 ft AGL", "1,000 ft AGL", "18,000 ft"], answer: "3,000 ft AGL", explanation: "Hemispheric rule (East is Odd, West is Even) starts > 3000 AGL.", img: null },
-        { id: 154, category: "Mix", acs: "UA.I.B.K21", question: "Guy wires on towers:", options: ["Extend outward and are hard to see", "Are always lighted", "Are painted red"], answer: "Extend outward and are hard to see", explanation: "Stay 2000ft horizontally from towers to avoid invisible guy wires.", img: null },
-        { id: 155, category: "Mix", acs: "UA.V.D.K1", question: "Over-the-counter (OTC) meds:", options: ["Can affect judgement", "Are always safe", "Improve flying"], answer: "Can affect judgement", explanation: "Antihistamines/decongestants can cause drowsiness. Check 'Do not operate machinery'.", img: null },
-        { id: 156, category: "Mix", acs: "UA.I.B.K2", question: "A remote pilot must have their certificate:", options: ["Physical card accessible during flight", "At home", "Digital copy only"], answer: "Physical card accessible during flight", explanation: "You must have your certificate physically available to show FAA/Law enforcement.", img: null },
-        { id: 157, category: "Mix", acs: "UA.I.B.K1", question: "Can you fly BVLOS (Beyond Visual Line of Sight)?", options: ["Only with a Waiver", "Yes, with FPV goggles", "Never"], answer: "Only with a Waiver", explanation: "BVLOS requires a specific waiver. FPV requires a VO.", img: null },
-        { id: 158, category: "Mix", acs: "UA.I.B.K2", question: "Registration markings must be:", options: ["On the outside, durable, legible", "Inside battery compartment", "Temporary"], answer: "On the outside, durable, legible", explanation: "Must be visible without tools (though inside battery hatch used to be allowed, rule changed).", img: null },
-        { id: 159, category: "Mix", acs: "UA.I.A.K1", question: "Registration is valid for:", options: ["3 years", "1 year", "Lifetime"], answer: "3 years", explanation: "Re-register every 3 years.", img: null },
-        { id: 160, category: "Mix", acs: "UA.I.A.K1", question: "If you sell your drone:", options: ["Remove your registration number", "Keep it on", "Transfer it"], answer: "Remove your registration number", explanation: "Registration belongs to the pilot (for hobby/Part 107 general) or aircraft. Usually, remove it.", img: null },
-        { id: 161, category: "Mix", acs: "UA.I.A.K1", question: "Can a 15-year-old take the test?", options: ["No, must be 16", "Yes, but can't get cert", "Yes"], answer: "No, must be 16", explanation: "Minimum age to test is 16.", img: null },
-        { id: 162, category: "Mix", acs: "UA.I.B.K15", question: "Taking a photo of a private property:", options: ["Is generally legal from public airspace", "Is trespassing", "Is illegal"], answer: "Is generally legal from public airspace", explanation: "Airspace is public, but privacy laws vary. Generally legal, but be respectful.", img: null },
-        { id: 163, category: "Mix", acs: "UA.I.B.K10", question: "Does a VO need a Part 107 license?", options: ["No", "Yes", "Only for night ops"], answer: "No", explanation: "Visual Observers do not need a license.", img: null },
-        { id: 164, category: "Mix", acs: "UA.III.B.K1", question: "If humidity is 100%, expect:", options: ["Fog/Clouds", "Clear sky", "Wind"], answer: "Fog/Clouds", explanation: "100% humidity means air is saturated.", img: null },
-        { id: 165, category: "Mix", acs: "UA.III.B.K1", question: "Standard Lapse Rate (temperature) is:", options: ["-2°C per 1000 ft", "-5°C per 1000 ft", "No change"], answer: "-2°C per 1000 ft", explanation: "Air gets colder as you go up (approx 2 degrees C per 1000ft).", img: null },
-        { id: 166, category: "Mix", acs: "UA.III.B.K1", question: "Coriolis force causes wind to:", options: ["Deflect to the right in Northern Hemisphere", "Deflect left", "Stop"], answer: "Deflect to the right in Northern Hemisphere", explanation: "Earth's rotation affects wind direction.", img: null },
-        { id: 167, category: "Mix", acs: "UA.V.F.K1", question: "When flying over water, be aware of:", options: ["Depth perception issues / glare", "Sharks", "Wind shear"], answer: "Depth perception issues / glare", explanation: "Water makes judging altitude difficult.", img: null },
-        { id: 168, category: "Mix", acs: "UA.V.C.K1", question: "Birds usually:", options: ["Dive when threatened", "Climb", "Fly straight"], answer: "Dive when threatened", explanation: "You should climb to avoid birds, as they tend to dive.", img: null },
-        { id: 169, category: "Mix", acs: "UA.I.A.K1", question: "A 'Part 107' license is officially called:", options: ["Remote Pilot Certificate with sUAS rating", "Drone License", "UAV Permit"], answer: "Remote Pilot Certificate with sUAS rating", explanation: "That is the official title.", img: null },
-        { id: 170, category: "Mix", acs: "UA.V.D.K1", question: "If you have a physical condition that impairs safety:", options: ["Do not fly", "Fly cautiously", "Ask a friend"], answer: "Do not fly", explanation: "Self-grounding is required.", img: null },
-        { id: 171, category: "Mix", acs: "UA.II.A.K1", question: "Class A airspace starts at:", options: ["18,000 ft MSL", "10,000 ft MSL", "Surface"], answer: "18,000 ft MSL", explanation: "Class A is high altitude (18k to 60k), usually IFR only. Drones not allowed.", img: null },
-        { id: 172, category: "Mix", acs: "UA.II.A.K1", question: "The floor of Class B is typically:", options: ["Surface (at center)", "1000 ft", "2000 ft"], answer: "Surface (at center)", explanation: "Class B usually goes Surface to 10,000ft.", img: null },
-        { id: 173, category: "Mix", acs: "UA.I.B.K23", question: "Is a transponder required in Class D?", options: ["No", "Yes", "Sometimes"], answer: "No", explanation: "Transponder not typically required in Class D (unlike B and C).", img: null },
-        { id: 174, category: "Mix", acs: "UA.I.C.K2", question: "Flying under the influence of drugs/alcohol is:", options: ["Prohibited", "Allowed if <0.04%", "Allowed in emergencies"], answer: "Prohibited", explanation: "Strictly prohibited.", img: null },
-        { id: 175, category: "Mix", acs: "UA.I.A.K1", question: "How long is a temporary certificate valid?", options: ["120 days", "30 days", "60 days"], answer: "120 days", explanation: "The paper temporary cert is good for 120 days.", img: null },
-        { id: 176, category: "Mix", acs: "UA.I.B.K9", question: "Can you fly at night without lights?", options: ["No", "Yes", "Only in rural areas"], answer: "No", explanation: "Anti-collision lights are mandatory for night ops.", img: null },
-        { id: 177, category: "Mix", acs: "UA.I.B.K9", question: "Civil Twilight is:", options: ["30 mins before sunrise / 30 mins after sunset", "1 hour after sunset", "Pitch black"], answer: "30 mins before sunrise / 30 mins after sunset", explanation: "You can fly during civil twilight with lights.", img: null },
-        { id: 178, category: "Mix", acs: "UA.III.A.K2", question: "A TAF is valid for:", options: ["24 or 30 hours", "6 hours", "1 hour"], answer: "24 or 30 hours", explanation: "Terminal Aerodrome Forecast covers a longer period than METAR.", img: null },
-        { id: 179, category: "Mix", acs: "UA.I.B.K20", question: "Lending your drone to a friend:", options: ["You are responsible if you are PIC", "They are responsible", "No one is"], answer: "You are responsible if you are PIC", explanation: "If you act as PIC, you are responsible.", img: null },
-        { id: 180, category: "Mix", acs: "UA.I.B.K11", question: "Operating multiple drones (Swarm):", options: ["Requires waiver", "Allowed", "Allowed if < 0.55lbs"], answer: "Requires waiver", explanation: "One pilot, one drone (unless waiver).", img: null },
-        { id: 181, category: "Mix", acs: "UA.II.A.K1", question: "A dashed magenta line indicates Class E starting at:", options: ["Surface", "700 ft", "1200 ft"], answer: "Surface", explanation: "Dashed magenta = Class E surface area.", img: null },
-        { id: 182, category: "Mix", acs: "UA.II.A.K1", question: "Shaded Magenta indicates Class E starting at:", options: ["700 ft AGL", "1200 ft AGL", "Surface"], answer: "700 ft AGL", explanation: "Shaded Magenta = 700ft floor.", img: null },
-        { id: 183, category: "Mix", acs: "UA.II.A.K1", question: "Shaded Blue indicates Class E starting at:", options: ["1200 ft AGL", "700 ft AGL", "Surface"], answer: "1200 ft AGL", explanation: "Shaded Blue = 1200ft floor.", img: null },
-        { id: 184, category: "Mix", acs: "UA.II.A.K2", question: "Zipper line on a chart indicates:", options: ["Alert area", "Altitude change", "Floor of Class E change"], answer: "Altitude change", explanation: "Often marks where floor of Class E changes (e.g., 700 to 1200).", img: null },
-        { id: 185, category: "Mix", acs: "UA.II.A.K2", question: "Blue numbers on chart (e.g., 45):", options: ["Maximum Elevation Figure (MEF)", "Speed limit", "Radio freq"], answer: "Maximum Elevation Figure (MEF)", explanation: "Large blue numbers indicate height of highest obstacle in that quadrangle (in hundreds of feet).", img: null },
-        { id: 186, category: "Mix", acs: "UA.V.C.K1", question: "Proper scanning technique:", options: ["Left to right, 10 degree sectors", "Up and down", "Stare at center"], answer: "Left to right, 10 degree sectors", explanation: "Systematic scanning.", img: null },
-        { id: 187, category: "Mix", acs: "UA.I.B.K22", question: "Before flight, check:", options: ["Notams, Weather, Aircraft", "Email", "News"], answer: "Notams, Weather, Aircraft", explanation: "Preflight action.", img: null },
-        { id: 188, category: "Mix", acs: "UA.III.A.K3", question: "A 'SIGMET' advises of:", options: ["Severe weather (all aircraft)", "Light rain", "Traffic"], answer: "Severe weather (all aircraft)", explanation: "Significant Meteorological Information (icing, turbulence, ash).", img: null },
-        { id: 189, category: "Mix", acs: "UA.III.A.K3", question: "A 'AIRMET' advises of:", options: ["Weather hazardous to small aircraft", "Severe weather", "Clear skies"], answer: "Weather hazardous to small aircraft", explanation: "Airman's Meteorological Information (less severe than Sigmet).", img: null },
-        { id: 190, category: "Mix", acs: "UA.III.B.K1", question: "Convective Sigmet implies:", options: ["Thunderstorms/Tornadoes", "Fog", "Wind"], answer: "Thunderstorms/Tornadoes", explanation: "Severe convective activity.", img: null },
-        { id: 191, category: "Mix", acs: "UA.III.B.K1", question: "Squall line is:", options: ["Band of thunderstorms", "Line of birds", "Fog bank"], answer: "Band of thunderstorms", explanation: "Narrow band of active thunderstorms.", img: null },
-        { id: 192, category: "Mix", acs: "UA.I.B.K8", question: "Which is true about alcohol?", options: ["It affects judgement before physical ability", "Physical goes first", "No effect"], answer: "It affects judgement before physical ability", explanation: "Cognitive functions decline first.", img: null },
-        { id: 193, category: "Mix", acs: "UA.V.F.K2", question: "Most sUAS batteries are:", options: ["LiPo (Lithium Polymer)", "NiCad", "Lead Acid"], answer: "LiPo (Lithium Polymer)", explanation: "High energy density.", img: null },
-        { id: 194, category: "Mix", acs: "UA.V.F.K1", question: "GPS satellites needed for 3D position:", options: ["4", "3", "2"], answer: "4", explanation: "4 satellites required for Lat, Long, and Altitude.", img: null },
-        { id: 195, category: "Mix", acs: "UA.V.F.K1", question: "Loss of GPS leads to:", options: ["Drift (ATTI mode)", "Crash", "RTH"], answer: "Drift (ATTI mode)", explanation: "Drone will drift with wind.", img: null },
-        { id: 196, category: "Mix", acs: "UA.V.F.K1", question: "Interference can be caused by:", options: ["Metal, Wifi, Magnetic fields", "Clouds", "Birds"], answer: "Metal, Wifi, Magnetic fields", explanation: "Reinforced concrete, towers, power lines.", img: null },
-        { id: 197, category: "Mix", acs: "UA.V.F.K1", question: "Return to Home altitude should be set:", options: ["Higher than obstacles", "Lowest possible", "100 ft"], answer: "Higher than obstacles", explanation: "Ensure RTH height clears trees/buildings.", img: null },
-        { id: 198, category: "Mix", acs: "UA.V.F.K1", question: "Fail-safe refers to:", options: ["Auto-procedure on error (Link loss)", "Parachute", "Bumper"], answer: "Auto-procedure on error (Link loss)", explanation: "System behavior when things go wrong.", img: null },
-        { id: 199, category: "Mix", acs: "UA.I.A.K4", question: "First person to call in an emergency:", options: ["911 / ATC if required", "Mom", "FAA"], answer: "911 / ATC if required", explanation: "Prioritize safety.", img: null },
-        { id: 200, category: "Mix", acs: "UA.I.A.K1", question: "The Part 107 test has how many questions?", options: ["60", "100", "50"], answer: "60", explanation: "The actual exam is 60 multiple choice questions.", img: null },
-        { id: 201, category: "Mix", acs: "UA.I.A.K1", question: "Passing score for Part 107 is:", options: ["70%", "80%", "100%"], answer: "70%", explanation: "You must get 70% to pass.", img: null },
-        { id: 202, category: "Mix", acs: "UA.I.B.K8", question: "Maximum blood alcohol:", options: ["0.04%", "0.08%", "0.02%"], answer: "0.04%", explanation: "Stricter than driving.", img: null },
-        { id: 203, category: "Mix", acs: "UA.I.B.K8", question: "Time to wait after alcohol:", options: ["8 hours", "4 hours", "24 hours"], answer: "8 hours", explanation: "Bottle to Throttle.", img: null },
-        { id: 204, category: "Mix", acs: "UA.I.B.K9", question: "Anti-collision lights must be visible for:", options: ["3 Statute Miles", "1 Mile", "5 Miles"], answer: "3 Statute Miles", explanation: "For night/twilight ops.", img: null },
-        { id: 205, category: "Mix", acs: "UA.V.B.K3", question: "Stationary front symbol:", options: ["Alternating red circles and blue triangles", "Blue triangles", "Red circles"], answer: "Alternating red circles and blue triangles", explanation: "Opposing sides.", img: null },
-        
-        // --- NEW SECTIONAL CHART QUESTIONS (FIGURE 25) ---
-        { 
-            id: 206, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Figure 25) What is the floor of Class E airspace surrounding the private airport 'Cooperstown'?", 
-            options: ["700 feet AGL", "1200 feet AGL", "Surface"], 
-            answer: "700 feet AGL", 
-            explanation: "The shaded magenta line indicates Class E airspace begins at 700 feet AGL.", 
+        // --- OPERATIONS ---
+        { id: 121, category: "Operations", acs: "UA.V.A.K2", question: "'Hyperventilation' is caused by:", options: ["Excessive breathing (loss of CO2)", "Lack of oxygen", "High altitude"], answer: "Excessive breathing (loss of CO2)", explanation: "Rapid breathing lowers CO2 levels. Treatment: slow breathing, talk aloud, breathe into bag if appropriate.", img: null },
+        { id: 122, category: "Operations", acs: "UA.V.A.K2", question: "Symptoms of Hyperventilation can be similar to:", options: ["Hypoxia", "Dehydration", "Motion sickness"], answer: "Hypoxia", explanation: "Both can cause dizziness, tingling, and confusion. If at altitude, descend and breathe normally.", img: null },
+        { id: 123, category: "Operations", acs: "UA.V.A.K2", question: "Alcohol affects pilots by:", options: ["Impairing judgment and reaction time", "Improving confidence safely", "No effect after 4 hours"], answer: "Impairing judgment and reaction time", explanation: "Even small amounts of alcohol degrade vision, judgment, and coordination.", img: null },
+        { id: 124, category: "Operations", acs: "UA.V.A.K2", question: "'Get-there-itis' is an example of:", options: ["External Pressure", "Resignation", "Machismo"], answer: "External Pressure", explanation: "The desire to complete a mission despite risks is driven by external/internal pressure to arrive.", img: null },
+        { id: 125, category: "Operations", acs: "UA.V.A.K2", question: "The 'IMSAFE' checklist includes:", options: ["Illness, Medication, Stress, Alcohol, Fatigue, Emotion", "Inspection, Maintenance, Safety, Airspace, Fuel, Equipment", "Instrument, Map, Signal, Altitude, Flight, Emergency"], answer: "Illness, Medication, Stress, Alcohol, Fatigue, Emotion", explanation: "IMSAFE is a personal readiness checklist for pilots.", img: null },
+        { id: 126, category: "Operations", acs: "UA.V.A.K2", question: "The 'PAVE' checklist includes:", options: ["Pilot, Aircraft, enVironment, External pressures", "Plan, Act, Verify, Execute", "Pilot, Airspace, Visibility, Equipment"], answer: "Pilot, Aircraft, enVironment, External pressures", explanation: "PAVE is used for risk management before flight.", img: null },
+        { id: 127, category: "Operations", acs: "UA.V.A.K2", question: "The DECIDE model is used for:", options: ["Aeronautical Decision Making", "Battery calculation", "Weather forecasting"], answer: "Aeronautical Decision Making", explanation: "Detect, Estimate, Choose, Identify, Do, Evaluate.", img: null },
+        { id: 128, category: "Operations", acs: "UA.V.A.K2", question: "The hazardous attitude 'Macho' has the antidote:", options: ["Taking chances is foolish", "It could happen to me", "Follow the rules"], answer: "Taking chances is foolish", explanation: "Macho: 'I can do it.' Antidote: 'Taking chances is foolish.'", img: null },
+        { id: 129, category: "Operations", acs: "UA.V.A.K2", question: "The hazardous attitude 'Invulnerability' antidote is:", options: ["It could happen to me", "Taking chances is foolish", "Not so fast"], answer: "It could happen to me", explanation: "Invulnerability: 'It won't happen to me.' Antidote: 'It could happen to me.'", img: null },
+        { id: 130, category: "Operations", acs: "UA.V.A.K2", question: "The hazardous attitude 'Anti-authority' antidote is:", options: ["Follow the rules; they are usually right", "It could happen to me", "I am not helpless"], answer: "Follow the rules; they are usually right", explanation: "Anti-authority: 'Don't tell me.' Antidote: 'Follow the rules. They are usually right.'", img: null },
+        { id: 131, category: "Operations", acs: "UA.V.A.K2", question: "The hazardous attitude 'Impulsivity' antidote is:", options: ["Not so fast; think first", "Do it quickly", "It could happen to me"], answer: "Not so fast; think first", explanation: "Impulsivity: 'Do something quickly.' Antidote: 'Not so fast. Think first.'", img: null },
+        { id: 132, category: "Operations", acs: "UA.V.A.K2", question: "The hazardous attitude 'Resignation' antidote is:", options: ["I am not helpless; I can make a difference", "What's the use", "Follow the rules"], answer: "I am not helpless; I can make a difference", explanation: "Resignation: 'What's the use?' Antidote: 'I am not helpless. I can make a difference.'", img: null },
+        { id: 133, category: "Operations", acs: "UA.V.A.K2", question: "Stress can be categorized as:", options: ["Acute and Chronic", "Good and Bad only", "Physical only"], answer: "Acute and Chronic", explanation: "Acute stress is short-term response; Chronic stress builds over time and degrades performance.", img: null },
+        { id: 134, category: "Operations", acs: "UA.V.A.K2", question: "Fatigue is best combated by:", options: ["Adequate sleep", "Caffeine", "Adrenaline"], answer: "Adequate sleep", explanation: "There is no substitute for sleep. Caffeine is a temporary aid, not a cure.", img: null },
+        { id: 135, category: "Operations", acs: "UA.V.A.K2", question: "Visual illusions caused by rain on windshield can make objects appear:", options: ["Lower than they are", "Higher than they are", "Closer"], answer: "Lower than they are", explanation: "Rain refraction can make lights/objects appear lower, causing pilots to fly lower than intended.", img: null },
+        { id: 136, category: "Operations", acs: "UA.V.A.K2", question: "Flicker vertigo is caused by:", options: ["Flashing light through propellers at certain frequencies", "Spinning rapidly", "High altitude"], answer: "Flashing light through propellers at certain frequencies", explanation: "Light flickering at 4-20 Hz can cause nausea, dizziness, or seizures in susceptible people.", img: null },
+        { id: 137, category: "Operations", acs: "UA.V.A.K2", question: "Who has final authority for the operation?", options: ["Remote PIC", "Visual Observer", "Client"], answer: "Remote PIC", explanation: "The Remote Pilot in Command is directly responsible for and final authority as to the operation of the sUAS.", img: null },
+        { id: 138, category: "Operations", acs: "UA.V.A.K3", question: "Crew Resource Management (CRM) focuses on:", options: ["Effective communication and use of all resources", "Managing batteries", "Controlling ATC"], answer: "Effective communication and use of all resources", explanation: "CRM improves safety by using people, equipment, and information effectively.", img: null },
+        { id: 139, category: "Operations", acs: "UA.V.A.K3", question: "Before flight, the Remote PIC must brief:", options: ["All participants on operating conditions, emergencies, roles", "Only the Visual Observer", "Nobody"], answer: "All participants on operating conditions, emergencies, roles", explanation: "A crew briefing ensures everyone understands hazards and responsibilities.", img: null },
+        { id: 140, category: "Operations", acs: "UA.V.A.K3", question: "If a VO loses sight of the drone, they should:", options: ["Immediately inform the Remote PIC", "Wait 30 seconds", "Move without telling anyone"], answer: "Immediately inform the Remote PIC", explanation: "Communication is critical. The PIC must know immediately if VLOS is lost.", img: null },
+
+        // --- MAINTENANCE & INSPECTION ---
+        { id: 141, category: "Maintenance", acs: "UA.VI.A.K1", question: "Who is responsible for determining the drone is safe for operation?", options: ["Remote PIC", "Manufacturer", "FAA Inspector"], answer: "Remote PIC", explanation: "Before every flight, the Remote PIC must ensure the aircraft is in a condition for safe operation.", img: null },
+        { id: 142, category: "Maintenance", acs: "UA.VI.A.K1", question: "Maintenance records for sUAS under Part 107 are:", options: ["Recommended but not specifically required by Part 107", "Required for 1 year", "Required for 5 years"], answer: "Recommended but not specifically required by Part 107", explanation: "While Part 107 does not mandate logs like manned aircraft, keeping maintenance records is a safety best practice.", img: null },
+        { id: 143, category: "Maintenance", acs: "UA.VI.A.K1", question: "After maintenance, who determines if the aircraft is safe to fly?", options: ["Remote PIC", "Mechanic", "Owner"], answer: "Remote PIC", explanation: "The Remote PIC is ultimately responsible for safe condition before operation.", img: null },
+        { id: 144, category: "Maintenance", acs: "UA.VI.A.K1", question: "Cracks or damage in propellers can cause:", options: ["Catastrophic failure", "Better lift", "Only vibration"], answer: "Catastrophic failure", explanation: "Damaged props can fail under load, causing immediate loss of control.", img: null },
+        { id: 145, category: "Maintenance", acs: "UA.VI.A.K1", question: "A preflight inspection should include:", options: ["Airframe, props, battery, control links, firmware status", "Only battery level", "Only propellers"], answer: "Airframe, props, battery, control links, firmware status", explanation: "A comprehensive preflight ensures all critical systems are ready.", img: null },
+        { id: 146, category: "Maintenance", acs: "UA.VI.A.K1", question: "If a manufacturer issues a safety bulletin:", options: ["You should comply/review before flight", "Ignore it", "Wait for FAA mandate"], answer: "You should comply/review before flight", explanation: "Manufacturer guidance is essential for continued safe operation.", img: null },
+        { id: 147, category: "Maintenance", acs: "UA.VI.A.K1", question: "A compass calibration should be performed:", options: ["When prompted or environment/location changes significantly", "Before every flight always", "Never"], answer: "When prompted or environment/location changes significantly", explanation: "Unnecessary calibrations can introduce errors. Follow manufacturer guidance.", img: null },
+        { id: 148, category: "Maintenance", acs: "UA.VI.A.K1", question: "Firmware updates should be:", options: ["Tested before operational mission", "Installed immediately on site", "Ignored"], answer: "Tested before operational mission", explanation: "Updates can change behavior. Test them in a safe environment before critical operations.", img: null },
+        { id: 149, category: "Maintenance", acs: "UA.VI.A.K1", question: "Motor bearings should be checked for:", options: ["Smooth rotation and unusual noise", "Paint color", "Temperature only"], answer: "Smooth rotation and unusual noise", explanation: "Grinding, stiffness, or play indicates bearing wear.", img: null },
+        { id: 150, category: "Maintenance", acs: "UA.VI.A.K1", question: "Batteries should be inspected for:", options: ["Swelling, damage, connector corrosion", "Only charge level", "Serial number"], answer: "Swelling, damage, connector corrosion", explanation: "Physical battery damage can lead to fire or failure.", img: null },
+
+        // --- CHARTS / FIGURES ---
+        { id: 151, category: "Charts", acs: "UA.II.A.K2", question: "What does a blue airport symbol indicate?", options: ["Towered airport", "Non-towered airport", "Private airport"], answer: "Towered airport", explanation: "Blue airport symbols indicate airports with an operating control tower.", img: null },
+        { id: 152, category: "Charts", acs: "UA.II.A.K2", question: "What does a magenta airport symbol indicate?", options: ["Non-towered airport", "Towered airport", "Military airport"], answer: "Non-towered airport", explanation: "Magenta airport symbols indicate airports without a control tower.", img: null },
+        { id: 153, category: "Charts", acs: "UA.II.A.K2", question: "Shaded magenta boundary means Class E begins at:", options: ["700 ft AGL", "1200 ft AGL", "Surface"], answer: "700 ft AGL", explanation: "Shaded magenta vignette = Class E floor 700 feet AGL.", img: null },
+        { id: 154, category: "Charts", acs: "UA.II.A.K2", question: "Shaded blue boundary means Class E begins at:", options: ["1200 ft AGL", "700 ft AGL", "Surface"], answer: "1200 ft AGL", explanation: "Shaded blue vignette = Class E floor 1200 feet AGL.", img: null },
+        { id: 155, category: "Charts", acs: "UA.II.A.K2", question: "Dashed magenta boundary means:", options: ["Class E to Surface", "Class D", "Class B"], answer: "Class E to Surface", explanation: "Dashed magenta encloses Class E airspace extending to the surface.", img: null },
+        { id: 156, category: "Charts", acs: "UA.II.A.K2", question: "Dashed blue boundary means:", options: ["Class D airspace", "Class E", "Class C"], answer: "Class D airspace", explanation: "Dashed blue lines depict Class D airspace around towered airports.", img: null },
+        { id: 157, category: "Charts", acs: "UA.II.A.K2", question: "Solid blue boundary means:", options: ["Class B airspace", "Class C airspace", "Class D airspace"], answer: "Class B airspace", explanation: "Solid blue lines depict Class B airspace.", img: null },
+        { id: 158, category: "Charts", acs: "UA.II.A.K2", question: "Solid magenta boundary means:", options: ["Class C airspace", "Class B", "Restricted Area"], answer: "Class C airspace", explanation: "Solid magenta lines depict Class C airspace.", img: null },
+        { id: 159, category: "Charts", acs: "UA.II.A.K2", question: "What does 'RP' next to an airport mean?", options: ["Right Traffic Pattern", "Restricted Pilot", "Reporting Point"], answer: "Right Traffic Pattern", explanation: "RP or 'RP' notation indicates right-hand traffic pattern for specified runway(s).", img: null },
+        { id: 160, category: "Charts", acs: "UA.II.A.K2", question: "A star above airport data indicates:", options: ["Rotating beacon operates sunset to sunrise", "Military airport", "Fuel available"], answer: "Rotating beacon operates sunset to sunrise", explanation: "The star symbol indicates a rotating airport beacon.", img: null },
+        { id: 161, category: "Charts", acs: "UA.II.A.K2", question: "An airport name followed by '(Pvt)' means:", options: ["Private use airport", "Public airport", "Provisional airport"], answer: "Private use airport", explanation: "(Pvt) denotes a private airport not open to general public use.", img: null },
+        { id: 162, category: "Charts", acs: "UA.II.A.K2", question: "What does a parachute symbol indicate?", options: ["Parachute Jumping Area", "Skydiving prohibited", "Military zone"], answer: "Parachute Jumping Area", explanation: "The parachute symbol marks areas of frequent parachute jumping activity.", img: null },
+        { id: 163, category: "Charts", acs: "UA.II.A.K2", question: "Glider operations are shown by:", options: ["Glider symbol", "G letter", "Dashed circle"], answer: "Glider symbol", explanation: "A glider silhouette denotes glider activity.", img: null },
+        { id: 164, category: "Charts", acs: "UA.II.A.K2", question: "What does 'UC' next to an airport mean?", options: ["Unicom frequency available", "Under construction", "Uncontrolled"], answer: "Under construction", explanation: "UC indicates an airport or runway under construction.", img: null },
+        { id: 165, category: "Charts", acs: "UA.II.A.K2", question: "A circle 'R' indicates:", options: ["Restricted/Private airport", "Radar", "Right traffic"], answer: "Restricted/Private airport", explanation: "Circled R or related annotation can indicate private/restricted use.", img: null },
+        { id: 166, category: "Charts", acs: "UA.II.A.K2", question: "Numbers like 130 (45) next to tower mean:", options: ["130 ft MSL, 45 ft AGL", "130 ft AGL, 45 ft MSL", "Frequency"], answer: "130 ft MSL, 45 ft AGL", explanation: "Top number is elevation MSL; parentheses is height AGL.", img: null },
+        { id: 167, category: "Charts", acs: "UA.II.A.K2", question: "Maximum Elevation Figure (MEF) '32' means:", options: ["3,200 ft MSL", "320 ft AGL", "32,000 ft"], answer: "3,200 ft MSL", explanation: "MEF is shown in hundreds of feet MSL. '32' = 3,200 feet MSL.", img: null },
+        { id: 168, category: "Charts", acs: "UA.II.A.K2", question: "What does 'L' after runway length mean?", options: ["Runway lights available", "Long runway", "Left traffic"], answer: "Runway lights available", explanation: "L indicates runway lighting.", img: null },
+        { id: 169, category: "Charts", acs: "UA.II.A.K2", question: "What does 'FSS' refer to?", options: ["Flight Service Station", "Flight Safety System", "Federal Sky Service"], answer: "Flight Service Station", explanation: "FSS provides weather briefings, flight planning, and other pilot services.", img: null },
+        { id: 170, category: "Charts", acs: "UA.II.A.K2", question: "CTAF frequency is used for:", options: ["Self-announce at non-towered airports", "ATC clearance", "Emergency only"], answer: "Self-announce at non-towered airports", explanation: "Common Traffic Advisory Frequency is for pilots to announce position and intentions.", img: null },
+
+        // --- NEW REGULATIONS QUESTIONS ---
+        {
+            id: 171,
+            category: "Regulations",
+            acs: "UA.I.B.K1",
+            question: "A person whose sole task is watching the sUAS to assist the remote pilot is called:",
+            options: ["Visual Observer", "Ground Crew", "Safety Pilot"],
+            answer: "Visual Observer",
+            explanation: "A visual observer (VO) helps the Remote PIC maintain visual line of sight and situational awareness.",
+            img: null
+        },
+        {
+            id: 172,
+            category: "Regulations",
+            acs: "UA.I.A.K4",
+            question: "If requested by the FAA, a remote pilot must present their Remote Pilot Certificate and identification:",
+            options: ["Upon request", "Within 24 hours", "Only after an accident"],
+            answer: "Upon request",
+            explanation: "Part 107 requires the certificate holder to make the certificate and ID available for inspection upon request by the FAA, NTSB, TSA, or law enforcement.",
+            img: null
+        },
+        {
+            id: 173,
+            category: "Regulations",
+            acs: "UA.I.B.K22",
+            question: "Before each flight, the remote PIC must assess the operating environment for:",
+            options: ["Local weather, airspace, people, property, and hazards", "Only battery percentage", "Only wind speed"],
+            answer: "Local weather, airspace, people, property, and hazards",
+            explanation: "The preflight assessment includes weather, airspace, flight restrictions, people/property on the ground, and other hazards.",
+            img: null
+        },
+        {
+            id: 174,
+            category: "Regulations",
+            acs: "UA.I.B.K14",
+            question: "A small UA accident must be reported to the FAA within 10 days if it causes serious injury, loss of consciousness, or property damage (other than the UA) of at least:",
+            options: ["$500", "$1,000", "$5,000"],
+            answer: "$500",
+            explanation: "Under 14 CFR 107.9, reportable accidents include serious injury/loss of consciousness or damage to property other than the sUAS exceeding $500, excluding labor to repair.",
+            img: null
+        },
+        {
+            id: 175,
+            category: "Regulations",
+            acs: "UA.I.B.K16",
+            question: "If a manned aircraft approaches your sUAS, who has the right-of-way?",
+            options: ["The manned aircraft", "The sUAS if below 400 ft", "Whichever aircraft is closer to the landing area"],
+            answer: "The manned aircraft",
+            explanation: "The sUAS must yield the right-of-way to all aircraft, airborne vehicles, and launch/reentry vehicles.",
+            img: null
+        },
+
+        // --- NEW WEATHER QUESTIONS ---
+        {
+            id: 176,
+            category: "Weather",
+            acs: "UA.III.B.K1",
+            question: "What generally happens to air pressure as altitude increases?",
+            options: ["It decreases", "It increases", "It stays constant"],
+            answer: "It decreases",
+            explanation: "Atmospheric pressure decreases with altitude because there is less air above you exerting weight.",
+            img: null
+        },
+        {
+            id: 177,
+            category: "Weather",
+            acs: "UA.III.B.K1",
+            question: "A temperature/dew point spread of 2°C and decreasing indicates:",
+            options: ["Fog or low clouds may form", "Thunderstorms are impossible", "Density altitude will decrease sharply"],
+            answer: "Fog or low clouds may form",
+            explanation: "When temperature approaches the dew point, the air is nearing saturation and fog/low clouds become more likely.",
+            img: null
+        },
+        {
+            id: 178,
+            category: "Weather",
+            acs: "UA.III.B.K1",
+            question: "Which condition is most likely with an unstable air mass?",
+            options: ["Turbulence and showery precipitation", "Smooth air and widespread haze", "Steady precipitation with poor visibility"],
+            answer: "Turbulence and showery precipitation",
+            explanation: "Unstable air supports vertical motion, resulting in turbulence, cumuliform clouds, showers, and generally better visibility between showers.",
+            img: null
+        },
+        {
+            id: 179,
+            category: "Weather",
+            acs: "UA.III.A.K2",
+            question: "In a METAR, the code 'BKN020' means:",
+            options: ["Broken clouds at 2,000 ft AGL", "Broken clouds at 20,000 ft AGL", "Visibility 2.0 statute miles"],
+            answer: "Broken clouds at 2,000 ft AGL",
+            explanation: "Cloud-base heights in METARs are reported in hundreds of feet AGL. 020 = 2,000 feet.",
+            img: null
+        },
+        {
+            id: 180,
+            category: "Weather",
+            acs: "UA.III.B.K1",
+            question: "When flying near buildings in strong wind, a remote pilot should expect:",
+            options: ["Turbulence and unpredictable eddies", "Perfectly smooth airflow", "Wind to stop completely behind the building"],
+            answer: "Turbulence and unpredictable eddies",
+            explanation: "Structures disturb airflow and can create mechanical turbulence, rotors, and gusty eddies on the downwind side.",
+            img: null
+        },
+
+        // --- NEW OPERATIONS / ADM QUESTIONS ---
+        {
+            id: 181,
+            category: "Operations",
+            acs: "UA.V.A.K2",
+            question: "A pilot who thinks 'I can handle it — I can do anything' is displaying which hazardous attitude?",
+            options: ["Macho", "Resignation", "Anti-authority"],
+            answer: "Macho",
+            explanation: "The Macho hazardous attitude is characterized by risk-taking to prove ability. Its antidote is 'Taking chances is foolish.'",
+            img: null
+        },
+        {
+            id: 182,
+            category: "Operations",
+            acs: "UA.V.A.K2",
+            question: "In the DECIDE model, the first step is:",
+            options: ["Detect the fact that a change has occurred", "Do the necessary action", "Evaluate the outcome"],
+            answer: "Detect the fact that a change has occurred",
+            explanation: "DECIDE stands for Detect, Estimate, Choose, Identify, Do, Evaluate.",
+            img: null
+        },
+        {
+            id: 183,
+            category: "Operations",
+            acs: "UA.V.A.K3",
+            question: "Good Crew Resource Management (CRM) includes:",
+            options: ["Clear communication and defined crew roles", "The PIC making every decision silently", "Allowing the VO to fly whenever desired"],
+            answer: "Clear communication and defined crew roles",
+            explanation: "CRM uses communication, teamwork, workload management, and all available resources to improve safety.",
+            img: null
+        },
+        {
+            id: 184,
+            category: "Operations",
+            acs: "UA.V.A.K2",
+            question: "A remote pilot who has a cold and is taking medication should use which checklist before deciding to fly?",
+            options: ["IMSAFE", "PAVE", "DECIDE"],
+            answer: "IMSAFE",
+            explanation: "IMSAFE checks Illness, Medication, Stress, Alcohol, Fatigue, and Emotion/Eating before flight.",
+            img: null
+        },
+        {
+            id: 185,
+            category: "Operations",
+            acs: "UA.V.A.K2",
+            question: "Continuing a flight because a client is waiting, despite worsening weather, is an example of:",
+            options: ["External pressure", "Invulnerability", "Anti-authority"],
+            answer: "External pressure",
+            explanation: "External pressures such as schedules, customers, or the desire to complete a mission can push pilots toward unsafe decisions.",
+            img: null
+        },
+
+        // --- NEW PERFORMANCE / LOADING QUESTIONS ---
+        {
+            id: 186,
+            category: "Loading & Performance",
+            acs: "UA.IV.A.K1",
+            question: "You add a heavy payload below the drone. What is the most likely effect?",
+            options: ["Reduced flight time and changed handling", "Longer flight time", "No effect if the drone takes off"],
+            answer: "Reduced flight time and changed handling",
+            explanation: "Additional weight increases power demand, reduces endurance, and can change center of gravity and control response.",
+            img: null
+        },
+        {
+            id: 187,
+            category: "Loading & Performance",
+            acs: "UA.IV.A.K1",
+            question: "Density altitude will be highest on a:",
+            options: ["Hot day at a high-elevation airport", "Cold day at sea level", "Cold day with high pressure"],
+            answer: "Hot day at a high-elevation airport",
+            explanation: "High temperature and high elevation both increase density altitude and reduce aircraft performance.",
+            img: null
+        },
+        {
+            id: 188,
+            category: "Loading & Performance",
+            acs: "UA.IV.A.K1",
+            question: "Why is operating above the manufacturer's maximum takeoff weight unsafe?",
+            options: ["The aircraft may not have adequate thrust or control authority", "Remote ID stops working", "The GPS automatically disables"],
+            answer: "The aircraft may not have adequate thrust or control authority",
+            explanation: "Excessive weight can reduce climb ability, maneuverability, stability, endurance, and motor/battery margins.",
+            img: null
+        },
+        {
+            id: 189,
+            category: "Loading & Performance",
+            acs: "UA.IV.A.K1",
+            question: "If the center of gravity is outside the manufacturer's limits, the remote PIC should:",
+            options: ["Reconfigure the load before flight", "Fly slowly to compensate", "Increase altitude quickly"],
+            answer: "Reconfigure the load before flight",
+            explanation: "An out-of-limit CG can make the aircraft unstable or uncontrollable. Correct the loading before takeoff.",
+            img: null
+        },
+        {
+            id: 190,
+            category: "Loading & Performance",
+            acs: "UA.IV.A.K2",
+            question: "Why does a strong headwind usually reduce a multirotor's usable flight time?",
+            options: ["The motors require more power to maintain groundspeed/position", "The battery becomes heavier", "The GPS uses more electricity than the motors"],
+            answer: "The motors require more power to maintain groundspeed/position",
+            explanation: "Fighting wind increases thrust and current draw, reducing battery endurance.",
+            img: null
+        },
+
+        // --- NEW AIRSPACE QUESTIONS ---
+        {
+            id: 191,
+            category: "Airspace",
+            acs: "UA.II.A.K1",
+            question: "You plan to fly in Class D airspace around an operating control tower. Before flight you generally need:",
+            options: ["ATC authorization", "Only the airport manager's permission", "No authorization below 400 ft"],
+            answer: "ATC authorization",
+            explanation: "Part 107 operations in Class B, C, D, and surface Class E airspace require prior ATC authorization.",
+            img: null
+        },
+        {
+            id: 192,
+            category: "Airspace",
+            acs: "UA.II.A.K3",
+            question: "A Temporary Flight Restriction (TFR) can be established for:",
+            options: ["Disasters, VIP movement, or major events", "Only military training", "Only airports without control towers"],
+            answer: "Disasters, VIP movement, or major events",
+            explanation: "TFRs may protect disaster areas, VIP movements, space operations, major sporting events, and other temporary hazards/security needs.",
+            img: null
+        },
+        {
+            id: 193,
+            category: "Airspace",
+            acs: "UA.II.A.K3",
+            question: "Before operating near a Military Operations Area (MOA), a remote pilot should:",
+            options: ["Check whether military activity is occurring and exercise caution", "Assume the MOA is always prohibited", "Ignore it because drones fly below 400 ft"],
+            answer: "Check whether military activity is occurring and exercise caution",
+            explanation: "MOAs are not automatically prohibited to VFR operations, but military aircraft may maneuver at high speeds and low altitudes.",
+            img: null
+        },
+        {
+            id: 194,
+            category: "Airspace",
+            acs: "UA.II.A.K1",
+            question: "Class G airspace is:",
+            options: ["Uncontrolled airspace", "Always prohibited to drones", "Controlled airspace requiring LAANC everywhere"],
+            answer: "Uncontrolled airspace",
+            explanation: "Class G is uncontrolled airspace. Other restrictions such as TFRs can still apply.",
+            img: null
+        },
+        {
+            id: 195,
+            category: "Airspace",
+            acs: "UA.II.A.K1",
+            question: "A dashed magenta line surrounding an airport on a sectional chart indicates:",
+            options: ["Class E airspace beginning at the surface", "Class D airspace", "Class B airspace"],
+            answer: "Class E airspace beginning at the surface",
+            explanation: "Dashed magenta boundaries depict Class E surface areas.",
+            img: null
+        },
+
+        // --- NEW MAINTENANCE QUESTIONS ---
+        {
+            id: 196,
+            category: "Maintenance",
+            acs: "UA.VI.A.K1",
+            question: "During preflight you find a small crack in a propeller. You should:",
+            options: ["Replace the propeller before flight", "Fly at reduced speed", "Apply tape and continue"],
+            answer: "Replace the propeller before flight",
+            explanation: "Propellers experience high rotational loads. Even small cracks can propagate and cause failure in flight.",
+            img: null
+        },
+        {
+            id: 197,
+            category: "Maintenance",
+            acs: "UA.VI.A.K1",
+            question: "After installing new firmware, the best practice is to:",
+            options: ["Conduct a controlled test flight before a critical mission", "Immediately use the aircraft on a paid mission", "Disable all warnings"],
+            answer: "Conduct a controlled test flight before a critical mission",
+            explanation: "Updates can alter flight characteristics or settings. Verify proper operation in a safe environment first.",
+            img: null
+        },
+        {
+            id: 198,
+            category: "Maintenance",
+            acs: "UA.VI.A.K1",
+            question: "A battery that is swollen should be:",
+            options: ["Removed from service", "Fully charged to rebalance it", "Used only for short flights"],
+            answer: "Removed from service",
+            explanation: "Swelling indicates battery damage and increased fire/failure risk.",
+            img: null
+        },
+        {
+            id: 199,
+            category: "Maintenance",
+            acs: "UA.VI.A.K1",
+            question: "If the control link is unreliable during a preflight check, the remote PIC should:",
+            options: ["Resolve the issue before takeoff", "Launch and remain close", "Increase altitude for better signal"],
+            answer: "Resolve the issue before takeoff",
+            explanation: "The Remote PIC must determine the aircraft is in a condition for safe operation before flight.",
+            img: null
+        },
+        {
+            id: 200,
+            category: "Maintenance",
+            acs: "UA.VI.A.K1",
+            question: "Which is a good reason to keep voluntary maintenance records for a Part 107 drone?",
+            options: ["To track component history and recurring problems", "Because every drone must have an FAA airframe logbook", "To replace the preflight inspection"],
+            answer: "To track component history and recurring problems",
+            explanation: "Maintenance logs help identify trends, document repairs, and support consistent inspections even when a formal aircraft logbook is not required.",
+            img: null
+        },
+
+        // --- NEW AIRPORT OPS QUESTIONS ---
+        {
+            id: 201,
+            category: "Airport Ops",
+            acs: "UA.V.B.K1",
+            question: "At a non-towered airport, monitoring the CTAF can help a remote pilot:",
+            options: ["Maintain awareness of nearby manned aircraft", "Obtain automatic authorization to enter controlled airspace", "Control other aircraft"],
+            answer: "Maintain awareness of nearby manned aircraft",
+            explanation: "CTAF monitoring can improve situational awareness of aircraft positions and intentions near non-towered airports.",
+            img: null
+        },
+        {
+            id: 202,
+            category: "Airport Ops",
+            acs: "UA.V.A.K3",
+            question: "Runway 27 is aligned approximately:",
+            options: ["270° magnetic", "027° magnetic", "090° magnetic"],
+            answer: "270° magnetic",
+            explanation: "Runway numbers correspond to magnetic heading rounded to the nearest 10 degrees and divided by 10.",
+            img: null
+        },
+        {
+            id: 203,
+            category: "Airport Ops",
+            acs: "UA.V.B.K3",
+            question: "Yellow pavement markings are primarily associated with:",
+            options: ["Taxiways", "Runways", "Helipads only"],
+            answer: "Taxiways",
+            explanation: "Runway markings are generally white, while taxiway centerlines and edge markings are yellow.",
+            img: null
+        },
+        {
+            id: 204,
+            category: "Airport Ops",
+            acs: "UA.V.B.K3",
+            question: "A large yellow X on a runway indicates:",
+            options: ["The runway is closed", "The runway is restricted to helicopters", "The runway has a displaced threshold"],
+            answer: "The runway is closed",
+            explanation: "An X marks a runway or taxiway as closed to aircraft operations.",
+            img: null
+        },
+        {
+            id: 205,
+            category: "Airport Ops",
+            acs: "UA.V.C.K1",
+            question: "When scanning for manned aircraft, the best visual technique is to:",
+            options: ["Use short, regularly spaced eye movements and focus briefly on each area", "Continuously sweep without stopping", "Stare at the horizon"],
+            answer: "Use short, regularly spaced eye movements and focus briefly on each area",
+            explanation: "Traffic scanning is more effective when the eyes pause briefly in small sectors rather than continuously sweeping.",
+            img: null
+        },
+
+        // --- FIGURE 25 CHART QUESTIONS ---
+        {
+            id: 206,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to Figure 25) What is the floor of Class E airspace surrounding the private airport 'Cooperstown'?",
+            options: ["700 feet AGL", "1200 feet AGL", "Surface"],
+            answer: "700 feet AGL",
+            explanation: "The shaded magenta line indicates Class E airspace begins at 700 feet AGL.",
             img: "images/Figure25.JPG"
         },
-        { 
-            id: 207, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Figure 25) Locate the tower near the center. What is the height of the obstruction in Mean Sea Level (MSL)?", 
-            options: ["The top number (e.g. 1548)", "The bottom number in parentheses", "The blue number"], 
-            answer: "The top number (e.g. 1548)", 
-            explanation: "On sectional charts, the bold number is MSL. The number in parentheses is AGL.", 
-            img: "images/Figure25.JPG" 
+        {
+            id: 207,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to Figure 25) Locate the tower near the center. What is the height of the obstruction in Mean Sea Level (MSL)?",
+            options: ["The top number (e.g. 1548)", "The bottom number in parentheses", "The blue number"],
+            answer: "The top number (e.g. 1548)",
+            explanation: "On sectional charts, the bold number is MSL. The number in parentheses is AGL.",
+            img: "images/Figure25.JPG"
         },
-        { 
-            id: 208, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Figure 25) What is the CTAF/MULTICOM frequency for the non-towered airport shown?", 
-            options: ["122.9", "118.0", "121.5"], 
-            answer: "122.9", 
-            explanation: "Look for the 'C' circle symbol next to a frequency. For many non-towered airports without a specific CTAF, 122.9 (MULTICOM) is used.", 
-            img: "images/Figure25.JPG" 
+        {
+            id: 208,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to Figure 25) What is the CTAF/MULTICOM frequency for the non-towered airport shown?",
+            options: ["122.9", "118.0", "121.5"],
+            answer: "122.9",
+            explanation: "Look for the 'C' circle symbol next to a frequency. For many non-towered airports without a specific CTAF, 122.9 (MULTICOM) is used.",
+            img: "images/Figure25.JPG"
         },
-        { 
-            id: 209, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Figure 25) Is there a Control Tower at the main airport shown in this figure?", 
-            options: ["No, it is Magenta", "Yes, it is Blue", "Yes, it is Magenta"], 
-            answer: "No, it is Magenta", 
-            explanation: "Magenta airport symbols indicate non-towered (uncontrolled) airports. Blue indicates towered airports.", 
-            img: "images/Figure25.JPG" 
+        {
+            id: 209,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to Figure 25) Is there a Control Tower at the main airport shown in this figure?",
+            options: ["No, it is Magenta", "Yes, it is Blue", "Yes, it is Magenta"],
+            answer: "No, it is Magenta",
+            explanation: "Magenta airport symbols indicate non-towered (uncontrolled) airports. Blue indicates towered airports.",
+            img: "images/Figure25.JPG"
         },
-        { 
-            id: 210, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Figure 25) Determine the approximate latitude and longitude of the central airport.", 
-            options: ["Use the tick marks on the grid lines", "Guess based on city location", "Use GPS"], 
-            answer: "Use the tick marks on the grid lines", 
-            explanation: "Each black tick mark represents 1 minute of latitude or longitude. Large lines are 30 minutes or whole degrees.", 
-            img: "images/Figure25.JPG" 
+        {
+            id: 210,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to Figure 25) Determine the approximate latitude and longitude of the central airport.",
+            options: ["Use the tick marks on the grid lines", "Guess based on city location", "Use GPS"],
+            answer: "Use the tick marks on the grid lines",
+            explanation: "Each black tick mark represents 1 minute of latitude or longitude. Large lines are 30 minutes or whole degrees.",
+            img: "images/Figure25.JPG"
         },
 
         // --- NEW LEGEND QUESTIONS (LEGEND 1) ---
-        { 
-            id: 211, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Legend 1) What does a star on top of the airport symbol indicate?", 
-            options: ["Rotating Beacon is in operation (Sunset to Sunrise)", "Airport is closed", "Military base"], 
-            answer: "Rotating Beacon is in operation (Sunset to Sunrise)", 
-            explanation: "The star symbol above the airport circle indicates a rotating beacon is present and operating.", 
-            img: "images/legend1.jpg 
+        {
+            id: 211,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does a solid blue line represent?",
+            options: ["Class B Airspace", "Class C Airspace", "Class D Airspace"],
+            answer: "Class B Airspace",
+            explanation: "According to the Sectional Chart Legend, Class B airspace boundaries are shown with solid blue lines.",
+            img: "images/legend1.jpg"
         },
-        { 
-            id: 212, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Legend 1) What do the tick marks extending from the airport circle indicate?", 
-            options: ["Fuel is available", "Runway is paved", "Fencing"], 
-            answer: "Fuel is available", 
-            explanation: "Tick marks around the circle indicate that fuel is available during normal working hours.", 
-            img: "images/legend1.jpg" 
+        {
+            id: 212,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does a solid magenta line represent?",
+            options: ["Class C Airspace", "Class B Airspace", "Class E Surface Airspace"],
+            answer: "Class C Airspace",
+            explanation: "Class C airspace boundaries are shown with solid magenta lines.",
+            img: "images/legend1.jpg"
         },
-        { 
-            id: 213, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Legend 1) How are hard-surfaced runways depicted?", 
-            options: ["Thick solid lines showing the runway layout", "An empty circle", "A red 'X'"], 
-            answer: "Thick solid lines showing the runway layout", 
-            explanation: "Hard-surfaced runways (asphalt/concrete) are depicted by their actual layout pattern inside the circle.", 
-            img: "images/legend1.jpg" 
+        {
+            id: 213,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does a dashed blue line represent?",
+            options: ["Class D Airspace", "Class B Airspace", "Class E Airspace beginning at 700 ft AGL"],
+            answer: "Class D Airspace",
+            explanation: "Class D airspace boundaries are depicted with dashed blue lines.",
+            img: "images/legend1.jpg"
         },
-        { 
-            id: 214, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Legend 1) What is the difference between Blue and Magenta airport symbols?", 
-            options: ["Blue = Control Tower; Magenta = No Tower", "Blue = Military; Magenta = Civilian", "Blue = Water; Magenta = Land"], 
-            answer: "Blue = Control Tower; Magenta = No Tower", 
-            explanation: "Blue airports have control towers (at least part-time). Magenta airports do not.", 
-            img: "images/legend1.jpg" 
+        {
+            id: 214,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does a dashed magenta line represent?",
+            options: ["Class E Airspace beginning at the surface", "Class D Airspace", "Class C Airspace"],
+            answer: "Class E Airspace beginning at the surface",
+            explanation: "A dashed magenta line indicates Class E airspace extending upward from the surface.",
+            img: "images/legend1.jpg"
         },
-        { 
-            id: 215, 
-            category: "Charts", 
-            acs: "UA.II.A.K2", 
-            question: "(Refer to Legend 1) What does the letter 'R' inside a circle indicate?", 
-            options: ["Private (Pvt) or Restricted Airport", "Radar services available", "Runway lights"], 
-            answer: "Private (Pvt) or Restricted Airport", 
-            explanation: "An 'R' usually denotes a private, restricted, or non-public use landing area.", 
-            img: "images/legend1.jpg" 
-        }
+        {
+            id: 215,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A blue vignette (shaded blue border) indicates Class E airspace begins at:",
+            options: ["1200 ft AGL", "700 ft AGL", "The surface"],
+            answer: "1200 ft AGL",
+            explanation: "A shaded blue vignette indicates Class E airspace beginning at 1,200 feet AGL.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 216,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A magenta vignette (shaded magenta border) indicates Class E airspace begins at:",
+            options: ["700 ft AGL", "1200 ft AGL", "The surface"],
+            answer: "700 ft AGL",
+            explanation: "A shaded magenta vignette indicates Class E airspace beginning at 700 feet AGL.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 217,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does a solid magenta line with a shaded side and altitude numbers indicate?",
+            options: ["Class C Airspace", "Special Use Airspace", "Military Training Route"],
+            answer: "Class C Airspace",
+            explanation: "The solid magenta boundaries and altitude figures identify Class C airspace shelves and surface areas.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 218,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) The number shown over a Class B or C sector, such as '100/30', indicates:",
+            options: ["Ceiling over floor in hundreds of feet MSL", "Frequency and channel", "Runway length and width"],
+            answer: "Ceiling over floor in hundreds of feet MSL",
+            explanation: "Airspace altitude numbers are shown as ceiling over floor, in hundreds of feet MSL. For example, 100/30 means 10,000 ft MSL over 3,000 ft MSL.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 219,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'SFC' mean when shown as the lower limit of controlled airspace?",
+            options: ["Surface", "Special Flight Corridor", "Standard Flight Clearance"],
+            answer: "Surface",
+            explanation: "SFC means the controlled airspace begins at the surface.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 220,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'P-xx' identify?",
+            options: ["Prohibited Area", "Parachute Area", "Public Airport"],
+            answer: "Prohibited Area",
+            explanation: "P followed by a number identifies a Prohibited Area where aircraft operations are generally not allowed.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 221,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'R-xxxx' identify?",
+            options: ["Restricted Area", "Radar Route", "Remote ID Zone"],
+            answer: "Restricted Area",
+            explanation: "R followed by numbers identifies a Restricted Area containing unusual, often invisible hazards such as artillery or missile activity.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 222,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'W-xxx' identify?",
+            options: ["Warning Area", "Weather Area", "Wildlife Area"],
+            answer: "Warning Area",
+            explanation: "Warning Areas are similar to Restricted Areas but are located over international waters.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 223,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'MOA' mean?",
+            options: ["Military Operations Area", "Mandatory Operations Area", "Meteorological Observation Area"],
+            answer: "Military Operations Area",
+            explanation: "MOAs separate certain military training activities from IFR traffic and alert VFR pilots to military operations.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 224,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'A-xxx' identify?",
+            options: ["Alert Area", "Airport Area", "Approach Area"],
+            answer: "Alert Area",
+            explanation: "Alert Areas have a high volume of pilot training or unusual aerial activity.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 225,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does a heavy black line with hash marks labeled 'ADIZ' indicate?",
+            options: ["Air Defense Identification Zone", "Airport Development Information Zone", "Automated Drone Identification Zone"],
+            answer: "Air Defense Identification Zone",
+            explanation: "The ADIZ is an Air Defense Identification Zone requiring special procedures for aircraft crossing it.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 226,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A blue segmented circle around an airport represents:",
+            options: ["Class D Airspace", "Class B Airspace", "Class E Airspace"],
+            answer: "Class D Airspace",
+            explanation: "Dashed blue circles depict Class D airspace surrounding airports with operating control towers.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 227,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A magenta airport symbol means:",
+            options: ["Non-towered airport", "Tower-controlled airport", "Military airport"],
+            answer: "Non-towered airport",
+            explanation: "Magenta airport symbols represent airports without an operating control tower.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 228,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A blue airport symbol means:",
+            options: ["Airport with an operating control tower", "Private airport", "Heliport"],
+            answer: "Airport with an operating control tower",
+            explanation: "Blue airport symbols indicate airports with an operating control tower.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 229,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A small flag symbol indicates:",
+            options: ["VFR checkpoint", "Wind direction", "Temporary Flight Restriction"],
+            answer: "VFR checkpoint",
+            explanation: "Flag symbols mark VFR checkpoints used by pilots for position reporting and navigation.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 230,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A parachute symbol indicates:",
+            options: ["Parachute Jumping Area", "Military Operations Area", "Restricted Area"],
+            answer: "Parachute Jumping Area",
+            explanation: "The parachute symbol identifies locations where frequent parachute jumping occurs.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 231,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A glider symbol near an airport indicates:",
+            options: ["Glider activity", "Military training", "Airport closed"],
+            answer: "Glider activity",
+            explanation: "A glider icon alerts pilots to glider operations in the area.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 232,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does a star above an airport symbol indicate?",
+            options: ["Rotating beacon operates sunset to sunrise", "Airport open 24 hours", "Fuel available"],
+            answer: "Rotating beacon operates sunset to sunrise",
+            explanation: "A star above the airport symbol indicates that a rotating airport beacon operates from sunset to sunrise.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 233,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does '(Pvt)' following an airport name mean?",
+            options: ["Private-use airport", "Public-use airport", "Provisional airport"],
+            answer: "Private-use airport",
+            explanation: "(Pvt) identifies an airport that is private-use and not open to the general public.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 234,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'UC' associated with an airport or runway mean?",
+            options: ["Under Construction", "Uncontrolled", "Unicom Available"],
+            answer: "Under Construction",
+            explanation: "UC indicates the airport or runway is under construction.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 235,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does 'CTAF' stand for?",
+            options: ["Common Traffic Advisory Frequency", "Controlled Traffic Authorization Frequency", "Common Terminal Airport Frequency"],
+            answer: "Common Traffic Advisory Frequency",
+            explanation: "CTAF is the frequency pilots use to self-announce their position and intentions at non-towered airports.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 236,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A runway length shown as '52' means the runway is approximately:",
+            options: ["5,200 feet long", "520 feet long", "52,000 feet long"],
+            answer: "5,200 feet long",
+            explanation: "Runway lengths on sectional charts are shown in hundreds of feet. '52' indicates approximately 5,200 feet.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 237,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) The letter 'L' following a runway length indicates:",
+            options: ["Runway lighting is available", "Left traffic pattern", "Limited-use runway"],
+            answer: "Runway lighting is available",
+            explanation: "The letter L indicates runway lighting. Specific lighting limitations may be found in the Chart Supplement.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 238,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) An obstruction shown as '1548 (355)' means:",
+            options: ["1548 ft MSL and 355 ft AGL", "1548 ft AGL and 355 ft MSL", "1548 ft from airport and 355 ft tall"],
+            answer: "1548 ft MSL and 355 ft AGL",
+            explanation: "The top number is the elevation of the top of the obstruction in MSL; the number in parentheses is the height above ground level.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 239,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) What does the Maximum Elevation Figure (MEF) represent?",
+            options: ["Highest terrain or obstruction within a chart quadrangle, rounded up with a safety margin", "Maximum legal drone altitude", "Maximum airport field elevation"],
+            answer: "Highest terrain or obstruction within a chart quadrangle, rounded up with a safety margin",
+            explanation: "The MEF provides the approximate highest elevation within each quadrangle, including terrain/obstructions and a margin.",
+            img: "images/legend1.jpg"
+        },
+        {
+            id: 240,
+            category: "Charts",
+            acs: "UA.II.A.K2",
+            question: "(Refer to the Sectional Chart Legend) A large blue number such as '34' printed in a quadrangle is most likely:",
+            options: ["Maximum Elevation Figure — 3,400 ft MSL", "Class B ceiling — 34,000 ft", "Airport frequency 134.0"],
+            answer: "Maximum Elevation Figure — 3,400 ft MSL",
+            explanation: "MEFs are shown in hundreds of feet MSL. A value of 34 indicates approximately 3,400 feet MSL.",
+            img: "images/legend1.jpg"
+        },
+
     ];
 
-    // --- STATE MANAGEMENT ---
+    // --- STATE ---
     let currentDeck = [];
     let currentIndex = 0;
     let isFlipped = false;
     let isQuizMode = false;
-    let isReviewMode = false;
-    let reviewList = [];
-    let masteredList = [];
-    let starredList = []; 
-    let cachedImages = {}; // New: Store uploaded images
+    let isReviewing = false;
+    let currentUser = { name: "", className: "", email: "" };
+    
+    // Persistence Data
+    let reviewList = []; // Array of IDs marked "Needs Review"
+    let masteredList = []; // Array of IDs marked "Got It"
+    let starredList = []; // Array of IDs that are starred
 
-    let studentName = "";
-    let studentClass = "";
-    let teacherEmail = ""; 
+    // Custom Images Object: { 'filename.jpg': 'data:image/...' }
+    let customImages = {};
 
     // --- INITIALIZATION ---
-    window.onload = function() {
-        loadProgress();
-        loadLoginSettings(); 
+    document.addEventListener('DOMContentLoaded', () => {
+        // Load user info first
+        const savedUser = localStorage.getItem('part107_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            document.getElementById('loginModal').style.display = 'none';
+        } else {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        // Load progress data
+        const savedReview = localStorage.getItem('part107_review');
+        const savedMastered = localStorage.getItem('part107_mastered');
+        const savedStarred = localStorage.getItem('part107_starred');
         
+        if (savedReview) reviewList = JSON.parse(savedReview);
+        if (savedMastered) masteredList = JSON.parse(savedMastered);
+        if (savedStarred) starredList = JSON.parse(savedStarred);
+
+        // Load custom images from IndexedDB
+        loadImagesFromDB().then(() => {
+            initializeApp();
+        });
+    });
+
+    function startSession() {
+        const name = document.getElementById('inputName').value.trim();
+        const className = document.getElementById('inputClass').value.trim();
+        const email = document.getElementById('inputEmail').value.trim();
+
+        if (!name || !className || !email) {
+            alert("Please fill in all fields to begin.");
+            return;
+        }
+
+        currentUser = { name, className, email };
+        localStorage.setItem('part107_user', JSON.stringify(currentUser));
+        document.getElementById('loginModal').style.display = 'none';
+        initializeApp();
+    }
+
+    function initializeApp() {
         populateSubjects();
-        applyFilters(); 
+        applyFilters();
         updateStats();
-        
-        document.getElementById('loginModal').style.display = 'flex';
-    };
-
-    function shuffleDeck(data) {
-        let deck = JSON.parse(JSON.stringify(data));
-        for (let i = deck.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [deck[i], deck[j]] = [deck[j], deck[i]];
-        }
-        return deck;
     }
 
-    // --- RENDER LOGIC ---
-
-    // NEW: Handle missing image logic
-    function handleImageError(img) {
-        const card = currentDeck[currentIndex];
-        const filename = card.img.split('/').pop(); // Extract filename like 'Figure25.JPG'
-        const parent = img.parentElement;
-        
-        img.style.display = 'none'; // hide broken image icon
-        
-        // Avoid duplicate messages
-        if (parent.querySelector('.img-error-msg')) return;
-
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'img-error-msg';
-        
-        msgDiv.innerHTML = `
-            <strong>⚠️ Image Missing: ${filename}</strong>
-            <p>If you have this chart file on your computer, you can load it now.</p>
-            <label class="img-upload-label">
-                📂 Load ${filename}
-                <input type="file" style="display:none" accept="image/*" onchange="uploadImage(this, '${card.img}')">
-            </label>
-        `;
-        parent.appendChild(msgDiv);
-        parent.style.display = 'block';
+    function populateSubjects() {
+        const select = document.getElementById('subjectSelect');
+        // Clear existing options except first two
+        while(select.options.length > 2) select.remove(2);
+        const categories = [...new Set(questionData.map(q => q.category))];
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            select.appendChild(option);
+        });
     }
 
-    // NEW: Upload function
-    function uploadImage(input, path) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                // Save to cache
-                cachedImages[path] = e.target.result;
-                saveImagesToStorage();
-                
-                // Refresh current card to show image
-                renderCard();
-            };
-            reader.readAsDataURL(input.files[0]);
+    function applyFilters() {
+        const subject = document.getElementById('subjectSelect').value;
+        const count = document.getElementById('countSelect').value;
+        
+        // Always reset review mode when changing filters
+        isReviewing = false;
+        
+        let filtered = [];
+        if (subject === 'STARRED') {
+            filtered = questionData.filter(q => starredList.includes(q.id));
+        } else if (subject === 'ALL') {
+            filtered = [...questionData];
+        } else {
+            filtered = questionData.filter(q => q.category === subject);
         }
+
+        // Shuffle
+        filtered.sort(() => Math.random() - 0.5);
+
+        if (count !== 'ALL') {
+            filtered = filtered.slice(0, parseInt(count));
+        }
+
+        currentDeck = filtered;
+        currentIndex = 0;
+        showStudyScreen();
+        renderCard();
+        updateReviewButton();
+    }
+
+    function toggleMode() {
+        isQuizMode = !isQuizMode;
+        document.getElementById('modeToggleBtn').textContent = isQuizMode ? "Switch to Flashcard Mode" : "Switch to Quiz Mode";
+        
+        // reset flip state
+        isFlipped = false;
+        document.getElementById('flashcard').classList.remove('is-flipped');
+        document.getElementById('fcActions').style.visibility = 'hidden';
+        
+        renderCard();
     }
 
     function renderCard() {
+        // Safety check for empty decks
         if (currentDeck.length === 0) {
-            alert("No cards available in this filter!");
-            resetFilter();
+            showSummaryScreen(true); // Pass flag for empty
             return;
         }
 
         const card = currentDeck[currentIndex];
+        const progress = ((currentIndex) / currentDeck.length) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
         
-        document.getElementById('fcCategory').textContent = card.category;
-        document.getElementById('fcCategoryBack').textContent = card.category;
-        document.getElementById('fcQuestion').textContent = card.question;
-        document.getElementById('fcAnswer').textContent = card.answer;
-        document.getElementById('fcExplanation').textContent = card.explanation;
-        
-        const acsText = card.acs ? `ACS: ${card.acs}` : "ACS: ---";
-        document.getElementById('fcAcs').textContent = acsText;
-        document.getElementById('fcAcsBack').textContent = acsText;
-        document.getElementById('qzAcs').textContent = acsText;
+        // Update Stars
+        updateStarVisuals(card.id);
 
-        // Image Handling Logic (Flashcard)
-        const fcImgContainer = document.getElementById('fcImgContainer');
-        const fcImg = document.getElementById('fcImg');
-        const existingMsg = fcImgContainer.querySelector('.img-error-msg');
-        if(existingMsg) existingMsg.remove(); // Clear error msg
+        if (isQuizMode) {
+            document.getElementById('flashcardMode').classList.add('hidden');
+            document.getElementById('quizMode').classList.remove('hidden');
+            
+            document.getElementById('qzCategory').textContent = card.category;
+            document.getElementById('qzQuestion').textContent = card.question;
+            document.getElementById('qzAcs').textContent = `ACS: ${card.acs}`;
+            
+            // Handle Quiz Image
+            const qzImgContainer = document.getElementById('qzImgContainer');
+            const qzImg = document.getElementById('qzImg');
+            setupImage(card, qzImgContainer, qzImg);
 
-        if (card.img) {
-            fcImgContainer.style.display = 'block';
-            // Check if we have a cached version (user uploaded)
-            if (cachedImages[card.img]) {
-                fcImg.src = cachedImages[card.img];
-                fcImg.style.display = 'block';
-            } else {
-                fcImg.src = card.img; // Attempt normal load, will trigger onerror if missing
-                fcImg.style.display = 'block';
-            }
+            // Render options
+            const optsDiv = document.getElementById('qzOptions');
+            optsDiv.innerHTML = '';
+            card.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-btn';
+                btn.textContent = opt;
+                btn.onclick = () => handleQuizAnswer(btn, opt, card);
+                optsDiv.appendChild(btn);
+            });
+            document.getElementById('qzFeedback').style.display = 'none';
+            document.getElementById('qzFeedbackText').textContent = '';
         } else {
-            fcImgContainer.style.display = 'none';
+            document.getElementById('quizMode').classList.add('hidden');
+            document.getElementById('flashcardMode').classList.remove('hidden');
+            
+            // Reset card flip
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('is-flipped');
+            document.getElementById('fcActions').style.visibility = 'hidden';
+
+            document.getElementById('fcCategory').textContent = card.category;
+            document.getElementById('fcCategoryBack').textContent = card.category;
+            document.getElementById('fcQuestion').textContent = card.question;
+            document.getElementById('fcAnswer').textContent = card.answer;
+            document.getElementById('fcExplanation').textContent = card.explanation;
+            document.getElementById('fcAcs').textContent = `ACS: ${card.acs}`;
+            document.getElementById('fcAcsBack').textContent = `ACS: ${card.acs}`;
+            
+            // Handle Flashcard Image
+            const fcImgContainer = document.getElementById('fcImgContainer');
+            const fcImg = document.getElementById('fcImg');
+            setupImage(card, fcImgContainer, fcImg);
         }
-
-        // Image Handling Logic (Quiz) - Same logic
-        const qzImgContainer = document.getElementById('qzImgContainer');
-        const qzImg = document.getElementById('qzImg');
-        const existingMsgQz = qzImgContainer.querySelector('.img-error-msg');
-        if(existingMsgQz) existingMsgQz.remove();
-
-        if (card.img) {
-            qzImgContainer.style.display = 'block';
-            if (cachedImages[card.img]) {
-                qzImg.src = cachedImages[card.img];
-                qzImg.style.display = 'block';
-            } else {
-                qzImg.src = card.img;
-                qzImg.style.display = 'block';
-            }
-        } else {
-            qzImgContainer.style.display = 'none';
-        }
-
-        const cardEl = document.getElementById('flashcard');
-        cardEl.classList.remove('is-flipped');
-        document.getElementById('fcActions').style.visibility = 'hidden';
-        isFlipped = false;
-
-        updateStarUI(card.id);
-
-        document.getElementById('qzCategory').textContent = card.category;
-        document.getElementById('qzQuestion').textContent = card.question;
-        document.getElementById('qzFeedback').style.display = 'none';
-        
-        const optsContainer = document.getElementById('qzOptions');
-        optsContainer.innerHTML = '';
-        let displayOptions = [...card.options];
-        displayOptions.sort(() => Math.random() - 0.5);
-
-        displayOptions.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'quiz-btn';
-            btn.textContent = opt;
-            btn.onclick = () => handleQuizAnswer(btn, opt, card);
-            optsContainer.appendChild(btn);
-        });
-
-        document.getElementById('prevBtn').disabled = (currentIndex === 0);
-
-        updateProgress();
     }
 
-    function toggleStar(e) {
-        e.stopPropagation(); 
-        const card = currentDeck[currentIndex];
-        const index = starredList.indexOf(card.id);
+    function setupImage(card, container, imgElement) {
+        // Clean previous error messages/inputs from container
+        const existingError = container.querySelector('.img-error-msg');
+        if (existingError) existingError.remove();
+        const existingInput = container.querySelector('input[type="file"]');
+        if (existingInput) existingInput.remove();
         
-        if (index === -1) {
+        // Reset image
+        imgElement.style.display = 'none';
+        imgElement.src = '';
+        container.style.display = 'none';
+
+        if (card.img) {
+            container.style.display = 'block';
+            
+            // Check custom DB first for the filename
+            const filename = card.img.split('/').pop();
+            if (customImages[filename]) {
+                imgElement.src = customImages[filename];
+                imgElement.style.display = 'block';
+            } else {
+                // Try loading the standard path
+                imgElement.onload = () => { imgElement.style.display = 'block'; };
+                imgElement.onerror = () => handleImageError(imgElement);
+                imgElement.src = card.img;
+            }
+        }
+    }
+
+    // --- STAR FUNCTIONS ---
+    function toggleStar(event) {
+        event.stopPropagation();
+        const card = currentDeck[currentIndex];
+        const idx = starredList.indexOf(card.id);
+        if (idx === -1) {
             starredList.push(card.id);
         } else {
-            starredList.splice(index, 1);
+            starredList.splice(idx, 1);
         }
-        
-        updateStarUI(card.id);
-        saveProgress();
+        localStorage.setItem('part107_starred', JSON.stringify(starredList));
+        updateStarVisuals(card.id);
     }
 
-    function updateStarUI(cardId) {
+    function updateStarVisuals(cardId) {
         const isStarred = starredList.includes(cardId);
         const starText = isStarred ? "★" : "☆";
         const color = isStarred ? "var(--star-color)" : "#d1d5db";
@@ -1267,338 +1891,164 @@
         }
     }
 
-    function showSummaryScreen() {
-        document.getElementById('flashcardMode').classList.add('hidden');
-        document.getElementById('quizMode').classList.add('hidden');
-        document.getElementById('controlsDiv').classList.add('hidden'); 
-        
-        let sessionMastered = 0;
-        let sessionReview = 0;
-        
-        currentDeck.forEach(card => {
-            if (masteredList.includes(card.id)) sessionMastered++;
-            if (reviewList.includes(card.id)) sessionReview++;
-        });
-
-        const statsHTML = `
-            <p><strong>Total Cards Studied:</strong> ${currentDeck.length}</p>
-            <p style="color:var(--success);"><strong>Mastered:</strong> ${sessionMastered}</p>
-            <p style="color:var(--danger);"><strong>Needs Review:</strong> ${sessionReview}</p>
-        `;
-        document.getElementById('summaryStats').innerHTML = statsHTML;
-        
-        const reviewBtn = document.getElementById('summaryReviewBtn');
-        if (reviewList.length > 0) {
-            reviewBtn.style.display = 'inline-block';
-            reviewBtn.textContent = `↺ Review Weak Areas (${reviewList.length})`;
-        } else {
-            reviewBtn.style.display = 'none';
+    // --- REVIEW MODE ---
+    function toggleReview() {
+        if (reviewList.length === 0) {
+            alert("No items marked for review yet!");
+            return;
         }
-
-        document.getElementById('summaryScreen').classList.remove('hidden');
-    }
-
-    function restartCurrentDeck() {
-        document.getElementById('summaryScreen').classList.add('hidden');
-        document.getElementById('controlsDiv').classList.remove('hidden');
-        
-        if (isQuizMode) {
-            document.getElementById('quizMode').classList.remove('hidden');
-        } else {
-            document.getElementById('flashcardMode').classList.remove('hidden');
-        }
-        
-        currentDeck = shuffleDeck(currentDeck);
+        isReviewing = true;
+        currentDeck = questionData.filter(q => reviewList.includes(q.id));
+        currentDeck.sort(() => Math.random() - 0.5);
         currentIndex = 0;
-        isFlipped = false;
+        showStudyScreen();
         renderCard();
-    }
-
-    function returnToMenu() {
-        document.getElementById('summaryScreen').classList.add('hidden');
-        document.getElementById('controlsDiv').classList.remove('hidden');
-        applyFilters();
     }
 
     function startReviewFromSummary() {
-        document.getElementById('summaryScreen').classList.add('hidden');
-        document.getElementById('controlsDiv').classList.remove('hidden');
-        
-        isReviewMode = true;
-        document.getElementById('reviewBtn').textContent = "Return to Deck";
-        
-        const reviewDeck = questionData.filter(q => reviewList.includes(q.id));
-        currentDeck = shuffleDeck(reviewDeck);
-        
-        currentIndex = 0;
-        if (isQuizMode) {
-            document.getElementById('quizMode').classList.remove('hidden');
-        } else {
-            document.getElementById('flashcardMode').classList.remove('hidden');
-        }
-        
-        renderCard();
-        updateStats();
-    }
-
-    // --- MODES & UTILITIES ---
-    function toggleMode() {
-        isQuizMode = !isQuizMode;
-        const btn = document.getElementById('modeToggleBtn');
-        const fcDiv = document.getElementById('flashcardMode');
-        const qzDiv = document.getElementById('quizMode');
-
-        if (isQuizMode) {
-            btn.textContent = "Switch to Flashcards";
-            fcDiv.classList.add('hidden');
-            qzDiv.classList.remove('hidden');
-        } else {
-            btn.textContent = "Switch to Quiz Mode";
-            fcDiv.classList.remove('hidden');
-            qzDiv.classList.add('hidden');
-        }
-        renderCard();
-    }
-
-    function toggleReview() {
-        if (isReviewMode) {
-            isReviewMode = false;
-            applyFilters(); 
-        } else {
-            if (reviewList.length === 0) {
-                alert("No cards marked for review.");
-                return;
-            }
-            isReviewMode = true;
-            document.getElementById('reviewBtn').textContent = "Return to Deck";
-            const reviewDeck = questionData.filter(q => reviewList.includes(q.id));
-            currentDeck = shuffleDeck(reviewDeck);
-            
+        if (reviewList.length > 0) {
+            isReviewing = true;
+            currentDeck = questionData.filter(q => reviewList.includes(q.id));
             currentIndex = 0;
+            showStudyScreen();
             renderCard();
-            updateStats();
         }
     }
 
-    function resetFilter() {
-        applyFilters(); 
-    }
-
-    function populateSubjects() {
-        const categories = [...new Set(questionData.map(q => q.category))].sort();
-        const select = document.getElementById('subjectSelect');
-        categories.forEach(cat => {
-            const option = document.createElement('option');
-            option.value = cat;
-            option.textContent = cat;
-            select.appendChild(option);
-        });
-    }
-
-    function applyFilters() {
-        const category = document.getElementById('subjectSelect').value;
-        const countVal = document.getElementById('countSelect').value;
-        
-        if (isReviewMode) {
-            isReviewMode = false;
-        }
-
-        let filtered;
-        
-        if (category === "ALL") {
-            filtered = questionData;
-        } else if (category === "STARRED") {
-            filtered = questionData.filter(q => starredList.includes(q.id));
-            if (filtered.length === 0) {
-                alert("You haven't starred any questions yet!");
-                document.getElementById('subjectSelect').value = "ALL";
-                filtered = questionData; 
-            }
-        } else {
-            filtered = questionData.filter(q => q.category === category);
-        }
-            
-        let shuffled = shuffleDeck(filtered);
-
-        if (countVal !== "ALL") {
-            const limit = parseInt(countVal);
-            if (shuffled.length > limit) {
-                shuffled = shuffled.slice(0, limit);
-            }
-        }
-
-        currentDeck = shuffled;
+    function restartCurrentDeck() {
         currentIndex = 0;
-        isFlipped = false;
+        currentDeck.sort(() => Math.random() - 0.5);
+        showStudyScreen();
+        renderCard();
+    }
+
+    // --- SCREEN MANAGEMENT ---
+    function showSummaryScreen(isEmpty = false) {
+        document.getElementById('flashcardMode').classList.add('hidden');
+        document.getElementById('quizMode').classList.add('hidden');
+        document.getElementById('controlsDiv').classList.add('hidden');
+        document.getElementById('statsFooter').classList.add('hidden');
+        document.getElementById('summaryScreen').classList.remove('hidden');
+
+        const statsDiv = document.getElementById('summaryStats');
+        const reviewBtn = document.getElementById('summaryReviewBtn');
         
+        if (isEmpty) {
+            statsDiv.innerHTML = "<p>No questions found in this category (or no starred items).</p>";
+            reviewBtn.classList.add('hidden');
+        } else {
+            const total = currentDeck.length;
+            const masteredInSession = currentDeck.filter(c => masteredList.includes(c.id)).length;
+            const reviewInSession = currentDeck.filter(c => reviewList.includes(c.id)).length;
+            
+            statsDiv.innerHTML = `
+                <strong>${total}</strong> Cards Completed<br>
+                <span style="color:var(--success)">${masteredInSession} Mastered</span> &nbsp;|&nbsp; 
+                <span style="color:var(--warning)">${reviewInSession} Need Review</span>
+            `;
+            
+            if (reviewInSession > 0) {
+                reviewBtn.classList.remove('hidden');
+                reviewBtn.textContent = `↺ Review ${reviewInSession} Needs Work Items`;
+            } else {
+                reviewBtn.classList.add('hidden');
+            }
+        }
+        document.getElementById('progressBar').style.width = '100%';
+    }
+
+    function showStudyScreen() {
         document.getElementById('summaryScreen').classList.add('hidden');
         document.getElementById('controlsDiv').classList.remove('hidden');
-        if (isQuizMode) {
-            document.getElementById('quizMode').classList.remove('hidden');
-            document.getElementById('flashcardMode').classList.add('hidden');
-        } else {
-            document.getElementById('flashcardMode').classList.remove('hidden');
-            document.getElementById('quizMode').classList.add('hidden');
+        document.getElementById('statsFooter').classList.remove('hidden');
+    }
+
+    function updateStats() {
+        const masteredCount = masteredList.length;
+        document.getElementById('masteredCount').textContent = masteredCount;
+        document.getElementById('totalCount').textContent = questionData.length;
+        updateReviewButton();
+    }
+
+    function updateReviewButton() {
+        const btn = document.getElementById('reviewBtn');
+        if(btn) btn.textContent = `Review Weak Areas (${reviewList.length})`;
+    }
+
+    function saveProgress() {
+        localStorage.setItem('part107_review', JSON.stringify(reviewList));
+        localStorage.setItem('part107_mastered', JSON.stringify(masteredList));
+    }
+
+    function resetProgress() {
+        if(confirm("Are you sure you want to reset all progress, review items, and starred questions?")) {
+            reviewList = [];
+            masteredList = [];
+            starredList = [];
+            localStorage.removeItem('part107_review');
+            localStorage.removeItem('part107_mastered');
+            localStorage.removeItem('part107_starred');
+            updateStats();
+            applyFilters();
         }
-
-        renderCard();
-        updateStats();
     }
 
-    function loadLoginSettings() {
-        try {
-            const savedEmail = localStorage.getItem('faa_teacherEmail');
-            if (savedEmail) {
-                teacherEmail = savedEmail;
-                document.getElementById('inputEmail').value = teacherEmail;
-            }
-        } catch(e) {}
-    }
-
-    function startSession() {
-        const sName = document.getElementById('inputName').value.trim();
-        const sClass = document.getElementById('inputClass').value.trim();
-        const tEmail = document.getElementById('inputEmail').value.trim();
-
-        if (!sName) {
-            alert("Please enter your name to continue.");
-            return;
-        }
-
-        studentName = sName;
-        studentClass = sClass;
-        teacherEmail = tEmail;
-
-        try {
-            if(teacherEmail) localStorage.setItem('faa_teacherEmail', teacherEmail);
-        } catch(e) {}
-
-        document.getElementById('loginModal').style.display = 'none';
-    }
-
+    // --- REPORTING ---
     function generateReport() {
-        let stats = {};
-        let totalStudied = 0;
-        let totalNeedsReview = 0;
-        let totalMastered = 0;
-        
-        questionData.forEach(q => {
-            if (!stats[q.category]) {
-                stats[q.category] = { total: 0, mastered: 0, review: 0 };
-            }
-        });
-
-        masteredList.forEach(id => {
-            const q = questionData.find(i => i.id === id);
-            if (q) {
-                stats[q.category].mastered++;
-                stats[q.category].total++;
-                totalStudied++;
-                totalMastered++;
-            }
-        });
-
-        reviewList.forEach(id => {
-            const q = questionData.find(i => i.id === id);
-            if (q) {
-                stats[q.category].review++;
-                stats[q.category].total++;
-                totalStudied++;
-                totalNeedsReview++;
-            }
-        });
-
         const now = new Date().toLocaleString();
-        let body = `FAA Part 107 Study Report\nDate: ${now}\n`;
-        body += `Student Name: ${studentName || "____________________"}\n`;
-        body += `Class: ${studentClass || "____________________"}\n\n`;
+        const masteredCount = masteredList.length;
+        const reviewCount = reviewList.length;
+        const total = questionData.length;
         
-        body += `--- OVERALL PROGRESS ---\n`;
-        body += `Total Cards Studied: ${totalStudied}\n`;
-        body += `Proficient: ${totalMastered}\n`;
-        body += `Needs Review (Wrong/Flagged): ${totalNeedsReview}\n`;
-        if (totalStudied > 0) {
-            body += `Proficiency Rate: ${Math.round((totalMastered/totalStudied)*100)}%\n\n`;
-        } else {
-            body += `\n`;
-        }
+        const weakCategories = {};
+        reviewList.forEach(id => {
+            const q = questionData.find(x => x.id === id);
+            if (q) weakCategories[q.category] = (weakCategories[q.category] || 0) + 1;
+        });
+        
+        let weakStr = Object.entries(weakCategories)
+            .sort((a,b) => b[1] - a[1])
+            .map(([cat, count]) => `${cat}: ${count}`)
+            .join(', ');
+        if (!weakStr) weakStr = "None";
 
-        body += `--- SUBJECT BREAKDOWN ---\n`;
-        let hasData = false;
-        for (const [cat, data] of Object.entries(stats)) {
-            if (data.total > 0) {
-                hasData = true;
-                const score = Math.round((data.mastered / data.total) * 100);
-                body += `${cat}: ${score}% Proficient (${data.mastered}/${data.total})\n`;
-                if (data.review > 0) {
-                    body += `   - Needs Review: ${data.review} questions\n`;
-                }
-            }
-        }
-        if (!hasData) body += "No study data recorded yet.\n";
+        const report = `FAA PART 107 STUDY REPORT\n` +
+            `--------------------------\n` +
+            `Student: ${currentUser.name}\n` +
+            `Class: ${currentUser.className}\n` +
+            `Date: ${now}\n\n` +
+            `Total Bank: ${total}\n` +
+            `Cards Mastered: ${masteredCount}\n` +
+            `Cards Needing Review: ${reviewCount}\n` +
+            `Starred Cards: ${starredList.length}\n\n` +
+            `Weak Areas: ${weakStr}\n\n` +
+            `Generated by FAA Part 107 Prep App`;
 
-        body += `\n--- DETAILED 'NEEDS REVIEW' LIST ---\n`;
-        if (reviewList.length === 0) {
-            body += "Great job! No questions marked for review.\n";
-        } else {
-            reviewList.forEach(id => {
-                const q = questionData.find(i => i.id === id);
-                if (q) {
-                    let qText = q.question.length > 60 ? q.question.substring(0, 60) + "..." : q.question;
-                    body += `[${q.category}] [${q.acs || "NO-ACS"}] ${qText}\n`;
-                }
-            });
-        }
-
-        document.getElementById('reportText').value = body;
-        document.getElementById('reportEmailDisplay').textContent = teacherEmail || "your teacher";
-        document.getElementById('reportTitle').textContent = "Study Session Report";
+        document.getElementById('reportTitle').textContent = `Study Report — ${currentUser.name}`;
+        document.getElementById('reportEmailDisplay').textContent = currentUser.email;
+        document.getElementById('reportText').value = report;
         document.getElementById('reportModal').style.display = 'block';
 
-        const subject = encodeURIComponent(`Part 107 Study Report - ${studentName}`);
-        const bodyEncoded = encodeURIComponent(body);
-        
-        if(teacherEmail) {
-            try {
-                window.location.href = `mailto:${teacherEmail}?subject=${subject}&body=${bodyEncoded}`;
-            } catch (e) {
-                console.log("Mailto failed or blocked");
-            }
-        }
+        // Attempt to open email client
+        const subject = encodeURIComponent(`Part 107 Study Report - ${currentUser.name}`);
+        const body = encodeURIComponent(report);
+        window.location.href = `mailto:${currentUser.email}?subject=${subject}&body=${body}`;
     }
 
     function reportCurrentCard() {
         const card = currentDeck[currentIndex];
-        const issue = prompt("Briefly describe the issue or your question:");
-        
-        if (issue === null) return; 
-
-        const now = new Date().toLocaleString();
-        let body = `FAA Part 107 Question Report\nDate: ${now}\n`;
-        body += `Student: ${studentName || "Anonymous"}\n`;
-        body += `Class: ${studentClass || "N/A"}\n\n`;
-        body += `--- QUESTION DETAILS ---\n`;
-        body += `ID: ${card.id}\n`;
-        body += `Category: ${card.category}\n`;
-        body += `ACS Code: ${card.acs || "N/A"}\n`;
-        body += `Question: ${card.question}\n`;
-        body += `Answer: ${card.answer}\n\n`;
-        body += `--- STUDENT COMMENT ---\n`;
-        body += `${issue}\n`;
-
-        document.getElementById('reportText').value = body;
-        document.getElementById('reportEmailDisplay').textContent = teacherEmail || "your teacher";
-        document.getElementById('reportTitle').textContent = "Report Question Issue";
-        document.getElementById('reportModal').style.display = 'block';
-
-        const subject = encodeURIComponent(`Question Report: ID ${card.id} - ${studentName}`);
-        const bodyEncoded = encodeURIComponent(body);
-        
-        if(teacherEmail) {
-            try {
-                window.location.href = `mailto:${teacherEmail}?subject=${subject}&body=${bodyEncoded}`;
-            } catch (e) { console.log("Mailto failed"); }
-        }
+        const subject = encodeURIComponent(`Part 107 Question Issue - Card ${card.id}`);
+        const body = encodeURIComponent(
+            `I found an issue with the following question:\n\n` +
+            `Card ID: ${card.id}\n` +
+            `Category: ${card.category}\n` +
+            `ACS: ${card.acs}\n` +
+            `Question: ${card.question}\n` +
+            `Current Answer: ${card.answer}\n\n` +
+            `Issue/Comment:\n`
+        );
+        const email = currentUser.email || '';
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     }
 
     function closeReportModal() {
@@ -1606,95 +2056,119 @@
     }
 
     function copyToClipboard() {
-        const copyText = document.getElementById("reportText");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); 
-        navigator.clipboard.writeText(copyText.value).then(() => {
-            alert("Report copied to clipboard! You can now paste it into your email.");
-        }, (err) => {
-            document.execCommand('copy');
-            alert("Report copied to clipboard! (Fallback mode)");
+        const text = document.getElementById('reportText');
+        text.select();
+        document.execCommand('copy');
+        alert('Report copied to clipboard!');
+    }
+
+    // --- IMAGE HANDLING & INDEXEDDB ---
+    function handleImageError(img) {
+        const card = currentDeck[currentIndex];
+        const filename = card.img.split('/').pop(); // Extract filename like 'figure25.jpg'
+        const parent = img.parentElement;
+        
+        img.style.display = 'none'; // hide broken image icon
+        
+        // Avoid duplicate messages
+        if (parent.querySelector('.img-error-msg')) return;
+        
+        const msg = document.createElement('div');
+        msg.className = 'img-error-msg';
+        msg.innerHTML = `
+            <strong>Image Missing: ${filename}</strong>
+            <span style="font-size:0.8rem; color:#666; margin: 5px 0;">Click below to load it from your device.</span>
+            <label class="img-upload-label">
+                Load Image
+                <input type="file" accept="image/*" style="display:none;" onchange="handleImageUpload(this, '${filename}')">
+            </label>
+        `;
+        parent.appendChild(msg);
+    }
+
+    function handleImageUpload(input, filename) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataUrl = e.target.result;
+            customImages[filename] = dataUrl;
+            saveImageToDB(filename, dataUrl);
+            
+            // Re-render card to show image
+            renderCard();
+            alert(`Image '${filename}' saved successfully! It will load automatically next time.`);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // IndexedDB Logic
+    const DB_NAME = 'Part107StudyAppDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'images';
+
+    function openDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, DB_VERSION);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve(request.result);
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME);
+                }
+            };
+        });
+    }
+
+    function saveImageToDB(filename, dataUrl) {
+        openDB().then(db => {
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            tx.objectStore(STORE_NAME).put(dataUrl, filename);
+        }).catch(err => console.error('DB save error:', err));
+    }
+
+    function loadImagesFromDB() {
+        return openDB().then(db => {
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const request = store.getAllKeys();
+                request.onsuccess = () => {
+                    const keys = request.result;
+                    if (keys.length === 0) { resolve(); return; }
+                    
+                    let loaded = 0;
+                    keys.forEach(key => {
+                        const req = store.get(key);
+                        req.onsuccess = () => {
+                            customImages[key] = req.result;
+                            loaded++;
+                            if (loaded === keys.length) resolve();
+                        };
+                    });
+                };
+                request.onerror = () => resolve();
+            });
+        }).catch(err => {
+            console.warn('IndexedDB not available:', err);
+            return Promise.resolve();
         });
     }
 
     function openModal(event) {
         event.stopPropagation();
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("modalImg");
-        modal.style.display = "block";
-        modalImg.src = event.target.src;
+        const img = event.target;
+        if (!img.src) return;
+        document.getElementById('imageModal').style.display = 'block';
+        document.getElementById('modalImg').src = img.src;
     }
 
     function closeModal() {
-        document.getElementById("imageModal").style.display = "none";
+        document.getElementById('imageModal').style.display = 'none';
     }
 
-    function updateStats() {
-        document.getElementById('masteredCount').textContent = masteredList.length;
-        document.getElementById('totalCount').textContent = questionData.length;
-        
-        const reviewBtn = document.getElementById('reviewBtn');
-        if (!isReviewMode) {
-            reviewBtn.textContent = `Review Weak Areas (${reviewList.length})`;
-        } else {
-            if (reviewBtn.textContent !== "Return to Deck") {
-                 reviewBtn.textContent = "Return to Deck";
-            }
-        }
-        updateProgress();
-    }
-
-    function updateProgress() {
-        const percent = ((currentIndex) / currentDeck.length) * 100;
-        document.getElementById('progressBar').style.width = percent + '%';
-    }
-
-    // NEW: Save uploaded images to local storage
-    function saveImagesToStorage() {
-        try {
-            // Check storage limit first (basic check)
-            const stringData = JSON.stringify(cachedImages);
-            if(stringData.length < 4000000) { // Limit to ~4MB
-                 localStorage.setItem('faa_cachedImages', stringData);
-            }
-        } catch (e) {
-            console.log("Storage full or error saving images");
-        }
-    }
-
-    function saveProgress() {
-        try {
-            localStorage.setItem('faa_reviewList', JSON.stringify(reviewList));
-            localStorage.setItem('faa_masteredList', JSON.stringify(masteredList));
-            localStorage.setItem('faa_starredList', JSON.stringify(starredList)); 
-        } catch (e) {}
-    }
-
-    function loadProgress() {
-        try {
-            const savedReview = localStorage.getItem('faa_reviewList');
-            const savedMastered = localStorage.getItem('faa_masteredList');
-            const savedStarred = localStorage.getItem('faa_starredList'); 
-            const savedImages = localStorage.getItem('faa_cachedImages');
-            
-            if (savedReview) reviewList = JSON.parse(savedReview);
-            if (savedMastered) masteredList = JSON.parse(savedMastered);
-            if (savedStarred) starredList = JSON.parse(savedStarred);
-            if (savedImages) cachedImages = JSON.parse(savedImages);
-        } catch (e) {}
-    }
-
-    function resetProgress() {
-        if(confirm("Reset all progress (Mastered, Review, Stars)?")) {
-            reviewList = [];
-            masteredList = [];
-            starredList = [];
-            saveProgress();
-            updateStats();
-            applyFilters();
-        }
-    }
 </script>
-
 </body>
 </html>
