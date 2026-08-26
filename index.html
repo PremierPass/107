@@ -897,7 +897,7 @@
             options: ["700 feet AGL", "1200 feet AGL", "Surface"], 
             answer: "700 feet AGL", 
             explanation: "The shaded magenta line indicates Class E airspace begins at 700 feet AGL.", 
-            img: "images/figure25.jpg" 
+            img: "images/Figure25.JPG” 
         },
         { 
             id: 207, 
@@ -907,7 +907,7 @@
             options: ["The top number (e.g. 1548)", "The bottom number in parentheses", "The blue number"], 
             answer: "The top number (e.g. 1548)", 
             explanation: "On sectional charts, the bold number is MSL. The number in parentheses is AGL.", 
-            img: "images/figure25.jpg" 
+            img: "images/Figure25.JPG" 
         },
         { 
             id: 208, 
@@ -917,7 +917,7 @@
             options: ["122.9", "118.0", "121.5"], 
             answer: "122.9", 
             explanation: "Look for the 'C' circle symbol next to a frequency. For many non-towered airports without a specific CTAF, 122.9 (MULTICOM) is used.", 
-            img: "images/figure25.jpg" 
+            img: "images/Figure25.JPG" 
         },
         { 
             id: 209, 
@@ -927,7 +927,7 @@
             options: ["No, it is Magenta", "Yes, it is Blue", "Yes, it is Magenta"], 
             answer: "No, it is Magenta", 
             explanation: "Magenta airport symbols indicate non-towered (uncontrolled) airports. Blue indicates towered airports.", 
-            img: "images/figure25.jpg" 
+            img: "images/Figure25.JPG" 
         },
         { 
             id: 210, 
@@ -937,7 +937,7 @@
             options: ["Use the tick marks on the grid lines", "Guess based on city location", "Use GPS"], 
             answer: "Use the tick marks on the grid lines", 
             explanation: "Each black tick mark represents 1 minute of latitude or longitude. Large lines are 30 minutes or whole degrees.", 
-            img: "images/figure25.jpg" 
+            img: "images/Figure25.JPG" 
         },
 
         // --- NEW LEGEND QUESTIONS (LEGEND 1) ---
@@ -949,7 +949,7 @@
             options: ["Rotating Beacon is in operation (Sunset to Sunrise)", "Airport is closed", "Military base"], 
             answer: "Rotating Beacon is in operation (Sunset to Sunrise)", 
             explanation: "The star symbol above the airport circle indicates a rotating beacon is present and operating.", 
-            img: "images/legend1.jpg" 
+            img: "images/legend1.jpg 
         },
         { 
             id: 212, 
@@ -1034,7 +1034,7 @@
     // NEW: Handle missing image logic
     function handleImageError(img) {
         const card = currentDeck[currentIndex];
-        const filename = card.img.split('/').pop(); // Extract filename like 'figure25.jpg'
+        const filename = card.img.split('/').pop(); // Extract filename like 'Figure25.JPG'
         const parent = img.parentElement;
         
         img.style.display = 'none'; // hide broken image icon
