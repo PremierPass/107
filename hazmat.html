@@ -181,6 +181,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 </head>
 <body>
 <div class="nav">
+  <a href="fire.html" class="nav-btn" style="text-decoration:none;color:#e2aa3c;">&larr; Hub</a>
   <span class="nav-title">HAZMAT</span>
   <button class="nav-btn active" onclick="showPage('flashcards',event)">Flashcards</button>
   <a href="hazmat_definitions.html" class="nav-btn" style="text-decoration:none;">Definitions</a>
@@ -1150,5 +1151,46 @@ function cancelQuiz() {
 
 
 </script>
+<script>
+// Saved progress + cloud sync bridge for the hazmat guide.
+(function(){
+  const KEY='hazmat_state';
+  let saved={k:[],u:[],m:[]};
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)saved={k:s.k||[],u:s.u||[],m:s.m||[]};}catch(e){}
+  const known=new Set(saved.k), review=new Set(saved.u);
+  function persist(){
+    const d={k:[...known],u:[...review],m:missedQuestions};
+    try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}
+    if(window.cloudChanged)window.cloudChanged();
+  }
+  function apply(){
+    fcKnown.clear();fcUnknown.clear();
+    known.forEach(x=>fcKnown.add(x));review.forEach(x=>fcUnknown.add(x));
+    try{fcShow();}catch(e){}
+    if(document.getElementById('page-review')?.classList.contains('active'))updateReviewPage();
+  }
+  missedQuestions=saved.m;
+  const _mark=window.fcMark;
+  window.fcMark=function(s){
+    const id=fcGetId(fcIdx);
+    if(id){if(s==='known'){known.add(id);review.delete(id);}else{review.add(id);known.delete(id);}persist();}
+    _mark(s);
+  };
+  const _reset=window.fcReset;
+  window.fcReset=function(){known.clear();review.clear();persist();_reset();};
+  const _submit=window.submitQuizWithTracking;
+  window.submitQuizWithTracking=function(){_submit();persist();};
+  const _clearMissed=window.clearMissedQuestions;
+  window.clearMissedQuestions=function(){_clearMissed();persist();};
+  window.appSync={key:'hazmat',
+    get:()=>({k:[...known],u:[...review],m:missedQuestions}),
+    set:d=>{known.clear();review.clear();(d.k||[]).forEach(x=>known.add(x));(d.u||[]).forEach(x=>review.add(x));missedQuestions=d.m||[];persist();apply();},
+    merge:(l,c)=>{l=l||{};c=c||{};const ck=new Set(c.k||[]),cu=new Set(c.u||[]);
+      const seen=new Set((c.m||[]).map(x=>x.q));
+      return {k:[...ck,...(l.k||[]).filter(x=>!ck.has(x)&&!cu.has(x))],u:[...cu,...(l.u||[]).filter(x=>!cu.has(x)&&!ck.has(x))],m:[...(c.m||[]),...(l.m||[]).filter(x=>!seen.has(x.q))].slice(0,200)};}};
+  apply();
+})();
+</script>
+<script type="module" src="cloud-sync.js"></script>
 </body>
 </html>

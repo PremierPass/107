@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF I &amp; II Study App</title>
+<style>
+
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: #111 !important; color-scheme: dark; }
+body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: #f0f0f0; min-height: 100vh; }
+.nav { background: #1a1a1a; border-bottom: 2px solid #c0392b; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 4px; overflow-x: auto; }
+.nav-btn { background: none; border: none; color: #aaa; padding: 8px 14px; cursor: pointer; font-size: 13px; border-radius: 6px; white-space: nowrap; transition: all 0.2s; }
+.nav-btn.active { background: #c0392b; color: white; }
+.nav-btn:hover:not(.active) { background: #2a2a2a; color: #fff; }
+.nav-title { color: #c0392b; font-weight: 700; font-size: 15px; letter-spacing: 1px; margin-right: 12px; white-space: nowrap; }
+.page { display: none; padding: 16px; max-width: 720px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* FLASHCARDS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.stat { background: #1e1e1e; border-radius: 8px; padding: 10px; text-align: center; }
+.stat .num { font-size: 20px; font-weight: 700; }
+.stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.stat.known .num { color: #27ae60; }
+.stat.unknown .num { color: #c0392b; }
+.stat.remaining .num { color: #f39c12; }
+.progress-bar { background: #2a2a2a; border-radius: 4px; height: 5px; margin-bottom: 12px; }
+.progress-fill { height: 100%; background: #c0392b; border-radius: 4px; transition: width 0.3s; }
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.filter-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+.filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
+.search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
+.search-box:focus { outline: none; border-color: #c0392b; }
+.card-counter { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
+.card-wrap { perspective: 1000px; margin-bottom: 12px; cursor: pointer; }
+.card { width: 100%; min-height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; min-height: 180px; backface-visibility: hidden; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+.card-front { background: #1e1e1e; border: 1px solid #333; }
+.card-back { background: #0f2a1f; border: 1px solid #27ae60; transform: rotateY(180deg); }
+.card-ch { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.card-q { font-size: 16px; font-weight: 500; line-height: 1.5; }
+.card-a { font-size: 14px; line-height: 1.6; color: #d4f5e4; }
+.card-hint { font-size: 11px; color: #555; margin-top: 10px; text-align: center; }
+.card-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+.btn { padding: 9px 18px; border-radius: 7px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+.btn-green { background: #27ae60; color: white; }
+.btn-red { background: #c0392b; color: white; }
+.btn-gray { background: #333; color: #ccc; }
+.btn:hover { opacity: 0.85; }
+.deck-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sm-btn { background: #1e1e1e; border: 1px solid #444; color: #bbb; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.sm-btn:hover { border-color: #c0392b; color: #c0392b; }
+.done-screen { text-align: center; padding: 36px 16px; background: #1e1e1e; border-radius: 10px; }
+.done-screen h2 { color: #27ae60; font-size: 22px; margin-bottom: 10px; }
+.done-screen p { color: #999; margin-bottom: 18px; }
+
+/* REFERENCE */
+.ref-section { margin-bottom: 24px; }
+.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.ref-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+.ref-card.red { border-left: 3px solid #c0392b; }
+.ref-card.green { border-left: 3px solid #27ae60; }
+.ref-card.blue { border-left: 3px solid #2980b9; }
+.ref-card.yellow { border-left: 3px solid #f39c12; }
+.ref-card.purple { border-left: 3px solid #8e44ad; }
+.ref-card.orange { border-left: 3px solid #e67e22; }
+.ref-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.ref-card p { font-size: 12px; color: #aaa; line-height: 1.5; }
+.ref-card .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 700; }
+.tag-red { background: #c0392b22; color: #e74c3c; }
+.tag-green { background: #27ae6022; color: #2ecc71; }
+.tag-blue { background: #2980b922; color: #3498db; }
+.tag-yellow { background: #f39c1222; color: #f39c12; }
+.tag-purple { background: #8e44ad22; color: #9b59b6; }
+.tag-orange { background: #e67e2222; color: #e67e22; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: #1e1e1e; }
+
+/* QUIZ */
+.quiz-setup { background: #1e1e1e; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.quiz-setup h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #c0392b; }
+.quiz-option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.quiz-opt { background: #2a2a2a; border: 1px solid #444; border-radius: 7px; padding: 10px 12px; cursor: pointer; font-size: 12px; color: #bbb; transition: all 0.2s; text-align: center; }
+.quiz-opt.selected { background: #c0392b22; border-color: #c0392b; color: #fff; }
+.quiz-opt:hover { border-color: #c0392b; }
+.quiz-start-btn { background: #c0392b; color: white; border: none; padding: 10px 24px; border-radius: 7px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+.quiz-start-btn:hover { background: #e74c3c; }
+.q-card { background: #1e1e1e; border-radius: 10px; padding: 18px; margin-bottom: 12px; }
+.q-num { font-size: 11px; color: #666; margin-bottom: 8px; }
+.q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
+.q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-opt { background: #2a2a2a; border: 1px solid #333; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-size: 13px; color: #ccc; transition: all 0.2s; text-align: left; }
+.q-opt:hover { border-color: #555; background: #333; }
+.q-opt.selected { border-color: #f39c12; background: #f39c1211; color: #fff; }
+.q-opt.correct { border-color: #27ae60; background: #27ae6022; color: #2ecc71; }
+.q-opt.wrong { border-color: #c0392b; background: #c0392b22; color: #e74c3c; }
+.q-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; }
+.q-feedback.correct { background: #27ae6022; color: #2ecc71; border: 1px solid #27ae6044; }
+.q-feedback.wrong { background: #c0392b22; color: #e74c3c; border: 1px solid #c0392b44; }
+.quiz-nav { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.quiz-score { text-align: center; background: #1e1e1e; border-radius: 10px; padding: 32px 20px; }
+.quiz-score h2 { font-size: 24px; margin-bottom: 8px; }
+.quiz-score .score-num { font-size: 48px; font-weight: 700; margin: 10px 0; }
+.score-pass { color: #27ae60; }
+.score-fail { color: #c0392b; }
+.q-progress { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 12px; }
+.q-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
+.q-dot.answered { background: #f39c12; }
+.q-dot.correct { background: #27ae60; }
+.q-dot.wrong { background: #c0392b; }
+
+.placard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.placard-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.placard-img { width: 80px; height: 80px; margin-bottom: 8px; image-rendering: crisp-edges; }
+.placard-class { font-size: 11px; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.placard-name { font-size: 13px; font-weight: 600; margin: 2px 0; }
+.placard-desc { font-size: 11px; color: #888; line-height: 1.4; }
+
+.hclass-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.hclass-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.hclass-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.hclass-diamond { width: 64px; height: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(45deg); border-radius: 4px; border: 2px solid rgba(0,0,0,0.3); }
+.hclass-num { transform: rotate(-45deg); font-size: 18px; font-weight: 900; line-height: 1; }
+.hclass-dname { transform: rotate(-45deg); font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.hclass-info { flex: 1; }
+.hclass-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.hclass-examples { font-size: 11px; color: #888; margin-bottom: 3px; }
+.hclass-guide { font-size: 11px; color: #c0392b; font-weight: 600; }
+.hclass-tap { font-size: 10px; color: #555; margin-top: 4px; }
+.class-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 10px; }
+.class-modal.open { display: flex; }
+.modal-inner { background: #111; border-radius: 10px; max-width: 98vw; max-height: 95vh; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #333; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #1a1a1a; border-bottom: 1px solid #333; font-size: 13px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 1px; }
+.modal-close { background: #c0392b; border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.modal-body { overflow: auto; padding: 10px; -webkit-overflow-scrolling: touch; }
+.modal-img { width: 100%; max-width: 1200px; display: block; border-radius: 6px; }
+
+.nfpa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.nfpa-card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.nfpa-card:hover { border-color: #c0392b; background: #252525; transform: translateY(-1px); }
+.nfpa-swatch { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.2); }
+.nfpa-label { font-size: 12px; font-weight: 900; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+.nfpa-info { flex: 1; }
+.nfpa-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.nfpa-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.ppe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.ppe-card { background: #1e1e1e; border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: all 0.2s; }
+.ppe-card:hover { background: #252525; transform: translateY(-1px); }
+.ppe-badge { min-width: 80px; padding: 8px 6px; border-radius: 7px; text-align: center; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3; flex-shrink: 0; }
+.ppe-info { flex: 1; }
+.ppe-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.ppe-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 4px; }
+
+.review-card { background: #1e1e1e; border: 1px solid #c0392b; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.review-card-ch { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.review-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.review-card-a { font-size: 13px; color: #27ae60; line-height: 1.5; }
+.missed-card { background: #1e1e1e; border: 1px solid #e74c3c; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+.missed-card-topic { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.missed-card-q { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 8px; }
+.missed-card-wrong { font-size: 12px; color: #e74c3c; margin-bottom: 4px; }
+.missed-card-correct { font-size: 12px; color: #27ae60; }
+.empty-state { text-align: center; padding: 32px; color: #555; font-size: 14px; }
+
+.nav a.nav-btn { text-decoration: none; display: inline-block; }
+.nav a.nav-btn:visited { color: #aaa; }
+
+.nav a.nav-btn { text-decoration: none; display: inline-block; }
+.nav a.nav-btn:visited { color: #aaa; }
+.nav-home { color:#e2aa3c !important; }
+.card { display:grid; }
+.card-face { position:relative; grid-area:1 / 1; }
+.card-a { white-space:pre-line; }
+.ch-head { font-size:12px; color:#888; margin:-4px 0 10px; text-align:center; }
+.term-ch { margin-bottom: 22px; }
+.term-row { background:#1e1e1e; border:1px solid #333; border-left:3px solid #c0392b; border-radius:8px; padding:10px 12px; margin-bottom:6px; }
+.term-row b { display:block; font-size:13px; color:#fff; margin-bottom:3px; }
+.term-row span { font-size:12px; color:#aaa; line-height:1.5; }
+.toggle-row { display:flex; align-items:center; gap:8px; font-size:12px; color:#bbb; margin:4px 0 12px; cursor:pointer; }
+.toggle-row input { accent-color:#c0392b; width:16px; height:16px; }
+.bank-note { font-size:11px; color:#666; text-align:center; margin-top:18px; line-height:1.5; }
+</style>
+<style>
+  :root { color-scheme: dark !important; }
+  html, body { background-color: #111111 !important; color: #f0f0f0 !important; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="fire.html" class="nav-btn nav-home" title="Back to Fire Training hub">&larr; Hub</a>
+  <span class="nav-title">FF I &amp; II</span>
+  <button class="nav-btn active" onclick="showPage('flashcards',event)">Flashcards</button>
+  <button class="nav-btn" onclick="showPage('quiz',event)">Quiz Mode</button>
+  <button class="nav-btn" onclick="showPage('terms',event)">Key Terms</button>
+  <button class="nav-btn" onclick="showPage('review',event)">Review List</button>
+</div>
+
+<!-- FLASHCARDS -->
+<div id="page-flashcards" class="page active">
+  <div class="stats">
+    <div class="stat"><div class="num" id="s-total">0</div><div class="lbl">Total</div></div>
+    <div class="stat known"><div class="num" id="s-known">0</div><div class="lbl">Known</div></div>
+    <div class="stat unknown"><div class="num" id="s-unknown">0</div><div class="lbl">Review</div></div>
+    <div class="stat remaining"><div class="num" id="s-left">0</div><div class="lbl">Left</div></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="fc-progress" style="width:0%"></div></div>
+  <input class="search-box" type="text" id="fc-search" placeholder="Search flashcards..." oninput="fcBuildDeck();fcShuffle()">
+  <div class="filter-bar" id="fc-filters"></div>
+  <div style="display:flex;flex-wrap:wrap;gap:4px 16px">
+    <label class="toggle-row"><input type="checkbox" id="fc-quiz" checked onchange="fcBuildDeck();fcShuffle()"> Quiz &amp; test questions</label>
+    <label class="toggle-row"><input type="checkbox" id="fc-review" checked onchange="fcBuildDeck();fcShuffle()"> Review questions</label>
+    <label class="toggle-row"><input type="checkbox" id="fc-terms" checked onchange="fcBuildDeck();fcShuffle()"> Key terms</label>
+  </div>
+  <div class="card-counter" id="fc-counter"></div>
+  <div id="fc-main">
+    <div class="card-wrap" onclick="fcFlip()">
+      <div class="card" id="fc-card">
+        <div class="card-face card-front">
+          <div class="card-ch" id="fc-ch"></div>
+          <div class="card-q" id="fc-q"></div>
+          <div class="card-hint">tap to reveal answer</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-ch" id="fc-ch-b"></div>
+          <div class="card-a" id="fc-a"></div>
+          <div class="card-hint">tap to flip back</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-controls">
+      <button class="btn btn-red" onclick="fcMark('unknown')">Need Review</button>
+      <button class="btn btn-gray" onclick="fcNext()">Skip</button>
+      <button class="btn btn-green" onclick="fcMark('known')">Got It</button>
+    </div>
+    <div class="deck-controls">
+      <button class="sm-btn" onclick="fcReset()">Reset</button>
+      <button class="sm-btn" onclick="fcShuffle()">Shuffle</button>
+      <button class="sm-btn" onclick="fcStudyUnknown()">Review Only</button>
+    </div>
+  </div>
+  <div id="fc-done" class="done-screen" style="display:none">
+    <h2>Deck Complete!</h2>
+    <p id="fc-done-stats"></p>
+    <button class="btn btn-green" onclick="fcReset()" style="margin-right:8px">Start Over</button>
+    <button class="btn btn-red" onclick="fcStudyUnknown()">Review Missed</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="page-quiz" class="page">
+  <div id="quiz-setup" class="quiz-setup">
+    <h2>Quiz Mode</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:12px">Pick chapters and how many questions. 70% passes, same as the course tests.</p>
+    <div style="font-size:12px;color:#aaa;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Chapters</div>
+    <div class="quiz-option-grid" id="quiz-topic-opts"></div>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="sm-btn" onclick="setAllTopics(true)">Select All</button>
+      <button class="sm-btn" onclick="setAllTopics(false)">Clear</button>
+    </div>
+    <label class="toggle-row"><input type="checkbox" id="quiz-terms" checked> Include key term questions</label>
+    <div style="font-size:12px;color:#aaa;margin-bottom:8px;margin-top:4px;text-transform:uppercase;letter-spacing:1px">Number of Questions</div>
+    <div class="quiz-option-grid" id="quiz-num-opts">
+      <div class="quiz-opt selected" data-num="10" onclick="selectNum(this)">10 Questions</div>
+      <div class="quiz-opt" data-num="20" onclick="selectNum(this)">20 Questions</div>
+      <div class="quiz-opt" data-num="40" onclick="selectNum(this)">40 Questions</div>
+      <div class="quiz-opt" data-num="0" onclick="selectNum(this)">All Questions</div>
+    </div>
+    <button class="quiz-start-btn" style="margin-top:16px" onclick="startQuiz()">Start Quiz</button>
+  </div>
+  <div id="quiz-game" style="display:none">
+    <div class="q-progress" id="q-progress"></div>
+    <div id="quiz-questions"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-gray" id="q-prev-btn" onclick="qPrev()" style="display:none">Previous</button>
+      <button class="btn btn-green" id="q-next-btn" onclick="qNext()">Next</button>
+      <button class="btn btn-red" id="q-submit-btn" onclick="submitQuiz()" style="display:none">Submit Quiz</button>
+    </div>
+    <div style="text-align:center; margin-top:10px;"><button class="sm-btn" onclick="backToSetup()" style="color:#e74c3c; border-color:#e74c3c;">&#10005; Cancel Quiz</button></div>
+  </div>
+  <div id="quiz-score" class="quiz-score" style="display:none">
+    <h2>Quiz Complete</h2>
+    <div class="score-num" id="q-score-num"></div>
+    <p id="q-score-label"></p>
+    <p id="q-score-detail" style="color:#888;font-size:13px;margin-bottom:20px"></p>
+    <button class="btn btn-green" onclick="retryQuiz()" style="margin-right:8px">Retry</button>
+    <button class="btn btn-gray" onclick="backToSetup()">New Quiz</button>
+  </div>
+</div>
+
+<!-- KEY TERMS -->
+<div id="page-terms" class="page">
+  <input class="search-box" type="text" id="term-search" placeholder="Search key terms..." oninput="renderTerms()">
+  <div class="filter-bar" id="term-filters"></div>
+  <div id="term-list"></div>
+</div>
+
+<!-- REVIEW -->
+<div id="page-review" class="page">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div style="font-size:16px; font-weight:700; color:#c0392b; text-transform:uppercase; letter-spacing:2px;">Cards Marked for Review</div>
+    <button class="sm-btn" onclick="fcUnknown.clear();save();fcBuildDeck();fcShuffle();updateReviewPage()">Clear</button>
+  </div>
+  <div id="review-list-content"></div>
+  <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div style="font-size:16px; font-weight:700; color:#c0392b; text-transform:uppercase; letter-spacing:2px;">Missed Quiz Questions</div>
+    <button class="sm-btn" onclick="missedQuestions=[];save();updateReviewPage()">Clear</button>
+  </div>
+  <div id="missed-questions-content"></div>
+  <div class="bank-note">Built from the BCFFA FF I &amp; II 2026 course question banks (IFSTA Essentials 8th ed.).<br>Only answers confirmed by grading are used. Progress is saved on this device.</div>
+</div>
+
+<!-- Chapter data. To add a chapter: create ff-data/chNN.js and add a script tag below. -->
+<script>
+const FF_CHAPTERS=[];
+function FF_ADD(ch){FF_CHAPTERS.push(ch);}
+</script>
+<script src="ff-data/ch01.js"></script>
+<script src="ff-data/ch02.js"></script>
+<script src="ff-data/ch03.js"></script>
+<script src="ff-data/ch04.js"></script>
+<script src="ff-data/ch05.js"></script>
+<script src="ff-data/ch06.js"></script>
+<script src="ff-data/ch07.js"></script>
+<script src="ff-data/ch08.js"></script>
+<script src="ff-data/ch09.js"></script>
+<script src="ff-data/ch10.js"></script>
+<script>
+FF_CHAPTERS.sort((a,b)=>a.n-b.n);
+const chLabel=n=>'Ch'+n;
+const chTitle={}; FF_CHAPTERS.forEach(c=>chTitle['Ch'+c.n]=c.title);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// Build decks
+const UNCONF='Not confirmed by grading. This is the most likely answer.';
+const FC_REVIEW=[], FC_QUIZ=[], FC_TERMS=[], QUIZ_FACTS=[];
+FF_CHAPTERS.forEach(c=>{
+  const ch=chLabel(c.n);
+  (c.review||[]).forEach(([q,a])=>FC_REVIEW.push({ch,q,a,kind:'Review question'}));
+  (c.terms||[]).forEach(([t,d])=>FC_TERMS.push({ch,q:'Define: '+t,a:d,kind:'Key term'}));
+  (c.quiz||[]).forEach(([q,...opts])=>{
+    const u=q.startsWith('~'); if(u)q=q.slice(1);
+    QUIZ_FACTS.push({ch,q,opts,ans:0,u});
+    FC_QUIZ.push({ch,q,a:opts[0]+(u?'\n\n('+UNCONF+')':''),kind:'Quiz/test question'});
+  });
+});
+const FC_ALL=FC_QUIZ.concat(FC_REVIEW,FC_TERMS);
+function termQuestions(chs){
+  const out=[];
+  FF_CHAPTERS.filter(c=>chs.has(chLabel(c.n))&&(c.terms||[]).length>=4).forEach(c=>{
+    c.terms.forEach(([t,d],i)=>{
+      const others=shuffle(c.terms.filter((_,j)=>j!==i).map(x=>x[0])).slice(0,3);
+      out.push({ch:chLabel(c.n),q:'Which key term matches this definition?<br><span style="color:#aaa;font-size:14px">'+esc(d)+'</span>',raw:true,opts:[t,...others],ans:0});
+    });
+  });
+  return out;
+}
+
+// Storage (best effort)
+let fcKnown=new Set(), fcUnknown=new Set(), missedQuestions=[];
+function save(){try{localStorage.setItem('ff12_state',JSON.stringify({k:[...fcKnown],u:[...fcUnknown],m:missedQuestions}));}catch(e){} if(window.cloudChanged)window.cloudChanged();}
+// Cloud sync bridge (used by cloud-sync.js when someone signs in)
+function mergeProgress(l,c){
+  l=l||{};c=c||{};const ck=new Set(c.k||[]),cu=new Set(c.u||[]);
+  const k=[...ck,...(l.k||[]).filter(x=>!ck.has(x)&&!cu.has(x))];
+  const u=[...cu,...(l.u||[]).filter(x=>!cu.has(x)&&!ck.has(x))];
+  const seen=new Set((c.m||[]).map(x=>x.q));
+  const m=[...(c.m||[]),...(l.m||[]).filter(x=>!seen.has(x.q))].slice(0,200);
+  return {k,u,m};
+}
+window.appSync={key:'ff12',
+  get:()=>({k:[...fcKnown],u:[...fcUnknown],m:missedQuestions}),
+  set:d=>{fcKnown=new Set(d.k||[]);fcUnknown=new Set(d.u||[]);missedQuestions=d.m||[];save();fcUpdateStats();if(document.getElementById('page-review').classList.contains('active'))updateReviewPage();},
+  merge:mergeProgress};
+function load(){try{const s=JSON.parse(localStorage.getItem('ff12_state')||'null');if(s){fcKnown=new Set(s.k||[]);fcUnknown=new Set(s.u||[]);missedQuestions=s.m||[];}}catch(e){}}
+
+// FLASHCARDS
+let fcDeck=[], fcIdx=0, fcActive='all', fcFlipped=false;
+const on=id=>document.getElementById(id).checked;
+const allCards=()=>[].concat(on('fc-quiz')?FC_QUIZ:[],on('fc-review')?FC_REVIEW:[],on('fc-terms')?FC_TERMS:[]);
+const idOf=c=>c?c.ch+'::'+c.q:'';
+function fcBuildFilters(){
+  const bar=document.getElementById('fc-filters'); bar.innerHTML='';
+  const mk=(label,val)=>{const b=document.createElement('button');b.className='filter-btn'+(val===fcActive?' active':'');b.textContent=label;b.onclick=()=>{fcActive=val;fcBuildFilters();fcBuildDeck();fcShuffle();};bar.appendChild(b);};
+  mk('All','all'); FF_CHAPTERS.forEach(c=>mk(chLabel(c.n),chLabel(c.n)));
+}
+function fcBuildDeck(){
+  const s=document.getElementById('fc-search').value.toLowerCase();
+  fcDeck=allCards().filter(c=>(fcActive==='all'||c.ch===fcActive)&&(!s||c.q.toLowerCase().includes(s)||c.a.toLowerCase().includes(s)));
+  fcIdx=0;
+  document.getElementById('fc-main').style.display='block';
+  document.getElementById('fc-done').style.display='none';
+}
+function fcUpdateStats(){
+  const total=fcDeck.length;
+  const known=fcDeck.filter(c=>fcKnown.has(idOf(c))).length;
+  const unknown=fcDeck.filter(c=>fcUnknown.has(idOf(c))).length;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-known').textContent=known;
+  document.getElementById('s-unknown').textContent=unknown;
+  document.getElementById('s-left').textContent=total-known-unknown;
+  document.getElementById('fc-progress').style.width=(total?Math.round((known+unknown)/total*100):0)+'%';
+  document.getElementById('fc-counter').textContent=total?('Card '+(fcIdx+1)+' of '+total):'No cards match.';
+}
+function fcShow(){
+  fcUpdateStats();
+  if(!fcDeck.length){document.getElementById('fc-q').textContent='No cards match your search.';document.getElementById('fc-a').textContent='';return;}
+  const c=fcDeck[fcIdx];
+  const lbl=c.ch.replace('Ch','Chapter ')+' · '+chTitle[c.ch]+' · '+c.kind;
+  document.getElementById('fc-ch').textContent=lbl;
+  document.getElementById('fc-ch-b').textContent=lbl;
+  document.getElementById('fc-q').textContent=c.q;
+  document.getElementById('fc-a').textContent=c.a;
+  fcFlipped=false; document.getElementById('fc-card').classList.remove('flipped');
+  if(fcDeck.every(c=>fcKnown.has(idOf(c))||fcUnknown.has(idOf(c)))) fcShowDone();
+}
+function fcFlip(){fcFlipped=!fcFlipped;document.getElementById('fc-card').classList.toggle('flipped',fcFlipped);}
+function fcMark(s){
+  const id=idOf(fcDeck[fcIdx]); if(!id)return;
+  if(s==='known'){fcKnown.add(id);fcUnknown.delete(id);}else{fcUnknown.add(id);fcKnown.delete(id);}
+  save(); fcNext();
+}
+function fcNext(){
+  if(!fcDeck.length)return;
+  // jump to the next card not yet marked
+  for(let step=1;step<=fcDeck.length;step++){const i=(fcIdx+step)%fcDeck.length;const id=idOf(fcDeck[i]);if(!fcKnown.has(id)&&!fcUnknown.has(id)){fcIdx=i;break;}}
+  fcShow();
+}
+function fcReset(){
+  fcDeck.forEach(c=>{fcKnown.delete(idOf(c));fcUnknown.delete(idOf(c));});
+  save(); fcBuildDeck(); fcShuffle();
+}
+function fcShuffle(){shuffle(fcDeck);fcIdx=0;fcShow();}
+function fcStudyUnknown(){
+  const missed=FC_ALL.filter(c=>fcUnknown.has(idOf(c)));
+  if(!missed.length){alert('No review cards yet. Mark some as Need Review first.');return;}
+  missed.forEach(c=>fcUnknown.delete(idOf(c))); save();
+  fcDeck=shuffle([...missed]); fcIdx=0;
+  document.getElementById('fc-main').style.display='block';
+  document.getElementById('fc-done').style.display='none';
+  fcShow();
+}
+function fcShowDone(){
+  document.getElementById('fc-main').style.display='none';
+  document.getElementById('fc-done').style.display='block';
+  const known=fcDeck.filter(c=>fcKnown.has(idOf(c))).length,total=fcDeck.length;
+  document.getElementById('fc-done-stats').textContent='You knew '+known+' of '+total+' ('+Math.round(known/total*100)+'%).';
+}
+
+// QUIZ
+const TOPICS=FF_CHAPTERS.map(c=>chLabel(c.n));
+let selectedTopics=new Set(TOPICS), selectedNum=10, quizDeck=[], qIdx=0, qAnswers=[], qAnswered=[];
+function buildQuizTopicOpts(){
+  const box=document.getElementById('quiz-topic-opts'); box.innerHTML='';
+  FF_CHAPTERS.forEach(c=>{
+    const t=chLabel(c.n), d=document.createElement('div');
+    d.className='quiz-opt'+(selectedTopics.has(t)?' selected':''); d.textContent=t.replace('Ch','Ch ')+': '+c.title;
+    d.onclick=()=>{selectedTopics.has(t)?selectedTopics.delete(t):selectedTopics.add(t);d.classList.toggle('selected',selectedTopics.has(t));};
+    box.appendChild(d);
+  });
+}
+function setAllTopics(on){selectedTopics=new Set(on?TOPICS:[]);buildQuizTopicOpts();}
+function selectNum(el){document.querySelectorAll('#quiz-num-opts .quiz-opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');selectedNum=parseInt(el.dataset.num)||0;}
+function startQuiz(){
+  if(!selectedTopics.size){alert('Pick at least one chapter.');return;}
+  let pool=QUIZ_FACTS.filter(q=>selectedTopics.has(q.ch));
+  if(document.getElementById('quiz-terms').checked) pool=pool.concat(termQuestions(selectedTopics));
+  pool=shuffle(pool).map(q=>{const correct=q.opts[q.ans];const o=shuffle([...q.opts]);return {...q,opts:o,ans:o.indexOf(correct)};});
+  quizDeck=selectedNum>0?pool.slice(0,selectedNum):pool;
+  qIdx=0; qAnswers=new Array(quizDeck.length).fill(-1); qAnswered=new Array(quizDeck.length).fill(false);
+  document.getElementById('quiz-setup').style.display='none';
+  document.getElementById('quiz-game').style.display='block';
+  document.getElementById('quiz-score').style.display='none';
+  renderQ();
+}
+function renderQ(){
+  const total=quizDeck.length, prog=document.getElementById('q-progress'); prog.innerHTML='';
+  quizDeck.forEach((_,i)=>{const d=document.createElement('div');d.className='q-dot'+(qAnswered[i]?(qAnswers[i]===quizDeck[i].ans?' correct':' wrong'):(i===qIdx?' answered':''));prog.appendChild(d);});
+  const q=quizDeck[qIdx];
+  document.getElementById('quiz-questions').innerHTML='<div class="q-card"><div class="q-num">Question '+(qIdx+1)+' of '+total+' · '+q.ch.replace('Ch','Chapter ')+': '+esc(chTitle[q.ch])+(q.u?' <span style="color:#f39c12">· answer not confirmed by grading</span>':'')+'</div><div class="q-text">'+(q.raw?q.q:esc(q.q))+'</div><div class="q-options" id="q-opts"></div><div id="q-fb"></div></div>';
+  const opts=document.getElementById('q-opts');
+  q.opts.forEach((opt,i)=>{
+    const b=document.createElement('button'); b.className='q-opt'; b.textContent=opt;
+    if(qAnswered[qIdx]){if(i===q.ans)b.classList.add('correct');else if(i===qAnswers[qIdx])b.classList.add('wrong');}
+    else b.onclick=()=>selectAnswer(i);
+    opts.appendChild(b);
+  });
+  if(qAnswered[qIdx]){const fb=document.getElementById('q-fb');if(qAnswers[qIdx]===q.ans){fb.className='q-feedback correct';fb.textContent='Correct!';}else{fb.className='q-feedback wrong';fb.textContent='Incorrect. Correct answer: '+q.opts[q.ans];}}
+  document.getElementById('q-prev-btn').style.display=qIdx>0?'block':'none';
+  const isLast=qIdx===total-1;
+  document.getElementById('q-next-btn').style.display=!isLast?'block':'none';
+  document.getElementById('q-submit-btn').style.display=(isLast&&qAnswered.every(a=>a))?'block':'none';
+}
+function selectAnswer(i){if(qAnswered[qIdx])return;qAnswers[qIdx]=i;qAnswered[qIdx]=true;renderQ();}
+function qNext(){if(qIdx<quizDeck.length-1){qIdx++;renderQ();}}
+function qPrev(){if(qIdx>0){qIdx--;renderQ();}}
+function submitQuiz(){
+  quizDeck.forEach((q,i)=>{
+    if(qAnswers[i]!==q.ans){
+      const text=q.raw?q.q.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim():q.q;
+      missedQuestions=missedQuestions.filter(m=>m.q!==text);
+      missedQuestions.unshift({ch:q.ch,q:text,yourAnswer:q.opts[qAnswers[i]]||'(none)',correct:q.opts[q.ans]});
+    }
+  });
+  missedQuestions=missedQuestions.slice(0,200); save();
+  const correct=qAnswers.filter((a,i)=>a===quizDeck[i].ans).length,total=quizDeck.length,pct=Math.round(correct/total*100);
+  document.getElementById('quiz-game').style.display='none';
+  document.getElementById('quiz-score').style.display='block';
+  const n=document.getElementById('q-score-num'); n.textContent=pct+'%'; n.className='score-num '+(pct>=70?'score-pass':'score-fail');
+  document.getElementById('q-score-label').textContent=pct>=70?'PASS. Nice work!':'Below 70%. Keep studying!';
+  document.getElementById('q-score-detail').textContent=correct+' of '+total+' correct. Missed questions are saved in the Review List.';
+}
+function retryQuiz(){qIdx=0;qAnswers=new Array(quizDeck.length).fill(-1);qAnswered=new Array(quizDeck.length).fill(false);shuffle(quizDeck);document.getElementById('quiz-game').style.display='block';document.getElementById('quiz-score').style.display='none';renderQ();}
+function backToSetup(){document.getElementById('quiz-setup').style.display='block';document.getElementById('quiz-game').style.display='none';document.getElementById('quiz-score').style.display='none';}
+
+// KEY TERMS
+let termActive='all';
+function buildTermFilters(){
+  const bar=document.getElementById('term-filters'); bar.innerHTML='';
+  const mk=(label,val)=>{const b=document.createElement('button');b.className='filter-btn'+(val===termActive?' active':'');b.textContent=label;b.onclick=()=>{termActive=val;buildTermFilters();renderTerms();};bar.appendChild(b);};
+  mk('All','all'); FF_CHAPTERS.filter(c=>(c.terms||[]).length).forEach(c=>mk(chLabel(c.n),chLabel(c.n)));
+}
+function renderTerms(){
+  const s=document.getElementById('term-search').value.toLowerCase();
+  let html='';
+  FF_CHAPTERS.forEach(c=>{
+    const ch=chLabel(c.n); if(termActive!=='all'&&termActive!==ch)return;
+    const rows=(c.terms||[]).filter(([t,d])=>!s||t.toLowerCase().includes(s)||d.toLowerCase().includes(s)).sort((a,b)=>a[0].localeCompare(b[0]));
+    if(!rows.length)return;
+    html+='<div class="term-ch"><div class="ref-title">Chapter '+c.n+': '+esc(c.title)+'</div>'+rows.map(([t,d])=>'<div class="term-row"><b>'+esc(t)+'</b><span>'+esc(d)+'</span></div>').join('')+'</div>';
+  });
+  document.getElementById('term-list').innerHTML=html||'<div class="empty-state">No terms match.</div>';
+}
+
+// REVIEW
+function updateReviewPage(){
+  const missed=FC_ALL.filter(c=>fcUnknown.has(idOf(c)));
+  document.getElementById('review-list-content').innerHTML=missed.length?missed.map(c=>'<div class="review-card"><div class="review-card-ch">'+c.ch.replace('Ch','Chapter ')+'</div><div class="review-card-q">'+esc(c.q)+'</div><div class="review-card-a">&#9654; '+esc(c.a)+'</div></div>').join(''):'<div class="empty-state">No cards marked for review yet. Go to Flashcards and tap Need Review.</div>';
+  document.getElementById('missed-questions-content').innerHTML=missedQuestions.length?missedQuestions.map(m=>'<div class="missed-card"><div class="missed-card-topic">'+m.ch.replace('Ch','Chapter ')+'</div><div class="missed-card-q">'+esc(m.q)+'</div><div class="missed-card-wrong">&#10007; Your answer: '+esc(m.yourAnswer)+'</div><div class="missed-card-correct">&#10003; Correct: '+esc(m.correct)+'</div></div>').join(''):'<div class="empty-state">No missed quiz questions yet. Take a quiz and missed questions will show up here.</div>';
+}
+
+function showPage(id,e){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('button.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const btn=(e&&e.target)?e.target:document.querySelector('.nav-btn[onclick*="'+id+'"]'); if(btn)btn.classList.add('active');
+  if(id==='review')updateReviewPage();
+  window.scrollTo(0,0);
+}
+
+load();
+fcBuildFilters(); fcBuildDeck(); fcShuffle();
+buildQuizTopicOpts(); buildTermFilters(); renderTerms();
+</script>
+<script type="module" src="cloud-sync.js"></script>
+</body>
+</html>

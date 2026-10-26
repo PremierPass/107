@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fire Training Study Hub</title>
+<style>
+:root{--bg:#111;--panel:#1a1a1a;--card:#1e1e1e;--line:#333;--red:#c0392b;--red2:#e74c3c;--gold:#e2aa3c;--ink:#f0f0f0;--muted:#9a9a9a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);min-height:100vh;font-family:'Segoe UI',Arial,sans-serif;color-scheme:dark}
+.hero{position:relative;overflow:hidden;text-align:center;padding:44px 16px 54px;background:linear-gradient(160deg,#1c0d0b 0%,#2a0f0c 45%,#111 100%);border-bottom:3px solid var(--red)}
+.hero:before{content:"";position:absolute;inset:auto -10% -60px -10%;height:140px;background:radial-gradient(ellipse at 30% 100%,rgba(231,76,60,.35),transparent 60%),radial-gradient(ellipse at 70% 100%,rgba(226,170,60,.22),transparent 55%);pointer-events:none}
+.eyebrow{position:relative;font-size:12px;font-weight:800;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
+.hero h1{position:relative;font-size:clamp(34px,7vw,58px);font-weight:900;letter-spacing:.03em;line-height:1.05;margin:10px 0 6px}
+.hero p{position:relative;color:#c9b8b4;font-size:15px}
+.badge{position:relative;display:block;width:96px;height:auto;margin:0 auto 14px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+.banner{display:block;width:100%;aspect-ratio:1094/359;object-fit:cover;background:#000}
+main{max-width:860px;margin:-28px auto 40px;padding:0 16px;position:relative;z-index:2}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+a.guide{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .15s,border-color .15s,box-shadow .15s;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+a.guide:hover,a.guide:focus-visible{transform:translateY(-3px);border-color:var(--red);outline:none;box-shadow:0 18px 44px rgba(192,57,43,.25)}
+.stripe{height:5px}
+.haz .stripe{background:linear-gradient(90deg,#f39c12,#e67e22)}
+.ff .stripe{background:linear-gradient(90deg,var(--red),var(--gold))}
+.body{padding:22px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.tag{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.haz .tag{color:#f39c12}.ff .tag{color:var(--red2)}
+.guide h2{font-size:24px;font-weight:800}
+.guide p{font-size:13px;color:var(--muted);line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.chip{font-size:11px;color:#bbb;background:#262626;border:1px solid #383838;border-radius:999px;padding:3px 9px}
+.go{margin-top:auto;padding-top:12px;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+.go span{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .15s}
+a.guide:hover .go span{transform:translateX(3px)}
+.note{margin-top:22px;text-align:center;font-size:12px;color:#666;line-height:1.6}
+.prereq{margin-top:34px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:10px}
+.sec-head h2{font-size:20px;font-weight:800;color:var(--red2);text-transform:uppercase;letter-spacing:.08em}
+.count{font-size:12px;color:var(--gold);font-weight:700;white-space:nowrap}
+.sec-sub{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:6px}
+.pq-group{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#888;margin:20px 0 8px}
+.pq{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:14px;margin-bottom:8px;transition:opacity .2s,border-color .2s}
+.pq.done{border-left-color:#27ae60;opacity:.72}
+.pq.done h3{text-decoration:line-through;text-decoration-color:#27ae60}
+.pq-check input{width:20px;height:20px;accent-color:#27ae60;cursor:pointer;margin-top:2px}
+.pq-body{flex:1;min-width:0}
+.pq h3{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.35}
+.pq p{font-size:13px;color:var(--muted);line-height:1.55}
+.pq-link{display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--gold);text-decoration:none}
+.pq-link:hover{text-decoration:underline}
+.pq-tip{font-size:12px;color:#888;line-height:1.55;margin:4px 2px 0}
+.pq-tip a{color:var(--gold)}
+@media(max-width:520px){.hero{padding:34px 16px 48px}.guide h2{font-size:21px}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <img class="badge" src="images/sffma_logo.png" alt="Texas State Firefighters' &amp; Fire Marshals' Association">
+  <div class="eyebrow">Fire Service Training</div>
+  <h1>Study Hub</h1>
+  <p>SFFMA Firefighter and Hazmat certification prep.<br>Pick a study guide to get started.</p>
+</header>
+<main>
+  <div class="grid">
+    <a class="guide ff" href="ff.html">
+      <img class="banner" src="images/banner_ff.webp" alt="Essentials of Fire Fighting, 8th edition: Firefighter I &amp; II">
+      <div class="stripe"></div>
+      <div class="body">
+        <div class="tag">Firefighter Certification</div>
+        <h2>Firefighter I &amp; II</h2>
+        <p>Flashcards, chapter quizzes, and key terms from the FF I &amp; II course (IFSTA Essentials 8th ed., NFPA 1010).</p>
+        <div class="chips"><span class="chip" id="ff-count">Chapters 1-10</span><span class="chip">682 quiz &amp; test questions</span><span class="chip">Key terms</span></div>
+        <div class="go">Open FF I &amp; II <span>&rarr;</span></div>
+      </div>
+    </a>
+    <a class="guide haz" href="hazmat.html">
+      <img class="banner" src="images/banner_hazmat.webp" alt="Hazmat for First Responders, 6th edition: Awareness and Operations">
+      <div class="stripe"></div>
+      <div class="body">
+        <div class="tag">Hazmat Awareness &amp; Operations</div>
+        <h2>Hazmat</h2>
+        <p>Flashcards, quiz mode, hazard classes, containers, ERG pages, PPE levels, and definitions.</p>
+        <div class="chips"><span class="chip">Hazard classes</span><span class="chip">ERG</span><span class="chip">PPE</span></div>
+        <div class="go">Open Hazmat <span>&rarr;</span></div>
+      </div>
+    </a>
+  </div>
+  <section class="prereq">
+    <div class="sec-head">
+      <h2>Course Prerequisites</h2>
+      <span class="count" id="pq-count"></span>
+    </div>
+    <p class="sec-sub">These are the prerequisites for SFFMA Firefighter I and II certification. Finish them before starting the hazmat class. All of the online courses are free; save each completion certificate. Check them off as you go; your checkmarks are saved on this device.</p>
+
+    <div class="pq-group">NIMS / ICS (FEMA Independent Study)</div>
+    <div class="pq" data-id="is100">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>IS-100.c: Introduction to the Incident Command System</h3>
+        <p>The basics of ICS: how command is set up, common terms, span of control, and how incidents are organized. Self-paced online with a short final exam.</p>
+        <a class="pq-link" href="https://training.fema.gov/IS/courseOverview.aspx?code=IS-100.c&amp;lang=en" target="_blank" rel="noopener">Open course &rarr;</a>
+      </div>
+    </div>
+    <div class="pq" data-id="is200">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>IS-200.c: Basic ICS for Initial Response</h3>
+        <p>Builds on IS-100. Covers the first-arriving responder's role, briefings, delegating authority, and expanding or transferring command. Take IS-100 first.</p>
+        <a class="pq-link" href="https://training.fema.gov/IS/courseOverview.aspx?code=IS-200.c&amp;lang=en" target="_blank" rel="noopener">Open course &rarr;</a>
+      </div>
+    </div>
+    <div class="pq" data-id="is700">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>IS-700.b: Introduction to the National Incident Management System</h3>
+        <p>The big picture of NIMS: how agencies at every level share resources, use common terms, and work together under one system.</p>
+        <a class="pq-link" href="https://training.fema.gov/IS/courseOverview.aspx?code=IS-700.b&amp;lang=en" target="_blank" rel="noopener">Open course &rarr;</a>
+      </div>
+    </div>
+    <div class="pq" data-id="is800">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>IS-800.d: National Response Framework, An Introduction</h3>
+        <p>How the nation responds to disasters: roles of local, state, tribal, and federal partners, plus the Emergency Support Functions.</p>
+        <a class="pq-link" href="https://training.fema.gov/IS/courseOverview.aspx?code=IS-800.d&amp;lang=en" target="_blank" rel="noopener">Open course &rarr;</a>
+      </div>
+    </div>
+    <p class="pq-tip">FEMA courses need a free FEMA SID number before you can take the exams. You can get one at <a href="https://cdp.dhs.gov/FEMASID" target="_blank" rel="noopener">cdp.dhs.gov/FEMASID</a>.</p>
+
+    <div class="pq-group">Roadway Safety</div>
+    <div class="pq" data-id="tim">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>National Traffic Incident Management (TIM) Responder Training</h3>
+        <p>FHWA course on working safely at roadway incidents: apparatus blocking, traffic control zones, scene clearance, and hi-vis safety. Web-based course FHWA-NHI-133126A, about 4 hours, with a final exam (70% to pass).</p>
+        <a class="pq-link" href="https://ops.fhwa.dot.gov/tim/training/index.htm" target="_blank" rel="noopener">How to register &rarr;</a>
+      </div>
+    </div>
+
+    <div class="pq-group">Firefighter Safety and Health</div>
+    <div class="pq" data-id="c2bs">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>Courage to Be Safe (NFFF)</h3>
+        <p>National Fallen Firefighters Foundation program on changing the culture of firefighter safety, based on the 16 Life Safety Initiatives and Everyone Goes Home. Self-paced online through the Fire Hero Learning Network.</p>
+        <a class="pq-link" href="https://www.fireherolearningnetwork.com/Training_Programs/Courage_To_Be_Safe.aspx" target="_blank" rel="noopener">Open course &rarr;</a>
+      </div>
+    </div>
+    <div class="pq" data-id="cancer">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>Cancer Awareness (Firefighter Cancer Support Network)</h3>
+        <p>Firefighter cancer risks and how to cut your exposure: gross decon, clean gear, SCBA use, screenings, and healthy habits. Texas (TCFP) uses the FCSN Cancer Awareness Training. Check with your instructor that this is the version they accept.</p>
+        <a class="pq-link" href="https://www.firefightercancersupport.org/lms" target="_blank" rel="noopener">Open FCSN training &rarr;</a>
+      </div>
+    </div>
+
+    <div class="pq-group">Certification</div>
+    <div class="pq" data-id="hazmat">
+      <label class="pq-check"><input type="checkbox"></label>
+      <div class="pq-body">
+        <h3>Hazmat Awareness / Operations Certification (SFFMA)</h3>
+        <p>Taken as a class through the department, with the SFFMA certification test. Use the Hazmat study guide above to prepare. The other prerequisites should be done before this class.</p>
+        <a class="pq-link" href="hazmat.html">Open Hazmat study guide &rarr;</a>
+      </div>
+    </div>
+    <p class="pq-tip">Planning to move to TCFP certification later? An EMR or EMT completion certificate is also required before TCFP certification can be issued.</p>
+  </section>
+
+  <div class="note">FF I &amp; II progress is saved on the device you study on.<br>More FF I &amp; II chapters are added as the course moves along.<br>Unofficial study aid. Not affiliated with or endorsed by IFSTA or SFFMA.</div>
+</main>
+<script>
+(function(){
+  const KEY='fire_prereqs';
+  let done={};
+  try{done=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
+  const items=[...document.querySelectorAll('.pq')];
+  function update(){
+    const n=items.filter(el=>done[el.dataset.id]).length;
+    document.getElementById('pq-count').textContent=n+' of '+items.length+' done';
+  }
+  items.forEach(el=>{
+    const cb=el.querySelector('input');
+    cb.checked=!!done[el.dataset.id];
+    el.classList.toggle('done',cb.checked);
+    cb.addEventListener('change',()=>{
+      done[el.dataset.id]=cb.checked; el.classList.toggle('done',cb.checked);
+      try{localStorage.setItem(KEY,JSON.stringify(done));}catch(e){}
+      update(); if(window.cloudChanged)window.cloudChanged();
+    });
+  });
+  update();
+  window.appSync={key:'prereqs',
+    get:()=>({...done}),
+    set:d=>{done=d||{};try{localStorage.setItem(KEY,JSON.stringify(done));}catch(e){}
+      items.forEach(el=>{const cb=el.querySelector('input');cb.checked=!!done[el.dataset.id];el.classList.toggle('done',cb.checked);});update();},
+    merge:(l,c)=>{const m={...(c||{})};Object.keys(l||{}).forEach(k=>{if(l[k])m[k]=true;});return m;}};
+})();
+</script>
+<script type="module" src="cloud-sync.js"></script>
+</body>
+</html>
