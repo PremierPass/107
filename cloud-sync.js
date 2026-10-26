@@ -31,7 +31,7 @@ const css = `
 .acct-or{text-align:center;color:#666;font-size:11px;margin:12px 0 0;letter-spacing:.1em}
 `;
 
-if (configured) start();
+if (configured) start(); else window.dispatchEvent(new CustomEvent('firehub-unconfigured'));
 
 async function start() {
   const [{ initializeApp }, A, F] = await Promise.all([
@@ -79,8 +79,9 @@ async function start() {
   function render(mode) {
     if (mode === 'account') {
       view.innerHTML = `<h3>Your account</h3><p class="s">Signed in as <b style="color:#fff">${esc(user.email || user.displayName || 'user')}</b>.<br>Your flashcard marks, missed questions, and prerequisite checklist save to this account and follow you to any device.</p>
-        <div class="acct-msg ok">${ready ? 'Progress is synced.' : 'Syncing...'}</div>
-        <button class="acct-main" data-a="out">Sign out</button>`;
+        <div class="acct-msg ok">${sync ? (ready ? 'Progress is synced.' : 'Syncing...') : ''}</div>
+        <a class="acct-main" href="account.html" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box">My Account &amp; Certificates</a>
+        <button class="acct-alt" data-a="out" style="background:#2a2a2a;color:#ddd;border:1px solid #444">Sign out</button>`;
     } else if (mode === 'reset') {
       view.innerHTML = `<h3>Reset password</h3><p class="s">We'll email you a link to set a new password.</p>
         <input type="email" placeholder="Email" autocomplete="email" class="f-email">
@@ -111,9 +112,11 @@ async function start() {
     const say = (t, ok) => { if (msg) { msg.textContent = t; msg.className = 'acct-msg ' + (ok ? 'ok' : 'err'); } };
     b.disabled = true;
     try {
+      let isNew = false;
       if (a === 'signin') await A.signInWithEmailAndPassword(auth, email, pass);
-      else if (a === 'signup') await A.createUserWithEmailAndPassword(auth, email, pass);
-      else if (a === 'google') await A.signInWithPopup(auth, new A.GoogleAuthProvider());
+      else if (a === 'signup') { await A.createUserWithEmailAndPassword(auth, email, pass); isNew = true; }
+      else if (a === 'google') { const r = await A.signInWithPopup(auth, new A.GoogleAuthProvider()); isNew = !!A.getAdditionalUserInfo(r)?.isNewUser; }
+      if (isNew && !/account\.html/.test(location.pathname)) { await flush(); setTimeout(() => location.href = 'account.html?welcome=1', 600); }
       else if (a === 'reset') { await A.sendPasswordResetEmail(auth, email); say('Check your email for the reset link.', true); }
       else if (a === 'out') { await flush(); await A.signOut(auth); ov.classList.remove('open'); }
       if (a === 'signin' || a === 'signup' || a === 'google') ov.classList.remove('open');
@@ -150,12 +153,17 @@ async function start() {
   };
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flush(); });
 
+  // Shared handle for pages that need Firebase directly (account.html).
+  window.fireHub = { A, F, auth, db, user: () => user, openSignIn: (mode) => { render(mode || 'signin'); ov.classList.add('open'); } };
+
   A.onAuthStateChanged(auth, async u => {
     user = u;
     btn.classList.toggle('in', !!u);
-    btn.querySelector('.acct-lbl').textContent = u ? 'Saved' : 'Sign in';
+    btn.querySelector('.acct-lbl').textContent = u ? (sync ? 'Saved' : 'Account') : 'Sign in';
     if (u && sync) await pull();
+    window.dispatchEvent(new CustomEvent('firehub-user', { detail: u }));
   });
+  window.dispatchEvent(new CustomEvent('firehub-ready'));
 }
 
 function esc(s) { return String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m])); }

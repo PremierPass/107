@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account</title>
+<style>
+:root{--bg:#111;--panel:#1a1a1a;--card:#1e1e1e;--line:#333;--red:#c0392b;--red2:#e74c3c;--gold:#e2aa3c;--green:#27ae60;--ink:#f0f0f0;--muted:#9a9a9a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);min-height:100vh;font-family:'Segoe UI',Arial,sans-serif;color-scheme:dark}
+.nav{background:#1a1a1a;border-bottom:2px solid var(--red);display:flex;align-items:center;padding:0 16px;height:52px;gap:4px;overflow-x:auto}
+.nav-btn{background:none;border:none;color:#aaa;padding:8px 14px;font-size:13px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.nav-home{color:var(--gold)!important}
+.nav-title{color:var(--red);font-weight:700;font-size:15px;letter-spacing:1px;margin-right:12px;white-space:nowrap}
+main{max-width:760px;margin:0 auto;padding:18px 16px 48px}
+h1{font-size:24px;font-weight:800;margin:6px 0 4px}
+.lead{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:18px}
+.card h2{font-size:14px;font-weight:800;color:var(--red2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.card .sub{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
+label.f{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aaa;margin-bottom:5px}
+input,select{width:100%;background:#111;border:1px solid #444;color:var(--ink);border-radius:8px;padding:10px 12px;font-size:15px;font-family:inherit}
+input:focus,select:focus{outline:none;border-color:var(--red)}
+input[readonly]{color:#888}
+.btn{background:var(--red);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.sm{padding:7px 11px;font-size:12px}
+.btn.ghost{background:#2a2a2a;color:#ddd;border:1px solid #444}
+.btn.gold{background:transparent;color:var(--gold);border:1px solid #5a4a22}
+.row-end{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.status{font-size:12px;color:var(--muted)}
+.status.ok{color:#2ecc71}.status.err{color:var(--red2)}
+.banner{background:#2a1a0e;border:1px solid #6b4a1a;border-left:3px solid var(--gold);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.5;margin-bottom:18px;display:none}
+.gate{text-align:center;padding:40px 18px}
+.gate p{color:var(--muted);font-size:14px;line-height:1.6;margin:10px 0 18px}
+.pq{border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#191919}
+.pq.done{border-left-color:var(--green)}
+.pq-top{display:flex;gap:10px;align-items:flex-start}
+.pq-top input[type=checkbox]{width:20px;height:20px;accent-color:var(--green);margin-top:1px;flex-shrink:0;cursor:pointer}
+.pq-title{font-size:14px;font-weight:700;line-height:1.35}
+.pq-title a{color:var(--gold);font-size:12px;font-weight:600;text-decoration:none;margin-left:6px;white-space:nowrap}
+.pq-grp{font-size:10px;color:#888;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
+.pq-body{flex:1;min-width:0}
+.pq-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.pq-meta .date{width:auto;padding:7px 9px;font-size:13px}
+.pq-meta .dl{font-size:11px;color:#888}
+.file{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#ccc}
+.file .name{background:#262626;border:1px solid #3a3a3a;border-radius:6px;padding:5px 8px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{font-size:10px;font-weight:800;letter-spacing:.08em;padding:3px 7px;border-radius:999px;text-transform:uppercase}
+.pill.ok{background:#27ae6022;color:#2ecc71}.pill.no{background:#c0392b22;color:#e74c3c}
+.prog{font-size:12px;color:var(--gold)}
+.add-row{display:flex;gap:8px;margin-top:6px}
+.add-row input{flex:1}
+.note{font-size:11px;color:#777;line-height:1.55;margin-top:10px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="fire.html" class="nav-btn nav-home">&larr; Hub</a>
+  <span class="nav-title">MY ACCOUNT</span>
+  <a href="ff.html" class="nav-btn">FF I &amp; II</a>
+  <a href="hazmat.html" class="nav-btn">Hazmat</a>
+</div>
+<main>
+  <div id="loading" class="gate"><p>Loading your account...</p></div>
+
+  <div id="gate" class="gate" style="display:none">
+    <h1>My Account</h1>
+    <p>Sign in to save your profile, track your prerequisites, and keep copies of your certificates you can download anytime.</p>
+    <button class="btn" id="gate-signin">Sign in or create an account</button>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="banner" id="welcome"><b>Welcome!</b> Fill in your profile below, then upload your prerequisite certificates as you finish them.</div>
+    <h1 id="hello">My Account</h1>
+    <p class="lead">Your profile, prerequisite checklist, and certificates are saved to your account. Only you can see them.</p>
+
+    <section class="card">
+      <h2>Profile</h2>
+      <p class="sub">Your firefighter information. Fields marked * are required.</p>
+      <div class="grid">
+        <div class="full"><label class="f" for="p-name">Full name *</label><input id="p-name" autocomplete="name" placeholder="First and last name"></div>
+        <div><label class="f" for="p-rank">Rank / position</label><input id="p-rank" placeholder="e.g. Probationary FF, Lieutenant"></div>
+        <div><label class="f" for="p-aff">Affiliation type</label>
+          <select id="p-aff">
+            <option value="">Select...</option>
+            <option>Volunteer</option><option>Career</option><option>Combination</option><option>Paid-on-call / Part-time</option>
+            <option>Cadet / Explorer</option><option>Student (not yet affiliated)</option><option>Other</option>
+          </select></div>
+        <div class="full"><label class="f" for="p-dept">Department / agency *</label><input id="p-dept" placeholder="Your fire department or agency"></div>
+        <div><label class="f" for="p-station">Station / company</label><input id="p-station" placeholder="Optional"></div>
+        <div><label class="f" for="p-phone">Phone</label><input id="p-phone" type="tel" autocomplete="tel" placeholder="Optional"></div>
+        <div><label class="f" for="p-cert">SFFMA / state cert number</label><input id="p-cert" placeholder="Optional"></div>
+        <div><label class="f" for="p-email">Account email</label><input id="p-email" readonly></div>
+      </div>
+      <div class="row-end"><button class="btn" id="p-save">Save profile</button><span class="status" id="p-status"></span></div>
+    </section>
+
+    <section class="card">
+      <h2>Prerequisites &amp; Certificates</h2>
+      <p class="sub">Check each course off when you finish it and upload the completion certificate (PDF or photo, up to 5 MB). You can view or download it anytime. <span class="prog" id="pq-count"></span></p>
+      <div id="pq-list"></div>
+    </section>
+
+    <section class="card">
+      <h2>Other Certificates</h2>
+      <p class="sub">Keep any other fire service certificates here too, like EMR/EMT, CPR, or extra FEMA courses.</p>
+      <div id="other-list"></div>
+      <div class="add-row"><input id="other-title" placeholder="Certificate name, e.g. EMT-Basic"><button class="btn gold" id="other-add">Add</button></div>
+    </section>
+
+    <p class="note">Certificates are stored in your private account. Keep your originals too. Uploaded photos are resized to keep them under the size limit.</p>
+  </div>
+</main>
+
+<script>
+const PREREQS=[
+ {id:'is100',grp:'NIMS / ICS',title:'IS-100.c: Introduction to ICS',url:'https://training.fema.gov/IS/courseOverview.aspx?code=IS-100.c&lang=en'},
+ {id:'is200',grp:'NIMS / ICS',title:'IS-200.c: Basic ICS for Initial Response',url:'https://training.fema.gov/IS/courseOverview.aspx?code=IS-200.c&lang=en'},
+ {id:'is700',grp:'NIMS / ICS',title:'IS-700.b: Introduction to NIMS',url:'https://training.fema.gov/IS/courseOverview.aspx?code=IS-700.b&lang=en'},
+ {id:'is800',grp:'NIMS / ICS',title:'IS-800.d: National Response Framework',url:'https://training.fema.gov/IS/courseOverview.aspx?code=IS-800.d&lang=en'},
+ {id:'tim',grp:'Roadway Safety',title:'Traffic Incident Management (TIM)',url:'https://ops.fhwa.dot.gov/tim/training/index.htm'},
+ {id:'c2bs',grp:'Safety & Health',title:'Courage to Be Safe (NFFF)',url:'https://www.fireherolearningnetwork.com/Training_Programs/Courage_To_Be_Safe.aspx'},
+ {id:'cancer',grp:'Safety & Health',title:'Cancer Awareness (FCSN)',url:'https://www.firefightercancersupport.org/lms'},
+ {id:'hazmat',grp:'Certification',title:'Hazmat Awareness / Operations (SFFMA)',url:'hazmat.html'}
+];
+</script>
+<script type="module">
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const CHUNK=700000, MAX=5*1024*1024;
+let H=null, U=null, done={}, certs={};
+
+function show(which){['loading','gate','app'].forEach(k=>$(k).style.display=(k===which?'block':'none'));}
+if(new URLSearchParams(location.search).get('welcome'))$('welcome').style.display='block';
+
+function boot(){
+  H=window.fireHub;
+  $('gate-signin').onclick=()=>H.openSignIn('signin');
+  const u=H.user(); if(u)load(u); else show('gate');
+  window.addEventListener('firehub-user',e=>{ if(e.detail){ if(!U||U.uid!==e.detail.uid)load(e.detail);} else {U=null;show('gate');} });
+}
+
+const d=(...p)=>H.F.doc(H.db,'users',U.uid,...p);
+
+async function load(u){
+  U=u; show('app');
+  $('p-email').value=u.email||'';
+  try{
+    const [p,pr,cs]=await Promise.all([
+      H.F.getDoc(d('profile','main')),
+      H.F.getDoc(d('progress','prereqs')),
+      H.F.getDocs(H.F.collection(H.db,'users',U.uid,'certs'))
+    ]);
+    const prof=p.exists()?p.data():{};
+    $('p-name').value=prof.fullName||u.displayName||''; $('p-rank').value=prof.rank||''; $('p-aff').value=prof.affiliation||'';
+    $('p-dept').value=prof.department||''; $('p-station').value=prof.station||''; $('p-phone').value=prof.phone||''; $('p-cert').value=prof.certNumber||'';
+    $('hello').textContent=prof.fullName?('Hi, '+prof.fullName.split(' ')[0]):'My Account';
+    done=pr.exists()?(pr.data().data||{}):{};
+    certs={}; cs.forEach(x=>certs[x.id]=x.data());
+    render();
+  }catch(e){console.error(e);$('p-status').textContent='Could not load your account: '+(e.code||e.message);$('p-status').className='status err';}
+}
+
+// ---------- Profile ----------
+$('p-save').onclick=async()=>{
+  const st=$('p-status');
+  const prof={fullName:$('p-name').value.trim(),rank:$('p-rank').value.trim(),affiliation:$('p-aff').value,department:$('p-dept').value.trim(),
+    station:$('p-station').value.trim(),phone:$('p-phone').value.trim(),certNumber:$('p-cert').value.trim(),email:U.email||null,updated:H.F.serverTimestamp()};
+  if(!prof.fullName||!prof.department){st.textContent='Name and department are required.';st.className='status err';return;}
+  $('p-save').disabled=true; st.textContent='Saving...'; st.className='status';
+  try{await H.F.setDoc(d('profile','main'),prof,{merge:true}); st.textContent='Profile saved.'; st.className='status ok';
+    $('hello').textContent='Hi, '+prof.fullName.split(' ')[0]; $('welcome').style.display='none';}
+  catch(e){st.textContent='Save failed: '+(e.code||e.message);st.className='status err';}
+  $('p-save').disabled=false;
+};
+
+// ---------- Prereqs + certificates ----------
+async function saveDone(){
+  await H.F.setDoc(d('progress','prereqs'),{data:done,updated:H.F.serverTimestamp(),email:U.email||null});
+  try{localStorage.setItem('fire_prereqs',JSON.stringify(done));}catch(e){}
+}
+function fmtSize(n){return n>1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';}
+function certBlock(id){
+  const c=certs[id]||{};
+  if(c.fileName) return `<div class="file"><span class="pill ok">Uploaded</span><span class="name" title="${esc(c.fileName)}">${esc(c.fileName)}</span><span class="dl">${fmtSize(c.size||0)}</span>
+    <button class="btn sm gold" data-act="view" data-id="${id}">View</button><button class="btn sm ghost" data-act="dl" data-id="${id}">Download</button>
+    <button class="btn sm ghost" data-act="up" data-id="${id}">Replace</button><button class="btn sm ghost" data-act="del" data-id="${id}">Delete</button></div>`;
+  return `<div class="file"><span class="pill no">No certificate</span><button class="btn sm" data-act="up" data-id="${id}">Upload certificate</button></div>`;
+}
+function row(id,grp,title,url,isOther){
+  const c=certs[id]||{}, checked=isOther?!!c.fileName:!!done[id];
+  return `<div class="pq ${checked?'done':''}" id="row-${id}">
+    <div class="pq-top">${isOther?'':`<input type="checkbox" data-act="chk" data-id="${id}" ${checked?'checked':''} aria-label="Completed">`}
+      <div class="pq-body"><div class="pq-grp">${esc(grp)}</div><div class="pq-title">${esc(title)}${url?`<a href="${esc(url)}" target="${url.startsWith('http')?'_blank':'_self'}" rel="noopener">course &rarr;</a>`:''}</div>
+        <div class="pq-meta"><label class="dl">Completed <input type="date" class="date" data-act="date" data-id="${id}" value="${esc(c.completed||'')}"></label>${isOther?`<button class="btn sm ghost" data-act="rm" data-id="${id}">Remove</button>`:''}</div>
+        <div class="pq-meta" id="cert-${id}">${certBlock(id)}</div>
+      </div></div></div>`;
+}
+function render(){
+  $('pq-list').innerHTML=PREREQS.map(p=>row(p.id,p.grp,p.title,p.url,false)).join('');
+  const others=Object.entries(certs).filter(([id])=>id.startsWith('other-')).sort((a,b)=>(a[1].created||0)-(b[1].created||0));
+  $('other-list').innerHTML=others.length?others.map(([id,c])=>row(id,'Other',c.title||'Certificate','',true)).join(''):'<p class="note" style="margin:0 0 8px">None added yet.</p>';
+  const n=PREREQS.filter(p=>done[p.id]).length, f=PREREQS.filter(p=>certs[p.id]?.fileName).length;
+  $('pq-count').textContent=`${n} of ${PREREQS.length} done, ${f} certificate${f===1?'':'s'} uploaded.`;
+}
+
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]'); if(!b||!U)return;
+  const id=b.dataset.id, act=b.dataset.act;
+  if(act==='up')pickFile(id);
+  else if(act==='view'||act==='dl')openFile(id,act==='dl',b);
+  else if(act==='del'){ if(confirm('Delete this certificate file?'))deleteFile(id); }
+  else if(act==='rm'){ if(confirm('Remove this certificate and its file?')){await deleteFile(id,true);} }
+});
+document.addEventListener('change',async e=>{
+  const t=e.target; if(!t.dataset||!U)return;
+  if(t.dataset.act==='chk'){done[t.dataset.id]=t.checked;render();try{await saveDone();}catch(err){alert('Could not save: '+(err.code||err.message));}}
+  if(t.dataset.act==='date'){const id=t.dataset.id;certs[id]={...(certs[id]||{}),completed:t.value};
+    try{await H.F.setDoc(d('certs',id),{completed:t.value},{merge:true});}catch(err){alert('Could not save date: '+(err.code||err.message));}}
+});
+$('other-add').onclick=async()=>{
+  const title=$('other-title').value.trim(); if(!title){$('other-title').focus();return;}
+  const id='other-'+Date.now(); certs[id]={title,created:Date.now()};
+  try{await H.F.setDoc(d('certs',id),{title,created:Date.now()});$('other-title').value='';render();}catch(err){alert('Could not add: '+(err.code||err.message));}
+};
+
+function pickFile(id){
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='application/pdf,image/*';
+  inp.style.display='none'; document.body.appendChild(inp);
+  inp.onchange=()=>{ const f=inp.files[0]; inp.remove(); if(f)upload(id,f); }; inp.click();
+}
+async function shrinkImage(file){
+  if(!file.type.startsWith('image/'))return file;
+  try{
+    const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(file);});
+    const scale=Math.min(1,2200/Math.max(img.width,img.height));
+    if(scale===1&&file.size<1500000)return file;
+    const c=document.createElement('canvas');c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.85));
+    return new File([blob],file.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'});
+  }catch(e){return file;}
+}
+const toB64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});
+async function upload(id,file){
+  const box=$('cert-'+id);
+  file=await shrinkImage(file);
+  if(file.size>MAX){alert('That file is '+fmtSize(file.size)+'. The limit is 5 MB. Try a smaller PDF or a photo instead.');return;}
+  box.innerHTML='<span class="prog">Uploading...</span>';
+  try{
+    const b64=await toB64(file), n=Math.ceil(b64.length/CHUNK), old=certs[id]?.chunks||0;
+    for(let i=0;i<n;i++){ await H.F.setDoc(d('certs',id,'chunks',String(i)),{d:b64.slice(i*CHUNK,(i+1)*CHUNK)}); box.innerHTML=`<span class="prog">Uploading... ${Math.round((i+1)/n*100)}%</span>`; }
+    for(let i=n;i<old;i++) await H.F.deleteDoc(d('certs',id,'chunks',String(i)));
+    const meta={fileName:file.name,type:file.type||'application/octet-stream',size:file.size,chunks:n,uploaded:Date.now()};
+    await H.F.setDoc(d('certs',id),meta,{merge:true});
+    certs[id]={...(certs[id]||{}),...meta};
+    if(!id.startsWith('other-')&&!done[id]){done[id]=true;await saveDone();}
+    render();
+  }catch(e){console.error(e);box.innerHTML=certBlock(id);alert('Upload failed: '+(e.code||e.message));}
+}
+async function getBlob(id){
+  const c=certs[id]; const parts=[];
+  for(let i=0;i<c.chunks;i++){const s=await H.F.getDoc(d('certs',id,'chunks',String(i)));parts.push(s.data().d);}
+  const bin=atob(parts.join('')), bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+  return new Blob([bytes],{type:c.type});
+}
+async function openFile(id,download,btn){
+  const label=btn.textContent; btn.disabled=true; btn.textContent='Loading...';
+  const win=download?null:window.open('','_blank');
+  try{
+    const url=URL.createObjectURL(await getBlob(id));
+    if(download||!win){const a=document.createElement('a');a.href=url;a.download=certs[id].fileName;document.body.appendChild(a);a.click();a.remove();}
+    else win.location.href=url;
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+  }catch(e){if(win)win.close();alert('Could not open the file: '+(e.code||e.message));}
+  btn.disabled=false; btn.textContent=label;
+}
+async function deleteFile(id,removeAll){
+  try{
+    const n=certs[id]?.chunks||0;
+    for(let i=0;i<n;i++) await H.F.deleteDoc(d('certs',id,'chunks',String(i)));
+    if(removeAll){await H.F.deleteDoc(d('certs',id));delete certs[id];}
+    else{await H.F.setDoc(d('certs',id),{fileName:H.F.deleteField(),type:H.F.deleteField(),size:H.F.deleteField(),chunks:H.F.deleteField(),uploaded:H.F.deleteField()},{merge:true});
+      const {fileName,type,size,chunks,uploaded,...rest}=certs[id]||{}; certs[id]=rest;}
+    render();
+  }catch(e){alert('Could not delete: '+(e.code||e.message));}
+}
+
+// Start once everything above is defined.
+if(window.fireHub)boot(); else window.addEventListener('firehub-ready',boot,{once:true});
+window.addEventListener('firehub-unconfigured',()=>{$('loading').innerHTML='<p>Accounts are not set up on this site yet.</p>';});
+setTimeout(()=>{ if(!H)$('loading').innerHTML='<p>Couldn\'t reach the account service. Check your connection and refresh.</p>'; },12000);
+</script>
+<script type="module" src="cloud-sync.js"></script>
+</body>
+</html>
