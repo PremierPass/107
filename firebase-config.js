@@ -1,11 +1,10 @@
-// Paste your Firebase web app config here (Firebase console > Project settings > Your apps > SDK setup and configuration > Config).
+// Firebase web app config for the Fire Study Hub (project: fire-study-hub).
 // These values are not secret. Security comes from the Firestore rules, so it's fine for this file to be public on GitHub.
-// Until this is filled in, the site still works; progress just stays on each device and the Sign in button stays hidden.
 export const firebaseConfig = {
-  apiKey: "PASTE_API_KEY_HERE",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_PROJECT_ID",
-  storageBucket: "PASTE_PROJECT_ID.appspot.com",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyDweHXO0m0Tt0DoVy-r5NoeKd93vrog0n8",
+  authDomain: "fire-study-hub.firebaseapp.com",
+  projectId: "fire-study-hub",
+  storageBucket: "fire-study-hub.firebasestorage.app",
+  messagingSenderId: "941911200809",
+  appId: "1:941911200809:web:dd8ec275241ad87ee6f838"
 };
