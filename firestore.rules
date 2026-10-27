@@ -96,32 +96,45 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
     // ---------- Part 107 Study Hub ----------
-    // Teachers are approved by the admin. Each teacher manages only their own classes and students.
+    // Teachers are approved by the admin. A class can have several teachers; teachers see only classes they teach.
     function p107TeacherDoc() { return /databases/$(database)/documents/p107Teachers/$(myEmail()); }
     function p107Teacher() { return verified() && exists(p107TeacherDoc()); }
     function p107ClassDoc(classId) { return /databases/$(database)/documents/p107Classes/$(classId); }
-    function ownsP107Class(classId) {
-      return p107Teacher() && exists(p107ClassDoc(classId)) && get(p107ClassDoc(classId)).data.teacherEmail == myEmail();
+    function teachesP107Class(classId) {
+      return p107Teacher() && exists(p107ClassDoc(classId))
+        && (get(p107ClassDoc(classId)).data.teacherEmail == myEmail()
+            || myEmail() in get(p107ClassDoc(classId)).data.get('teachers', []));
     }
 
-    // p107Teachers/{email} = approved teachers.
+    // p107Teachers/{email} = approved teachers. Teachers can see each other's names (to add co-teachers).
     match /p107Teachers/{email} {
-      allow read: if isAdmin() || (verified() && myEmail() == email);
+      allow read: if isAdmin() || p107Teacher() || (verified() && myEmail() == email);
       allow write: if isAdmin();
     }
-    // p107Classes/{classId} = a class and the teacher who owns it.
+    // p107TeacherRequests/{email} = someone asking to become a teacher. Only the admin can approve.
+    match /p107TeacherRequests/{email} {
+      allow read: if isAdmin() || (verified() && myEmail() == email);
+      allow create, update: if verified() && myEmail() == email && request.resource.data.email == email && request.resource.data.status == 'pending';
+      allow delete: if isAdmin() || (verified() && myEmail() == email);
+    }
+    // p107Classes/{classId} = a class, the teacher who created it, and all of its teachers.
     match /p107Classes/{classId} {
       allow read: if signedIn();
-      allow create: if isAdmin() || (p107Teacher() && request.resource.data.teacherEmail == myEmail());
-      allow update: if isAdmin() || (p107Teacher() && resource.data.teacherEmail == myEmail() && request.resource.data.teacherEmail == myEmail());
+      allow create: if isAdmin() || (p107Teacher() && request.resource.data.teacherEmail == myEmail()
+        && myEmail() in request.resource.data.teachers);
+      allow update: if isAdmin() || (p107Teacher()
+        && (resource.data.teacherEmail == myEmail() || myEmail() in resource.data.get('teachers', []))
+        && request.resource.data.teacherEmail == resource.data.teacherEmail);
       allow delete: if isAdmin() || (p107Teacher() && resource.data.teacherEmail == myEmail());
     }
-    // p107Roster/{classId}__{email} = a student a teacher added to one of their classes.
+    // p107Roster/{classId}__{email} = a student added to a class.
     match /p107Roster/{id} {
-      allow read: if isAdmin() || (verified() && (resource.data.email == myEmail() || resource.data.teacherEmail == myEmail()));
-      allow create, update: if (isAdmin() || (ownsP107Class(request.resource.data.classId) && request.resource.data.teacherEmail == myEmail()))
+      allow read: if isAdmin() || (verified() && (resource.data.email == myEmail()
+        || resource.data.teacherEmail == myEmail() || myEmail() in resource.data.get('teachers', [])));
+      allow create, update: if (isAdmin() || teachesP107Class(request.resource.data.classId))
         && id == request.resource.data.classId + '__' + request.resource.data.email;
-      allow delete: if isAdmin() || (p107Teacher() && resource.data.teacherEmail == myEmail());
+      allow delete: if isAdmin() || (p107Teacher() && (resource.data.teacherEmail == myEmail()
+        || myEmail() in resource.data.get('teachers', [])));
     }
     // p107Students/{uid} = a student's name, classes, and score summary.
     // The student reads and writes their own; their teachers and the admin can read it.

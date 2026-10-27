@@ -71,12 +71,19 @@ summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-t
       <div class="say" id="ncMsg"></div>
     </div>
     <div id="clsView" class="hidden">
-      <div class="hd"><h2 id="cvName"></h2><div class="bar" style="margin:0"><button class="btn ghost" onclick="renameCls()">Rename</button><button class="btn ghost" onclick="deleteCls()">Delete class</button></div></div>
+      <div class="hd"><h2 id="cvName"></h2><div class="bar" style="margin:0"><button class="btn ghost" onclick="renameCls()">Rename</button><button class="btn ghost" id="delBtn" onclick="deleteCls()">Delete class</button></div></div>
       <div class="stats">
         <div class="stat"><div class="n" id="nStu">0</div><div class="l">Students</div></div>
         <div class="stat"><div class="n" id="nIn">0</div><div class="l">Signed in</div></div>
         <div class="stat"><div class="n" id="nAvg">-</div><div class="l">Avg last test</div></div>
         <div class="stat"><div class="n" id="nReady">0</div><div class="l">Passing (70%+)</div></div>
+      </div>
+      <div class="box">
+        <h3>Teachers for this class</h3>
+        <div id="coList" style="margin-bottom:8px"></div>
+        <div class="bar" style="margin:0"><select id="coSel" style="flex:1;min-width:200px"></select><button class="btn" onclick="addCo()">Add Co-Teacher</button></div>
+        <p class="note" style="margin-top:6px">Any teacher on a class can add students and see their progress. Only approved teachers appear in this list.</p>
+        <div class="say" id="coMsg"></div>
       </div>
       <div class="box gold hidden" id="oldBox">
         <h3>Students from the earlier class list</h3>
@@ -115,6 +122,8 @@ summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-t
       <div class="bar" style="margin:0"><input id="tEmail" type="email" placeholder="Teacher email" style="flex:2;min-width:200px"><input id="tName" placeholder="Name (e.g. Mrs. Lopez)" style="flex:1;min-width:150px"><input id="tSchool" placeholder="School" style="flex:1;min-width:150px"><button class="btn gold" onclick="addTeacher()">Add Teacher</button></div>
       <div class="say" id="tMsg"></div>
     </div>
+    <div class="sub">Teacher requests <span id="rqCount" style="color:var(--text)"></span></div>
+    <div class="wrap"><table style="min-width:600px"><thead><tr><th>Name</th><th>School</th><th>Email</th><th>Requested</th><th></th></tr></thead><tbody id="rqRows"></tbody></table></div>
     <div class="sub">Teachers</div>
     <div class="wrap"><table style="min-width:600px"><thead><tr><th>Teacher</th><th>School</th><th>Classes</th><th>Students</th><th></th></tr></thead><tbody id="tRows"></tbody></table></div>
     <div class="sub">All classes</div>
@@ -128,12 +137,12 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;',
 const AREAS=['regs','air','wx','perf','ops'];
 const ts=v=>v&&v.toDate?v.toDate():v&&v.toMillis?new Date(v.toMillis()):(v&&v.seconds?new Date(v.seconds*1000):null);
 const cls=p=>p==null?'':p>=80?'ok':p>=70?'mid':'lo';
-let oldRoster=[],ME='',ADMIN=false,classes=[],roster=[],students=[],teachers=[],cur=null,sortK='name',sortDir=1,extraView=null;
+let requests=[],oldRoster=[],ME='',ADMIN=false,classes=[],roster=[],students=[],teachers=[],cur=null,sortK='name',sortDir=1,extraView=null;
 
 window.addEventListener('p107-auth',e=>{
   const {user,isTeacher,isAdmin}=e.detail;
   if(!user){$('gate').innerHTML='Sign in on the <a href="index.html" style="color:var(--gold)">study app</a> first, then come back.';return;}
-  if(!isTeacher){$('gate').innerHTML='This page is for teachers. If you teach a Part 107 class, ask the site admin to add your email as a teacher.';return;}
+  if(!isTeacher){$('gate').innerHTML='This page is for teachers. To get access, go back to the <a href="index.html" style="color:var(--gold)">study app</a> and tap <b>Request a teacher account</b> on the Home tab. The site admin will approve it.';return;}
   ME=user.email.toLowerCase();ADMIN=isAdmin;
   $('gate').classList.add('hidden');$('tClasses').classList.remove('hidden');
   if(ADMIN){$('tabs').classList.remove('hidden');$('title').textContent='Teacher and Admin Dashboard';}
@@ -144,15 +153,17 @@ $('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.q
 
 async function load(){
   try{[classes,roster,students]=await Promise.all([P107.listClasses(),P107.listRoster(),P107.listStudents()]);
-    if(ADMIN)teachers=await P107.listTeachers();}
+    teachers=await P107.listTeachers().catch(()=>[]);if(ADMIN)requests=await P107.listTeacherRequests();}
   catch(e){console.warn(e);$('gate').classList.remove('hidden');$('gate').textContent='Could not load your classes. Make sure the latest Firestore rules are published, then refresh.';return;}
   oldRoster=ADMIN?roster.filter(r=>!r.classId):[];roster=roster.filter(r=>r.classId);
+  await P107.syncMyClasses(classes,roster);
   renderChips();renderClass();if(ADMIN)renderAdmin();
 }
-const mine=()=>classes.filter(c=>c.teacherEmail===ME).sort((a,b)=>a.name.localeCompare(b.name));
+const teachesIt=c=>c.teacherEmail===ME||(c.teachers||[]).includes(ME);
+const mine=()=>classes.filter(teachesIt).sort((a,b)=>a.name.localeCompare(b.name));
 const viewList=()=>{const m=mine();if(extraView&&!m.find(c=>c.id===extraView))m.push(classes.find(c=>c.id===extraView));return m.filter(Boolean);};
 function renderChips(){const list=viewList();if(cur!=='__new'&&cur&&!list.find(c=>c.id===cur))cur=null;if(!cur&&list.length)cur=list[0].id;
-  $('clsChips').innerHTML=list.map(c=>'<button class="chip'+(c.id===cur?' on':'')+'" data-id="'+c.id+'">'+esc(c.name)+(c.teacherEmail!==ME?' <small>('+esc(c.teacherName||c.teacherEmail)+')</small>':'')+'<small>'+roster.filter(r=>r.classId===c.id).length+'</small></button>').join('')+'<button class="chip'+(cur==='__new'||!list.length?' on':'')+'" data-id="__new">+ New class</button>';
+  $('clsChips').innerHTML=list.map(c=>'<button class="chip'+(c.id===cur?' on':'')+'" data-id="'+c.id+'">'+esc(c.name)+(!teachesIt(c)?' <small>('+esc(c.teacherName||c.teacherEmail)+')</small>':'')+'<small>'+roster.filter(r=>r.classId===c.id).length+'</small></button>').join('')+'<button class="chip'+(cur==='__new'||!list.length?' on':'')+'" data-id="__new">+ New class</button>';
   $('newCls').classList.toggle('hidden',!!list.length&&cur!=='__new');}
 $('clsChips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;cur=b.dataset.id;renderChips();renderClass();if(cur==='__new')$('ncName').focus();};
 function joined(classId){const byEmail={};students.forEach(s=>{if(s.email)byEmail[s.email.toLowerCase()]=s;});
@@ -162,7 +173,13 @@ function renderClass(){
   $('oldBox').classList.toggle('hidden',!c||!oldRoster.length);
   $('oldList').innerHTML=oldRoster.map(o=>'<div style="font-size:13px;padding:4px 0">'+esc(o.name||'(no name)')+' <small style="color:var(--muted)">'+esc(o.email||o.id)+'</small></div>').join('');
   if(!c)return;
-  $('cvName').textContent=c.name+(c.teacherEmail!==ME?' ('+(c.teacherName||c.teacherEmail)+')':'');
+  $('cvName').textContent=c.name+(!teachesIt(c)?' ('+(c.teacherName||c.teacherEmail)+')':'');
+  $('delBtn').classList.toggle('hidden',!(ADMIN||c.teacherEmail===ME));
+  const tl=P107.classTeachers(c);
+  $('coList').innerHTML=tl.map(t=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:13px"><span><b>'+esc(t.name||t.email)+'</b> <small style="color:var(--muted)">'+esc(t.email)+(t.email===c.teacherEmail?' · created the class':'')+'</small></span>'+(tl.length>1?'<button class="rm" data-co="'+esc(t.email)+'">Remove</button>':'')+'</div>').join('');
+  const have=new Set(tl.map(t=>t.email));
+  const opts=teachers.filter(t=>!have.has(t.email)).sort((a,b)=>(a.name||a.email).localeCompare(b.name||b.email));
+  $('coSel').innerHTML=opts.length?'<option value="">Choose a teacher...</option>'+opts.map(t=>'<option value="'+esc(t.email)+'">'+esc((t.name||t.email)+(t.school?' ('+t.school+')':''))+'</option>').join(''):'<option value="">No other approved teachers yet</option>';
   const s=$('fSearch').value.toLowerCase();
   const all=joined(c.id);
   const list=all.filter(x=>!s||(x.name+' '+x.email).toLowerCase().includes(s)).sort((a,b)=>{let x=a[sortK],y=b[sortK];if(sortK==='active'){x=ts(x)?.getTime()||0;y=ts(y)?.getTime()||0;}
@@ -195,11 +212,19 @@ function csv(){const c=classes.find(x=>x.id===cur);const rows=[['Name','Email','
 async function moveAll(){const c=classes.find(x=>x.id===cur);if(!c)return;let ok=0;
   for(const o of oldRoster){const r=await P107.addStudent({cls:c,email:o.email||o.id,name:o.name||''});if(r.ok){ok++;await P107.removeStudent(o.id);}}
   $('oldMsg').textContent='Moved '+ok+' student'+(ok===1?'':'s')+' into '+c.name+'.';load();}
+async function addCo(){const c=classes.find(x=>x.id===cur);const em=$('coSel').value;if(!em){$('coMsg').textContent='Choose a teacher.';return;}
+  const r=await P107.addCoTeacher(c,em);$('coMsg').textContent=r.ok?'Added. They can see this class now.':r.msg;if(r.ok)load();}
+$('coList').onclick=async e=>{const b=e.target.closest('[data-co]');if(!b)return;const c=classes.find(x=>x.id===cur);
+  if(!confirm('Remove '+b.dataset.co+' from this class?'+(b.dataset.co===ME?' You will lose access to it.':'')))return;const r=await P107.removeCoTeacher(c,b.dataset.co);if(!r.ok)alert(r.msg);load();};
 // ---------- Admin ----------
 function renderAdmin(){
+  $('rqCount').textContent=requests.length?'('+requests.length+')':'';
+  const tabBtn=document.querySelector('.tabs button[data-t="admin"]');tabBtn.textContent=requests.length?'Admin ('+requests.length+')':'Admin';
+  $('rqRows').innerHTML=requests.length?requests.map(q=>'<tr><td><b>'+esc(q.name)+'</b></td><td>'+esc(q.school)+'</td><td>'+esc(q.email)+'</td><td><small>'+(ts(q.created)?ts(q.created).toLocaleDateString():'-')+'</small></td><td><button class="btn gold" data-ap="'+esc(q.email)+'">Approve</button> <button class="rm" data-dc="'+esc(q.email)+'">Decline</button></td></tr>').join('')
+    :'<tr><td colspan="5" class="msg" style="padding:16px">No pending requests.</td></tr>';
   const inClass=new Set(roster.map(r=>r.email));
   $('aT').textContent=teachers.length;$('aC').textContent=classes.length;$('aS').textContent=inClass.size;$('aP').textContent=students.filter(s=>!inClass.has((s.email||'').toLowerCase())).length;
-  $('tRows').innerHTML=teachers.length?[...teachers].sort((a,b)=>(a.name||a.email).localeCompare(b.name||b.email)).map(t=>{const tc=classes.filter(c=>c.teacherEmail===t.email);const st=new Set(roster.filter(r=>r.teacherEmail===t.email).map(r=>r.email));
+  $('tRows').innerHTML=teachers.length?[...teachers].sort((a,b)=>(a.name||a.email).localeCompare(b.name||b.email)).map(t=>{const tc=classes.filter(c=>c.teacherEmail===t.email||(c.teachers||[]).includes(t.email));const ids=new Set(tc.map(c=>c.id));const st=new Set(roster.filter(r=>ids.has(r.classId)).map(r=>r.email));
     return '<tr><td><b>'+esc(t.name||'(no name)')+'</b><br><small>'+esc(t.email)+'</small></td><td>'+esc(t.school)+'</td><td>'+tc.length+'</td><td>'+st.size+'</td><td><button class="rm" data-rt="'+esc(t.email)+'">Remove</button></td></tr>';}).join('')
     :'<tr><td colspan="5" class="msg">No teachers yet. As the site admin you can already create your own classes on the My Classes tab.</td></tr>';
   const byEmail={};students.forEach(s=>{if(s.email)byEmail[s.email.toLowerCase()]=s;});
@@ -207,12 +232,15 @@ function renderAdmin(){
     return '<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.teacherName||'')+'<br><small>'+esc(c.teacherEmail)+'</small></td><td>'+rs.length+'</td><td>'+st.length+'</td><td>'+(lt.length?Math.round(lt.reduce((n,s)=>n+s.last,0)/lt.length)+'%':'-')+'</td><td><button class="rm" data-open="'+c.id+'">Open</button></td></tr>';}).join('')
     :'<tr><td colspan="6" class="msg">No classes yet.</td></tr>';
 }
+$('rqRows').onclick=async e=>{const ap=e.target.closest('[data-ap]'),dc=e.target.closest('[data-dc]');
+  if(ap){const rq=requests.find(x=>x.email===ap.dataset.ap);const r=await P107.approveTeacher(rq);if(!r.ok)alert(r.msg);load();}
+  if(dc){if(!confirm('Decline the teacher request from '+dc.dataset.dc+'? They keep their free personal account.'))return;const r=await P107.declineTeacher(dc.dataset.dc);if(!r.ok)alert(r.msg);load();}};
 $('tRows').onclick=async e=>{const b=e.target.closest('[data-rt]');if(!b)return;if(!confirm('Remove '+b.dataset.rt+' as a teacher? Their classes and students stay, but they lose access to this dashboard.'))return;const r=await P107.removeTeacher(b.dataset.rt);if(!r.ok)alert(r.msg);load();};
 $('acRows').onclick=e=>{const b=e.target.closest('[data-open]');if(!b)return;extraView=b.dataset.open;cur=extraView;document.querySelector('.tabs button[data-t="classes"]').click();renderChips();renderClass();window.scrollTo(0,0);};
 async function addTeacher(){const e=$('tEmail').value.trim();if(!e){$('tMsg').textContent='Enter an email.';return;}
   const r=await P107.addTeacher({email:e,name:$('tName').value,school:$('tSchool').value});$('tMsg').textContent=r.ok?'Added '+e+'. They can sign in and open the Teacher Dashboard now.':r.msg;
   if(r.ok){$('tEmail').value='';$('tName').value='';$('tSchool').value='';load();}}
 </script>
-<script type="module" src="p107-cloud.js?v=4"></script>
+<script type="module" src="p107-cloud.js?v=7"></script>
 </body>
 </html>

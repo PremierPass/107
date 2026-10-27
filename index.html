@@ -174,8 +174,8 @@ footer{color:#5f7290;font-size:11px;line-height:1.6;text-align:center;padding:20
   <h1>FAA Part 107</h1>
   <div class="sub">Study Hub</div>
   <svg class="drone" viewBox="0 0 220 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"><path d="M75 55h70"/><path d="M91 41h38l12 14H79z"/><path d="M76 55L48 33M144 55l28-22M76 55L48 78M144 55l28 23"/><ellipse class="rot" cx="40" cy="27" rx="25" ry="6"/><ellipse class="rot" cx="180" cy="27" rx="25" ry="6"/><ellipse class="rot" cx="40" cy="84" rx="25" ry="6"/><ellipse class="rot" cx="180" cy="84" rx="25" ry="6"/></g></svg>
-  <div class="school">Premier High School, Texarkana</div>
-  <div class="teacher">Mr. Steward</div>
+  <div class="school" id="heroSchool">Premier High School, Texarkana</div>
+  <div class="teacher" id="heroTeacher">Mr. Steward</div>
 </header>
 
 <!-- SIGN IN -->
@@ -242,6 +242,7 @@ footer{color:#5f7290;font-size:11px;line-height:1.6;text-align:center;padding:20
         <div class="tile" style="cursor:pointer;border-left-color:var(--green)" onclick="go('test')"><div class="big">Practice Test</div><div class="lbl">60 questions, timed and weighted like the real FAA test.</div></div>
         <div class="tile" style="cursor:pointer;border-left-color:var(--red)" onclick="go('review')"><div class="big">Review</div><div class="lbl">Cards you marked and questions you missed.</div></div>
       </div>
+      <div class="ref hidden" id="teachReq" style="margin-top:16px;border-left:3px solid var(--gold)"><h3>Teach a Part 107 class?</h3><p class="note" id="trText" style="margin-top:0">Request a free teacher account. Once approved, you can create classes, add your students, and track their progress. Your students will see your name and school at the top of the page.</p><button class="btn gold" id="trBtn" onclick="openTeachReq()">Request a teacher account</button></div>
     </div>
 
     <!-- FLASHCARDS -->
@@ -414,6 +415,7 @@ footer{color:#5f7290;font-size:11px;line-height:1.6;text-align:center;padding:20
 
 <div class="ov" id="zoomOv" onclick="this.classList.remove('on')"><img id="zoomImg" alt="Enlarged figure"></div>
 <div class="ov" id="acctOv"><div class="box"><button class="x" onclick="closeOv('acctOv')">&times;</button><h3>Your account</h3><p class="note" id="acctInfo"></p><div style="height:10px"></div><button class="btn ghost full" onclick="editProfile()">Edit my name</button><div style="height:8px"></div><button class="btn red full" onclick="P107.signOut();closeOv('acctOv')">Sign out</button></div></div>
+<div class="ov" id="trOv"><div class="box"><button class="x" onclick="closeOv('trOv')">&times;</button><h3>Request a teacher account</h3><p class="note">The site admin will review your request. Use the name your students know you by.</p><div style="height:10px"></div><label class="f" for="trName">Your name (as students see it)</label><input class="in" id="trName" placeholder="Example: Mrs. Lopez"><label class="f" for="trSchool">School</label><input class="in" id="trSchool" placeholder="Example: Premier High School, Texarkana"><div class="msg" id="trMsg"></div><button class="btn gold full" onclick="sendTeachReq()">Send Request</button></div></div>
 <div class="ov" id="flagOv"><div class="box"><button class="x" onclick="closeOv('flagOv')">&times;</button><h3>Flag this question</h3><p class="note" id="flagQ"></p><textarea id="flagNote" placeholder="What looks wrong? (optional)"></textarea><div class="msg" id="flagMsg"></div><button class="btn gold full" onclick="sendFlag()">Send for review</button></div></div>
 
 <script src="p107-data.js?v=1"></script>
@@ -456,12 +458,22 @@ async function saveProfile(){const n=$('pfName').value.trim(),p=$('pfPeriod').va
   const r=await P107.saveProfile({name:n,period:p});if(!r.ok){m.textContent=r.msg;m.className='msg err';}}
 function editProfile(){closeOv('acctOv');$('pfName').value=(P107.profile||{}).name||'';$('pfPeriod').value=(P107.profile||{}).period||'';show('vProfile');}
 function openAcct(){const u=P107.user,p=P107.profile||{};$('acctInfo').innerHTML=esc(p.name||'')+'<br>'+((P107.classes||[]).length?esc(P107.classes.map(c=>c.name).join(', ')):'Personal account')+'<br>'+esc(u&&u.email||'');$('acctOv').classList.add('on');}
+const HERO_DEFAULT={name:'Mr. Steward',school:'Premier High School, Texarkana'};
+function setHero(h){h=h||HERO_DEFAULT;$('heroTeacher').textContent=h.name;$('heroSchool').textContent=h.school||'';$('heroSchool').classList.toggle('hidden',!h.school);}
+async function refreshTeachReq(user,isTeacher){const box=$('teachReq');if(!user||isTeacher||guest){box.classList.add('hidden');return;}box.classList.remove('hidden');
+  const rq=await P107.myTeacherRequest();
+  if(rq){$('trText').textContent='Your teacher account request ('+rq.name+', '+rq.school+') is waiting for approval. You will get access to the Teacher Dashboard as soon as the admin approves it; just refresh this page.';$('trBtn').textContent='Cancel request';$('trBtn').onclick=async()=>{await P107.cancelTeacherRequest();refreshTeachReq(user,false);};}
+  else{$('trText').textContent='Request a free teacher account. Once approved, you can create classes, add your students, and track their progress. Your students will see your name and school at the top of the page.';$('trBtn').textContent='Request a teacher account';$('trBtn').onclick=openTeachReq;}}
+function openTeachReq(){$('trName').value=(P107.profile||{}).name||'';$('trMsg').textContent='';$('trOv').classList.add('on');}
+async function sendTeachReq(){const r=await P107.requestTeacher({name:$('trName').value,school:$('trSchool').value});const m=$('trMsg');
+  if(!r.ok){m.textContent=r.msg;m.className='msg err';return;}m.textContent='Request sent.';m.className='msg ok';setTimeout(()=>{closeOv('trOv');refreshTeachReq(P107.user,false);},900);}
 function closeOv(id){$(id).classList.remove('on');}
 function zoom(src){$('zoomImg').src=src;$('zoomOv').classList.add('on');}
 
 let started=false;
 window.addEventListener('p107-auth',async e=>{
-  const {user,profile,isTeacher,isAdmin,classes}=e.detail;
+  const {user,profile,isTeacher,isAdmin,classes,teacher}=e.detail;
+  setHero(teacher&&teacher.name?{name:teacher.name,school:teacher.school}:(classes&&classes.length&&classes[0].teacher?{name:classes[0].teacher,school:classes[0].school}:null));
   $('pfSub').textContent=classes&&classes.length?'You are in '+classes.map(c=>c.name+(c.teacher?' with '+c.teacher:'')).join(', ')+'. Enter your name to start.':'What should we call you?';
   $('teachLink').textContent=isAdmin?'Teacher and Admin Dashboard \u2192':'Teacher Dashboard \u2192';
   $('verifyNote').classList.toggle('hidden',!(user&&!user.emailVerified));
@@ -470,6 +482,7 @@ window.addEventListener('p107-auth',async e=>{
   if(!profile){show('vProfile');return;}
   $('acctLbl').textContent=profile.name.split(' ')[0];
   $('teachLink').classList.toggle('hidden',!isTeacher);
+  refreshTeachReq(user,isTeacher);
   if(!started||uidKey!=='p107_'+user.uid){uidKey='p107_'+user.uid;S={known:[],review:[],missed:[],ans:{},tests:[]};loadLocal();mergeCloud(await P107.loadProgress());save();started=true;startApp();}
   else show('vApp');
 });
@@ -606,6 +619,6 @@ async function sendFlag(){const r=await P107.flag({ch:flagging.c,q:flagging.q,an
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!$('vSignin').classList.contains('hidden'))doEmail();
   if($('p-cards').classList.contains('on')&&!$('vApp').classList.contains('hidden')&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){if(e.key===' '){e.preventDefault();flip();}if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1);}});
 </script>
-<script type="module" src="p107-cloud.js?v=4"></script>
+<script type="module" src="p107-cloud.js?v=7"></script>
 </body>
 </html>
