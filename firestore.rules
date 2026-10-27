@@ -1,10 +1,66 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Each signed-in user can only read and write their own data:
-    // users/{uid}/profile, users/{uid}/progress, users/{uid}/certs (and certificate file chunks).
+
+    // ---------- Helpers ----------
+    function signedIn() { return request.auth != null; }
+    function verified() { return signedIn() && request.auth.token.email_verified == true; }
+    function myEmail() { return request.auth.token.email.lower(); }
+    // Site admins. Keep this list in sync with ADMIN_EMAILS in firebase-config.js.
+    function isAdmin() { return verified() && myEmail() in ['stewardle132@gmail.com']; }
+    function roleDoc(uid) { return /databases/$(database)/documents/roles/$(uid); }
+    function hasRole(uid) { return exists(roleDoc(uid)); }
+    function isChiefOf(deptId) {
+      return signedIn() && hasRole(request.auth.uid)
+        && get(roleDoc(request.auth.uid)).data.role == 'chief'
+        && get(roleDoc(request.auth.uid)).data.deptId == deptId;
+    }
+    function inviteDoc() { return /databases/$(database)/documents/invites/$(myEmail()); }
+
+    // ---------- Each person's own data ----------
+    // Profile, study progress, quiz activity, certificates (and file chunks).
     match /users/{uid}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read, write: if signedIn() && request.auth.uid == uid;
+      allow read: if isAdmin() || (hasRole(uid) && isChiefOf(get(roleDoc(uid)).data.deptId));
+    }
+
+    // ---------- Rosters ----------
+    // roles/{uid} = which department someone belongs to and whether they are a chief.
+    match /roles/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin() || isChiefOf(resource.data.deptId));
+      // A verified user can join only the department their invite names, with the role it names.
+      allow create: if verified() && request.auth.uid == uid && exists(inviteDoc())
+        && request.resource.data.role == get(inviteDoc()).data.role
+        && request.resource.data.deptId == get(inviteDoc()).data.deptId;
+      allow create, update: if isAdmin();
+      // Chiefs can remove members (not other chiefs) from their own department.
+      allow delete: if isAdmin() || (isChiefOf(resource.data.deptId) && resource.data.role == 'member');
+    }
+
+    // invites/{email} = people added to a roster who have not signed in yet.
+    match /invites/{email} {
+      allow read: if isAdmin() || (verified() && myEmail() == email) || isChiefOf(resource.data.deptId);
+      allow create: if isAdmin() || (isChiefOf(request.resource.data.deptId) && request.resource.data.role == 'member');
+      allow update: if isAdmin() || (isChiefOf(resource.data.deptId) && isChiefOf(request.resource.data.deptId) && request.resource.data.role == 'member');
+      allow delete: if isAdmin() || isChiefOf(resource.data.deptId);
+    }
+
+    match /departments/{deptId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // People who signed in but are not on a roster yet.
+    match /accessRequests/{uid} {
+      allow create, update: if signedIn() && request.auth.uid == uid;
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow delete: if isAdmin();
+    }
+
+    // Questions members think might be wrong.
+    match /flags/{id} {
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid && request.resource.data.status == 'open';
+      allow read, update, delete: if isAdmin();
     }
   }
 }

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111111">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<style>
+:root{--bg:#111;--card:#1e1e1e;--card2:#191919;--line:#333;--red:#c0392b;--red2:#e74c3c;--gold:#e2aa3c;--green:#27ae60;--green2:#2ecc71;--ink:#f0f0f0;--muted:#9a9a9a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);min-height:100vh;font-family:'Segoe UI',Arial,sans-serif;color-scheme:dark}
+.nav{background:#1a1a1a;border-bottom:2px solid var(--red);display:flex;align-items:center;padding:0 16px;height:52px;gap:4px;overflow-x:auto}
+.nav-btn{background:none;border:none;color:#aaa;padding:8px 14px;font-size:13px;border-radius:6px;white-space:nowrap;text-decoration:none;cursor:pointer;font-family:inherit}
+.nav-btn.active{background:var(--red);color:#fff}
+.nav-home{color:var(--gold)!important}
+#tabs{display:flex;gap:4px;flex-shrink:0}
+.nav-title{color:var(--red);font-weight:700;font-size:15px;letter-spacing:1px;margin-right:12px;white-space:nowrap}
+main{max-width:1000px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:22px;font-weight:800;margin:4px 0 4px}
+.lead{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.card h2{font-size:13px;font-weight:800;color:var(--red2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.sub{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:12px}
+input,select,textarea{background:#111;border:1px solid #444;color:var(--ink);border-radius:8px;padding:9px 11px;font-size:14px;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--red)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row input{flex:1;min-width:180px}
+.btn{background:var(--red);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.sm{padding:6px 10px;font-size:12px}
+.btn.ghost{background:#2a2a2a;color:#ddd;border:1px solid #444}
+.btn.gold{background:transparent;color:var(--gold);border:1px solid #5a4a22}
+.btn.green{background:#1e4d2e;color:#bff0cf;border:1px solid #2f7a49}
+.status{font-size:12px;color:var(--muted);margin-top:8px;min-height:16px}
+.status.ok{color:var(--green2)}.status.err{color:var(--red2)}
+.gate{text-align:center;padding:50px 18px}
+.gate p{color:var(--muted);font-size:14px;line-height:1.6;margin:10px 0 18px}
+.depts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+.dept{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:12px;cursor:pointer}
+.dept:hover{border-color:var(--gold)}
+.dept b{display:block;font-size:14px;margin-bottom:3px}
+.dept span{font-size:12px;color:var(--muted)}
+.tbl-wrap{overflow-x:auto;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#888;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid #262626;vertical-align:top}
+tr.m{cursor:pointer}
+tr.m:hover td{background:#222}
+.pill{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.06em;padding:2px 7px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.pill.ok{background:#27ae6022;color:var(--green2)}.pill.no{background:#c0392b22;color:var(--red2)}.pill.warn{background:#e2aa3c22;color:var(--gold)}.pill.gray{background:#333;color:#aaa}
+.detail td{background:#161616;padding:14px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.dgrid h4{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--red2);margin-bottom:6px}
+.kv{font-size:13px;line-height:1.7}
+.kv span{color:#888}
+.pq{display:flex;align-items:center;gap:8px;font-size:13px;padding:5px 0;border-bottom:1px solid #222;flex-wrap:wrap}
+.pq .t{flex:1;min-width:160px}
+.bar{height:6px;background:#2a2a2a;border-radius:3px;overflow:hidden;flex:1;min-width:60px}
+.bar i{display:block;height:100%;background:var(--green)}
+.chrow{display:flex;align-items:center;gap:8px;font-size:12px;padding:3px 0}
+.chrow .l{width:120px;color:#bbb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chrow .v{width:70px;text-align:right;color:#ddd}
+.flag{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.flag.done{border-left-color:#555;opacity:.7}
+.flag .meta{font-size:11px;color:#888;margin-bottom:6px}
+.flag .q{font-size:14px;line-height:1.45;margin-bottom:6px}
+.flag .a{font-size:13px;color:var(--green2);margin-bottom:6px}
+.flag .n{font-size:13px;color:#e8d3a8;background:#2a2316;border-radius:6px;padding:7px 9px;margin-bottom:8px}
+.req{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #262626;font-size:13px}
+.req .who{flex:1;min-width:200px}
+.req .who span{color:#888;font-size:12px}
+.empty{color:#666;font-size:13px;padding:10px 0}
+.back{color:var(--gold);font-size:13px;cursor:pointer;margin-bottom:10px;display:inline-block}
+@media(max-width:640px){.dgrid{grid-template-columns:1fr}.hide-sm{display:none}}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="fire.html" class="nav-btn nav-home">&larr; Hub</a>
+  <span class="nav-title">ADMIN</span>
+  <span id="tabs"></span>
+</div>
+<main>
+  <div id="loading" class="gate"><p>Loading...</p></div>
+  <div id="gate" class="gate" style="display:none"></div>
+  <div id="app" style="display:none"></div>
+</main>
+
+<script>
+const PREREQS=[
+ {id:'is100',title:'IS-100.c'},{id:'is200',title:'IS-200.c'},{id:'is700',title:'IS-700.b'},{id:'is800',title:'IS-800.d'},
+ {id:'tim',title:'Traffic Incident Management'},{id:'c2bs',title:'Courage to Be Safe'},{id:'cancer',title:'Cancer Awareness'},{id:'hazmat',title:'Hazmat Awareness/Ops'}
+];
+</script>
+<script type="module">
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const lower=s=>String(s||'').trim().toLowerCase();
+let H=null, ACC=null, F=null, db=null, tab='depts', curDept=null, depts=[];
+const show=w=>['loading','gate','app'].forEach(k=>$(k).style.display=k===w?'block':'none');
+const ms=t=>t?(typeof t.toMillis==='function'?t.toMillis():Number(t)):0;
+const ago=t=>{if(!t)return 'Never';const d=Math.floor((Date.now()-t)/86400000);return d<=0?'Today':d===1?'Yesterday':d<30?d+' days ago':new Date(t).toLocaleDateString();};
+const fmtDate=t=>t?new Date(t).toLocaleDateString():'';
+const slug=s=>lower(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)+'-'+Math.random().toString(36).slice(2,6);
+
+function gateMsg(html){$('gate').innerHTML=html;show('gate');}
+function onAccess(a){
+  ACC=a;
+  if(a.status==='admin'||a.status==='chief'){ show('app'); buildTabs(); go(a.status==='admin'?'depts':'mydept'); }
+  else if(a.status==='signedout'){ gateMsg('<h1>Admin Dashboard</h1><p>Sign in with an admin or fire chief account.</p><button class="btn" id="g-in">Sign in</button>'); $('g-in').onclick=()=>H.openSignIn(); }
+  else gateMsg('<h1>No admin access</h1><p>This dashboard is for the site admin and fire chiefs. If you should have access, ask the site admin to set you up as a chief.</p>');
+}
+function boot(){
+  H=window.fireHub; F=H.F; db=H.db;
+  if(H.access&&H.access.status!=='signedout'&&H.user())onAccess(H.access);
+  window.addEventListener('firehub-access',e=>onAccess(e.detail));
+}
+
+function buildTabs(){
+  const t=ACC.status==='admin'?[['depts','Departments'],['requests','Access Requests'],['flags','Flagged Questions']]:[['mydept','My Department'],['flags','Flag a Problem']];
+  $('tabs').innerHTML=t.map(([k,l])=>`<button class="nav-btn" data-tab="${k}">${l}</button>`).join('');
+  $('tabs').querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+}
+function go(t){
+  tab=t; $('tabs').querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t||(t==='dept'&&b.dataset.tab==='depts')));
+  window.scrollTo(0,0);
+  if(t==='depts')renderDepts(); else if(t==='dept')renderDept(curDept); else if(t==='mydept')renderDept({id:ACC.deptId,name:ACC.deptName});
+  else if(t==='requests')renderRequests(); else if(t==='flags')renderFlags();
+}
+
+// ---------------- Departments (admin) ----------------
+async function loadDepts(){
+  const [ds,rs]=await Promise.all([F.getDocs(F.collection(db,'departments')),F.getDocs(F.collection(db,'roles'))]);
+  const counts={},chiefs={};
+  rs.forEach(r=>{const d=r.data();counts[d.deptId]=(counts[d.deptId]||0)+1;if(d.role==='chief')(chiefs[d.deptId]=chiefs[d.deptId]||[]).push(d.email);});
+  depts=[];ds.forEach(d=>depts.push({id:d.id,...d.data(),count:counts[d.id]||0,chiefs:chiefs[d.id]||[]}));
+  depts.sort((a,b)=>String(a.name).localeCompare(b.name));
+}
+async function renderDepts(){
+  $('app').innerHTML='<p class="empty">Loading departments...</p>';
+  try{await loadDepts();}catch(e){$('app').innerHTML=`<p class="status err">Couldn't load departments: ${esc(e.code||e.message)}. Make sure the latest Firestore rules are published.</p>`;return;}
+  $('app').innerHTML=`<h1>Departments</h1><p class="lead">Create a department, then add its fire chief. Chiefs add their own members.</p>
+   <div class="card"><h2>New department</h2><div class="row"><input id="d-name" placeholder="Department name, e.g. Maud VFD"><button class="btn" id="d-add">Create</button></div><div class="status" id="d-st"></div></div>
+   <div class="depts">${depts.length?depts.map(d=>`<div class="dept" data-id="${esc(d.id)}"><b>${esc(d.name)}</b><span>${d.count} on roster${d.chiefs.length?' &middot; Chief: '+esc(d.chiefs.join(', ')):' &middot; <span style="color:#e2aa3c">No chief yet</span>'}</span></div>`).join(''):'<p class="empty">No departments yet.</p>'}</div>`;
+  $('d-add').onclick=async()=>{const name=$('d-name').value.trim();if(!name)return;const st=$('d-st');
+    try{const id=slug(name);await F.setDoc(F.doc(db,'departments',id),{name,created:F.serverTimestamp()});curDept={id,name};go('dept');}
+    catch(e){st.textContent='Could not create: '+(e.code||e.message);st.className='status err';}};
+  document.querySelectorAll('.dept').forEach(el=>el.onclick=()=>{curDept=depts.find(d=>d.id===el.dataset.id);go('dept');});
+}
+
+// ---------------- One department (admin or chief) ----------------
+async function loadMember(uid){
+  const g=(...p)=>F.getDoc(F.doc(db,'users',uid,...p)).then(s=>s.exists()?s.data():null).catch(()=>null);
+  const [profile,prereqs,ff,hz,act,certsSnap]=await Promise.all([g('profile','main'),g('progress','prereqs'),g('progress','ff12'),g('progress','hazmat'),g('progress','activity'),
+    F.getDocs(F.collection(db,'users',uid,'certs')).catch(()=>null)]);
+  const certs={};if(certsSnap)certsSnap.forEach(c=>certs[c.id]=c.data());
+  const done=(prereqs&&prereqs.data)||{};
+  const quizzes=(act&&act.quizzes)||[];
+  const last=Math.max(ms(ff&&ff.updated),ms(hz&&hz.updated),ms(act&&act.last),0);
+  const review=((ff&&ff.data&&ff.data.u)||[]).length+((hz&&hz.data&&hz.data.u)||[]).length;
+  const tot=quizzes.reduce((a,q)=>[a[0]+(q.score||0),a[1]+(q.total||0)],[0,0]);
+  return {uid,profile:profile||{},done,certs,quizzes,last,review,avg:tot[1]?Math.round(tot[0]/tot[1]*100):null,missed:((ff&&ff.data&&ff.data.m)||[]).length+((hz&&hz.data&&hz.data.m)||[]).length};
+}
+async function renderDept(d){
+  if(!d||!d.id){$('app').innerHTML='<p class="status err">No department assigned to your account. Ask the site admin.</p>';return;}
+  const admin=ACC.status==='admin';
+  $('app').innerHTML=`${admin?'<span class="back" id="back">&larr; All departments</span>':''}<h1>${esc(d.name)}</h1><p class="lead">Add people by the exact email they'll sign in with. They get access as soon as they sign in.</p>
+   <div class="card"><h2>Add to roster</h2><div class="row"><input id="i-email" type="email" placeholder="member@email.com">
+   ${admin?'<select id="i-role"><option value="member">Member</option><option value="chief">Fire chief</option></select>':''}
+   <button class="btn" id="i-add">Add</button></div><div class="status" id="i-st"></div></div>
+   <div class="card"><h2>Roster</h2><div id="roster"><p class="empty">Loading roster...</p></div></div>
+   <div class="card"><h2>Invited, not signed in yet</h2><div id="invites"><p class="empty">Loading...</p></div></div>`;
+  if(admin)$('back').onclick=()=>go('depts');
+  $('i-add').onclick=async()=>{
+    const email=lower($('i-email').value), role=admin?$('i-role').value:'member', st=$('i-st');
+    if(!/^\S+@\S+\.\S+$/.test(email)){st.textContent='Enter a valid email.';st.className='status err';return;}
+    try{await F.setDoc(F.doc(db,'invites',email),{role,deptId:d.id,deptName:d.name,invitedBy:lower(H.user().email),created:F.serverTimestamp()});
+      st.textContent=`Added ${email}. Tell them to sign in at the Study Hub with this email.`;st.className='status ok';$('i-email').value='';loadInvites(d);}
+    catch(e){st.textContent='Could not add: '+(e.code||e.message);st.className='status err';}
+  };
+  loadInvites(d); loadRoster(d);
+}
+async function loadInvites(d){
+  try{
+    const s=await F.getDocs(F.query(F.collection(db,'invites'),F.where('deptId','==',d.id)));
+    const roleEmails=new Set((window._rosterEmails||[]));
+    const rows=[];s.forEach(x=>{if(!roleEmails.has(x.id))rows.push({email:x.id,...x.data()});});
+    $('invites').innerHTML=rows.length?rows.map(r=>`<div class="req"><div class="who">${esc(r.email)} <span>${r.role==='chief'?'&middot; Fire chief':''}</span></div><button class="btn sm ghost" data-uninv="${esc(r.email)}">Remove</button></div>`).join(''):'<p class="empty">Nobody waiting.</p>';
+    $('invites').querySelectorAll('[data-uninv]').forEach(b=>b.onclick=async()=>{if(!confirm('Remove this invite?'))return;await F.deleteDoc(F.doc(db,'invites',b.dataset.uninv));loadInvites(d);});
+  }catch(e){$('invites').innerHTML=`<p class="status err">${esc(e.code||e.message)}</p>`;}
+}
+async function loadRoster(d){
+  let roles=[];
+  try{const s=await F.getDocs(F.query(F.collection(db,'roles'),F.where('deptId','==',d.id)));s.forEach(x=>roles.push({uid:x.id,...x.data()}));}
+  catch(e){$('roster').innerHTML=`<p class="status err">${esc(e.code||e.message)}</p>`;return;}
+  window._rosterEmails=roles.map(r=>r.email); loadInvites(d);
+  if(!roles.length){$('roster').innerHTML='<p class="empty">Nobody on the roster yet. Add someone above.</p>';return;}
+  const data=await Promise.all(roles.map(r=>loadMember(r.uid).then(m=>({...m,role:r}))));
+  data.sort((a,b)=>String(a.profile.fullName||a.role.email).localeCompare(b.profile.fullName||b.role.email));
+  const admin=ACC.status==='admin';
+  $('roster').innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Name</th><th class="hide-sm">Rank</th><th class="hide-sm">Affiliation</th><th>Prereqs</th><th>Last studied</th><th>Quiz avg</th><th class="hide-sm">Review</th></tr></thead><tbody>
+   ${data.map((m,i)=>{const n=PREREQS.filter(p=>m.done[p.id]).length;
+     return `<tr class="m" data-i="${i}"><td><b>${esc(m.profile.fullName||'(no profile yet)')}</b>${m.role.role==='chief'?' <span class="pill warn">Chief</span>':''}<br><span style="color:#888;font-size:12px">${esc(m.role.email)}</span></td>
+     <td class="hide-sm">${esc(m.profile.rank||'')}</td><td class="hide-sm">${esc(m.profile.affiliation||'')}</td>
+     <td><span class="pill ${n===PREREQS.length?'ok':n?'warn':'no'}">${n}/${PREREQS.length}</span></td>
+     <td>${ago(m.last)}</td><td>${m.avg==null?'<span class="pill gray">None</span>':`<span class="pill ${m.avg>=70?'ok':'no'}">${m.avg}%</span>`}</td><td class="hide-sm">${m.review}</td></tr>
+     <tr class="detail" id="det-${i}" style="display:none"><td colspan="7"></td></tr>`;}).join('')}</tbody></table></div>
+   <p class="sub" style="margin-top:8px">Tap a name for details and certificates.</p>`;
+  $('roster').querySelectorAll('tr.m').forEach(tr=>tr.onclick=()=>{const i=+tr.dataset.i,row=$('det-'+i);
+    if(row.style.display==='none'){row.firstElementChild.innerHTML=detail(data[i],admin);row.style.display='';wireDetail(row,data[i],d);}else row.style.display='none';});
+}
+function chapterStats(quizzes){
+  const by={};
+  quizzes.forEach(q=>Object.entries(q.byCh||{}).forEach(([ch,[c,t]])=>{const k=(q.app==='hazmat'?'Hazmat: ':'')+ch;by[k]=by[k]||[0,0];by[k][0]+=c;by[k][1]+=t;}));
+  return Object.entries(by).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true}));
+}
+function detail(m,admin){
+  const p=m.profile, cs=chapterStats(m.quizzes);
+  return `<div class="dgrid">
+   <div><h4>Profile</h4><div class="kv"><span>Name:</span> ${esc(p.fullName||'')}<br><span>Rank:</span> ${esc(p.rank||'')}<br><span>Affiliation:</span> ${esc(p.affiliation||'')}<br>
+     <span>Department:</span> ${esc(p.department||'')}<br><span>Station:</span> ${esc(p.station||'')}<br><span>Phone:</span> ${esc(p.phone||'')}<br><span>Cert #:</span> ${esc(p.certNumber||'')}<br><span>Email:</span> ${esc(m.role.email)}</div>
+     <h4 style="margin-top:14px">Study activity</h4><div class="kv"><span>Last studied:</span> ${ago(m.last)}<br><span>Quizzes taken:</span> ${m.quizzes.length}<br><span>Cards marked for review:</span> ${m.review}<br><span>Missed quiz questions saved:</span> ${m.missed}</div>
+     <div style="margin-top:12px" class="row">${admin||m.role.role!=='chief'?'<button class="btn sm ghost" data-remove>Remove from roster</button>':''}${admin?`<button class="btn sm gold" data-mkrole="${m.role.role==='chief'?'member':'chief'}">Make ${m.role.role==='chief'?'member':'chief'}</button>`:''}</div></div>
+   <div><h4>Prerequisites</h4>${PREREQS.map(x=>{const c=m.certs[x.id]||{};return `<div class="pq"><span class="t">${m.done[x.id]?'<span class="pill ok">Done</span>':'<span class="pill no">Not yet</span>'} ${esc(x.title)}${c.completed?` <span style="color:#888;font-size:11px">${esc(c.completed)}</span>`:''}</span>${c.fileName?`<button class="btn sm gold" data-cert="${x.id}">View certificate</button>`:''}</div>`;}).join('')}
+     ${Object.entries(m.certs).filter(([id])=>id.startsWith('other-')).map(([id,c])=>`<div class="pq"><span class="t"><span class="pill gray">Other</span> ${esc(c.title||'Certificate')}</span>${c.fileName?`<button class="btn sm gold" data-cert="${esc(id)}">View</button>`:''}</div>`).join('')}
+     <h4 style="margin-top:14px">Quiz scores by chapter</h4>${cs.length?cs.map(([k,[c,t]])=>{const pct=Math.round(c/t*100);return `<div class="chrow"><span class="l">${esc(k)}</span><span class="bar"><i style="width:${pct}%;background:${pct>=70?'#27ae60':'#c0392b'}"></i></span><span class="v">${pct}% (${t})</span></div>`;}).join(''):'<p class="empty">No quizzes yet.</p>'}</div>
+  </div>`;
+}
+function wireDetail(row,m,d){
+  row.querySelectorAll('[data-cert]').forEach(b=>b.onclick=e=>{e.stopPropagation();openCert(m.uid,b.dataset.cert,m.certs[b.dataset.cert],b);});
+  const rm=row.querySelector('[data-remove]');
+  if(rm)rm.onclick=async()=>{if(!confirm(`Remove ${m.role.email} from ${d.name}? They lose access to the study guides. Their saved progress stays in their account.`))return;
+    try{await F.deleteDoc(F.doc(db,'roles',m.uid));await F.deleteDoc(F.doc(db,'invites',lower(m.role.email))).catch(()=>{});loadRoster(d);}catch(e){alert('Could not remove: '+(e.code||e.message));}};
+  const mk=row.querySelector('[data-mkrole]');
+  if(mk)mk.onclick=async()=>{try{await F.updateDoc(F.doc(db,'roles',m.uid),{role:mk.dataset.mkrole});
+    await F.setDoc(F.doc(db,'invites',lower(m.role.email)),{role:mk.dataset.mkrole,deptId:d.id,deptName:d.name,invitedBy:lower(H.user().email),created:F.serverTimestamp()});loadRoster(d);}catch(e){alert('Could not change role: '+(e.code||e.message));}};
+}
+async function openCert(uid,id,c,btn){
+  const label=btn.textContent;btn.disabled=true;btn.textContent='Loading...';const win=window.open('','_blank');
+  try{const parts=[];for(let i=0;i<c.chunks;i++){const s=await F.getDoc(F.doc(db,'users',uid,'certs',id,'chunks',String(i)));parts.push(s.data().d);}
+    const bin=atob(parts.join('')),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    const url=URL.createObjectURL(new Blob([bytes],{type:c.type}));
+    if(win)win.location.href=url;else{const a=document.createElement('a');a.href=url;a.download=c.fileName;a.click();}
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+  }catch(e){if(win)win.close();alert('Could not open: '+(e.code||e.message));}
+  btn.disabled=false;btn.textContent=label;
+}
+
+// ---------------- Access requests (admin) ----------------
+async function renderRequests(){
+  $('app').innerHTML='<p class="empty">Loading...</p>';
+  let reqs=[];
+  try{await loadDepts();const s=await F.getDocs(F.collection(db,'accessRequests'));s.forEach(x=>reqs.push({uid:x.id,...x.data()}));}
+  catch(e){$('app').innerHTML=`<p class="status err">${esc(e.code||e.message)}</p>`;return;}
+  reqs.sort((a,b)=>ms(b.created)-ms(a.created));
+  const opts=depts.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}</option>`).join('');
+  $('app').innerHTML=`<h1>Access Requests</h1><p class="lead">People who signed in but aren't on a roster. Pick their department and approve, or dismiss.</p>
+   <div class="card">${reqs.length?reqs.map(r=>`<div class="req" data-uid="${esc(r.uid)}"><div class="who"><b>${esc(r.name)}</b> <span>${esc(r.email)}</span><br><span>Says: ${esc(r.dept)} &middot; ${fmtDate(ms(r.created))}</span></div>
+     ${depts.length?`<select data-sel>${opts}</select><button class="btn sm green" data-ok>Approve</button>`:'<span class="empty">Create a department first</span>'}<button class="btn sm ghost" data-no>Dismiss</button></div>`).join(''):'<p class="empty">No requests right now.</p>'}</div>`;
+  $('app').querySelectorAll('.req').forEach(el=>{
+    const r=reqs.find(x=>x.uid===el.dataset.uid);
+    const ok=el.querySelector('[data-ok]');
+    if(ok)ok.onclick=async()=>{const d=depts.find(x=>x.id===el.querySelector('[data-sel]').value);
+      try{await F.setDoc(F.doc(db,'roles',r.uid),{role:'member',deptId:d.id,deptName:d.name,email:lower(r.email),joined:F.serverTimestamp()});
+        await F.setDoc(F.doc(db,'invites',lower(r.email)),{role:'member',deptId:d.id,deptName:d.name,invitedBy:lower(H.user().email),created:F.serverTimestamp()});
+        await F.deleteDoc(F.doc(db,'accessRequests',r.uid));renderRequests();}catch(e){alert('Could not approve: '+(e.code||e.message));}};
+    el.querySelector('[data-no]').onclick=async()=>{if(!confirm('Dismiss this request?'))return;await F.deleteDoc(F.doc(db,'accessRequests',r.uid));renderRequests();};
+  });
+}
+
+// ---------------- Flagged questions ----------------
+let flagFilter='open';
+async function renderFlags(){
+  if(ACC.status!=='admin'){
+    $('app').innerHTML=`<h1>Flag a Problem</h1><p class="lead">Members can flag any question from the flashcards or quiz with the <b>Flag</b> button. Flags go to the site admin to review and fix.</p>`;return;
+  }
+  $('app').innerHTML='<p class="empty">Loading flags...</p>';
+  let flags=[];
+  try{const s=await F.getDocs(F.collection(db,'flags'));s.forEach(x=>flags.push({id:x.id,...x.data()}));}
+  catch(e){$('app').innerHTML=`<p class="status err">${esc(e.code||e.message)}</p>`;return;}
+  flags.sort((a,b)=>ms(b.created)-ms(a.created));
+  const open=flags.filter(f=>f.status==='open');
+  const list=flagFilter==='open'?open:flags;
+  $('app').innerHTML=`<h1>Flagged Questions</h1><p class="lead">Questions members think might be wrong. Mark each one after you check it. Use <b>Copy open flags</b> to paste the list to Claude for fixing in the question bank.</p>
+   <div class="row" style="margin-bottom:12px"><button class="btn sm ${flagFilter==='open'?'':'ghost'}" data-f="open">Open (${open.length})</button><button class="btn sm ${flagFilter==='all'?'':'ghost'}" data-f="all">All (${flags.length})</button><button class="btn sm gold" id="copy">Copy open flags</button><span class="status" id="c-st" style="margin:0"></span></div>
+   ${list.length?list.map(f=>`<div class="flag ${f.status!=='open'?'done':''}" data-id="${esc(f.id)}"><div class="meta">${esc(f.app==='hazmat'?'Hazmat':'FF I & II')} &middot; ${esc(f.ch||'')} &middot; ${esc(f.email||'')} &middot; ${fmtDate(ms(f.created))} ${f.status!=='open'?`&middot; <span class="pill ${f.status==='fixed'?'ok':'gray'}">${f.status==='fixed'?'Fixed':'Not an error'}</span>`:''}</div>
+     <div class="q">${esc(f.q)}</div>${f.answer?`<div class="a">App's answer: ${esc(f.answer)}</div>`:''}${f.note?`<div class="n">${esc(f.note)}</div>`:''}
+     <div class="row">${f.status==='open'?'<button class="btn sm green" data-s="fixed">Fixed</button><button class="btn sm ghost" data-s="ok">Not an error</button>':'<button class="btn sm ghost" data-s="open">Reopen</button>'}<button class="btn sm ghost" data-del>Delete</button></div></div>`).join(''):'<p class="empty">Nothing here.</p>'}`;
+  $('app').querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{flagFilter=b.dataset.f;renderFlags();});
+  $('app').querySelectorAll('.flag').forEach(el=>{const id=el.dataset.id;
+    el.querySelectorAll('[data-s]').forEach(b=>b.onclick=async()=>{await F.updateDoc(F.doc(db,'flags',id),{status:b.dataset.s,reviewed:F.serverTimestamp()});renderFlags();});
+    el.querySelector('[data-del]').onclick=async()=>{if(!confirm('Delete this flag?'))return;await F.deleteDoc(F.doc(db,'flags',id));renderFlags();};});
+  $('copy').onclick=async()=>{const txt=open.map((f,i)=>`${i+1}. [${f.app==='hazmat'?'Hazmat':'FF I & II'} ${f.ch||''}] ${f.q}\n   App's answer: ${f.answer||'(none)'}\n   Note: ${f.note||'(none)'}`).join('\n\n')||'No open flags.';
+    try{await navigator.clipboard.writeText(txt);$('c-st').textContent='Copied.';$('c-st').className='status ok';}catch(e){prompt('Copy this:',txt);}};
+}
+
+if(window.fireHub)boot(); else window.addEventListener('firehub-ready',boot,{once:true});
+window.addEventListener('firehub-unconfigured',()=>{$('loading').innerHTML='<p>Accounts are not set up on this site yet.</p>';});
+</script>
+<script type="module" src="cloud-sync.js"></script>
+</body>
+</html>

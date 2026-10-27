@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-gate>
 <head>
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#111111">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hazmat Study App</title>
+<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
+
 <style>
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1179,7 +1181,21 @@ function cancelQuiz() {
   const _reset=window.fcReset;
   window.fcReset=function(){known.clear();review.clear();persist();_reset();};
   const _submit=window.submitQuizWithTracking;
-  window.submitQuizWithTracking=function(){_submit();persist();};
+  window.submitQuizWithTracking=function(){
+    const byCh={};let score=0;
+    quizDeck.forEach((q,i)=>{const k=q.topic||'Hazmat';byCh[k]=byCh[k]||[0,0];byCh[k][1]++;if(qAnswers[i]===q.ans){byCh[k][0]++;score++;}});
+    _submit();persist();
+    if(window.cloudLog)window.cloudLog({app:'hazmat',score,total:quizDeck.length,byCh});
+  };
+  // Flag buttons
+  const flag=it=>{if(!window.fireFlag){alert('Sign in to flag questions.');return;}window.fireFlag(it);};
+  const dc=document.querySelector('#fc-main .deck-controls');
+  if(dc){const b=document.createElement('button');b.className='sm-btn';b.innerHTML='&#9873; Flag';b.title='Think this card is wrong? Flag it for review.';
+    b.onclick=()=>{const c=fcDeck[fcIdx];if(c)flag({app:'hazmat',ch:c.ch,q:c.q,answer:c.a});};dc.appendChild(b);}
+  const _renderQ=window.renderQ;
+  window.renderQ=function(){_renderQ();const q=quizDeck[qIdx];if(!q||!qAnswered[qIdx])return;const fb=document.getElementById('q-fb');if(!fb)return;
+    const b=document.createElement('button');b.className='sm-btn';b.style.marginTop='10px';b.innerHTML='&#9873; Flag this question';
+    b.onclick=()=>flag({app:'hazmat',ch:q.topic||'',q:String(q.q).replace(/<[^>]+>/g,' '),answer:q.opts[q.ans]});fb.after(b);};
   const _clearMissed=window.clearMissedQuestions;
   window.clearMissedQuestions=function(){_clearMissed();persist();};
   window.appSync={key:'hazmat',

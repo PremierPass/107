@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-gate>
 <head>
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#111111">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Account</title>
+<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
+
 <style>
 :root{--bg:#111;--panel:#1a1a1a;--card:#1e1e1e;--line:#333;--red:#c0392b;--red2:#e74c3c;--gold:#e2aa3c;--green:#27ae60;--ink:#f0f0f0;--muted:#9a9a9a}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -78,7 +80,7 @@ input[readonly]{color:#888}
   <div id="app" style="display:none">
     <div class="banner" id="welcome"><b>Welcome!</b> Fill in your profile below, then upload your prerequisite certificates as you finish them.</div>
     <h1 id="hello">My Account</h1>
-    <p class="lead">Your profile, prerequisite checklist, and certificates are saved to your account. Only you can see them.</p>
+    <p class="lead">Your profile, prerequisite checklist, and certificates are saved to your account. You, your fire chief, and the site admin can see them.</p>
 
     <section class="card">
       <h2>Profile</h2>
@@ -114,7 +116,7 @@ input[readonly]{color:#888}
       <div class="add-row"><input id="other-title" placeholder="Certificate name, e.g. EMT-Basic"><button class="btn gold" id="other-add">Add</button></div>
     </section>
 
-    <p class="note">Certificates are stored in your private account. Keep your originals too. Uploaded photos are resized to keep them under the size limit.</p>
+    <p class="note">Certificates are stored in your account and visible to your fire chief and the site admin. Keep your originals too. Uploaded photos are resized to keep them under the size limit.</p>
   </div>
 </main>
 

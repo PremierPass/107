@@ -8,3 +8,6 @@ export const firebaseConfig = {
   messagingSenderId: "941911200809",
   appId: "1:941911200809:web:dd8ec275241ad87ee6f838"
 };
+
+// Site admin accounts (full access to the Admin Dashboard). Must match the list in firestore.rules.
+export const ADMIN_EMAILS = ["stewardle132@gmail.com"];

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-gate>
 <head>
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#111111">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FF I &amp; II Study App</title>
+<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
 <style>
 
 
@@ -246,6 +247,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
       <button class="sm-btn" onclick="fcReset()">Reset</button>
       <button class="sm-btn" onclick="fcShuffle()">Shuffle</button>
       <button class="sm-btn" onclick="fcStudyUnknown()">Review Only</button>
+      <button class="sm-btn" onclick="flagCard()" title="Think this card is wrong? Flag it for review.">&#9873; Flag</button>
     </div>
   </div>
   <div id="fc-done" class="done-screen" style="display:none">
@@ -495,7 +497,8 @@ function renderQ(){
     else b.onclick=()=>selectAnswer(i);
     opts.appendChild(b);
   });
-  if(qAnswered[qIdx]){const fb=document.getElementById('q-fb');if(qAnswers[qIdx]===q.ans){fb.className='q-feedback correct';fb.textContent='Correct!';}else{fb.className='q-feedback wrong';fb.textContent='Incorrect. Correct answer: '+q.opts[q.ans];}}
+  if(qAnswered[qIdx]){const fb=document.getElementById('q-fb');if(qAnswers[qIdx]===q.ans){fb.className='q-feedback correct';fb.textContent='Correct!';}else{fb.className='q-feedback wrong';fb.textContent='Incorrect. Correct answer: '+q.opts[q.ans];}
+    const fl=document.createElement('button');fl.className='sm-btn';fl.style.marginTop='10px';fl.innerHTML='&#9873; Flag this question';fl.onclick=()=>flagQuiz(q);fb.after(fl);}
   document.getElementById('q-prev-btn').style.display=qIdx>0?'block':'none';
   const isLast=qIdx===total-1;
   document.getElementById('q-next-btn').style.display=!isLast?'block':'none';
@@ -513,6 +516,8 @@ function submitQuiz(){
     }
   });
   missedQuestions=missedQuestions.slice(0,200); save();
+  const byCh={};quizDeck.forEach((q,i)=>{byCh[q.ch]=byCh[q.ch]||[0,0];byCh[q.ch][1]++;if(qAnswers[i]===q.ans)byCh[q.ch][0]++;});
+  if(window.cloudLog)window.cloudLog({app:'ff12',score:qAnswers.filter((a,i)=>a===quizDeck[i].ans).length,total:quizDeck.length,byCh});
   const correct=qAnswers.filter((a,i)=>a===quizDeck[i].ans).length,total=quizDeck.length,pct=Math.round(correct/total*100);
   document.getElementById('quiz-game').style.display='none';
   document.getElementById('quiz-score').style.display='block';
@@ -549,6 +554,10 @@ function updateReviewPage(){
   document.getElementById('missed-questions-content').innerHTML=missedQuestions.length?missedQuestions.map(m=>'<div class="missed-card"><div class="missed-card-topic">'+m.ch.replace('Ch','Chapter ')+'</div><div class="missed-card-q">'+esc(m.q)+'</div><div class="missed-card-wrong">&#10007; Your answer: '+esc(m.yourAnswer)+'</div><div class="missed-card-correct">&#10003; Correct: '+esc(m.correct)+'</div></div>').join(''):'<div class="empty-state">No missed quiz questions yet. Take a quiz and missed questions will show up here.</div>';
 }
 
+// Flag a possibly wrong question (goes to the admin review list)
+const plain=s=>String(s).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+function flagCard(){const c=fcDeck[fcIdx];if(!c)return;if(!window.fireFlag){alert('Sign in to flag questions.');return;}window.fireFlag({app:'ff12',ch:c.ch,q:c.q,answer:c.a});}
+function flagQuiz(q){if(!window.fireFlag){alert('Sign in to flag questions.');return;}window.fireFlag({app:'ff12',ch:q.ch,q:plain(q.q),answer:q.opts[q.ans]});}
 function showPage(id,e){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('button.nav-btn').forEach(b=>b.classList.remove('active'));

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-gate>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Hazmat — Key Terms</title>
+<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
+
 <style>
   :root { color-scheme: dark !important; }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -634,5 +636,6 @@ document.getElementById('cardArea').addEventListener('touchend',e=>{
 
 rebuild();
 </script>
+<script type="module" src="cloud-sync.js"></script>
 </body>
 </html>
