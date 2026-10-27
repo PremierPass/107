@@ -128,6 +128,9 @@ summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-t
     <div class="wrap"><table style="min-width:600px"><thead><tr><th>Teacher</th><th>School</th><th>Classes</th><th>Students</th><th></th></tr></thead><tbody id="tRows"></tbody></table></div>
     <div class="sub">All classes</div>
     <div class="wrap"><table style="min-width:600px"><thead><tr><th>Class</th><th>Teacher</th><th>Students</th><th>Signed in</th><th>Avg last test</th><th></th></tr></thead><tbody id="acRows"></tbody></table></div>
+    <div class="sub">Personal accounts <span id="paCount" style="color:var(--text)"></span></div>
+    <p class="note" style="margin-bottom:8px">People studying on their own, not a teacher and not in any class. Newest first.</p>
+    <div class="wrap"><table style="min-width:640px"><thead><tr><th>Name</th><th>Joined</th><th>Answered</th><th>Accuracy</th><th>Tests</th><th>Best</th><th>Last active</th></tr></thead><tbody id="paRows"></tbody></table></div>
     <p class="note">Flagged questions from Part 107 students appear on the main <a href="admin.html" style="color:var(--gold)">Admin Dashboard</a>.</p>
   </div>
 </main>
@@ -223,10 +226,17 @@ function renderAdmin(){
   $('rqRows').innerHTML=requests.length?requests.map(q=>'<tr><td><b>'+esc(q.name)+'</b></td><td>'+esc(q.school)+'</td><td>'+esc(q.email)+'</td><td><small>'+(ts(q.created)?ts(q.created).toLocaleDateString():'-')+'</small></td><td><button class="btn gold" data-ap="'+esc(q.email)+'">Approve</button> <button class="rm" data-dc="'+esc(q.email)+'">Decline</button></td></tr>').join('')
     :'<tr><td colspan="5" class="msg" style="padding:16px">No pending requests.</td></tr>';
   const inClass=new Set(roster.map(r=>r.email));
-  $('aT').textContent=teachers.length;$('aC').textContent=classes.length;$('aS').textContent=inClass.size;$('aP').textContent=students.filter(s=>!inClass.has((s.email||'').toLowerCase())).length;
+  $('aT').textContent=teachers.length;$('aC').textContent=classes.length;$('aS').textContent=inClass.size;$('aP').textContent=students.filter(s=>s.name&&!inClass.has((s.email||'').toLowerCase())&&!teachers.some(t=>t.email===(s.email||'').toLowerCase())).length;
   $('tRows').innerHTML=teachers.length?[...teachers].sort((a,b)=>(a.name||a.email).localeCompare(b.name||b.email)).map(t=>{const tc=classes.filter(c=>c.teacherEmail===t.email||(c.teachers||[]).includes(t.email));const ids=new Set(tc.map(c=>c.id));const st=new Set(roster.filter(r=>ids.has(r.classId)).map(r=>r.email));
     return '<tr><td><b>'+esc(t.name||'(no name)')+'</b><br><small>'+esc(t.email)+'</small></td><td>'+esc(t.school)+'</td><td>'+tc.length+'</td><td>'+st.size+'</td><td><button class="rm" data-rt="'+esc(t.email)+'">Remove</button></td></tr>';}).join('')
     :'<tr><td colspan="5" class="msg">No teachers yet. As the site admin you can already create your own classes on the My Classes tab.</td></tr>';
+  const tEmails=new Set(teachers.map(t=>t.email));
+  const pa=students.filter(s=>s.name&&!inClass.has((s.email||'').toLowerCase())&&!tEmails.has((s.email||'').toLowerCase()))
+    .sort((a,b)=>(ts(b.created)?.getTime()||0)-(ts(a.created)?.getTime()||0));
+  $('paCount').textContent='('+pa.length+')';
+  $('paRows').innerHTML=pa.length?pa.map(s=>{const act=ts(s.active)||ts(s.lastTest)||ts(s.updated);const j=ts(s.created);
+    return '<tr><td><b>'+esc(s.name)+'</b><br><small>'+esc(s.email)+'</small></td><td><small>'+(j?j.toLocaleDateString():'-')+'</small></td><td>'+(s.answered||0)+'</td><td class="p '+cls(s.accuracy)+'">'+(s.accuracy==null?'-':s.accuracy+'%')+'</td><td>'+(s.tests||0)+'</td><td class="p '+cls(s.best)+'">'+(s.best?s.best+'%':'-')+'</td><td><small>'+(act?act.toLocaleDateString():'-')+'</small></td></tr>';}).join('')
+    :'<tr><td colspan="7" class="msg" style="padding:16px">No personal accounts yet.</td></tr>';
   const byEmail={};students.forEach(s=>{if(s.email)byEmail[s.email.toLowerCase()]=s;});
   $('acRows').innerHTML=classes.length?[...classes].sort((a,b)=>(a.teacherName||a.teacherEmail).localeCompare(b.teacherName||b.teacherEmail)||a.name.localeCompare(b.name)).map(c=>{const rs=roster.filter(r=>r.classId===c.id);const st=rs.map(r=>byEmail[r.email]).filter(Boolean);const lt=st.filter(s=>s.last!=null);
     return '<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.teacherName||'')+'<br><small>'+esc(c.teacherEmail)+'</small></td><td>'+rs.length+'</td><td>'+st.length+'</td><td>'+(lt.length?Math.round(lt.reduce((n,s)=>n+s.last,0)/lt.length)+'%':'-')+'</td><td><button class="rm" data-open="'+c.id+'">Open</button></td></tr>';}).join('')
