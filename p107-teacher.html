@@ -78,6 +78,13 @@ summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-t
         <div class="stat"><div class="n" id="nAvg">-</div><div class="l">Avg last test</div></div>
         <div class="stat"><div class="n" id="nReady">0</div><div class="l">Passing (70%+)</div></div>
       </div>
+      <div class="box gold hidden" id="oldBox">
+        <h3>Students from the earlier class list</h3>
+        <p class="note" style="margin-bottom:8px">These students were added before classes existed. Their accounts and progress are safe. Move them into this class with one tap.</p>
+        <div id="oldList"></div>
+        <button class="btn gold" style="margin-top:8px" onclick="moveAll()">Move all into this class</button>
+        <div class="say" id="oldMsg"></div>
+      </div>
       <div class="box">
         <h3>Add students</h3>
         <p class="note" style="margin-bottom:8px">Add each student's email. When they sign in with that email, their account links to this class.</p>
@@ -121,7 +128,7 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;',
 const AREAS=['regs','air','wx','perf','ops'];
 const ts=v=>v&&v.toDate?v.toDate():v&&v.toMillis?new Date(v.toMillis()):(v&&v.seconds?new Date(v.seconds*1000):null);
 const cls=p=>p==null?'':p>=80?'ok':p>=70?'mid':'lo';
-let ME='',ADMIN=false,classes=[],roster=[],students=[],teachers=[],cur=null,sortK='name',sortDir=1,extraView=null;
+let oldRoster=[],ME='',ADMIN=false,classes=[],roster=[],students=[],teachers=[],cur=null,sortK='name',sortDir=1,extraView=null;
 
 window.addEventListener('p107-auth',e=>{
   const {user,isTeacher,isAdmin}=e.detail;
@@ -139,7 +146,7 @@ async function load(){
   try{[classes,roster,students]=await Promise.all([P107.listClasses(),P107.listRoster(),P107.listStudents()]);
     if(ADMIN)teachers=await P107.listTeachers();}
   catch(e){console.warn(e);$('gate').classList.remove('hidden');$('gate').textContent='Could not load your classes. Make sure the latest Firestore rules are published, then refresh.';return;}
-  roster=roster.filter(r=>r.classId);
+  oldRoster=ADMIN?roster.filter(r=>!r.classId):[];roster=roster.filter(r=>r.classId);
   renderChips();renderClass();if(ADMIN)renderAdmin();
 }
 const mine=()=>classes.filter(c=>c.teacherEmail===ME).sort((a,b)=>a.name.localeCompare(b.name));
@@ -151,7 +158,10 @@ $('clsChips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;cur=b.d
 function joined(classId){const byEmail={};students.forEach(s=>{if(s.email)byEmail[s.email.toLowerCase()]=s;});
   return roster.filter(r=>r.classId===classId).map(r=>{const s=byEmail[r.email]||{};return {...s,rid:r.id,email:r.email,name:s.name||r.name||'',status:s.id?'Signed in':'Not yet'};});}
 function renderClass(){
-  const c=classes.find(x=>x.id===cur);$('clsView').classList.toggle('hidden',!c);if(!c)return;
+  const c=classes.find(x=>x.id===cur);$('clsView').classList.toggle('hidden',!c);
+  $('oldBox').classList.toggle('hidden',!c||!oldRoster.length);
+  $('oldList').innerHTML=oldRoster.map(o=>'<div style="font-size:13px;padding:4px 0">'+esc(o.name||'(no name)')+' <small style="color:var(--muted)">'+esc(o.email||o.id)+'</small></div>').join('');
+  if(!c)return;
   $('cvName').textContent=c.name+(c.teacherEmail!==ME?' ('+(c.teacherName||c.teacherEmail)+')':'');
   const s=$('fSearch').value.toLowerCase();
   const all=joined(c.id);
@@ -182,6 +192,9 @@ function csv(){const c=classes.find(x=>x.id===cur);const rows=[['Name','Email','
   const t=rows.map(r=>r.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download=(c.name||'class').replace(/[^\w-]+/g,'_')+'.csv';document.body.appendChild(a);a.click();a.remove();}
 
+async function moveAll(){const c=classes.find(x=>x.id===cur);if(!c)return;let ok=0;
+  for(const o of oldRoster){const r=await P107.addStudent({cls:c,email:o.email||o.id,name:o.name||''});if(r.ok){ok++;await P107.removeStudent(o.id);}}
+  $('oldMsg').textContent='Moved '+ok+' student'+(ok===1?'':'s')+' into '+c.name+'.';load();}
 // ---------- Admin ----------
 function renderAdmin(){
   const inClass=new Set(roster.map(r=>r.email));
