@@ -139,8 +139,15 @@ service cloud.firestore {
     // p107Students/{uid} = a student's name, classes, and score summary.
     // The student reads and writes their own; their teachers and the admin can read it.
     match /p107Students/{uid} {
-      allow read, write: if signedIn() && request.auth.uid == uid;
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if signedIn() && request.auth.uid == uid && !exists(/databases/$(database)/documents/p107Blocked/$(myEmail()));
       allow read: if isAdmin() || (p107Teacher() && myEmail() in resource.data.get('teachers', []));
+      allow delete: if isAdmin();
+    }
+    // p107Blocked/{email} = accounts the admin removed from the Part 107 Study Hub.
+    match /p107Blocked/{email} {
+      allow read: if isAdmin() || (signedIn() && myEmail() == email);
+      allow write: if isAdmin();
     }
   }
 }

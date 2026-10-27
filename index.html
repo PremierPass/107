@@ -197,7 +197,10 @@ footer{color:#5f7290;font-size:11px;line-height:1.6;text-align:center;padding:20
 </main></section>
 
 <!-- OFFLINE FALLBACK -->
-<section id="vOffline" class="hidden"><main><div class="panel"><h2>Can't reach the sign-in service</h2><p class="s">Check your internet connection and refresh. You can still study now, but nothing will be saved to your account.</p><button class="btn full" onclick="location.reload()">Try Again</button><div style="height:8px"></div><button class="btn ghost full" onclick="startGuest()">Study without saving</button></div></main></section>
+<section id="vOffline" class="hidden"><main><div class="panel"><h2>Can't reach the sign-in service</h2><p class="s">Check your internet connection and refresh. An account is needed to use the study hub.</p><button class="btn full" onclick="location.reload()">Try Again</button></div></main></section>
+
+<!-- REMOVED ACCOUNT -->
+<section id="vBlocked" class="hidden"><main><div class="panel"><h2>Account removed</h2><p class="s">This account no longer has access to the Part 107 Study Hub. If you think this is a mistake, contact the site admin.</p><button class="btn ghost full" onclick="P107.signOut()">Sign out</button></div></main></section>
 
 <!-- PROFILE -->
 <section id="vProfile" class="hidden"><main>
@@ -226,6 +229,7 @@ footer{color:#5f7290;font-size:11px;line-height:1.6;text-align:center;padding:20
     <!-- HOME -->
     <div class="page on" id="p-home">
       <div class="hello"><div><h2 id="hiName">Welcome</h2><p id="hiSub"></p></div><a class="btn ghost hidden" id="teachLink" href="p107-teacher.html">Teacher Dashboard &rarr;</a></div>
+      <a class="ref hidden" id="newJoin" href="p107-teacher.html#admin" style="display:block;text-decoration:none;color:var(--text);border-left:3px solid var(--green);padding:12px 14px"></a>
       <div class="ref hidden" id="verifyNote" style="border-left:3px solid var(--gold);padding:12px 14px"><p class="note" style="margin:0">In a class? Check your inbox for the verification email from Firebase and click the link, then refresh. That links your account to your teacher's class.</p></div>
       <div class="stats">
         <div class="stat"><div class="n" id="hQ">0</div><div class="l">Questions</div></div>
@@ -445,7 +449,7 @@ function record(id,ok){const a=S.ans[id]||[0,0];a[1]++;if(ok)a[0]++;S.ans[id]=a;
   if(ok){S.missed=S.missed.filter(x=>x.id!==id);} }
 
 // ---------- Views ----------
-function show(v){['vLoading','vSignin','vOffline','vProfile','vApp'].forEach(x=>$(x).classList.toggle('hidden',x!==v));}
+function show(v){['vLoading','vSignin','vOffline','vBlocked','vProfile','vApp'].forEach(x=>$(x).classList.toggle('hidden',x!==v));}
 let signup=false;
 function toggleMode(){signup=!signup;$('siTitle').textContent=signup?'Create Your Account':'Student Sign In';$('siGo').textContent=signup?'Create Account':'Sign In';$('siToggle').textContent=signup?'I already have an account':'Create an account';$('siPass').autocomplete=signup?'new-password':'current-password';say('');}
 function say(t,ok){const m=$('siMsg');m.textContent=t;m.className='msg'+(t?(ok?' ok':' err'):'');}
@@ -460,6 +464,9 @@ function editProfile(){closeOv('acctOv');$('pfName').value=(P107.profile||{}).na
 function openAcct(){const u=P107.user,p=P107.profile||{};$('acctInfo').innerHTML=esc(p.name||'')+'<br>'+((P107.classes||[]).length?esc(P107.classes.map(c=>c.name).join(', ')):'Personal account')+'<br>'+esc(u&&u.email||'');$('acctOv').classList.add('on');}
 const HERO_DEFAULT={name:'Mr. Steward',school:'Premier High School, Texarkana'};
 function setHero(h){h=h||HERO_DEFAULT;$('heroTeacher').textContent=h.name;$('heroSchool').textContent=h.school||'';$('heroSchool').classList.toggle('hidden',!h.school);}
+async function checkNewJoins(teacher){try{const seen=teacher&&teacher.signupsSeen&&teacher.signupsSeen.toMillis?teacher.signupsSeen.toMillis():0;
+  const st=await P107.listStudents();const me=(P107.user.email||'').toLowerCase();const n=st.filter(s=>s.name&&(s.email||'').toLowerCase()!==me&&s.created&&s.created.toMillis&&s.created.toMillis()>seen).length;
+  const el=$('newJoin');if(n){el.innerHTML='<b style="color:var(--green)">&#9679; '+n+' new '+(n===1?'person':'people')+' joined</b> <span style="color:var(--muted);font-size:13px">since you last checked. Tap to see who.</span>';el.classList.remove('hidden');}else el.classList.add('hidden');}catch(e){}}
 async function refreshTeachReq(user,isTeacher){const box=$('teachReq');if(!user||isTeacher||guest){box.classList.add('hidden');return;}box.classList.remove('hidden');
   const rq=await P107.myTeacherRequest();
   if(rq){$('trText').textContent='Your teacher account request ('+rq.name+', '+rq.school+') is waiting for approval. You will get access to the Teacher Dashboard as soon as the admin approves it; just refresh this page.';$('trBtn').textContent='Cancel request';$('trBtn').onclick=async()=>{await P107.cancelTeacherRequest();refreshTeachReq(user,false);};}
@@ -472,7 +479,8 @@ function zoom(src){$('zoomImg').src=src;$('zoomOv').classList.add('on');}
 
 let started=false;
 window.addEventListener('p107-auth',async e=>{
-  const {user,profile,isTeacher,isAdmin,classes,teacher}=e.detail;
+  const {user,profile,isTeacher,isAdmin,classes,teacher,blocked}=e.detail;
+  if(user&&blocked){$('acctBtn').classList.add('hidden');show('vBlocked');return;}
   setHero(teacher&&teacher.name?{name:teacher.name,school:teacher.school}:(classes&&classes.length&&classes[0].teacher?{name:classes[0].teacher,school:classes[0].school}:null));
   $('pfSub').textContent=classes&&classes.length?'You are in '+classes.map(c=>c.name+(c.teacher?' with '+c.teacher:'')).join(', ')+'. Enter your name to start.':'What should we call you?';
   $('teachLink').textContent=isAdmin?'Teacher and Admin Dashboard \u2192':'Teacher Dashboard \u2192';
@@ -483,6 +491,7 @@ window.addEventListener('p107-auth',async e=>{
   $('acctLbl').textContent=profile.name.split(' ')[0];
   $('teachLink').classList.toggle('hidden',!isTeacher);
   refreshTeachReq(user,isTeacher);
+  if(isAdmin)checkNewJoins(teacher);
   if(!started||uidKey!=='p107_'+user.uid){uidKey='p107_'+user.uid;S={known:[],review:[],missed:[],ans:{},tests:[]};loadLocal();mergeCloud(await P107.loadProgress());save();started=true;startApp();}
   else show('vApp');
 });
@@ -619,6 +628,6 @@ async function sendFlag(){const r=await P107.flag({ch:flagging.c,q:flagging.q,an
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!$('vSignin').classList.contains('hidden'))doEmail();
   if($('p-cards').classList.contains('on')&&!$('vApp').classList.contains('hidden')&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){if(e.key===' '){e.preventDefault();flip();}if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1);}});
 </script>
-<script type="module" src="p107-cloud.js?v=7"></script>
+<script type="module" src="p107-cloud.js?v=8"></script>
 </body>
 </html>

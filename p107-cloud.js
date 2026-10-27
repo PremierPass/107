@@ -14,9 +14,9 @@ import { firebaseConfig, ADMIN_EMAILS } from './firebase-config.js?v=5';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
 const admins = (ADMIN_EMAILS || []).map(e => e.toLowerCase());
-const api = { user: null, profile: null, isTeacher: false, isAdmin: false, classes: [], teacher: null };
+const api = { user: null, profile: null, isTeacher: false, isAdmin: false, classes: [], teacher: null, blocked: false };
 window.P107 = api;
-const emit = () => window.dispatchEvent(new CustomEvent('p107-auth', { detail: { user: api.user, profile: api.profile, isTeacher: api.isTeacher, isAdmin: api.isAdmin, classes: api.classes, teacher: api.teacher } }));
+const emit = () => window.dispatchEvent(new CustomEvent('p107-auth', { detail: { user: api.user, profile: api.profile, isTeacher: api.isTeacher, isAdmin: api.isAdmin, classes: api.classes, teacher: api.teacher, blocked: api.blocked } }));
 const low = s => String(s || '').trim().toLowerCase();
 const nice = e => {
   const c = (e && e.code) || '';
@@ -207,11 +207,29 @@ async function start() {
       }
     }
   };
+  // ---------- Admin: sign-ups and removing accounts ----------
+  const blkRef = email => F.doc(db, 'p107Blocked', low(email));
+  api.markSignupsSeen = wrap(async () => { await F.setDoc(tchRef(me()), { signupsSeen: F.serverTimestamp() }, { merge: true }); if (api.teacher) api.teacher.signupsSeen = { toMillis: () => Date.now() }; });
+  api.removeAccount = wrap(async stu => {
+    const e = low(stu.email);
+    if (admins.includes(e)) throw { message: 'Admin accounts cannot be removed.' };
+    if (e) await F.setDoc(blkRef(e), { email: e, name: stu.name || '', removed: F.serverTimestamp() });
+    if (e) for (const r of await q('p107Roster', F.where('email', '==', e))) await F.deleteDoc(F.doc(db, 'p107Roster', r.id));
+    if (stu.id) await F.deleteDoc(stuRef(stu.id));
+  });
+  api.listBlocked = () => q('p107Blocked');
+  api.listFlags = () => q('flags', F.where('app', '==', 'p107'));
+  api.setFlag = wrap(async (id, status) => { await F.updateDoc(F.doc(db, 'flags', id), { status }); });
+  api.deleteFlag = wrap(async id => { await F.deleteDoc(F.doc(db, 'flags', id)); });
+  api.unblock = wrap(async email => { await F.deleteDoc(blkRef(email)); });
   api.listStudents = () => api.isAdmin ? q('p107Students') : q('p107Students', F.where('teachers', 'array-contains', me()));
 
   A.onAuthStateChanged(auth, async user => {
-    api.user = user || null; api.profile = null; api.classes = []; api.teacher = null;
+    api.user = user || null; api.profile = null; api.classes = []; api.teacher = null; api.blocked = false;
     const email = low(user && user.email);
+    if (user && email && !admins.includes(email)) {
+      try { const b = await F.getDoc(blkRef(email)); if (b.exists()) { api.blocked = true; emit(); return; } } catch (e) {}
+    }
     api.isAdmin = !!(user && admins.includes(email));
     api.isTeacher = api.isAdmin;
     if (user) {

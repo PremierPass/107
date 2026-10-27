@@ -110,6 +110,10 @@ summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-t
 
   <!-- ADMIN -->
   <div id="tAdmin" class="hidden">
+    <div class="box" id="nsBox" style="border-left:3px solid var(--green)">
+      <div class="hd" style="margin-bottom:6px"><h3 style="margin:0" id="nsTitle">New sign-ups</h3><button class="btn ghost" id="nsSeen" onclick="markSeen()">Mark as seen</button></div>
+      <div id="nsList"></div>
+    </div>
     <div class="stats">
       <div class="stat"><div class="n" id="aT">0</div><div class="l">Teachers</div></div>
       <div class="stat"><div class="n" id="aC">0</div><div class="l">Classes</div></div>
@@ -128,10 +132,14 @@ summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-t
     <div class="wrap"><table style="min-width:600px"><thead><tr><th>Teacher</th><th>School</th><th>Classes</th><th>Students</th><th></th></tr></thead><tbody id="tRows"></tbody></table></div>
     <div class="sub">All classes</div>
     <div class="wrap"><table style="min-width:600px"><thead><tr><th>Class</th><th>Teacher</th><th>Students</th><th>Signed in</th><th>Avg last test</th><th></th></tr></thead><tbody id="acRows"></tbody></table></div>
-    <div class="sub">Personal accounts <span id="paCount" style="color:var(--text)"></span></div>
-    <p class="note" style="margin-bottom:8px">People studying on their own, not a teacher and not in any class. Newest first.</p>
-    <div class="wrap"><table style="min-width:640px"><thead><tr><th>Name</th><th>Joined</th><th>Answered</th><th>Accuracy</th><th>Tests</th><th>Best</th><th>Last active</th></tr></thead><tbody id="paRows"></tbody></table></div>
-    <p class="note">Flagged questions from Part 107 students appear on the main <a href="admin.html" style="color:var(--gold)">Admin Dashboard</a>.</p>
+    <div class="sub">Flagged questions <span id="flCount" style="color:var(--text)"></span></div>
+    <div id="flList" style="margin-bottom:14px"></div>
+    <details class="box"><summary>All personal accounts <span id="paCount" style="color:var(--text)"></span></summary>
+      <p class="note" style="margin:8px 0">People studying on their own, not a teacher and not in a class. Newest first.</p>
+      <div class="wrap"><table style="min-width:680px"><thead><tr><th>Name</th><th>Joined</th><th>Answered</th><th>Accuracy</th><th>Tests</th><th>Best</th><th>Last active</th><th></th></tr></thead><tbody id="paRows"></tbody></table></div>
+    </details>
+    <details class="box"><summary>Removed accounts <span id="blCount" style="color:var(--text)"></span></summary><div id="blList" style="margin-top:8px"></div></details>
+
   </div>
 </main>
 <script>
@@ -140,7 +148,7 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;',
 const AREAS=['regs','air','wx','perf','ops'];
 const ts=v=>v&&v.toDate?v.toDate():v&&v.toMillis?new Date(v.toMillis()):(v&&v.seconds?new Date(v.seconds*1000):null);
 const cls=p=>p==null?'':p>=80?'ok':p>=70?'mid':'lo';
-let requests=[],oldRoster=[],ME='',ADMIN=false,classes=[],roster=[],students=[],teachers=[],cur=null,sortK='name',sortDir=1,extraView=null;
+let blocked=[],flags=[],requests=[],oldRoster=[],ME='',ADMIN=false,classes=[],roster=[],students=[],teachers=[],cur=null,sortK='name',sortDir=1,extraView=null;
 
 window.addEventListener('p107-auth',e=>{
   const {user,isTeacher,isAdmin}=e.detail;
@@ -148,7 +156,7 @@ window.addEventListener('p107-auth',e=>{
   if(!isTeacher){$('gate').innerHTML='This page is for teachers. To get access, go back to the <a href="index.html" style="color:var(--gold)">study app</a> and tap <b>Request a teacher account</b> on the Home tab. The site admin will approve it.';return;}
   ME=user.email.toLowerCase();ADMIN=isAdmin;
   $('gate').classList.add('hidden');$('tClasses').classList.remove('hidden');
-  if(ADMIN){$('tabs').classList.remove('hidden');$('title').textContent='Teacher and Admin Dashboard';}
+  if(ADMIN){$('tabs').classList.remove('hidden');$('title').textContent='Teacher and Admin Dashboard';if(location.hash==='#admin')setTimeout(()=>document.querySelector('.tabs button[data-t="admin"]').click(),0);}
   load();
 });
 $('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));
@@ -156,7 +164,7 @@ $('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.q
 
 async function load(){
   try{[classes,roster,students]=await Promise.all([P107.listClasses(),P107.listRoster(),P107.listStudents()]);
-    teachers=await P107.listTeachers().catch(()=>[]);if(ADMIN)requests=await P107.listTeacherRequests();}
+    teachers=await P107.listTeachers().catch(()=>[]);if(ADMIN){requests=await P107.listTeacherRequests();blocked=await P107.listBlocked().catch(()=>[]);flags=await P107.listFlags().catch(()=>[]);}}
   catch(e){console.warn(e);$('gate').classList.remove('hidden');$('gate').textContent='Could not load your classes. Make sure the latest Firestore rules are published, then refresh.';return;}
   oldRoster=ADMIN?roster.filter(r=>!r.classId):[];roster=roster.filter(r=>r.classId);
   await P107.syncMyClasses(classes,roster);
@@ -222,7 +230,6 @@ $('coList').onclick=async e=>{const b=e.target.closest('[data-co]');if(!b)return
 // ---------- Admin ----------
 function renderAdmin(){
   $('rqCount').textContent=requests.length?'('+requests.length+')':'';
-  const tabBtn=document.querySelector('.tabs button[data-t="admin"]');tabBtn.textContent=requests.length?'Admin ('+requests.length+')':'Admin';
   $('rqRows').innerHTML=requests.length?requests.map(q=>'<tr><td><b>'+esc(q.name)+'</b></td><td>'+esc(q.school)+'</td><td>'+esc(q.email)+'</td><td><small>'+(ts(q.created)?ts(q.created).toLocaleDateString():'-')+'</small></td><td><button class="btn gold" data-ap="'+esc(q.email)+'">Approve</button> <button class="rm" data-dc="'+esc(q.email)+'">Decline</button></td></tr>').join('')
     :'<tr><td colspan="5" class="msg" style="padding:16px">No pending requests.</td></tr>';
   const inClass=new Set(roster.map(r=>r.email));
@@ -235,8 +242,22 @@ function renderAdmin(){
     .sort((a,b)=>(ts(b.created)?.getTime()||0)-(ts(a.created)?.getTime()||0));
   $('paCount').textContent='('+pa.length+')';
   $('paRows').innerHTML=pa.length?pa.map(s=>{const act=ts(s.active)||ts(s.lastTest)||ts(s.updated);const j=ts(s.created);
-    return '<tr><td><b>'+esc(s.name)+'</b><br><small>'+esc(s.email)+'</small></td><td><small>'+(j?j.toLocaleDateString():'-')+'</small></td><td>'+(s.answered||0)+'</td><td class="p '+cls(s.accuracy)+'">'+(s.accuracy==null?'-':s.accuracy+'%')+'</td><td>'+(s.tests||0)+'</td><td class="p '+cls(s.best)+'">'+(s.best?s.best+'%':'-')+'</td><td><small>'+(act?act.toLocaleDateString():'-')+'</small></td></tr>';}).join('')
-    :'<tr><td colspan="7" class="msg" style="padding:16px">No personal accounts yet.</td></tr>';
+    return '<tr><td><b>'+esc(s.name)+'</b><br><small>'+esc(s.email)+'</small></td><td><small>'+(j?j.toLocaleDateString():'-')+'</small></td><td>'+(s.answered||0)+'</td><td class="p '+cls(s.accuracy)+'">'+(s.accuracy==null?'-':s.accuracy+'%')+'</td><td>'+(s.tests||0)+'</td><td class="p '+cls(s.best)+'">'+(s.best?s.best+'%':'-')+'</td><td><small>'+(act?act.toLocaleDateString():'-')+'</small></td><td><button class="rm" data-ra="'+esc(s.id)+'">Remove</button></td></tr>';}).join('')
+    :'<tr><td colspan="8" class="msg" style="padding:16px">No personal accounts yet.</td></tr>';
+  // New sign-ups since last check (everyone, not just personal accounts)
+  const seen=P107.teacher&&P107.teacher.signupsSeen?(ts(P107.teacher.signupsSeen)?.getTime()||0):0;
+  const fresh=students.filter(s=>s.name&&(s.email||'').toLowerCase()!==ME&&(ts(s.created)?.getTime()||0)>seen).sort((a,b)=>(ts(b.created)?.getTime()||0)-(ts(a.created)?.getTime()||0));
+  $('nsTitle').innerHTML=fresh.length?'<span style="color:var(--green)">&#9679;</span> '+fresh.length+' new '+(fresh.length===1?'sign-up':'sign-ups'):'New sign-ups';
+  $('nsSeen').classList.toggle('hidden',!fresh.length);
+  $('nsList').innerHTML=fresh.length?fresh.slice(0,10).map(s=>{const j=ts(s.created);const kind=inClass.has((s.email||'').toLowerCase())?'In a class':tEmails.has((s.email||'').toLowerCase())?'Teacher':'Personal account';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:13px"><span><b>'+esc(s.name)+'</b> <small style="color:var(--muted)">'+esc(s.email)+' · '+kind+' · '+(j?j.toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'')+'</small></span><button class="rm" data-ra="'+esc(s.id)+'">Remove</button></div>';}).join('')+(fresh.length>10?'<p class="note">and '+(fresh.length-10)+' more</p>':'')
+    :'<p class="note">No one new since you last checked.</p>';
+  $('blCount').textContent='('+blocked.length+')';
+  $('blList').innerHTML=blocked.length?blocked.map(b=>'<div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line);font-size:13px"><span>'+esc(b.name||'')+' <small style="color:var(--muted)">'+esc(b.email)+'</small></span><button class="rm" data-ub="'+esc(b.email)+'">Restore access</button></div>').join(''):'<p class="note">None.</p>';
+  const openF=flags.filter(f=>f.status==='open');$('flCount').textContent=openF.length?'('+openF.length+' open)':'';
+  $('flList').innerHTML=flags.length?[...flags].sort((a,b)=>(a.status==='open'?0:1)-(b.status==='open'?0:1)||(ts(b.created)?.getTime()||0)-(ts(a.created)?.getTime()||0)).map(f=>'<div class="box" style="margin-bottom:8px;padding:12px;'+(f.status!=='open'?'opacity:.6':'')+'"><div class="note">'+esc(f.ch||'')+' · '+esc(f.name||f.email||'')+' · '+(ts(f.created)?ts(f.created).toLocaleDateString():'')+(f.status!=='open'?' · '+(f.status==='fixed'?'Fixed':'Not an error'):'')+'</div><div style="font-size:14px;margin:6px 0">'+esc(f.q)+'</div><div style="font-size:13px;color:var(--green)">App answer: '+esc(f.answer||'')+'</div>'+(f.note?'<div style="font-size:13px;color:var(--gold);margin-top:4px">Note: '+esc(f.note)+'</div>':'')+(f.status==='open'?'<div class="bar" style="margin:8px 0 0"><button class="btn ghost" data-fx="'+f.id+'">Fixed</button><button class="btn ghost" data-ne="'+f.id+'">Not an error</button></div>':'<div style="margin-top:6px"><button class="rm" data-fd="'+f.id+'">Delete</button></div>')+'</div>').join('')
+    :'<p class="note">No flagged questions.</p>';
+  const nNew=fresh.length+requests.length;document.querySelector('.tabs button[data-t="admin"]').textContent=nNew?'Admin ('+nNew+')':'Admin';
   const byEmail={};students.forEach(s=>{if(s.email)byEmail[s.email.toLowerCase()]=s;});
   $('acRows').innerHTML=classes.length?[...classes].sort((a,b)=>(a.teacherName||a.teacherEmail).localeCompare(b.teacherName||b.teacherEmail)||a.name.localeCompare(b.name)).map(c=>{const rs=roster.filter(r=>r.classId===c.id);const st=rs.map(r=>byEmail[r.email]).filter(Boolean);const lt=st.filter(s=>s.last!=null);
     return '<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.teacherName||'')+'<br><small>'+esc(c.teacherEmail)+'</small></td><td>'+rs.length+'</td><td>'+st.length+'</td><td>'+(lt.length?Math.round(lt.reduce((n,s)=>n+s.last,0)/lt.length)+'%':'-')+'</td><td><button class="rm" data-open="'+c.id+'">Open</button></td></tr>';}).join('')
@@ -245,12 +266,20 @@ function renderAdmin(){
 $('rqRows').onclick=async e=>{const ap=e.target.closest('[data-ap]'),dc=e.target.closest('[data-dc]');
   if(ap){const rq=requests.find(x=>x.email===ap.dataset.ap);const r=await P107.approveTeacher(rq);if(!r.ok)alert(r.msg);load();}
   if(dc){if(!confirm('Decline the teacher request from '+dc.dataset.dc+'? They keep their free personal account.'))return;const r=await P107.declineTeacher(dc.dataset.dc);if(!r.ok)alert(r.msg);load();}};
+document.getElementById('tAdmin').addEventListener('click',async e=>{
+  const ra=e.target.closest('[data-ra]'),ub=e.target.closest('[data-ub]'),fx=e.target.closest('[data-fx]'),ne=e.target.closest('[data-ne]'),fd=e.target.closest('[data-fd]');
+  if(ra){const s=students.find(x=>x.id===ra.dataset.ra);if(!s||!confirm('Remove '+(s.name||s.email)+'? They will lose access to the Part 107 Study Hub and be taken off any classes. You can restore access later.'))return;const r=await P107.removeAccount(s);if(!r.ok)alert(r.msg);load();}
+  if(ub){const r=await P107.unblock(ub.dataset.ub);if(!r.ok)alert(r.msg);load();}
+  if(fx||ne){const r=await P107.setFlag((fx||ne).dataset[fx?'fx':'ne'],fx?'fixed':'not-error');if(!r.ok)alert(r.msg);load();}
+  if(fd){const r=await P107.deleteFlag(fd.dataset.fd);if(!r.ok)alert(r.msg);load();}
+});
+async function markSeen(){const r=await P107.markSignupsSeen();if(!r.ok)alert(r.msg);renderAdmin();}
 $('tRows').onclick=async e=>{const b=e.target.closest('[data-rt]');if(!b)return;if(!confirm('Remove '+b.dataset.rt+' as a teacher? Their classes and students stay, but they lose access to this dashboard.'))return;const r=await P107.removeTeacher(b.dataset.rt);if(!r.ok)alert(r.msg);load();};
 $('acRows').onclick=e=>{const b=e.target.closest('[data-open]');if(!b)return;extraView=b.dataset.open;cur=extraView;document.querySelector('.tabs button[data-t="classes"]').click();renderChips();renderClass();window.scrollTo(0,0);};
 async function addTeacher(){const e=$('tEmail').value.trim();if(!e){$('tMsg').textContent='Enter an email.';return;}
   const r=await P107.addTeacher({email:e,name:$('tName').value,school:$('tSchool').value});$('tMsg').textContent=r.ok?'Added '+e+'. They can sign in and open the Teacher Dashboard now.':r.msg;
   if(r.ok){$('tEmail').value='';$('tName').value='';$('tSchool').value='';load();}}
 </script>
-<script type="module" src="p107-cloud.js?v=7"></script>
+<script type="module" src="p107-cloud.js?v=8"></script>
 </body>
 </html>
