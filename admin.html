@@ -105,11 +105,12 @@ const fmtDate=t=>t?new Date(t).toLocaleDateString():'';
 const slug=s=>lower(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)+'-'+Math.random().toString(36).slice(2,6);
 
 function gateMsg(html){$('gate').innerHTML=html;show('gate');}
+const teaches=()=>(ACC&&ACC.teaches)||[];
 function onAccess(a){
   ACC=a;
-  if(a.status==='admin'||a.status==='chief'){ show('app'); buildTabs(); go(a.status==='admin'?'depts':'mydept'); }
-  else if(a.status==='signedout'){ gateMsg('<h1>Admin Dashboard</h1><p>Sign in with an admin or fire chief account.</p><button class="btn" id="g-in">Sign in</button>'); $('g-in').onclick=()=>H.openSignIn(); }
-  else gateMsg('<h1>No admin access</h1><p>This dashboard is for the site admin and fire chiefs. If you should have access, ask the site admin to set you up as a chief.</p>');
+  if(a.status==='admin'||a.status==='chief'||teaches().length){ show('app'); buildTabs(); go(a.status==='admin'?'depts':a.status==='chief'?'mydept':'myclasses'); }
+  else if(a.status==='signedout'){ gateMsg('<h1>Admin Dashboard</h1><p>Sign in with an admin, fire chief, or instructor account.</p><button class="btn" id="g-in">Sign in</button>'); $('g-in').onclick=()=>H.openSignIn(); }
+  else gateMsg('<h1>No admin access</h1><p>This dashboard is for the site admin, fire chiefs, and class instructors. If you should have access, ask the site admin.</p>');
 }
 function boot(){
   H=window.fireHub; F=H.F; db=H.db;
@@ -118,15 +119,18 @@ function boot(){
 }
 
 function buildTabs(){
-  const t=ACC.status==='admin'?[['depts','Departments'],['requests','Access Requests'],['flags','Flagged Questions']]:[['mydept','My Department'],['flags','Flag a Problem']];
+  let t;
+  if(ACC.status==='admin')t=[['depts','Departments'],['classes','Classes'],['requests','Access Requests'],['flags','Flagged Questions']];
+  else{t=[];if(ACC.status==='chief')t.push(['mydept','My Department']);if(teaches().length)t.push(['myclasses','My Classes'],['questions','Student Questions']);if(ACC.status==='chief')t.push(['flags','Flag a Problem']);}
   $('tabs').innerHTML=t.map(([k,l])=>`<button class="nav-btn" data-tab="${k}">${l}</button>`).join('');
   $('tabs').querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab));
 }
 function go(t){
-  tab=t; $('tabs').querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t||(t==='dept'&&b.dataset.tab==='depts')));
+  tab=t; $('tabs').querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t||(t==='dept'&&b.dataset.tab==='depts')||(t==='class'&&(b.dataset.tab==='classes'||b.dataset.tab==='myclasses'))));
   window.scrollTo(0,0);
   if(t==='depts')renderDepts(); else if(t==='dept')renderDept(curDept); else if(t==='mydept')renderDept({id:ACC.deptId,name:ACC.deptName});
   else if(t==='requests')renderRequests(); else if(t==='flags')renderFlags();
+  else if(t==='classes'||t==='myclasses')renderClasses(); else if(t==='class')renderClass(curClass); else if(t==='questions')renderQuestions();
 }
 
 // ---------------- Departments (admin) ----------------
@@ -286,6 +290,7 @@ async function renderFlags(){
    <div class="row" style="margin-bottom:12px"><button class="btn sm ${flagFilter==='open'?'':'ghost'}" data-f="open">Open (${open.length})</button><button class="btn sm ${flagFilter==='all'?'':'ghost'}" data-f="all">All (${flags.length})</button><button class="btn sm gold" id="copy">Copy open flags</button><span class="status" id="c-st" style="margin:0"></span></div>
    ${list.length?list.map(f=>`<div class="flag ${f.status!=='open'?'done':''}" data-id="${esc(f.id)}"><div class="meta">${esc(f.app==='hazmat'?'Hazmat':'FF I & II')} &middot; ${esc(f.ch||'')} &middot; ${esc(f.email||'')} &middot; ${fmtDate(ms(f.created))} ${f.status!=='open'?`&middot; <span class="pill ${f.status==='fixed'?'ok':'gray'}">${f.status==='fixed'?'Fixed':'Not an error'}</span>`:''}</div>
      <div class="q">${esc(f.q)}</div>${f.answer?`<div class="a">App's answer: ${esc(f.answer)}</div>`:''}${f.note?`<div class="n">${esc(f.note)}</div>`:''}
+     ${f.classId?`<div class="meta">Sent to instructor (${esc(f.className||'')}): ${f.iStatus==='answered'?'answered':'waiting'}</div>`:''}${f.reply?`<div class="n" style="background:#13261b;color:#bff0cf">Instructor (${esc(f.repliedBy||'')}): ${esc(f.reply)}</div>`:''}
      <div class="row">${f.status==='open'?'<button class="btn sm green" data-s="fixed">Fixed</button><button class="btn sm ghost" data-s="ok">Not an error</button>':'<button class="btn sm ghost" data-s="open">Reopen</button>'}<button class="btn sm ghost" data-del>Delete</button></div></div>`).join(''):'<p class="empty">Nothing here.</p>'}`;
   $('app').querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{flagFilter=b.dataset.f;renderFlags();});
   $('app').querySelectorAll('.flag').forEach(el=>{const id=el.dataset.id;
@@ -293,6 +298,99 @@ async function renderFlags(){
     el.querySelector('[data-del]').onclick=async()=>{if(!confirm('Delete this flag?'))return;await F.deleteDoc(F.doc(db,'flags',id));renderFlags();};});
   $('copy').onclick=async()=>{const txt=open.map((f,i)=>`${i+1}. [${f.app==='hazmat'?'Hazmat':'FF I & II'} ${f.ch||''}] ${f.q}\n   App's answer: ${f.answer||'(none)'}\n   Note: ${f.note||'(none)'}`).join('\n\n')||'No open flags.';
     try{await navigator.clipboard.writeText(txt);$('c-st').textContent='Copied.';$('c-st').className='status ok';}catch(e){prompt('Copy this:',txt);}};
+}
+
+
+// ---------------- Classes ----------------
+let curClass=null, classes=[];
+const csKey=(cid,email)=>H.classDocId?H.classDocId(cid,email):cid+'__'+lower(email);
+async function loadClasses(){
+  classes=[];
+  if(ACC.status==='admin'){const s=await F.getDocs(F.collection(db,'classes'));s.forEach(d=>classes.push({id:d.id,...d.data()}));}
+  else{const s=await F.getDocs(F.query(F.collection(db,'classes'),F.where('instructors','array-contains',lower(H.user().email))));s.forEach(d=>classes.push({id:d.id,...d.data()}));}
+  classes.sort((a,b)=>String(a.name).localeCompare(b.name));
+}
+async function renderClasses(){
+  const admin=ACC.status==='admin';
+  $('app').innerHTML='<p class="empty">Loading classes...</p>';
+  try{await loadClasses();}catch(e){$('app').innerHTML=`<p class="status err">Couldn't load classes: ${esc(e.code||e.message)}. Make sure the latest Firestore rules are published.</p>`;return;}
+  $('app').innerHTML=`<h1>${admin?'Classes':'My Classes'}</h1><p class="lead">${admin?'Create a class and assign its instructors. Students stay on their department roster and can also be in a class.':'Classes you teach. Open one to admit students and see their progress.'}</p>
+   ${admin?'<div class="card"><h2>New class</h2><div class="row"><input id="c-name" placeholder="Class name, e.g. BCFFA FF I & II 2026"><button class="btn" id="c-add">Create</button></div><div class="status" id="c-st"></div></div>':''}
+   <div class="depts">${classes.length?classes.map(c=>`<div class="dept" data-id="${esc(c.id)}"><b>${esc(c.name)}</b><span>Instructor${(c.instructors||[]).length===1?'':'s'}: ${(c.instructors||[]).length?esc(c.instructors.join(', ')):'<span style="color:#e2aa3c">none yet</span>'}</span></div>`).join(''):'<p class="empty">No classes yet.</p>'}</div>`;
+  if(admin)$('c-add').onclick=async()=>{const name=$('c-name').value.trim();if(!name)return;
+    try{const id=slug(name);await F.setDoc(F.doc(db,'classes',id),{name,instructors:[],created:F.serverTimestamp()});curClass={id,name,instructors:[]};go('class');}
+    catch(e){$('c-st').textContent='Could not create: '+(e.code||e.message);$('c-st').className='status err';}};
+  document.querySelectorAll('.dept').forEach(el=>el.onclick=()=>{curClass=classes.find(c=>c.id===el.dataset.id);go('class');});
+}
+async function renderClass(c){
+  if(!c){go(ACC.status==='admin'?'classes':'myclasses');return;}
+  const admin=ACC.status==='admin';
+  try{const fresh=await F.getDoc(F.doc(db,'classes',c.id));if(fresh.exists())c={id:c.id,...fresh.data()};curClass=c;}catch(e){}
+  $('app').innerHTML=`<span class="back" id="back">&larr; ${admin?'All classes':'My classes'}</span><h1>${esc(c.name)}</h1>
+   <p class="lead">Admit students by the email they sign in with. They stay on their department roster too. Students can send you questions from any flashcard or quiz question.</p>
+   ${admin?`<div class="card"><h2>Instructors</h2><div id="inst">${(c.instructors||[]).length?c.instructors.map(e=>`<div class="req"><div class="who">${esc(e)}</div><button class="btn sm ghost" data-rmi="${esc(e)}">Remove</button></div>`).join(''):'<p class="empty">No instructors yet.</p>'}</div>
+     <div class="row" style="margin-top:10px"><input id="in-email" type="email" placeholder="instructor@email.com"><button class="btn" id="in-add">Add instructor</button></div><div class="status" id="in-st"></div></div>`:''}
+   <div class="card"><h2>Admit students</h2><div class="row"><input id="s-email" type="email" placeholder="student@email.com"><button class="btn" id="s-add">Admit</button></div>
+     <p class="sub" style="margin:8px 0 0">Several at once? Separate emails with commas or new lines.</p><textarea id="s-bulk" rows="2" style="width:100%;margin-top:6px" placeholder="one@email.com, two@email.com"></textarea><div class="status" id="s-st"></div></div>
+   <div class="card"><h2>Class roster</h2><div id="croster"><p class="empty">Loading...</p></div></div>`;
+  $('back').onclick=()=>go(admin?'classes':'myclasses');
+  if(admin){
+    $('in-add').onclick=async()=>{const e=lower($('in-email').value);if(!/^\S+@\S+\.\S+$/.test(e))return;
+      try{await F.updateDoc(F.doc(db,'classes',c.id),{instructors:F.arrayUnion(e)});renderClass(c);}catch(err){$('in-st').textContent='Could not add: '+(err.code||err.message);$('in-st').className='status err';}};
+    document.querySelectorAll('[data-rmi]').forEach(b=>b.onclick=async()=>{if(!confirm('Remove this instructor?'))return;await F.updateDoc(F.doc(db,'classes',c.id),{instructors:F.arrayRemove(b.dataset.rmi)});renderClass(c);});
+  }
+  const admit=async emails=>{const st=$('s-st');let ok=0,bad=[];
+    for(const e of emails){if(!/^\S+@\S+\.\S+$/.test(e)){bad.push(e);continue;}
+      try{await F.setDoc(F.doc(db,'classMembers',csKey(c.id,e)),{classId:c.id,className:c.name,email:e,added:F.serverTimestamp(),addedBy:lower(H.user().email)},{merge:true});ok++;}catch(err){bad.push(e+' ('+(err.code||err.message)+')');}}
+    st.textContent=`Admitted ${ok}.`+(bad.length?' Skipped: '+bad.join(', '):'')+(ok?' Tell them to sign in at the Study Hub with that email.':'');st.className='status '+(bad.length?'err':'ok');loadClassRoster(c);};
+  $('s-add').onclick=()=>{const e=lower($('s-email').value);if(e){$('s-email').value='';admit([e]);}};
+  const bulkBtn=document.createElement('button');bulkBtn.className='btn sm gold';bulkBtn.style.marginTop='8px';bulkBtn.textContent='Admit all';bulkBtn.onclick=()=>{const list=$('s-bulk').value.split(/[\s,;]+/).map(lower).filter(Boolean);if(list.length){$('s-bulk').value='';admit([...new Set(list)]);}};
+  $('s-bulk').after(bulkBtn);
+  loadClassRoster(c);
+}
+async function loadClassRoster(c){
+  let rows=[];
+  try{const s=await F.getDocs(F.query(F.collection(db,'classMembers'),F.where('classId','==',c.id)));s.forEach(x=>rows.push({id:x.id,...x.data()}));}
+  catch(e){$('croster').innerHTML=`<p class="status err">${esc(e.code||e.message)}</p>`;return;}
+  if(!rows.length){$('croster').innerHTML='<p class="empty">No students yet. Admit someone above.</p>';return;}
+  rows.sort((a,b)=>String(a.name||a.email).localeCompare(b.name||b.email));
+  $('croster').innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Student</th><th class="hide-sm">Department</th><th>Prereqs</th><th>Last studied</th><th>Quiz avg</th><th></th></tr></thead><tbody>
+   ${rows.map((r,i)=>{const avg=r.qTotal?Math.round(r.qScore/r.qTotal*100):null;const signed=!!r.uid;
+     return `<tr class="m" data-i="${i}"><td><b>${esc(r.name||(signed?'(no profile yet)':'Not signed in yet'))}</b><br><span style="color:#888;font-size:12px">${esc(r.email)}</span></td>
+     <td class="hide-sm">${esc(r.dept||'')}</td><td>${r.prereqs==null?'<span class="pill gray">?</span>':`<span class="pill ${r.prereqs>=PREREQS.length?'ok':r.prereqs?'warn':'no'}">${r.prereqs}/${PREREQS.length}</span>`}</td>
+     <td>${signed?ago(ms(r.last)):'<span class="pill gray">Invited</span>'}</td><td>${avg==null?'<span class="pill gray">None</span>':`<span class="pill ${avg>=70?'ok':'no'}">${avg}%</span>`}</td>
+     <td><button class="btn sm ghost" data-rms="${esc(r.id)}">Remove</button></td></tr>
+     <tr class="detail" id="cdet-${i}" style="display:none"><td colspan="6"></td></tr>`;}).join('')}</tbody></table></div><p class="sub" style="margin-top:8px">Tap a student for quiz scores by chapter.</p>`;
+  $('croster').querySelectorAll('[data-rms]').forEach(b=>b.onclick=async ev=>{ev.stopPropagation();if(!confirm('Remove this student from the class? They stay on their department roster.'))return;await F.deleteDoc(F.doc(db,'classMembers',b.dataset.rms));loadClassRoster(c);});
+  $('croster').querySelectorAll('tr.m').forEach(tr=>tr.onclick=()=>{const i=+tr.dataset.i,row=$('cdet-'+i),r=rows[i];
+    if(row.style.display==='none'){const cs=Object.entries(r.byCh||{}).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true}));
+      row.firstElementChild.innerHTML=`<div class="kv" style="margin-bottom:8px"><span>Quizzes taken:</span> ${r.quizzes||0} &middot; <span>Last studied:</span> ${r.uid?ago(ms(r.last)):'Not signed in yet'}</div>`+
+        (cs.length?cs.map(([k,[ok,t]])=>{const pct=Math.round(ok/t*100);return `<div class="chrow"><span class="l">${esc(k)}</span><span class="bar"><i style="width:${pct}%;background:${pct>=70?'#27ae60':'#c0392b'}"></i></span><span class="v">${pct}% (${t})</span></div>`;}).join(''):'<p class="empty">No quizzes yet.</p>');
+      row.style.display='';}else row.style.display='none';});
+}
+
+// ---------------- Student questions (instructors) ----------------
+let qFilter='open';
+async function renderQuestions(){
+  $('app').innerHTML='<p class="empty">Loading questions...</p>';
+  let list=[];
+  try{await loadClasses();
+    for(const c of classes){const s=await F.getDocs(F.query(F.collection(db,'flags'),F.where('classId','==',c.id)));s.forEach(x=>list.push({id:x.id,...x.data()}));}}
+  catch(e){$('app').innerHTML=`<p class="status err">${esc(e.code||e.message)}</p>`;return;}
+  list.sort((a,b)=>ms(b.created)-ms(a.created));
+  const open=list.filter(f=>f.iStatus!=='answered'), shown=qFilter==='open'?open:list;
+  $('app').innerHTML=`<h1>Student Questions</h1><p class="lead">Questions your students flagged and sent to you. Your answer shows up on their account page. Every flag also goes to the site admin's review list.</p>
+   <div class="row" style="margin-bottom:12px"><button class="btn sm ${qFilter==='open'?'':'ghost'}" data-qf="open">Needs answer (${open.length})</button><button class="btn sm ${qFilter==='all'?'':'ghost'}" data-qf="all">All (${list.length})</button></div>
+   ${shown.length?shown.map(f=>`<div class="flag ${f.iStatus==='answered'?'done':''}" data-id="${esc(f.id)}"><div class="meta">${esc(f.className||'')} &middot; ${esc(f.app==='hazmat'?'Hazmat':'FF I & II')} ${esc(f.ch||'')} &middot; ${esc(f.name||f.email||'')} &middot; ${fmtDate(ms(f.created))}</div>
+     <div class="q">${esc(f.q)}</div>${f.answer?`<div class="a">App's answer: ${esc(f.answer)}</div>`:''}${f.note?`<div class="n">${esc(f.note)}</div>`:''}
+     ${f.reply?`<div class="n" style="background:#13261b;color:#bff0cf">Your answer: ${esc(f.reply)}</div>`:''}
+     <textarea data-reply rows="2" style="width:100%;margin-bottom:8px" placeholder="Answer the student...">${esc(f.reply||'')}</textarea>
+     <div class="row"><button class="btn sm green" data-ans>${f.reply?'Update answer':'Send answer'}</button>${f.iStatus==='answered'?'':'<button class="btn sm ghost" data-done>Mark answered without reply</button>'}</div></div>`).join(''):'<p class="empty">Nothing here.</p>'}`;
+  $('app').querySelectorAll('[data-qf]').forEach(b=>b.onclick=()=>{qFilter=b.dataset.qf;renderQuestions();});
+  $('app').querySelectorAll('.flag').forEach(el=>{const id=el.dataset.id;
+    el.querySelector('[data-ans]').onclick=async()=>{const reply=el.querySelector('[data-reply]').value.trim();if(!reply)return;
+      try{await F.updateDoc(F.doc(db,'flags',id),{reply:reply.slice(0,2000),iStatus:'answered',repliedBy:lower(H.user().email),repliedAt:F.serverTimestamp()});renderQuestions();}catch(e){alert('Could not save: '+(e.code||e.message));}};
+    const d=el.querySelector('[data-done]');if(d)d.onclick=async()=>{try{await F.updateDoc(F.doc(db,'flags',id),{iStatus:'answered',repliedBy:lower(H.user().email),repliedAt:F.serverTimestamp()});renderQuestions();}catch(e){alert(e.code||e.message);}};});
 }
 
 if(window.fireHub)boot(); else window.addEventListener('firehub-ready',boot,{once:true});

@@ -16,6 +16,13 @@ service cloud.firestore {
         && get(roleDoc(request.auth.uid)).data.deptId == deptId;
     }
     function inviteDoc() { return /databases/$(database)/documents/invites/$(myEmail()); }
+    function classDoc(classId) { return /databases/$(database)/documents/classes/$(classId); }
+    function isInstructorOf(classId) {
+      return verified() && exists(classDoc(classId)) && myEmail() in get(classDoc(classId)).data.instructors;
+    }
+    function enrolledIn(classId) {
+      return verified() && exists(/databases/$(database)/documents/classMembers/$(classId + '__' + myEmail()));
+    }
 
     // ---------- Each person's own data ----------
     // Profile, study progress, quiz activity, certificates (and file chunks).
@@ -57,10 +64,36 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Questions members think might be wrong.
+    // ---------- Classes ----------
+    // classes/{classId} = a class (e.g. FF I & II 2026) with a list of instructor emails.
+    match /classes/{classId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    // classMembers/{classId}__{email} = a student admitted to a class, plus a small study summary.
+    match /classMembers/{id} {
+      allow read: if isAdmin() || isInstructorOf(resource.data.classId) || (verified() && resource.data.email == myEmail());
+      allow create: if (isAdmin() || isInstructorOf(request.resource.data.classId))
+        && id == request.resource.data.classId + '__' + request.resource.data.email;
+      allow update: if isAdmin() || isInstructorOf(resource.data.classId)
+        || (verified() && resource.data.email == myEmail()
+            && request.resource.data.classId == resource.data.classId
+            && request.resource.data.email == resource.data.email
+            && request.resource.data.className == resource.data.className);
+      allow delete: if isAdmin() || isInstructorOf(resource.data.classId);
+    }
+
+    // ---------- Flagged questions ----------
+    // Always visible to the admin. If a class is attached, that class's instructors can read and answer it.
     match /flags/{id} {
-      allow create: if signedIn() && request.resource.data.uid == request.auth.uid && request.resource.data.status == 'open';
-      allow read, update, delete: if isAdmin();
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid && request.resource.data.status == 'open'
+        && (!('classId' in request.resource.data) || enrolledIn(request.resource.data.classId));
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid)
+        || ('classId' in resource.data && isInstructorOf(resource.data.classId));
+      allow update: if isAdmin()
+        || ('classId' in resource.data && isInstructorOf(resource.data.classId)
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['iStatus', 'reply', 'repliedBy', 'repliedAt']));
+      allow delete: if isAdmin();
     }
   }
 }

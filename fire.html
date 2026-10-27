@@ -190,7 +190,7 @@ a.guide:hover .go span{transform:translateX(3px)}
     cb.addEventListener('change',()=>{
       done[el.dataset.id]=cb.checked; el.classList.toggle('done',cb.checked);
       try{localStorage.setItem(KEY,JSON.stringify(done));}catch(e){}
-      update(); if(window.cloudChanged)window.cloudChanged();
+      update(); if(window.cloudChanged)window.cloudChanged(); if(window.fireHub&&window.fireHub.classSummary)window.fireHub.classSummary({prereqs:items.filter(el=>done[el.dataset.id]).length});
     });
   });
   update();

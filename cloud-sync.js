@@ -14,6 +14,8 @@ const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
 const configured = firebaseConfig && firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith('PASTE');
 const gated = document.documentElement.hasAttribute('data-gate');
 const admins = (ADMIN_EMAILS || []).map(e => e.toLowerCase());
+const ALLOWED = ['admin', 'chief', 'member', 'student', 'instructor'];
+const classDocId = (classId, email) => classId + '__' + String(email || '').toLowerCase();
 
 const css = `
 .acct-btn{background:#2a2a2a;border:1px solid #444;color:#e2aa3c;padding:7px 12px;border-radius:999px;font:600 12px 'Segoe UI',Arial,sans-serif;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
@@ -115,12 +117,19 @@ async function start() {
     'permission-denied': 'You don\'t have permission to do that.'
   }[e.code] || ('Something went wrong: ' + (e.code || e.message)));
 
-  const roleLabel = () => ({ admin: 'Site admin', chief: 'Fire chief' + (access.deptName ? ', ' + access.deptName : ''), member: access.deptName || 'Member' }[access.status] || '');
+  const roleLabel = () => {
+    const base = ({ admin: 'Site admin', chief: 'Fire chief' + (access.deptName ? ', ' + access.deptName : ''), member: access.deptName || 'Member', student: 'Student', instructor: 'Instructor' }[access.status] || '');
+    const parts = [base];
+    if ((access.teaches || []).length) parts.push('Instructor: ' + access.teaches.map(c => c.name).join(', '));
+    if ((access.classes || []).length) parts.push('Class: ' + access.classes.map(c => c.name).join(', '));
+    return parts.filter(Boolean).join(' · ');
+  };
+  const isStaff = () => access.status === 'admin' || access.status === 'chief' || (access.teaches || []).length > 0;
 
   function render(mode, extra) {
     if (mode === 'account') {
-      const staff = access.status === 'admin' || access.status === 'chief';
-      const inRoster = ['admin', 'chief', 'member'].includes(access.status);
+      const staff = isStaff();
+      const inRoster = ALLOWED.includes(access.status);
       view.innerHTML = `<h3>Your account</h3><p class="s">Signed in as <b style="color:#fff">${esc(user.email || 'user')}</b>${roleLabel() ? '<br>' + esc(roleLabel()) : ''}</p>
         <div class="acct-msg ok">${sync && ready ? 'Progress is synced.' : ''}</div>
         ${inRoster ? '<a class="acct-main" href="account.html">My Account &amp; Certificates</a>' : ''}
@@ -135,7 +144,9 @@ async function start() {
       const it = extra;
       view.innerHTML = `<h3>Flag this question</h3><p class="s">Think the question or answer is wrong? Say what looks off and it goes to the review list.</p>
         <div class="acct-q">${esc(it.q)}${it.answer ? `<br><br>App's answer: <b>${esc(it.answer)}</b>` : ''}</div>
-        <textarea class="f-note" placeholder="What looks wrong? (optional) e.g. the book says the answer is..."></textarea>
+        <textarea class="f-note" placeholder="What looks wrong, or what's your question? (optional)"></textarea>
+        ${(access.classes || []).length ? `<label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;color:#ddd;margin:0 0 12px;line-height:1.4"><input type="checkbox" class="f-ask" checked style="width:18px;height:18px;margin:0;accent-color:#c0392b;flex-shrink:0">
+          <span>Also ask my instructor${access.classes.length > 1 ? `: <select class="f-class" style="background:#111;color:#f0f0f0;border:1px solid #444;border-radius:6px;padding:3px 6px">${access.classes.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('')}</select>` : ` (${esc(access.classes[0].name)})`}. Their answer shows up under My Questions on your account page.</span></label>` : ''}
         <div class="acct-msg"></div><button class="acct-main" data-a="flag">Send flag</button>`;
       view._flag = it;
     } else {
@@ -174,10 +185,17 @@ async function start() {
       else if (a === 'out') { await flush(); await A.signOut(auth); close(); }
       else if (a === 'flag') {
         const it = scope._flag, note = scope.querySelector('.f-note').value.trim();
-        await F.addDoc(F.collection(db, 'flags'), {
+        const doc = {
           app: it.app || '', ch: it.ch || '', q: String(it.q || '').slice(0, 1500), answer: String(it.answer || '').slice(0, 500),
-          note: note.slice(0, 1500), uid: user.uid, email: user.email || null, status: 'open', created: F.serverTimestamp()
-        });
+          note: note.slice(0, 1500), uid: user.uid, email: lower(user.email) || null, name: access.name || '', status: 'open', created: F.serverTimestamp()
+        };
+        const ask = scope.querySelector('.f-ask');
+        if (ask && ask.checked) {
+          const sel = scope.querySelector('.f-class'); const cid = sel ? sel.value : access.classes[0].id;
+          const c = access.classes.find(x => x.id === cid);
+          Object.assign(doc, { classId: cid, className: c ? c.name : '', iStatus: 'open' });
+        }
+        await F.addDoc(F.collection(db, 'flags'), doc);
         say('Thanks! It\'s on the review list.', true); setTimeout(close, 1100);
       }
       if (a === 'signin' || a === 'signup' || a === 'google') {
@@ -195,23 +213,37 @@ async function start() {
     const email = lower(u.email);
     const passwordOnly = u.providerData.length > 0 && u.providerData.every(p => p.providerId === 'password');
     if (!u.emailVerified && passwordOnly) return { status: 'unverified' };
-    if (admins.includes(email)) return { status: 'admin' };
+    // Classes: ones this person teaches, and ones they're enrolled in.
+    const teaches = [], classes = [];
+    try { (await F.getDocs(F.query(F.collection(db, 'classes'), F.where('instructors', 'array-contains', email)))).forEach(d => teaches.push({ id: d.id, name: d.data().name })); } catch (e) { console.warn('classes taught', e); }
+    try {
+      (await F.getDocs(F.query(F.collection(db, 'classMembers'), F.where('email', '==', email)))).forEach(d => {
+        const c = d.data(); classes.push({ id: c.classId, name: c.className || '', docId: d.id });
+        if (c.uid !== u.uid) F.updateDoc(F.doc(db, 'classMembers', d.id), { uid: u.uid }).catch(() => {});
+      });
+    } catch (e) { console.warn('classes enrolled', e); }
+    let name = '';
+    try { const p = await F.getDoc(F.doc(db, 'users', u.uid, 'profile', 'main')); if (p.exists()) name = p.data().fullName || ''; } catch (e) {}
+    const extra = { teaches, classes, name };
+    if (admins.includes(email)) return { status: 'admin', ...extra };
     const roleSnap = await F.getDoc(F.doc(db, 'roles', u.uid));
-    if (roleSnap.exists()) { const r = roleSnap.data(); return { status: r.role === 'chief' ? 'chief' : 'member', deptId: r.deptId, deptName: r.deptName }; }
+    if (roleSnap.exists()) { const r = roleSnap.data(); return { status: r.role === 'chief' ? 'chief' : 'member', deptId: r.deptId, deptName: r.deptName, ...extra }; }
     // Not on a roster yet: claim an invite if one exists for this email.
     let inv = null;
     try { inv = await F.getDoc(F.doc(db, 'invites', email)); } catch (e) { inv = null; }
     if (inv && inv.exists()) {
       const d = inv.data();
       await F.setDoc(F.doc(db, 'roles', u.uid), { role: d.role, deptId: d.deptId, deptName: d.deptName || '', email, joined: F.serverTimestamp() });
-      return { status: d.role === 'chief' ? 'chief' : 'member', deptId: d.deptId, deptName: d.deptName };
+      return { status: d.role === 'chief' ? 'chief' : 'member', deptId: d.deptId, deptName: d.deptName, ...extra };
     }
-    return { status: 'none' };
+    if (classes.length) return { status: 'student', ...extra };
+    if (teaches.length) return { status: 'instructor', ...extra };
+    return { status: 'none', ...extra };
   }
 
   function renderGate() {
     if (!gated) return;
-    if (['admin', 'chief', 'member'].includes(access.status)) { allow(); if (gateEl) { gateEl.remove(); gateEl = null; } return; }
+    if (ALLOWED.includes(access.status)) { allow(); if (gateEl) { gateEl.remove(); gateEl = null; } return; }
     document.documentElement.classList.remove('gate-ok');
     if (!gateEl) { gateEl = document.createElement('div'); gateEl.className = 'acct-gate'; document.body.appendChild(gateEl); }
     const home = '<a class="home" href="fire.html">&larr; Back to the Study Hub</a>';
@@ -225,7 +257,7 @@ async function start() {
     } else if (access.status === 'error') {
       gateEl.innerHTML = `<div class="g"><h2>Couldn't check your access</h2><p>${esc(access.msg || 'Try again in a minute.')}</p><div class="acct-msg"></div><button class="acct-main" data-g="retry">Try again</button><button class="acct-alt dark" data-g="out">Sign out</button>${home}</div>`;
     } else {
-      gateEl.innerHTML = `<div class="g"><h2>You're not on a roster yet</h2><p>Signed in as <span class="em">${esc(user.email)}</span>. Ask your fire chief to add this exact email to your department, then tap <b>Check again</b>. Or send a request to the site admin:</p>
+      gateEl.innerHTML = `<div class="g"><h2>You're not on a roster yet</h2><p>Signed in as <span class="em">${esc(user.email)}</span>. Ask your fire chief or class instructor to add this exact email, then tap <b>Check again</b>. Or send a request to the site admin:</p>
         <input class="f-rname" placeholder="Your name"><input class="f-rdept" placeholder="Your fire department">
         <div class="acct-msg"></div><button class="acct-main" data-g="request">Request access</button>
         <button class="acct-alt dark" data-g="retry">Check again</button><button class="acct-alt dark" data-g="out">Sign out</button>${home}</div>`;
@@ -245,7 +277,7 @@ async function start() {
         await refreshAccess(auth.currentUser);
         if (access.status === 'unverified') say('Not verified yet. Open the link in the email first.');
         else if (access.status === 'none' && g === 'retry') say('Still not on a roster.');
-        else if (['member', 'chief', 'admin'].includes(access.status) && sync) await pull();
+        else if (ALLOWED.includes(access.status) && sync) await pull();
       }
       else if (g === 'request') {
         const name = gateEl.querySelector('.f-rname').value.trim(), dept = gateEl.querySelector('.f-rdept').value.trim();
@@ -262,10 +294,10 @@ async function start() {
     catch (e) { console.error(e); access = { status: 'error', msg: friendly(e) }; }
     window.fireHub.access = access;
     btn.classList.toggle('in', !!u);
-    btn.querySelector('.acct-lbl').textContent = u ? (access.status === 'admin' || access.status === 'chief' ? 'Admin' : (sync ? 'Saved' : 'Account')) : 'Sign in';
+    btn.querySelector('.acct-lbl').textContent = u ? (isStaff() ? 'Admin' : (sync ? 'Saved' : 'Account')) : 'Sign in';
     renderGate();
     window.dispatchEvent(new CustomEvent('firehub-access', { detail: access }));
-    if (window._fireWelcome && ['member', 'chief', 'admin'].includes(access.status)) { window._fireWelcome = false; setTimeout(() => location.href = 'account.html?welcome=1', 400); }
+    if (window._fireWelcome && ALLOWED.includes(access.status)) { window._fireWelcome = false; setTimeout(() => location.href = 'account.html?welcome=1', 400); }
   }
 
   // ---------- Progress sync ----------
@@ -286,6 +318,7 @@ async function start() {
     if (!user || !sync) return;
     try { await F.setDoc(docRef(), { data: JSON.parse(JSON.stringify(data ?? sync.get())), updated: F.serverTimestamp(), email: user.email || null }); }
     catch (e) { console.warn('Cloud save failed', e); }
+    if (ready && Date.now() - lastSummary > 600000) { lastSummary = Date.now(); classSummary({}); }
   }
   async function flush() { if (timer) { clearTimeout(timer); timer = null; await push(); } }
   window.cloudChanged = () => {
@@ -294,12 +327,33 @@ async function start() {
   };
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flush(); });
 
+  // Keep a small study summary on each class enrollment so instructors can see progress.
+  async function classSummary(partial, quiz) {
+    if (!user || !(access.classes || []).length) return;
+    for (const c of access.classes) {
+      try {
+        const ref = F.doc(db, 'classMembers', c.docId || classDocId(c.id, user.email));
+        const cur = (await F.getDoc(ref)).data() || {};
+        const upd = { ...partial, uid: user.uid, last: Date.now() };
+        if (access.name && !partial.name) upd.name = access.name;
+        if (access.deptName) upd.dept = access.deptName;
+        if (quiz) {
+          const by = { ...(cur.byCh || {}) };
+          Object.entries(quiz.byCh || {}).forEach(([k, [ok, tot]]) => { const key = (quiz.app === 'hazmat' ? 'Hazmat: ' : '') + k; const p = by[key] || [0, 0]; by[key] = [p[0] + ok, p[1] + tot]; });
+          upd.byCh = by; upd.qScore = (cur.qScore || 0) + (quiz.score || 0); upd.qTotal = (cur.qTotal || 0) + (quiz.total || 0); upd.quizzes = (cur.quizzes || 0) + 1;
+        }
+        await F.updateDoc(ref, upd);
+      } catch (e) { console.warn('Class summary failed', e); }
+    }
+  }
+  let lastSummary = 0;
   window.cloudLog = async (entry) => {
-    if (!user || !['member', 'chief', 'admin'].includes(access.status)) return;
+    if (!user || !ALLOWED.includes(access.status)) return;
     try {
       await F.setDoc(F.doc(db, 'users', user.uid, 'progress', 'activity'),
         { last: Date.now(), quizzes: F.arrayUnion({ ...JSON.parse(JSON.stringify(entry)), date: Date.now() }) }, { merge: true });
     } catch (e) { console.warn('Quiz log failed', e); }
+    classSummary({}, entry); lastSummary = Date.now();
   };
   window.fireFlag = (item) => {
     if (!user) { render('signin'); ov.classList.add('open'); return; }
@@ -307,12 +361,12 @@ async function start() {
   };
 
   // Shared handle for account.html and admin.html.
-  window.fireHub = { A, F, auth, db, admins, access, user: () => user, openSignIn: (mode) => { render(mode || 'signin'); ov.classList.add('open'); } };
+  window.fireHub = { A, F, auth, db, admins, access, classDocId, classSummary: (p) => classSummary(p || {}), user: () => user, openSignIn: (mode) => { render(mode || 'signin'); ov.classList.add('open'); } };
 
   A.onAuthStateChanged(auth, async u => {
     user = u;
     await refreshAccess(u);
-    if (u && sync && ['member', 'chief', 'admin'].includes(access.status)) await pull();
+    if (u && sync && ALLOWED.includes(access.status)) await pull();
     window.dispatchEvent(new CustomEvent('firehub-user', { detail: u }));
   });
   window.dispatchEvent(new CustomEvent('firehub-ready'));

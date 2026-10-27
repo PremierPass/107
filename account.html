@@ -59,6 +59,12 @@ input[readonly]{color:#888}
 .add-row{display:flex;gap:8px;margin-top:6px}
 .add-row input{flex:1}
 .note{font-size:11px;color:#777;line-height:1.55;margin-top:10px}
+.qa{border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:11px 13px;margin-bottom:10px;background:#191919}
+.qa.answered{border-left-color:var(--green)}
+.qa .m{font-size:11px;color:#888;margin-bottom:5px}
+.qa .q{font-size:14px;line-height:1.45;margin-bottom:6px}
+.qa .n{font-size:12px;color:#ccc;margin-bottom:6px}
+.qa .r{font-size:13px;line-height:1.5;background:#13261b;color:#bff0cf;border-radius:6px;padding:8px 10px}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -117,6 +123,18 @@ input[readonly]{color:#888}
       <div class="add-row"><input id="other-title" placeholder="Certificate name, e.g. EMT-Basic"><button class="btn gold" id="other-add">Add</button></div>
     </section>
 
+    <section class="card" id="classes-card" style="display:none">
+      <h2>My Classes</h2>
+      <p class="sub">Classes you've been admitted to. Your instructor can see your study progress and answer questions you send.</p>
+      <div id="class-list"></div>
+    </section>
+
+    <section class="card">
+      <h2>My Questions</h2>
+      <p class="sub">Questions you flagged from the flashcards or quizzes. Answers from your instructor show up here.</p>
+      <div id="q-list"><p class="note" style="margin:0">Loading...</p></div>
+    </section>
+
     <p class="note">Certificates are stored in your account and visible to your fire chief and the site admin. Keep your originals too. Uploaded photos are resized to keep them under the size limit.</p>
   </div>
 </main>
@@ -166,7 +184,7 @@ async function load(u){
     $('hello').textContent=prof.fullName?('Hi, '+prof.fullName.split(' ')[0]):'My Account';
     done=pr.exists()?(pr.data().data||{}):{};
     certs={}; cs.forEach(x=>certs[x.id]=x.data());
-    render();
+    render(); loadClassesAndQuestions();
   }catch(e){console.error(e);$('p-status').textContent='Could not load your account: '+(e.code||e.message);$('p-status').className='status err';}
 }
 
@@ -178,7 +196,8 @@ $('p-save').onclick=async()=>{
   if(!prof.fullName||!prof.department){st.textContent='Name and department are required.';st.className='status err';return;}
   $('p-save').disabled=true; st.textContent='Saving...'; st.className='status';
   try{await H.F.setDoc(d('profile','main'),prof,{merge:true}); st.textContent='Profile saved.'; st.className='status ok';
-    $('hello').textContent='Hi, '+prof.fullName.split(' ')[0]; $('welcome').style.display='none';}
+    $('hello').textContent='Hi, '+prof.fullName.split(' ')[0]; $('welcome').style.display='none';
+    if(H.access)H.access.name=prof.fullName; if(H.classSummary)H.classSummary({name:prof.fullName});}
   catch(e){st.textContent='Save failed: '+(e.code||e.message);st.className='status err';}
   $('p-save').disabled=false;
 };
@@ -187,6 +206,21 @@ $('p-save').onclick=async()=>{
 async function saveDone(){
   await H.F.setDoc(d('progress','prereqs'),{data:done,updated:H.F.serverTimestamp(),email:U.email||null});
   try{localStorage.setItem('fire_prereqs',JSON.stringify(done));}catch(e){}
+  if(H.classSummary)H.classSummary({prereqs:PREREQS.filter(p=>done[p.id]).length});
+}
+async function loadClassesAndQuestions(){
+  const acc=H.access||{}; const cls=acc.classes||[];
+  if(cls.length&&H.classSummary)H.classSummary({prereqs:PREREQS.filter(p=>done[p.id]).length});
+  if(cls.length){$('classes-card').style.display='block';$('class-list').innerHTML=cls.map(c=>`<div class="pq" style="border-left-color:var(--gold)"><div class="pq-title">${esc(c.name)}</div></div>`).join('');}
+  try{
+    const s=await H.F.getDocs(H.F.query(H.F.collection(H.db,'flags'),H.F.where('uid','==',U.uid)));
+    const list=[];s.forEach(x=>list.push(x.data()));
+    const t=v=>v&&typeof v.toMillis==='function'?v.toMillis():0;
+    list.sort((a,b)=>t(b.created)-t(a.created));
+    $('q-list').innerHTML=list.length?list.map(f=>`<div class="qa ${f.reply?'answered':''}"><div class="m">${esc(f.app==='hazmat'?'Hazmat':'FF I & II')} ${esc(f.ch||'')}${f.className?' &middot; Sent to '+esc(f.className)+' instructor':''} &middot; ${t(f.created)?new Date(t(f.created)).toLocaleDateString():''}</div>
+      <div class="q">${esc(f.q)}</div>${f.note?`<div class="n">You wrote: ${esc(f.note)}</div>`:''}
+      ${f.reply?`<div class="r"><b>Instructor:</b> ${esc(f.reply)}</div>`:(f.classId?'<div class="n" style="color:#e2aa3c">Waiting for your instructor.</div>':'<div class="n">Sent to the site admin for review.</div>')}</div>`).join(''):'<p class="note" style="margin:0">No questions yet. Tap <b>Flag</b> on any flashcard or quiz question to ask.</p>';
+  }catch(e){$('q-list').innerHTML='<p class="note" style="margin:0">Could not load your questions.</p>';}
 }
 function fmtSize(n){return n>1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';}
 function certBlock(id){
