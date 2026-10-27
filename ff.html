@@ -204,6 +204,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   <button class="nav-btn active" onclick="showPage('flashcards',event)">Flashcards</button>
   <button class="nav-btn" onclick="showPage('quiz',event)">Quiz Mode</button>
   <button class="nav-btn" onclick="showPage('terms',event)">Key Terms</button>
+  <button class="nav-btn" onclick="showPage('ref',event)">Reference</button>
   <button class="nav-btn" onclick="showPage('review',event)">Review List</button>
 </div>
 
@@ -307,6 +308,12 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   <div id="term-list"></div>
 </div>
 
+<!-- REFERENCE -->
+<div id="page-ref" class="page">
+  <div class="filter-bar" id="ref-filters"></div>
+  <div id="ref-body"></div>
+</div>
+
 <!-- REVIEW -->
 <div id="page-review" class="page">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
@@ -327,16 +334,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 const FF_CHAPTERS=[];
 function FF_ADD(ch){FF_CHAPTERS.push(ch);}
 </script>
-<script src="ff-data/ch01.js"></script>
-<script src="ff-data/ch02.js"></script>
-<script src="ff-data/ch03.js"></script>
-<script src="ff-data/ch04.js"></script>
-<script src="ff-data/ch05.js"></script>
-<script src="ff-data/ch06.js"></script>
-<script src="ff-data/ch07.js"></script>
-<script src="ff-data/ch08.js"></script>
-<script src="ff-data/ch09.js"></script>
-<script src="ff-data/ch10.js"></script>
+<script src="ff-data/ch01.js?v=11"></script>
+<script src="ff-data/ch02.js?v=11"></script>
+<script src="ff-data/ch03.js?v=11"></script>
+<script src="ff-data/ch04.js?v=11"></script>
+<script src="ff-data/ch05.js?v=11"></script>
+<script src="ff-data/ch06.js?v=11"></script>
+<script src="ff-data/ch07.js?v=11"></script>
+<script src="ff-data/ch08.js?v=11"></script>
+<script src="ff-data/ch09.js?v=11"></script>
+<script src="ff-data/ch10.js?v=11"></script>
+<script src="ff-data/ch11.js?v=11"></script>
 <script>
 FF_CHAPTERS.sort((a,b)=>a.n-b.n);
 const chLabel=n=>'Ch'+n;
@@ -548,6 +556,18 @@ function renderTerms(){
   document.getElementById('term-list').innerHTML=html||'<div class="empty-state">No terms match.</div>';
 }
 
+// REFERENCE (chapters that include a reference section)
+let refActive=null;
+function renderRef(){
+  const chs=FF_CHAPTERS.filter(c=>c.reference);
+  const bar=document.getElementById('ref-filters'), body=document.getElementById('ref-body');
+  if(!chs.length){bar.innerHTML='';body.innerHTML='<div class="empty-state">Reference sections are added as chapters are finished.</div>';return;}
+  if(!refActive||!chs.find(c=>chLabel(c.n)===refActive))refActive=chLabel(chs[chs.length-1].n);
+  bar.innerHTML='';chs.forEach(c=>{const b=document.createElement('button');b.className='filter-btn'+(chLabel(c.n)===refActive?' active':'');b.textContent='Ch '+c.n+': '+c.title;b.onclick=()=>{refActive=chLabel(c.n);renderRef();};bar.appendChild(b);});
+  const c=chs.find(x=>chLabel(x.n)===refActive);
+  body.innerHTML='<h2 style="font-size:18px;margin:6px 0 14px">Chapter '+c.n+': '+esc(c.title)+'</h2>'+c.reference;
+}
+
 // REVIEW
 function updateReviewPage(){
   const missed=FC_ALL.filter(c=>fcUnknown.has(idOf(c)));
@@ -565,6 +585,7 @@ function showPage(id,e){
   document.getElementById('page-'+id).classList.add('active');
   const btn=(e&&e.target)?e.target:document.querySelector('.nav-btn[onclick*="'+id+'"]'); if(btn)btn.classList.add('active');
   if(id==='review')updateReviewPage();
+  if(id==='ref')renderRef();
   window.scrollTo(0,0);
 }
 
