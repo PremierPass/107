@@ -102,5 +102,10 @@ service cloud.firestore {
       allow read, write: if signedIn() && request.auth.uid == uid;
       allow read: if isAdmin();
     }
+    // p107Roster/{email} = students the teacher added to the class. A student can see only their own entry.
+    match /p107Roster/{email} {
+      allow read: if isAdmin() || (verified() && myEmail() == email);
+      allow write: if isAdmin();
+    }
   }
 }

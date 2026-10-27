@@ -15,7 +15,7 @@ const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
 const admins = (ADMIN_EMAILS || []).map(e => e.toLowerCase());
 const api = { user: null, profile: null, isTeacher: false };
 window.P107 = api;
-const emit = () => window.dispatchEvent(new CustomEvent('p107-auth', { detail: { user: api.user, profile: api.profile, isTeacher: api.isTeacher } }));
+const emit = () => window.dispatchEvent(new CustomEvent('p107-auth', { detail: { user: api.user, profile: api.profile, isTeacher: api.isTeacher, roster: api.roster } }));
 const nice = e => {
   const c = (e && e.code) || '';
   return ({
@@ -45,6 +45,7 @@ async function start() {
   const auth = A.getAuth(app), db = F.getFirestore(app);
   const progRef = uid => F.doc(db, 'users', uid, 'p107', 'progress');
   const stuRef = uid => F.doc(db, 'p107Students', uid);
+  const rosRef = email => F.doc(db, 'p107Roster', String(email).trim().toLowerCase());
 
   const wrap = fn => async (...a) => { try { await fn(...a); return { ok: true }; } catch (e) { console.warn(e); return { ok: false, msg: nice(e) }; } };
   api.signIn = wrap((email, pass) => A.signInWithEmailAndPassword(auth, email, pass));
@@ -55,7 +56,8 @@ async function start() {
 
   api.saveProfile = wrap(async ({ name, period }) => {
     const u = auth.currentUser; if (!u) throw { code: 'no-user' };
-    const data = { name: String(name).trim().slice(0, 80), period: String(period).trim().slice(0, 60), email: (u.email || '').toLowerCase(), updated: F.serverTimestamp() };
+    const data = { name: String(name).trim().slice(0, 80), period: String(period || '').trim().slice(0, 60), email: (u.email || '').toLowerCase(), updated: F.serverTimestamp() };
+    if (api.roster) { data.student = true; data.period = api.roster.period || data.period; }
     if (!api.profile) data.created = F.serverTimestamp();
     await F.setDoc(stuRef(u.uid), data, { merge: true });
     api.profile = { ...(api.profile || {}), ...data };
@@ -111,12 +113,40 @@ async function start() {
     const s = await F.getDocs(F.collection(db, 'p107Students'));
     const out = []; s.forEach(d => out.push({ uid: d.id, ...d.data() })); return out;
   };
+  // Class roster: p107Roster/{email} = {email, name, period}. Students on it are linked to the class when they sign in.
+  api.listRoster = async () => {
+    const s = await F.getDocs(F.collection(db, 'p107Roster'));
+    const out = []; s.forEach(d => out.push({ email: d.id, ...d.data() })); return out;
+  };
+  api.addStudent = wrap(async ({ email, name, period }) => {
+    const e = String(email || '').trim().toLowerCase();
+    if (!/^\S+@\S+\.\S+$/.test(e)) throw { code: 'auth/invalid-email' };
+    await F.setDoc(rosRef(e), { email: e, name: String(name || '').trim().slice(0, 80), period: String(period || '').trim().slice(0, 60), added: F.serverTimestamp() }, { merge: true });
+  });
+  api.removeStudent = wrap(async email => { await F.deleteDoc(rosRef(email)); });
 
   A.onAuthStateChanged(auth, async user => {
     api.user = user || null; api.profile = null;
     api.isTeacher = !!(user && user.email && admins.includes(user.email.toLowerCase()));
+    api.roster = null;
     if (user) {
       try { const s = await F.getDoc(stuRef(user.uid)); if (s.exists() && s.data().name) api.profile = s.data(); } catch (e) { console.warn(e); }
+      // Is this person on the teacher's class roster? (Only readable once their email is verified.)
+      if (user.email && user.emailVerified) {
+        try { const r = await F.getDoc(rosRef(user.email)); if (r.exists()) api.roster = r.data(); } catch (e) { /* not on the roster */ }
+      }
+      if (api.roster) {
+        const name = (api.profile && api.profile.name) || api.roster.name || '';
+        const want = { student: true, period: api.roster.period || '', email: user.email.toLowerCase() };
+        if (name) want.name = name;
+        const p = api.profile || {};
+        if (!p.student || p.period !== want.period || (!p.name && name)) {
+          if (!api.profile) want.created = F.serverTimestamp();
+          try { await F.setDoc(stuRef(user.uid), want, { merge: true }); api.profile = name ? { ...p, ...want } : api.profile; } catch (e) { console.warn(e); }
+        }
+      } else if (api.profile && api.profile.student) {
+        try { await F.setDoc(stuRef(user.uid), { student: false }, { merge: true }); api.profile.student = false; } catch (e) {}
+      }
     }
     emit();
   });
