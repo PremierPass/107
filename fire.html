@@ -38,15 +38,17 @@ a.guide:hover,a.guide:focus-visible{transform:translateY(-3px);border-color:var(
 a.guide:hover .go span{transform:translateX(3px)}
 .note{margin-top:22px;text-align:center;font-size:12px;color:#666;line-height:1.6}
 .prereq{margin-top:34px}
+.about{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:14px 16px;margin:0 0 22px;font-size:14px;line-height:1.6;color:#ddd}
+.about p+p{margin-top:8px}
+.about a{color:var(--gold);font-weight:700;word-break:break-word}
+.legal{margin-top:26px;border-top:1px solid var(--line);padding-top:14px;font-size:11px;color:#777;line-height:1.6}
+.legal p+p{margin-top:6px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:10px}
 .sec-head h2{font-size:20px;font-weight:800;color:var(--red2);text-transform:uppercase;letter-spacing:.08em}
 .count{font-size:12px;color:var(--gold);font-weight:700;white-space:nowrap}
 .sec-sub{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:6px}
 .pq-group{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#888;margin:20px 0 8px}
 .pq{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:14px;margin-bottom:8px;transition:opacity .2s,border-color .2s}
-.pq.done{border-left-color:#27ae60;opacity:.72}
-.pq.done h3{text-decoration:line-through;text-decoration-color:#27ae60}
-.pq-check input{width:20px;height:20px;accent-color:#27ae60;cursor:pointer;margin-top:2px}
 .pq-body{flex:1;min-width:0}
 .pq h3{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.35}
 .pq p{font-size:13px;color:var(--muted);line-height:1.55}
@@ -65,6 +67,11 @@ a.guide:hover .go span{transform:translateX(3px)}
   <p>SFFMA Firefighter and Hazmat certification prep.<br>Study guides are for members added by their fire chief. Sign in to get started.</p>
 </header>
 <main>
+<section class="about">
+  <p>This study hub was made specifically for members of the <b>Bowie County Firefighters Association</b> who are currently enrolled in the IFSTA Firefighter I &amp; II class and the Hazmat Awareness &amp; Operations class. All material follows SFFMA training guidelines.</p>
+  <p>Not enrolled yet, or need access? Email <a href="mailto:stewardle132@gmail.com?subject=Study%20Hub%20Access%20Request">stewardle132@gmail.com</a> to request access.</p>
+</section>
+
   <div class="grid">
     <a class="guide ff" href="ff.html">
       <img class="banner" src="images/banner_ff.webp" alt="Essentials of Fire Fighting, 8th edition: Firefighter I &amp; II">
@@ -92,13 +99,11 @@ a.guide:hover .go span{transform:translateX(3px)}
   <section class="prereq">
     <div class="sec-head">
       <h2>Course Prerequisites</h2>
-      <span class="count" id="pq-count"></span>
     </div>
-    <p class="sec-sub">These are the prerequisites for SFFMA Firefighter I and II certification. Finish them before starting the hazmat class. All of the online courses are free; save each completion certificate. Check them off as you go. <a href="account.html" style="color:var(--gold)">Sign in</a> to save your checklist to your account and upload your certificates on your <a href="account.html" style="color:var(--gold)">My Account</a> page.</p>
+    <p class="sec-sub">These are the prerequisites for SFFMA Firefighter I and II certification. Finish them before starting the hazmat class. Each listing tells you what the course covers and where to find it. All of the online courses are free, so save each completion certificate. To track your progress and upload certificates, use the checklist on your <a href="account.html" style="color:var(--gold)">My Account</a> page.</p>
 
     <div class="pq-group">NIMS / ICS (FEMA Independent Study)</div>
     <div class="pq" data-id="is100">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>IS-100.c: Introduction to the Incident Command System</h3>
         <p>The basics of ICS: how command is set up, common terms, span of control, and how incidents are organized. Self-paced online with a short final exam.</p>
@@ -106,7 +111,6 @@ a.guide:hover .go span{transform:translateX(3px)}
       </div>
     </div>
     <div class="pq" data-id="is200">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>IS-200.c: Basic ICS for Initial Response</h3>
         <p>Builds on IS-100. Covers the first-arriving responder's role, briefings, delegating authority, and expanding or transferring command. Take IS-100 first.</p>
@@ -114,7 +118,6 @@ a.guide:hover .go span{transform:translateX(3px)}
       </div>
     </div>
     <div class="pq" data-id="is700">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>IS-700.b: Introduction to the National Incident Management System</h3>
         <p>The big picture of NIMS: how agencies at every level share resources, use common terms, and work together under one system.</p>
@@ -122,7 +125,6 @@ a.guide:hover .go span{transform:translateX(3px)}
       </div>
     </div>
     <div class="pq" data-id="is800">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>IS-800.d: National Response Framework, An Introduction</h3>
         <p>How the nation responds to disasters: roles of local, state, tribal, and federal partners, plus the Emergency Support Functions.</p>
@@ -133,7 +135,6 @@ a.guide:hover .go span{transform:translateX(3px)}
 
     <div class="pq-group">Roadway Safety</div>
     <div class="pq" data-id="tim">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>National Traffic Incident Management (TIM) Responder Training</h3>
         <p>FHWA course on working safely at roadway incidents: apparatus blocking, traffic control zones, scene clearance, and hi-vis safety. Web-based course FHWA-NHI-133126A, about 4 hours, with a final exam (70% to pass).</p>
@@ -143,7 +144,6 @@ a.guide:hover .go span{transform:translateX(3px)}
 
     <div class="pq-group">Firefighter Safety and Health</div>
     <div class="pq" data-id="c2bs">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>Courage to Be Safe (NFFF)</h3>
         <p>National Fallen Firefighters Foundation program on changing the culture of firefighter safety, based on the 16 Life Safety Initiatives and Everyone Goes Home. Self-paced online through the Fire Hero Learning Network.</p>
@@ -151,7 +151,6 @@ a.guide:hover .go span{transform:translateX(3px)}
       </div>
     </div>
     <div class="pq" data-id="cancer">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>Cancer Awareness (Firefighter Cancer Support Network)</h3>
         <p>Firefighter cancer risks and how to cut your exposure: gross decon, clean gear, SCBA use, screenings, and healthy habits. Texas (TCFP) uses the FCSN Cancer Awareness Training. Check with your instructor that this is the version they accept.</p>
@@ -161,7 +160,6 @@ a.guide:hover .go span{transform:translateX(3px)}
 
     <div class="pq-group">Certification</div>
     <div class="pq" data-id="hazmat">
-      <label class="pq-check"><input type="checkbox"></label>
       <div class="pq-body">
         <h3>Hazmat Awareness / Operations Certification (SFFMA)</h3>
         <p>Taken as a class through the department, with the SFFMA certification test. Use the Hazmat study guide above to prepare. The other prerequisites should be done before this class.</p>
@@ -171,36 +169,12 @@ a.guide:hover .go span{transform:translateX(3px)}
     <p class="pq-tip">Planning to move to TCFP certification later? An EMR or EMT completion certificate is also required before TCFP certification can be issued.</p>
   </section>
 
-  <div class="note">FF I &amp; II progress is saved on the device you study on.<br>More FF I &amp; II chapters are added as the course moves along.<br>Unofficial study aid. Not affiliated with or endorsed by IFSTA or SFFMA.</div>
+  <div class="note">Sign in to save your progress to your account.<br>More FF I &amp; II chapters are added as the course moves along.</div>
+  <div class="legal">
+    <p><b>Legal notice.</b> This is an independent, unofficial study aid for enrolled students. It is not affiliated with, sponsored by, or endorsed by the International Fire Service Training Association (IFSTA), Fire Protection Publications, Oklahoma State University, the National Fire Protection Association (NFPA), or the SFFMA. IFSTA&reg;, <i>Essentials of Fire Fighting</i>, and <i>Hazardous Materials for First Responders</i> are trademarks or copyrighted works of their respective owners, and all rights in that material remain with them. Brief references to that material are included for nonprofit educational study only.</p>
+    <p>This hub does not replace the official textbooks, course materials, or your instructor. Students are expected to own or have access to the required IFSTA texts. Answers marked "not confirmed" have not been verified by course grading. Always follow your instructor, your department's SOPs, and the official course materials. No content here may be copied or redistributed outside the class.</p>
+  </div>
 </main>
-<script>
-(function(){
-  const KEY='fire_prereqs';
-  let done={};
-  try{done=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
-  const items=[...document.querySelectorAll('.pq')];
-  function update(){
-    const n=items.filter(el=>done[el.dataset.id]).length;
-    document.getElementById('pq-count').textContent=n+' of '+items.length+' done';
-  }
-  items.forEach(el=>{
-    const cb=el.querySelector('input');
-    cb.checked=!!done[el.dataset.id];
-    el.classList.toggle('done',cb.checked);
-    cb.addEventListener('change',()=>{
-      done[el.dataset.id]=cb.checked; el.classList.toggle('done',cb.checked);
-      try{localStorage.setItem(KEY,JSON.stringify(done));}catch(e){}
-      update(); if(window.cloudChanged)window.cloudChanged(); if(window.fireHub&&window.fireHub.classSummary)window.fireHub.classSummary({prereqs:items.filter(el=>done[el.dataset.id]).length});
-    });
-  });
-  update();
-  window.appSync={key:'prereqs',
-    get:()=>({...done}),
-    set:d=>{done=d||{};try{localStorage.setItem(KEY,JSON.stringify(done));}catch(e){}
-      items.forEach(el=>{const cb=el.querySelector('input');cb.checked=!!done[el.dataset.id];el.classList.toggle('done',cb.checked);});update();},
-    merge:(l,c)=>{const m={...(c||{})};Object.keys(l||{}).forEach(k=>{if(l[k])m[k]=true;});return m;}};
-})();
-</script>
 <script type="module" src="cloud-sync.js?v=4"></script>
 </body>
 </html>
