@@ -95,17 +95,39 @@ service cloud.firestore {
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['iStatus', 'reply', 'repliedBy', 'repliedAt']));
       allow delete: if isAdmin();
     }
-    // ---------- Part 107 Study Hub (Premier High School) ----------
-    // p107Students/{uid} = a student's name, class period, and score summary.
-    // Each student can read and write only their own; the teacher (admin) can read everyone's.
-    match /p107Students/{uid} {
-      allow read, write: if signedIn() && request.auth.uid == uid;
-      allow read: if isAdmin();
+    // ---------- Part 107 Study Hub ----------
+    // Teachers are approved by the admin. Each teacher manages only their own classes and students.
+    function p107TeacherDoc() { return /databases/$(database)/documents/p107Teachers/$(myEmail()); }
+    function p107Teacher() { return verified() && exists(p107TeacherDoc()); }
+    function p107ClassDoc(classId) { return /databases/$(database)/documents/p107Classes/$(classId); }
+    function ownsP107Class(classId) {
+      return p107Teacher() && exists(p107ClassDoc(classId)) && get(p107ClassDoc(classId)).data.teacherEmail == myEmail();
     }
-    // p107Roster/{email} = students the teacher added to the class. A student can see only their own entry.
-    match /p107Roster/{email} {
+
+    // p107Teachers/{email} = approved teachers.
+    match /p107Teachers/{email} {
       allow read: if isAdmin() || (verified() && myEmail() == email);
       allow write: if isAdmin();
+    }
+    // p107Classes/{classId} = a class and the teacher who owns it.
+    match /p107Classes/{classId} {
+      allow read: if signedIn();
+      allow create: if isAdmin() || (p107Teacher() && request.resource.data.teacherEmail == myEmail());
+      allow update: if isAdmin() || (p107Teacher() && resource.data.teacherEmail == myEmail() && request.resource.data.teacherEmail == myEmail());
+      allow delete: if isAdmin() || (p107Teacher() && resource.data.teacherEmail == myEmail());
+    }
+    // p107Roster/{classId}__{email} = a student a teacher added to one of their classes.
+    match /p107Roster/{id} {
+      allow read: if isAdmin() || (verified() && (resource.data.email == myEmail() || resource.data.teacherEmail == myEmail()));
+      allow create, update: if (isAdmin() || (ownsP107Class(request.resource.data.classId) && request.resource.data.teacherEmail == myEmail()))
+        && id == request.resource.data.classId + '__' + request.resource.data.email;
+      allow delete: if isAdmin() || (p107Teacher() && resource.data.teacherEmail == myEmail());
+    }
+    // p107Students/{uid} = a student's name, classes, and score summary.
+    // The student reads and writes their own; their teachers and the admin can read it.
+    match /p107Students/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+      allow read: if isAdmin() || (p107Teacher() && myEmail() in resource.data.get('teachers', []));
     }
   }
 }
