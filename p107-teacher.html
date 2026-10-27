@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Part 107 Teacher Dashboard</title>
+<style>
+:root{--bg:#0a1220;--card:#121d31;--line:#24344f;--blue:#3d8bfd;--blue2:#2563c9;--gold:#e2aa3c;--text:#eef2f8;--muted:#93a4bb;--green:#2ecc71;--red:#e5534b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif}
+header{background:linear-gradient(160deg,#061021,#0b2447 60%,#0a1220);border-bottom:3px solid var(--gold);padding:22px 16px;text-align:center}
+header .e{font-size:11px;font-weight:800;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}
+header h1{font-size:26px;margin-top:6px}
+header a{color:#aebcd0;font-size:13px;text-decoration:none;display:inline-block;margin-top:8px}
+main{max-width:1100px;margin:0 auto;padding:18px 16px 50px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+select,input{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px 10px;font-size:14px}
+.btn{background:var(--blue2);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid #34496b;color:#cfd9e8}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+.stat .n{font-size:24px;font-weight:800}.stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+th{text-align:left;color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:10px;background:#0e1829;cursor:pointer;white-space:nowrap}
+td{padding:10px;border-top:1px solid var(--line);vertical-align:top}
+td small{color:var(--muted)}
+.p{font-weight:800}.ok{color:var(--green)}.mid{color:var(--gold)}.lo{color:var(--red)}
+.mini{display:flex;gap:3px}.mini i{display:block;width:30px;height:6px;border-radius:3px;background:#1b2840;position:relative;overflow:hidden}
+.msg{color:var(--muted);text-align:center;padding:40px 10px}
+.note{color:var(--muted);font-size:12px;line-height:1.6;margin-top:12px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="e">Part 107 Study Hub</div><h1>Teacher Dashboard</h1><a href="index.html">&larr; Back to the study app</a></header>
+<main>
+  <div id="gate" class="msg">Loading...</div>
+  <div id="app" style="display:none">
+    <div class="stats">
+      <div class="stat"><div class="n" id="nStu">0</div><div class="l">Students</div></div>
+      <div class="stat"><div class="n" id="nTests">0</div><div class="l">Tests taken</div></div>
+      <div class="stat"><div class="n" id="nAvg">-</div><div class="l">Avg last test</div></div>
+      <div class="stat"><div class="n" id="nReady">0</div><div class="l">Passing (70%+)</div></div>
+    </div>
+    <div class="bar">
+      <select id="fPeriod"><option value="">All class periods</option></select>
+      <input id="fSearch" placeholder="Search name or email">
+      <button class="btn ghost" onclick="load()">Refresh</button>
+      <button class="btn" onclick="csv()">Download CSV</button>
+    </div>
+    <div class="wrap"><table><thead><tr>
+      <th data-k="name">Student</th><th data-k="period">Period</th><th data-k="answered">Questions answered</th><th data-k="accuracy">Accuracy</th>
+      <th data-k="tests">Tests</th><th data-k="last">Last test</th><th data-k="best">Best</th><th>Last test by area</th><th data-k="active">Last active</th>
+    </tr></thead><tbody id="rows"></tbody></table></div>
+    <p class="note">Area order: Regulations, Airspace, Weather, Loading and Performance, Operations. Students who flag a question show up under Flagged Questions on the <a href="admin.html" style="color:var(--gold)">Admin Dashboard</a>.</p>
+  </div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const AREAS=['regs','air','wx','perf','ops'];
+let all=[],sortK='name',sortDir=1;
+const ts=v=>v&&v.toDate?v.toDate():v&&v.toMillis?new Date(v.toMillis()):(v&&v.seconds?new Date(v.seconds*1000):null);
+const cls=p=>p==null?'':p>=80?'ok':p>=70?'mid':'lo';
+window.addEventListener('p107-auth',e=>{
+  const {user,isTeacher}=e.detail;
+  if(!user){$('gate').innerHTML='Sign in on the <a href="index.html" style="color:var(--gold)">study app</a> with the teacher account first.';return;}
+  if(!isTeacher){$('gate').textContent='This page is only for the teacher account.';return;}
+  $('gate').style.display='none';$('app').style.display='block';load();
+});
+async function load(){
+  try{all=await P107.listStudents();}catch(e){console.warn(e);$('gate').style.display='block';$('gate').textContent='Could not load students. Make sure the latest Firestore rules are published.';$('app').style.display='none';return;}
+  const per=[...new Set(all.map(s=>s.period).filter(Boolean))].sort();
+  const cur=$('fPeriod').value;$('fPeriod').innerHTML='<option value="">All class periods</option>'+per.map(p=>'<option'+(p===cur?' selected':'')+'>'+esc(p)+'</option>').join('');
+  render();
+}
+function filtered(){const p=$('fPeriod').value,s=$('fSearch').value.toLowerCase();
+  return all.filter(x=>(!p||x.period===p)&&(!s||((x.name||'')+' '+(x.email||'')).toLowerCase().includes(s)));}
+function render(){
+  const list=filtered().sort((a,b)=>{let x=a[sortK],y=b[sortK];if(sortK==='active'){x=ts(x)?.getTime()||0;y=ts(y)?.getTime()||0;}
+    if(typeof x==='string'||typeof y==='string'){x=String(x||'').toLowerCase();y=String(y||'').toLowerCase();}else{x=x??-1;y=y??-1;}return (x>y?1:x<y?-1:0)*sortDir;});
+  $('nStu').textContent=list.length;$('nTests').textContent=list.reduce((n,s)=>n+(s.tests||0),0);
+  const lt=list.filter(s=>s.last!=null);$('nAvg').textContent=lt.length?Math.round(lt.reduce((n,s)=>n+s.last,0)/lt.length)+'%':'-';
+  $('nReady').textContent=lt.filter(s=>s.last>=70).length;
+  $('rows').innerHTML=list.length?list.map(s=>{const by=s.lastByArea||{};
+    const mini=AREAS.map(a=>{const v=by[a];const p=v&&v[1]?Math.round(v[0]/v[1]*100):null;return '<i title="'+a+': '+(p==null?'-':p+'%')+'"><b style="position:absolute;inset:0;width:'+(p||0)+'%;background:'+(p==null?'transparent':p>=80?'#2ecc71':p>=70?'#e2aa3c':'#e5534b')+'"></b></i>';}).join('');
+    const act=ts(s.active)||ts(s.lastTest)||ts(s.updated);
+    return '<tr><td><b>'+esc(s.name)+'</b><br><small>'+esc(s.email)+'</small></td><td>'+esc(s.period)+'</td><td>'+(s.answered||0)+'</td><td class="p '+cls(s.accuracy)+'">'+(s.accuracy==null?'-':s.accuracy+'%')+'</td><td>'+(s.tests||0)+'</td><td class="p '+cls(s.last)+'">'+(s.last==null?'-':s.last+'%')+'</td><td class="p '+cls(s.best)+'">'+(s.best?s.best+'%':'-')+'</td><td><div class="mini">'+mini+'</div></td><td><small>'+(act?act.toLocaleDateString():'-')+'</small></td></tr>';}).join(''):'<tr><td colspan="9" class="msg">No students yet. They show up here after they sign in and enter their name.</td></tr>';
+}
+$('fPeriod').onchange=render;$('fSearch').oninput=render;
+document.querySelector('thead').onclick=e=>{const k=e.target.dataset.k;if(!k)return;sortDir=sortK===k?-sortDir:1;sortK=k;render();};
+function csv(){const rows=[['Name','Email','Period','Questions answered','Accuracy %','Tests','Last test %','Best %','Regs %','Airspace %','Weather %','Loading %','Operations %']];
+  filtered().forEach(s=>{const by=s.lastByArea||{};rows.push([s.name,s.email,s.period,s.answered||0,s.accuracy??'',s.tests||0,s.last??'',s.best||'',...AREAS.map(a=>by[a]&&by[a][1]?Math.round(by[a][0]/by[a][1]*100):'')]);});
+  const t=rows.map(r=>r.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download='part107-students.csv';document.body.appendChild(a);a.click();a.remove();}
+</script>
+<script type="module" src="p107-cloud.js?v=1"></script>
+</body>
+</html>

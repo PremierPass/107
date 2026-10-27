@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FAA Part 107 Study App</title>
+<style>
+:root{--navy:#071b35;--navy2:#0b315e;--blue:#2b78c5;--gold:#e2aa3c;--paper:#f3f6f9;--ink:#10263e;--muted:#60758b;--line:#d7e1ea}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Avenir Next",Avenir,"Segoe UI",Arial,sans-serif;color:var(--ink)}
+body{background:radial-gradient(circle at 12% 18%,rgba(43,120,197,.13),transparent 25rem),radial-gradient(circle at 88% 70%,rgba(226,170,60,.10),transparent 23rem),linear-gradient(180deg,#eef3f7,#f8fafc);overflow-x:hidden}
+.hero{position:relative;overflow:hidden;min-height:260px;padding:34px 24px 38px;color:white;text-align:center;border-bottom:5px solid var(--gold);background:linear-gradient(145deg,rgba(3,18,39,.98),rgba(7,42,79,.96) 62%,rgba(24,62,91,.94));box-shadow:0 14px 35px rgba(4,25,48,.20)}
+.hero:after{content:"";position:absolute;left:-8%;right:-8%;bottom:-58px;height:135px;background:linear-gradient(160deg,transparent 0 36%,rgba(1,16,34,.92) 36% 50%,transparent 50%),linear-gradient(20deg,transparent 0 46%,rgba(4,26,51,.95) 46% 61%,transparent 61%);opacity:.8}
+.hero-inner{position:relative;z-index:2;max-width:900px;margin:auto}.eyebrow{font-size:13px;font-weight:850;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}.hero h1{margin:8px 0 4px;font-size:clamp(40px,7vw,72px);letter-spacing:.02em;line-height:1;font-weight:900}.hero .sub{font-size:clamp(16px,2.4vw,23px);font-weight:700}.hero .school{margin-top:16px;font-size:17px}.hero .teacher{color:var(--gold);font-weight:800;margin-top:3px}.drone{width:150px;height:70px;margin:11px auto 0;color:#dce8f2;filter:drop-shadow(0 8px 8px rgba(0,0,0,.28))}
+.stage{max-width:760px;margin:-26px auto 48px;padding:0 18px;position:relative;z-index:4}.panel{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:20px;box-shadow:0 22px 60px rgba(7,32,59,.16);overflow:hidden}.panel-top{height:6px;background:linear-gradient(90deg,var(--blue),var(--gold))}.panel-body{padding:30px}.panel h2{margin:0;text-align:center;font-size:28px}.panel p{color:var(--muted);text-align:center;margin:8px 0 26px;line-height:1.5}.grid{display:grid;grid-template-columns:1fr;gap:16px}.field label{display:block;font-size:13px;font-weight:850;letter-spacing:.05em;text-transform:uppercase;color:#344f69;margin:0 0 7px}.field input{width:100%;height:50px;border:1px solid #c8d5e0;border-radius:10px;padding:0 14px;font:inherit;font-size:16px;color:var(--ink);background:#fbfdff;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(43,120,197,.12)}.start{width:100%;height:54px;margin-top:22px;border:0;border-radius:11px;background:linear-gradient(90deg,var(--navy),var(--navy2));color:#fff;font:inherit;font-size:17px;font-weight:850;cursor:pointer;box-shadow:0 9px 22px rgba(7,35,67,.20)}.start:hover{transform:translateY(-1px)}.note{text-align:center;color:#71869a;font-size:12px;margin-top:14px}.app-shell{display:none;width:100%;height:100vh;background:#fff;position:relative;z-index:10}.app-shell iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+@media(max-width:520px){.hero{min-height:235px;padding-top:28px}.hero h1{font-size:43px}.stage{margin-top:-20px;padding:0 11px}.panel-body{padding:24px 18px}}
+</style>
+</head>
+<body>
+<section id="signinView">
+<header class="hero"><div class="hero-inner"><div class="eyebrow">Remote Pilot Training</div><h1>FAA PART 107</h1><div class="sub">Study App</div><svg class="drone" viewBox="0 0 220 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"><path d="M75 55h70"/><path d="M91 41h38l12 14H79z"/><path d="M76 55L48 33M144 55l28-22M76 55L48 78M144 55l28 23"/><ellipse cx="40" cy="27" rx="25" ry="6"/><ellipse cx="180" cy="27" rx="25" ry="6"/><ellipse cx="40" cy="84" rx="25" ry="6"/><ellipse cx="180" cy="84" rx="25" ry="6"/></g></svg><div class="school">Premier High School, Texarkana</div><div class="teacher">Mr Steward</div></div></header>
+<main class="stage"><div class="panel"><div class="panel-top"></div><div class="panel-body"><h2>Classroom Sign In</h2><p>Enter your information to begin a new Part 107 study session.</p><div class="grid"><div class="field"><label for="studentName">Student Name</label><input id="studentName" autocomplete="name" placeholder="First and Last Name"></div><div class="field"><label for="className">Class Name / Period</label><input id="className" placeholder="Example: Period 2 Drone Ops"></div><div class="field"><label for="teacherEmail">Teacher Email</label><input id="teacherEmail" type="email" inputmode="email" placeholder="teacher@email.com"></div></div><button class="start" id="startBtn">Start Studying</button><div class="note">Study progress stays on this device, but sign-in is required for each new visit.</div></div></div></main>
+</section>
+<section id="appShell" class="app-shell"><iframe id="studyFrame" title="FAA Part 107 Study App"></iframe></section>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const frame=$('studyFrame');
+  localStorage.removeItem('studentInfo');
+
+  function shuffle(items){
+    const a=[...items];
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  function installQuizFix(){
+    try{
+      const w=frame.contentWindow;
+      const d=frame.contentDocument;
+      if(!w||!d||typeof w.handleQuizAnswer!=='function') return;
+      w.renderQuizOptions=function(card){
+        const holder=d.getElementById('qzOptions');
+        if(!holder) return;
+        holder.innerHTML='';
+        const all=[...new Set((card.options||[]).filter(Boolean))];
+        const distractors=shuffle(all.filter(opt=>opt!==card.answer)).slice(0,2);
+        const choices=shuffle([card.answer,...distractors]).slice(0,3);
+        choices.forEach(opt=>{
+          const btn=d.createElement('button');
+          btn.className='quiz-btn';
+          btn.textContent=opt;
+          btn.onclick=()=>w.handleQuizAnswer(btn,opt,card);
+          holder.appendChild(btn);
+        });
+      };
+    }catch(err){console.warn('Quiz randomization could not be installed:',err);}
+  }
+
+  function loadExpandedBank(){
+    try{
+      const d=frame.contentDocument;
+      if(!d) return;
+      const s=d.createElement('script');
+      s.src='./extra-questions.js?v=2';
+      s.onload=installQuizFix;
+      d.body.appendChild(s);
+    }catch(err){
+      console.warn('Expanded question bank could not be loaded:',err);
+      installQuizFix();
+    }
+  }
+
+  frame.addEventListener('load',loadExpandedBank);
+
+  function start(){
+    const name=$('studentName').value.trim();
+    const cls=$('className').value.trim();
+    const email=$('teacherEmail').value.trim();
+    if(!name||!cls||!email){alert('Please complete all three fields.');return;}
+    if(!/^\S+@\S+\.\S+$/.test(email)){alert('Please enter a valid teacher email address.');return;}
+    localStorage.setItem('studentInfo',JSON.stringify({name,cls,email}));
+    $('signinView').style.display='none';
+    $('appShell').style.display='block';
+    frame.src='./app.html?v=4';
+    window.scrollTo(0,0);
+  }
+  $('startBtn').addEventListener('click',start);
+  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&$('signinView').style.display!=='none')start();});
+})();
+</script>
+</body>
+</html>

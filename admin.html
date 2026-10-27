@@ -288,7 +288,7 @@ async function renderFlags(){
   const list=flagFilter==='open'?open:flags;
   $('app').innerHTML=`<h1>Flagged Questions</h1><p class="lead">Questions members think might be wrong. Mark each one after you check it. Use <b>Copy open flags</b> to paste the list to Claude for fixing in the question bank.</p>
    <div class="row" style="margin-bottom:12px"><button class="btn sm ${flagFilter==='open'?'':'ghost'}" data-f="open">Open (${open.length})</button><button class="btn sm ${flagFilter==='all'?'':'ghost'}" data-f="all">All (${flags.length})</button><button class="btn sm gold" id="copy">Copy open flags</button><span class="status" id="c-st" style="margin:0"></span></div>
-   ${list.length?list.map(f=>`<div class="flag ${f.status!=='open'?'done':''}" data-id="${esc(f.id)}"><div class="meta">${esc(f.app==='hazmat'?'Hazmat':'FF I & II')} &middot; ${esc(f.ch||'')} &middot; ${esc(f.email||'')} &middot; ${fmtDate(ms(f.created))} ${f.status!=='open'?`&middot; <span class="pill ${f.status==='fixed'?'ok':'gray'}">${f.status==='fixed'?'Fixed':'Not an error'}</span>`:''}</div>
+   ${list.length?list.map(f=>`<div class="flag ${f.status!=='open'?'done':''}" data-id="${esc(f.id)}"><div class="meta">${esc(f.app==='hazmat'?'Hazmat':f.app==='p107'?'Part 107':'FF I & II')} &middot; ${esc(f.ch||'')} &middot; ${esc(f.email||'')} &middot; ${fmtDate(ms(f.created))} ${f.status!=='open'?`&middot; <span class="pill ${f.status==='fixed'?'ok':'gray'}">${f.status==='fixed'?'Fixed':'Not an error'}</span>`:''}</div>
      <div class="q">${esc(f.q)}</div>${f.answer?`<div class="a">App's answer: ${esc(f.answer)}</div>`:''}${f.note?`<div class="n">${esc(f.note)}</div>`:''}
      ${f.classId?`<div class="meta">Sent to instructor (${esc(f.className||'')}): ${f.iStatus==='answered'?'answered':'waiting'}</div>`:''}${f.reply?`<div class="n" style="background:#13261b;color:#bff0cf">Instructor (${esc(f.repliedBy||'')}): ${esc(f.reply)}</div>`:''}
      <div class="row">${f.status==='open'?'<button class="btn sm green" data-s="fixed">Fixed</button><button class="btn sm ghost" data-s="ok">Not an error</button>':'<button class="btn sm ghost" data-s="open">Reopen</button>'}<button class="btn sm ghost" data-del>Delete</button></div></div>`).join(''):'<p class="empty">Nothing here.</p>'}`;
@@ -296,7 +296,7 @@ async function renderFlags(){
   $('app').querySelectorAll('.flag').forEach(el=>{const id=el.dataset.id;
     el.querySelectorAll('[data-s]').forEach(b=>b.onclick=async()=>{await F.updateDoc(F.doc(db,'flags',id),{status:b.dataset.s,reviewed:F.serverTimestamp()});renderFlags();});
     el.querySelector('[data-del]').onclick=async()=>{if(!confirm('Delete this flag?'))return;await F.deleteDoc(F.doc(db,'flags',id));renderFlags();};});
-  $('copy').onclick=async()=>{const txt=open.map((f,i)=>`${i+1}. [${f.app==='hazmat'?'Hazmat':'FF I & II'} ${f.ch||''}] ${f.q}\n   App's answer: ${f.answer||'(none)'}\n   Note: ${f.note||'(none)'}`).join('\n\n')||'No open flags.';
+  $('copy').onclick=async()=>{const txt=open.map((f,i)=>`${i+1}. [${f.app==='hazmat'?'Hazmat':f.app==='p107'?'Part 107':'FF I & II'} ${f.ch||''}] ${f.q}\n   App's answer: ${f.answer||'(none)'}\n   Note: ${f.note||'(none)'}`).join('\n\n')||'No open flags.';
     try{await navigator.clipboard.writeText(txt);$('c-st').textContent='Copied.';$('c-st').className='status ok';}catch(e){prompt('Copy this:',txt);}};
 }
 
@@ -381,7 +381,7 @@ async function renderQuestions(){
   const open=list.filter(f=>f.iStatus!=='answered'), shown=qFilter==='open'?open:list;
   $('app').innerHTML=`<h1>Student Questions</h1><p class="lead">Questions your students flagged and sent to you. Your answer shows up on their account page. Every flag also goes to the site admin's review list.</p>
    <div class="row" style="margin-bottom:12px"><button class="btn sm ${qFilter==='open'?'':'ghost'}" data-qf="open">Needs answer (${open.length})</button><button class="btn sm ${qFilter==='all'?'':'ghost'}" data-qf="all">All (${list.length})</button></div>
-   ${shown.length?shown.map(f=>`<div class="flag ${f.iStatus==='answered'?'done':''}" data-id="${esc(f.id)}"><div class="meta">${esc(f.className||'')} &middot; ${esc(f.app==='hazmat'?'Hazmat':'FF I & II')} ${esc(f.ch||'')} &middot; ${esc(f.name||f.email||'')} &middot; ${fmtDate(ms(f.created))}</div>
+   ${shown.length?shown.map(f=>`<div class="flag ${f.iStatus==='answered'?'done':''}" data-id="${esc(f.id)}"><div class="meta">${esc(f.className||'')} &middot; ${esc(f.app==='hazmat'?'Hazmat':f.app==='p107'?'Part 107':'FF I & II')} ${esc(f.ch||'')} &middot; ${esc(f.name||f.email||'')} &middot; ${fmtDate(ms(f.created))}</div>
      <div class="q">${esc(f.q)}</div>${f.answer?`<div class="a">App's answer: ${esc(f.answer)}</div>`:''}${f.note?`<div class="n">${esc(f.note)}</div>`:''}
      ${f.reply?`<div class="n" style="background:#13261b;color:#bff0cf">Your answer: ${esc(f.reply)}</div>`:''}
      <textarea data-reply rows="2" style="width:100%;margin-bottom:8px" placeholder="Answer the student...">${esc(f.reply||'')}</textarea>

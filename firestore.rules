@@ -95,5 +95,12 @@ service cloud.firestore {
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['iStatus', 'reply', 'repliedBy', 'repliedAt']));
       allow delete: if isAdmin();
     }
+    // ---------- Part 107 Study Hub (Premier High School) ----------
+    // p107Students/{uid} = a student's name, class period, and score summary.
+    // Each student can read and write only their own; the teacher (admin) can read everyone's.
+    match /p107Students/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+      allow read: if isAdmin();
+    }
   }
 }
