@@ -18,6 +18,11 @@ html,body{background:var(--bg);color:var(--ink);min-height:100vh;font-family:'Se
 .badges{position:relative;display:flex;justify-content:center;align-items:center;gap:22px;margin:0 auto 14px}
 .badge{display:block;width:96px;height:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
 .badge.bc{width:108px}
+.ifsta-row{position:relative;display:flex;align-items:center;gap:12px;max-width:340px;margin:0 auto 16px}
+.ifsta-row:before,.ifsta-row:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35))}
+.ifsta-row:after{background:linear-gradient(90deg,rgba(255,255,255,.35),transparent)}
+.ifsta-plate{background:#fff;border-radius:8px;padding:5px 8px;box-shadow:0 6px 14px rgba(0,0,0,.45);line-height:0}
+.ifsta-plate img{display:block;width:170px;height:auto}
 .banner{display:block;width:100%;aspect-ratio:1094/359;object-fit:cover;background:#000}
 main{max-width:860px;margin:-28px auto 40px;padding:0 16px;position:relative;z-index:2}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
@@ -62,6 +67,7 @@ a.guide:hover .go span{transform:translateX(3px)}
 <body>
 <header class="hero">
   <div class="badges"><img class="badge bc" src="images/bcfa_logo.png" alt="Bowie County Firefighters Association"><img class="badge" src="images/sffma_logo.png" alt="Texas State Firefighters' &amp; Fire Marshals' Association"></div>
+  <div class="ifsta-row"><div class="ifsta-plate"><img src="images/ifsta_logo.png" alt="IFSTA, International Fire Service Training Association"></div></div>
   <div class="eyebrow">Fire Service Training</div>
   <h1>Study Hub</h1>
   <p>SFFMA Firefighter and Hazmat certification prep.<br>Study guides are for members added by their fire chief. Sign in to get started.</p>
