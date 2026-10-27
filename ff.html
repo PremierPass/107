@@ -34,6 +34,9 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 .progress-fill { height: 100%; background: #c0392b; border-radius: 4px; transition: width 0.3s; }
 .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .filter-btn { background: #1e1e1e; border: 1px solid #333; color: #bbb; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+.book-bar { display:flex; gap:6px; justify-content:center; padding:10px 16px 0; flex-wrap:wrap; }
+.book-btn { background:#1e1e1e; border:1px solid #333; color:#bbb; padding:7px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
+.book-btn.active { background:#c0392b; border-color:#c0392b; color:#fff; }
 .filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
 .search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
 .search-box:focus { outline: none; border-color: #c0392b; }
@@ -207,6 +210,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   <button class="nav-btn" onclick="showPage('ref',event)">Reference</button>
   <button class="nav-btn" onclick="showPage('review',event)">Review List</button>
 </div>
+<div class="book-bar" id="book-bar"><button class="book-btn" data-book="1" onclick="setBook('1')">FF I</button><button class="book-btn" data-book="2" onclick="setBook('2')">FF II</button><button class="book-btn" data-book="all" onclick="setBook('all')">Both</button></div>
 
 <!-- FLASHCARDS -->
 <div id="page-flashcards" class="page active">
@@ -350,10 +354,20 @@ function FF_ADD(ch){FF_CHAPTERS.push(ch);}
 <script src="ff-data/ch14.js?v=11"></script>
 <script src="ff-data/ch15.js?v=11"></script>
 <script src="ff-data/ch16.js?v=11"></script>
+<script src="ff-data/ff2-ch01.js?v=11"></script>
 <script>
-FF_CHAPTERS.sort((a,b)=>a.n-b.n);
-const chLabel=n=>'Ch'+n;
-const chTitle={}; FF_CHAPTERS.forEach(c=>chTitle['Ch'+c.n]=c.title);
+// Book selector: FF I (book 1), FF II (book 2), or both
+FF_CHAPTERS.forEach(c=>{if(!c.book)c.book=1;});
+FF_CHAPTERS.sort((a,b)=>a.book-b.book||a.n-b.n);
+let BOOK='all'; try{BOOK=localStorage.getItem('ff12_book')||'all';}catch(e){}
+if(BOOK!=='all'&&!FF_CHAPTERS.some(c=>String(c.book)===BOOK))BOOK='all';
+{const keep=FF_CHAPTERS.filter(c=>BOOK==='all'||String(c.book)===BOOK);FF_CHAPTERS.length=0;keep.forEach(c=>FF_CHAPTERS.push(c));}
+function setBook(b){try{localStorage.setItem('ff12_book',b);}catch(e){} location.reload();}
+document.querySelectorAll('.book-btn').forEach(b=>b.classList.toggle('active',b.dataset.book===BOOK));
+const chKey=c=>(c.book===2?'II-Ch':'Ch')+c.n;   // FF I keys stay "ChN" so saved progress carries over
+const chName=k=>k.startsWith('II-')?'FF II Chapter '+k.slice(5):'Chapter '+k.slice(2);
+const chShort=k=>k.startsWith('II-')?'FF II Ch '+k.slice(5):'Ch '+k.slice(2);
+const chTitle={}; FF_CHAPTERS.forEach(c=>chTitle[chKey(c)]=c.title);
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
@@ -361,7 +375,7 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random
 const UNCONF='Not confirmed by grading. This is the most likely answer.';
 const FC_REVIEW=[], FC_QUIZ=[], FC_TERMS=[], QUIZ_FACTS=[];
 FF_CHAPTERS.forEach(c=>{
-  const ch=chLabel(c.n);
+  const ch=chKey(c);
   (c.review||[]).forEach(([q,a])=>FC_REVIEW.push({ch,q,a,kind:'Review question'}));
   (c.terms||[]).forEach(([t,d])=>FC_TERMS.push({ch,q:'Define: '+t,a:d,kind:'Key term'}));
   (c.quiz||[]).forEach(([q,...opts])=>{
@@ -373,10 +387,10 @@ FF_CHAPTERS.forEach(c=>{
 const FC_ALL=FC_QUIZ.concat(FC_REVIEW,FC_TERMS);
 function termQuestions(chs){
   const out=[];
-  FF_CHAPTERS.filter(c=>chs.has(chLabel(c.n))&&(c.terms||[]).length>=4).forEach(c=>{
+  FF_CHAPTERS.filter(c=>chs.has(chKey(c))&&(c.terms||[]).length>=4).forEach(c=>{
     c.terms.forEach(([t,d],i)=>{
       const others=shuffle(c.terms.filter((_,j)=>j!==i).map(x=>x[0])).slice(0,3);
-      out.push({ch:chLabel(c.n),q:'Which key term matches this definition?<br><span style="color:#aaa;font-size:14px">'+esc(d)+'</span>',raw:true,opts:[t,...others],ans:0});
+      out.push({ch:chKey(c),q:'Which key term matches this definition?<br><span style="color:#aaa;font-size:14px">'+esc(d)+'</span>',raw:true,opts:[t,...others],ans:0});
     });
   });
   return out;
@@ -408,7 +422,7 @@ const idOf=c=>c?c.ch+'::'+c.q:'';
 function fcBuildFilters(){
   const bar=document.getElementById('fc-filters'); bar.innerHTML='';
   const mk=(label,val)=>{const b=document.createElement('button');b.className='filter-btn'+(val===fcActive?' active':'');b.textContent=label;b.onclick=()=>{fcActive=val;fcBuildFilters();fcBuildDeck();fcShuffle();};bar.appendChild(b);};
-  mk('All','all'); FF_CHAPTERS.forEach(c=>mk(chLabel(c.n),chLabel(c.n)));
+  mk('All','all'); FF_CHAPTERS.forEach(c=>mk(chShort(chKey(c)),chKey(c)));
 }
 function fcBuildDeck(){
   const s=document.getElementById('fc-search').value.toLowerCase();
@@ -432,7 +446,7 @@ function fcShow(){
   fcUpdateStats();
   if(!fcDeck.length){document.getElementById('fc-q').textContent='No cards match your search.';document.getElementById('fc-a').textContent='';return;}
   const c=fcDeck[fcIdx];
-  const lbl=c.ch.replace('Ch','Chapter ')+' · '+chTitle[c.ch]+' · '+c.kind;
+  const lbl=chName(c.ch)+' · '+chTitle[c.ch]+' · '+c.kind;
   document.getElementById('fc-ch').textContent=lbl;
   document.getElementById('fc-ch-b').textContent=lbl;
   document.getElementById('fc-q').textContent=c.q;
@@ -474,13 +488,13 @@ function fcShowDone(){
 }
 
 // QUIZ
-const TOPICS=FF_CHAPTERS.map(c=>chLabel(c.n));
+const TOPICS=FF_CHAPTERS.map(c=>chKey(c));
 let selectedTopics=new Set(TOPICS), selectedNum=10, quizDeck=[], qIdx=0, qAnswers=[], qAnswered=[];
 function buildQuizTopicOpts(){
   const box=document.getElementById('quiz-topic-opts'); box.innerHTML='';
   FF_CHAPTERS.forEach(c=>{
-    const t=chLabel(c.n), d=document.createElement('div');
-    d.className='quiz-opt'+(selectedTopics.has(t)?' selected':''); d.textContent=t.replace('Ch','Ch ')+': '+c.title;
+    const t=chKey(c), d=document.createElement('div');
+    d.className='quiz-opt'+(selectedTopics.has(t)?' selected':''); d.textContent=chShort(t)+': '+c.title;
     d.onclick=()=>{selectedTopics.has(t)?selectedTopics.delete(t):selectedTopics.add(t);d.classList.toggle('selected',selectedTopics.has(t));};
     box.appendChild(d);
   });
@@ -503,7 +517,7 @@ function renderQ(){
   const total=quizDeck.length, prog=document.getElementById('q-progress'); prog.innerHTML='';
   quizDeck.forEach((_,i)=>{const d=document.createElement('div');d.className='q-dot'+(qAnswered[i]?(qAnswers[i]===quizDeck[i].ans?' correct':' wrong'):(i===qIdx?' answered':''));prog.appendChild(d);});
   const q=quizDeck[qIdx];
-  document.getElementById('quiz-questions').innerHTML='<div class="q-card"><div class="q-num">Question '+(qIdx+1)+' of '+total+' · '+q.ch.replace('Ch','Chapter ')+': '+esc(chTitle[q.ch])+(q.u?' <span style="color:#f39c12">· answer not confirmed by grading</span>':'')+'</div><div class="q-text">'+(q.raw?q.q:esc(q.q))+'</div><div class="q-options" id="q-opts"></div><div id="q-fb"></div></div>';
+  document.getElementById('quiz-questions').innerHTML='<div class="q-card"><div class="q-num">Question '+(qIdx+1)+' of '+total+' · '+chName(q.ch)+': '+esc(chTitle[q.ch])+(q.u?' <span style="color:#f39c12">· answer not confirmed by grading</span>':'')+'</div><div class="q-text">'+(q.raw?q.q:esc(q.q))+'</div><div class="q-options" id="q-opts"></div><div id="q-fb"></div></div>';
   const opts=document.getElementById('q-opts');
   q.opts.forEach((opt,i)=>{
     const b=document.createElement('button'); b.className='q-opt'; b.textContent=opt;
@@ -547,16 +561,16 @@ let termActive='all';
 function buildTermFilters(){
   const bar=document.getElementById('term-filters'); bar.innerHTML='';
   const mk=(label,val)=>{const b=document.createElement('button');b.className='filter-btn'+(val===termActive?' active':'');b.textContent=label;b.onclick=()=>{termActive=val;buildTermFilters();renderTerms();};bar.appendChild(b);};
-  mk('All','all'); FF_CHAPTERS.filter(c=>(c.terms||[]).length).forEach(c=>mk(chLabel(c.n),chLabel(c.n)));
+  mk('All','all'); FF_CHAPTERS.filter(c=>(c.terms||[]).length).forEach(c=>mk(chShort(chKey(c)),chKey(c)));
 }
 function renderTerms(){
   const s=document.getElementById('term-search').value.toLowerCase();
   let html='';
   FF_CHAPTERS.forEach(c=>{
-    const ch=chLabel(c.n); if(termActive!=='all'&&termActive!==ch)return;
+    const ch=chKey(c); if(termActive!=='all'&&termActive!==ch)return;
     const rows=(c.terms||[]).filter(([t,d])=>!s||t.toLowerCase().includes(s)||d.toLowerCase().includes(s)).sort((a,b)=>a[0].localeCompare(b[0]));
     if(!rows.length)return;
-    html+='<div class="term-ch"><div class="ref-title">Chapter '+c.n+': '+esc(c.title)+'</div>'+rows.map(([t,d])=>'<div class="term-row"><b>'+esc(t)+'</b><span>'+esc(d)+'</span></div>').join('')+'</div>';
+    html+='<div class="term-ch"><div class="ref-title">'+chName(chKey(c))+': '+esc(c.title)+'</div>'+rows.map(([t,d])=>'<div class="term-row"><b>'+esc(t)+'</b><span>'+esc(d)+'</span></div>').join('')+'</div>';
   });
   document.getElementById('term-list').innerHTML=html||'<div class="empty-state">No terms match.</div>';
 }
@@ -567,17 +581,17 @@ function renderRef(){
   const chs=FF_CHAPTERS.filter(c=>c.reference);
   const bar=document.getElementById('ref-filters'), body=document.getElementById('ref-body');
   if(!chs.length){bar.innerHTML='';body.innerHTML='<div class="empty-state">Reference sections are added as chapters are finished.</div>';return;}
-  if(!refActive||!chs.find(c=>chLabel(c.n)===refActive))refActive=chLabel(chs[chs.length-1].n);
-  bar.innerHTML='';chs.forEach(c=>{const b=document.createElement('button');b.className='filter-btn'+(chLabel(c.n)===refActive?' active':'');b.textContent='Ch '+c.n+': '+c.title;b.onclick=()=>{refActive=chLabel(c.n);renderRef();};bar.appendChild(b);});
-  const c=chs.find(x=>chLabel(x.n)===refActive);
-  body.innerHTML='<h2 style="font-size:18px;margin:6px 0 14px">Chapter '+c.n+': '+esc(c.title)+'</h2>'+c.reference;
+  if(!refActive||!chs.find(c=>chKey(c)===refActive))refActive=chKey(chs[chs.length-1]);
+  bar.innerHTML='';chs.forEach(c=>{const b=document.createElement('button');b.className='filter-btn'+(chKey(c)===refActive?' active':'');b.textContent=chShort(chKey(c))+': '+c.title;b.onclick=()=>{refActive=chKey(c);renderRef();};bar.appendChild(b);});
+  const c=chs.find(x=>chKey(x)===refActive);
+  body.innerHTML='<h2 style="font-size:18px;margin:6px 0 14px">'+chName(chKey(c))+': '+esc(c.title)+'</h2>'+c.reference;
 }
 
 // REVIEW
 function updateReviewPage(){
   const missed=FC_ALL.filter(c=>fcUnknown.has(idOf(c)));
-  document.getElementById('review-list-content').innerHTML=missed.length?missed.map(c=>'<div class="review-card"><div class="review-card-ch">'+c.ch.replace('Ch','Chapter ')+'</div><div class="review-card-q">'+esc(c.q)+'</div><div class="review-card-a">&#9654; '+esc(c.a)+'</div></div>').join(''):'<div class="empty-state">No cards marked for review yet. Go to Flashcards and tap Need Review.</div>';
-  document.getElementById('missed-questions-content').innerHTML=missedQuestions.length?missedQuestions.map(m=>'<div class="missed-card"><div class="missed-card-topic">'+m.ch.replace('Ch','Chapter ')+'</div><div class="missed-card-q">'+esc(m.q)+'</div><div class="missed-card-wrong">&#10007; Your answer: '+esc(m.yourAnswer)+'</div><div class="missed-card-correct">&#10003; Correct: '+esc(m.correct)+'</div></div>').join(''):'<div class="empty-state">No missed quiz questions yet. Take a quiz and missed questions will show up here.</div>';
+  document.getElementById('review-list-content').innerHTML=missed.length?missed.map(c=>'<div class="review-card"><div class="review-card-ch">'+chName(c.ch)+'</div><div class="review-card-q">'+esc(c.q)+'</div><div class="review-card-a">&#9654; '+esc(c.a)+'</div></div>').join(''):'<div class="empty-state">No cards marked for review yet. Go to Flashcards and tap Need Review.</div>';
+  document.getElementById('missed-questions-content').innerHTML=missedQuestions.length?missedQuestions.map(m=>'<div class="missed-card"><div class="missed-card-topic">'+chName(m.ch)+'</div><div class="missed-card-q">'+esc(m.q)+'</div><div class="missed-card-wrong">&#10007; Your answer: '+esc(m.yourAnswer)+'</div><div class="missed-card-correct">&#10003; Correct: '+esc(m.correct)+'</div></div>').join(''):'<div class="empty-state">No missed quiz questions yet. Take a quiz and missed questions will show up here.</div>';
 }
 
 // Flag a possibly wrong question (goes to the admin review list)
