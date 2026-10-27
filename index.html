@@ -603,6 +603,6 @@ async function sendFlag(){const r=await P107.flag({ch:flagging.c,q:flagging.q,an
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!$('vSignin').classList.contains('hidden'))doEmail();
   if($('p-cards').classList.contains('on')&&!$('vApp').classList.contains('hidden')&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){if(e.key===' '){e.preventDefault();flip();}if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1);}});
 </script>
-<script type="module" src="p107-cloud.js?v=1"></script>
+<script type="module" src="p107-cloud.js?v=2"></script>
 </body>
 </html>

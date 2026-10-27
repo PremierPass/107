@@ -9,7 +9,7 @@
 // The page calls:        window.P107.signIn(email, pass) / signUp / google() / reset(email) / signOut()
 //                        window.P107.saveProfile({name, period})
 //                        window.P107.loadProgress() / saveProgress(data) / logTest(result) / flag(info)
-import { firebaseConfig, ADMIN_EMAILS } from './firebase-config.js?v=4';
+import { firebaseConfig, ADMIN_EMAILS } from './firebase-config.js?v=5';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
 const admins = (ADMIN_EMAILS || []).map(e => e.toLowerCase());

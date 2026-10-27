@@ -8,7 +8,7 @@
 //   window.cloudChanged()                        -> progress changed, save soon
 //   window.cloudLog({app, score, total, byCh})   -> record a finished quiz
 //   window.fireFlag({app, ch, q, answer})        -> open the "flag this question" form
-import { firebaseConfig, ADMIN_EMAILS } from './firebase-config.js?v=4';
+import { firebaseConfig, ADMIN_EMAILS } from './firebase-config.js?v=5';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
 const configured = firebaseConfig && firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith('PASTE');

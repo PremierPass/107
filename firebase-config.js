@@ -10,4 +10,4 @@ export const firebaseConfig = {
 };
 
 // Site admin accounts (full access to the Admin Dashboard). Must match the list in firestore.rules.
-export const ADMIN_EMAILS = ["stewardle132@gmail.com"];
+export const ADMIN_EMAILS = ["stewardle132@gmail.com", "rsteward@responsiveedtx.com"];

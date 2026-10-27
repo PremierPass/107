@@ -7,7 +7,7 @@ service cloud.firestore {
     function verified() { return signedIn() && request.auth.token.email_verified == true; }
     function myEmail() { return request.auth.token.email.lower(); }
     // Site admins. Keep this list in sync with ADMIN_EMAILS in firebase-config.js.
-    function isAdmin() { return verified() && myEmail() in ['stewardle132@gmail.com']; }
+    function isAdmin() { return verified() && myEmail() in ['stewardle132@gmail.com', 'rsteward@responsiveedtx.com']; }
     function roleDoc(uid) { return /databases/$(database)/documents/roles/$(uid); }
     function hasRole(uid) { return exists(roleDoc(uid)); }
     function isChiefOf(deptId) {
