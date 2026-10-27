@@ -49,5 +49,33 @@ terms:[
 ["Mobile Data Terminal (MDT)","Mobile computer that communicates with other computers on a radio system."],
 ["Next Generation 911 (NG911)","Internet-protocol 911 that receives multimedia from the public and tracks mobile devices."],
 ["PSAP","Entity that receives 911 calls and processes them under a specific operational policy."]
-]
+],
+reference:`
+<div class="ref-section"><div class="ref-title">Receiving Emergency Calls</div>
+<table class="ref-table"><tr><th>System</th><th>Key points</th></tr>
+<tr><td>PSAP</td><td>Central point that takes all 911 calls and routes them to the right agency</td></tr>
+<tr><td>Emergency Services Specific Center</td><td>Run by the fire department, EMS, or law enforcement</td></tr>
+<tr><td>E-9-1-1</td><td>Gives the dispatcher the caller's location</td></tr>
+<tr><td>NG9-1-1</td><td>Public can text 911 and send video; connects multiple agencies</td></tr>
+<tr><td>FirstNet</td><td>Nationwide network just for first responders</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">The dispatcher gathers the type and location of the emergency, number and location of people involved, the caller's name, location, and callback number (NFPA 1225). Time spent gathering info means the emergency goes unmitigated longer. If the public calls the station, follow the procedure for relaying it.</p></div>
+
+<div class="ref-section"><div class="ref-title">Radios</div>
+<div class="ref-grid">
+<div class="ref-card blue"><h3>Base station</h3><p>Fixed location, building power. Best performance.</p></div>
+<div class="ref-card blue"><h3>Mobile</h3><p>Vehicle power, mounted in the cab. Less powerful than base stations.</p></div>
+<div class="ref-card blue"><h3>Portable</h3><p>Rechargeable or replaceable batteries. Intrinsically safe in combustible atmospheres. Emergency button.</p></div>
+</div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">The FCC regulates all US radio. Radios are classified by location and size. Repeaters increase coverage. Two fireground channels: command and tactical (tactical for fireground operations). Transmissions may be recorded and become public records.</p></div>
+
+<div class="ref-section"><div class="ref-title">Radio Procedures</div>
+<table class="ref-table"><tr><th>Rule</th><th>Detail</th></tr>
+<tr><td>Identify</td><td>Identify yourself in every transmission</td></tr>
+<tr><td>Acknowledge</td><td>The receiver acknowledges every message; wait for it</td></tr>
+<tr><td>Key and pause</td><td>Key the mic and wait a second or two before speaking</td></tr>
+<tr><td>Clear text</td><td>NIMS requires plain language, no ten-codes</td></tr>
+<tr><td>Dead zone</td><td>Move toward an outside wall</td></tr>
+<tr><td>Ambient noise</td><td>Shield the mic with your body or PPE</td></tr>
+<tr><td>IDLH</td><td>Never remove your facepiece to talk</td></tr></table></div>
+`
 });

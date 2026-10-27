@@ -80,5 +80,38 @@ terms:[
 ["Smothering","Excluding oxygen from a fuel."],
 ["Water-Mist Extinguisher","Discharges atomized water. Pressurized units use distilled water."],
 ["Wet Chemical System","Wet chemical agent system in range hoods and ducting where grease builds up."]
-]
+],
+reference:`
+<div class="ref-section"><div class="ref-title">Classes of Fire</div>
+<div class="ref-grid">
+<div class="ref-card green"><span class="tag tag-green">A</span><h3>Ordinary combustibles</h3><p>Wood, paper, textiles. Water and water-based agents cool them. Ratings 1-A to 40-A.</p></div>
+<div class="ref-card red"><span class="tag tag-red">B</span><h3>Flammable liquids and gases</h3><p>Smother or interrupt the reaction. Rating = approximate square feet a nonexpert can put out. AFFF works best on static pools.</p></div>
+<div class="ref-card blue"><span class="tag tag-blue">C</span><h3>Energized electrical</h3><p>Agent must not conduct electricity. Clean agent or CO2 for computers; water mist is OK.</p></div>
+<div class="ref-card yellow"><span class="tag tag-yellow">D</span><h3>Combustible metals</h3><p>Magnesium, titanium. Dry powder only. No single agent works on every metal.</p></div>
+<div class="ref-card orange"><span class="tag tag-orange">K</span><h3>Cooking oils</h3><p>Wet chemical causes saponification (soap layer).</p></div>
+</div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">There are 5 classes. Extinguishers are classified by the fire type and labeled with letters and/or symbols. Agents work by smothering, cooling (below ignition temperature), and/or chemical flame inhibition. Smothering won't work on materials with their own oxidizer.</p></div>
+
+<div class="ref-section"><div class="ref-title">Extinguisher Types</div>
+<table class="ref-table"><tr><th>Type</th><th>Use</th></tr>
+<tr><td>Stored-pressure water</td><td>Class A; confined hot spots during overhaul</td></tr>
+<tr><td>Pump-type water</td><td>Ground cover fires</td></tr>
+<tr><td>Water mist</td><td>Class A and C</td></tr>
+<tr><td>AFFF</td><td>Class A and B; let it rain down gently or bounce off a surface</td></tr>
+<tr><td>CO2</td><td>B and C; displaces oxygen</td></tr>
+<tr><td>Dry chemical</td><td>A-B-C or B-C; wheeled units for A, B, C</td></tr>
+<tr><td>Clean agent</td><td>Nonconductive; cools and smothers A and B; good for electronics</td></tr>
+<tr><td>Wet chemical</td><td>Class K kitchens</td></tr>
+<tr><td>Dry powder</td><td>Class D only</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Stored pressure: compressed air or inert gas in the shell pushes the agent out when you squeeze.</p></div>
+
+<div class="ref-section"><div class="ref-title">Using an Extinguisher</div>
+<div class="ref-grid">
+<div class="ref-card blue"><h3>P</h3><p>Pull and twist the pin to break the seal.</p></div>
+<div class="ref-card blue"><h3>A</h3><p>Aim at the base of the fire.</p></div>
+<div class="ref-card blue"><h3>S</h3><p>Squeeze the handle.</p></div>
+<div class="ref-card blue"><h3>S</h3><p>Sweep side to side.</p></div>
+</div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Choose by fire size and intensity and the fuel. Check the outside condition first. Too close can scatter light fuels. Lay empty extinguishers on their sides.</p></div>
+`
 });

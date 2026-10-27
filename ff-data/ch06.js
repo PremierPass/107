@@ -153,5 +153,47 @@ terms:[
 ["SCBA","Respirator supplying breathable air independent of the ambient atmosphere. Worn in all IDLH atmospheres."],
 ["Supplied Air Respirator (SAR)","Air source not carried by the user. Not certified for fire fighting."],
 ["Thermal Saturation","Point where a material can't absorb more heat without a physical change."]
-]
+],
+reference:`
+<div class="ref-section"><div class="ref-title">Structural PPE</div>
+<table class="ref-table"><tr><th>Item</th><th>Key points</th></tr>
+<tr><td>Standard</td><td>Structural and proximity PPE meet NFPA 1970 (station uniforms too). All parts must be compatible</td></tr>
+<tr><td>Helmet</td><td>Faceshield or goggles (NFPA 1550); helps identify personnel. SCBA facepiece is primary eye protection</td></tr>
+<tr><td>Hood</td><td>Goes on before the coat, over the facepiece straps</td></tr>
+<tr><td>Coat and pants</td><td>Layers absorb heat and trap insulating air; retroreflective trim required</td></tr>
+<tr><td>Boots</td><td>Thermal, physical, and moisture barriers inside the shell</td></tr>
+<tr><td>Underwear</td><td>100% natural fibers; no synthetic clothing under PPE</td></tr>
+<tr><td>Hearing</td><td>Required during pump operations and in loud apparatus</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Lower heat transfer rate = longer protection. PPE must be dry. Contact burns under PPE: withdraw immediately. Heat stress: open gear when safe. Wildland needs wildland PPE and a fire shelter. Hi-vis vests on roadways unless doing fire fighting or hazmat work. Keep two sets so one can be laundered.</p></div>
+
+<div class="ref-section"><div class="ref-title">Respiratory Protection</div>
+<div class="ref-grid">
+<div class="ref-card red"><h3>Hazards</h3><p>Oxygen deficiency is under 19.5% (NFPA and OSHA), usually from combustion. Heat, smoke particles, toxic gases (CO, HCN), and nonfire gases like CO2, SO2, chlorine.</p></div>
+<div class="ref-card blue"><h3>ASR</h3><p>Atmosphere-supplying respirators (SCBA) are the primary fire service protection for oxygen-deficient or toxic atmospheres.</p></div>
+<div class="ref-card yellow"><h3>APR / PAPR</h3><p>Filter particulates only; HEPA filters stop airborne pathogens. Not for IDLH.</p></div>
+<div class="ref-card green"><h3>Open vs. closed circuit</h3><p>Open-circuit uses compressed air. Closed-circuit uses compressed oxygen, for long hazmat jobs.</p></div>
+</div></div>
+
+<div class="ref-section"><div class="ref-title">SCBA Numbers</div>
+<div class="ref-grid">
+<div class="ref-card orange"><h3>90%</h3><p>Minimum cylinder level to don or keep in service.</p></div>
+<div class="ref-card orange"><h3>33%</h3><p>End-of-service time indicator (EOSTI) alarm. Be out before it goes off.</p></div>
+<div class="ref-card orange"><h3>30 seconds</h3><p>PASS alarms after 30 seconds without motion, or when pressed.</p></div>
+<div class="ref-card orange"><h3>Weekly / yearly</h3><p>Inspect at least weekly. Fit test annually. Annual factory-qualified service goes in the log.</p></div>
+</div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Regulator drops cylinder pressure to just above atmospheric. If gauges disagree, trust the lowest. Tighten the lower facepiece straps first. Air time varies; controlled breathing stretches it. Train and stay fit to offset weight and mobility limits.</p></div>
+
+<div class="ref-section"><div class="ref-title">Using SCBA</div>
+<table class="ref-table"><tr><th>Topic</th><th>Key points</th></tr>
+<tr><td>Donning</td><td>Over-the-head or coat method (SCBA on the ground in front of you); seat-mounted while seated. Compartment mounts keep it out of weather</td></tr>
+<tr><td>Exiting</td><td>Leave as a group or in pairs. Emergency exit signs: oxygen level changes, damaged SCBA. Nonemergency: cylinder needs changing</td></tr>
+<tr><td>Wear it</td><td>Until back in the cold zone, and during overhaul</td></tr>
+<tr><td>EEBSS</td><td>Two firefighters share air without removing facepieces</td></tr>
+<tr><td>Refilling</td><td>Fill slowly. Auto-cascade (stationary), mobile fill (on scene), FBARS (in high-rises)</td></tr>
+<tr><td>Doffing</td><td>Remove the backpack while still on air</td></tr>
+<tr><td>Cleaning</td><td>Facepiece: warm water and mild disinfectant, then lint-free cloth or air dry</td></tr></table></div>
+
+<div class="ref-section"><div class="ref-title">Contamination</div>
+<p style="font-size:13px">Brush off debris first (preliminary exposure reduction). Set a decon corridor as the gateway to rehab. Crews doing decon wear the structural ensemble or better. Advanced cleaning uses an extractor washer. Gear damaged beyond repair comes out of service right away. Inhaled hot gases: get medical attention. After field decon, go to medical monitoring.</p></div>
+`
 });

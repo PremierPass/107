@@ -102,5 +102,45 @@ quiz:[
 ["Career department (quiz wording):","Full-time firefighters who live in the station while on duty","Members who respond from home only","Unpaid members","Seasonal workers"],
 ["Line personnel:","Deliver emergency services to the public","Handle payroll","Write policy only","Maintain buildings only"]
 ],
-terms:[]
+terms:[],
+reference:`
+<div class="ref-section"><div class="ref-title">Mission and Organization</div>
+<p style="font-size:13px">Mission: save lives and protect property and the environment (all-hazard approach). The AHJ decides how the department is organized and what members are trained to.</p>
+<div class="ref-grid">
+<div class="ref-card blue"><h3>Scalar structure</h3><p>Most common. An uninterrupted series of steps; decisions flow from the top down.</p></div>
+<div class="ref-card blue"><h3>Unity of command</h3><p>Each person reports to one supervisor. Chain of command runs from the fire chief down to firefighters.</p></div>
+<div class="ref-card blue"><h3>Span of control</h3><p>Optimum is 5 people per supervisor (range 3 to 7).</p></div>
+<div class="ref-card blue"><h3>Division of labor</h3><p>Assigns responsibility, gives clear-cut tasks, and prevents duplication. Discipline comes through policies.</p></div>
+</div></div>
+
+<div class="ref-section"><div class="ref-title">Departments and Companies</div>
+<table class="ref-table"><tr><th>Item</th><th>Key points</th></tr>
+<tr><td>Career</td><td>Continually staffed by full-time firefighters. Fitness programs are typically required.</td></tr>
+<tr><td>Volunteer</td><td>Members respond when needed because stations aren't continuously staffed. Part-time paid and paid-on-call count as volunteer.</td></tr>
+<tr><td>Combination</td><td>Career and volunteer members together. Staffing type depends on whether and how often members are paid.</td></tr>
+<tr><td>Company</td><td>The most basic unit of fire fighting operations, led by a company officer.</td></tr>
+<tr><td>Engine</td><td>Fire suppression on a pumping apparatus.</td></tr>
+<tr><td>Truck (ladder)</td><td>Access to upper levels, plus ventilation, forcible entry, and search.</td></tr>
+<tr><td>Line vs. staff</td><td>Line personnel deliver emergency services; staff personnel support them.</td></tr></table></div>
+
+<div class="ref-section"><div class="ref-title">Who Does What</div>
+<table class="ref-table"><tr><th>Position</th><th>Role</th></tr>
+<tr><td>Fire chief</td><td>Responsible for all operations of the department</td></tr>
+<tr><td>Company officer</td><td>Supervises a company in the station and at fires</td></tr>
+<tr><td>Incident Safety Officer</td><td>Monitors operational safety at incidents</td></tr>
+<tr><td>Fire marshal</td><td>Manages fire prevention, investigation, and plans review</td></tr>
+<tr><td>Training officer</td><td>Oversees all training. Proficiency training is annual or when policies change</td></tr>
+<tr><td>Fire and life safety educator</td><td>Informs the public about hazards, causes, and precautions (part of fire prevention / CRR)</td></tr>
+<tr><td>Firefighter I</td><td>Works under direct supervision of a FF II or company officer. NFPA 1010 sets FF I and FF II levels</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Policy = a guide to decision-making that sets boundaries and standards of conduct. Procedure = detailed written steps for a recurring situation (like seat belt use). Other agencies: law enforcement gives scene security, public works, utilities, media.</p></div>
+
+<div class="ref-section"><div class="ref-title">Safety, Health, and Wellness</div>
+<div class="ref-grid">
+<div class="ref-card red"><h3>Leading killer</h3><p>Cardiovascular disease. Biggest risk: sudden cardiac arrest from overexertion, poor health habits, or stress.</p></div>
+<div class="ref-card orange"><h3>Cancer</h3><p>Highest skin absorption: groin, jaw, forehead, back. Wear SCBA, stay upwind, decon gear, wash, and shower fast. Don't keep dirty turnouts in living areas or vehicles.</p></div>
+<div class="ref-card yellow"><h3>Stress</h3><p>Firefighters have more stress than most civilians. Occupational stress builds over years. After ASEs/PTEs, use positive coping and build resilience.</p></div>
+<div class="ref-card green"><h3>MAP</h3><p>Member assistance programs help firefighters and families with substance use, stress, depression, marriage, and money.</p></div>
+</div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">NFPA 1550 sets the safety and health program minimums: training, apparatus safety, PPE (full PPE and SCBA in IDLH), IMS for emergency operations, medical exams, infection control. Prevent exhaust buildup with exhaust extraction systems. NFFF created the 16 Life Safety Initiatives (Everyone Goes Home) as a blueprint for change. IAFC started the Safety Stand Down.</p></div>
+`
 });

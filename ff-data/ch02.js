@@ -98,5 +98,49 @@ terms:[
 ["Power Take-Off (PTO)","Lets the vehicle engine power a pump, winch, or tool. Attached to the transmission."],
 ["Traffic Control Zone","Zone on or near a roadway used to reroute traffic and protect people."],
 ["Warm Zone","Area between the hot and cold zones. Holds the decon corridor at hazmat incidents."]
-]
+],
+reference:`
+<div class="ref-section"><div class="ref-title">Riding the Apparatus</div>
+<div class="ref-grid">
+<div class="ref-card blue"><h3>Mount and dismount</h3><p>Face the apparatus with three points of contact. Back out of the cab using handholds and steps, never face first. Use the side away from traffic.</p></div>
+<div class="ref-card orange"><h3>Riding</h3><p>Seated and belted before moving. No helmets in the cab (NFPA 1550). Hearing protection, secure loose tools, close doors. Never stand in a moving apparatus.</p></div>
+</div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Your response starts the moment you're notified. Situational awareness means staying observant about changing conditions and reporting them to leadership.</p></div>
+
+<div class="ref-section"><div class="ref-title">Control Zones</div>
+<svg viewBox="0 0 340 200" width="100%" style="max-width:420px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Three nested zones: hot zone in the center, warm zone around it, cold zone outside">
+<rect x="10" y="10" width="320" height="180" rx="12" fill="#1f3b2a" stroke="#2ecc71"/><rect x="60" y="40" width="220" height="120" rx="10" fill="#3b3520" stroke="#f1c40f"/><rect x="110" y="70" width="120" height="60" rx="8" fill="#4a1f1f" stroke="#e74c3c"/>
+<text x="170" y="104" fill="#fff" font-size="13" text-anchor="middle" font-weight="bold">HOT</text><text x="170" y="57" fill="#f1c40f" font-size="12" text-anchor="middle">WARM</text><text x="170" y="27" fill="#2ecc71" font-size="12" text-anchor="middle">COLD</text>
+<text x="170" y="182" fill="#aaa" font-size="10" text-anchor="middle">ICP, staging, and rehab in the cold zone</text>
+</svg>
+<table class="ref-table" style="margin-top:8px"><tr><th>Zone</th><th>Who and what</th></tr>
+<tr><td>Hot</td><td>Trained personnel mitigating the problem, in full PPE</td></tr>
+<tr><td>Warm</td><td>Direct support for the hot zone (decon at hazmat). Same PPE as the hot zone</td></tr>
+<tr><td>Cold</td><td>ICP, rehab, staging, support</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Cordon with rope or fireline tape tied to fixed objects, never to vehicles.</p></div>
+
+<div class="ref-section"><div class="ref-title">Scene Lighting and Accountability</div>
+<div class="ref-grid">
+<div class="ref-card yellow"><h3>Lighting</h3><p>Portable (interiors, remote areas) or fixed (vehicle-mounted). Vehicle generators have more power; portable ones have limited mobility. Never connect more lights than the source can support. No generators in enclosed spaces. Twist-lock connectors.</p></div>
+<div class="ref-card green"><h3>Passport</h3><p>Turned in before entering the IDLH, collected after leaving.</p></div>
+<div class="ref-card green"><h3>SCBA tag</h3><p>Tags collected at entry. Team exit time is based on the lowest-reading SCBA.</p></div>
+<div class="ref-card green"><h3>Electronic</h3><p>Computer-based tracking, can give an even greater level of safety.</p></div>
+</div></div>
+
+<div class="ref-section"><div class="ref-title">Roadway Incidents</div>
+<p style="font-size:13px">Wear a high-visibility garment, walk facing traffic, and work inside a protected area. The company officer and driver/operator position apparatus as a protective barrier. Use TIMS with law enforcement and set traffic control zones. Downed lines: secure the scene and have the power company shut off power; don't approach. Cover hydraulic and battery fluid spills with absorbent.</p></div>
+
+<div class="ref-section"><div class="ref-title">NIMS-ICS</div>
+<table class="ref-table"><tr><th>Part</th><th>Role</th></tr>
+<tr><td>Incident Commander</td><td>Top of the chain. Sets strategic goals and tactical objectives</td></tr>
+<tr><td>Safety Officer</td><td>Monitors hazards, can stop unsafe acts, gives safety briefings each operational period</td></tr>
+<tr><td>PIO</td><td>Accurate information to the media and public</td></tr>
+<tr><td>Liaison Officer</td><td>Contact between Command Staff and other agencies</td></tr>
+<tr><td>Operations</td><td>Tactical activities and the safety of personnel working in it</td></tr>
+<tr><td>Planning</td><td>Gathers information and helps develop the IAP for the next operational period</td></tr>
+<tr><td>Logistics</td><td>Services and support to everyone</td></tr>
+<tr><td>Finance/Admin</td><td>Optional, only when financial services are needed</td></tr>
+<tr><td>Intel/Investigation</td><td>Set up if criminal activity is suspected</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Branch sits between Section and Division/Group. Division = geographic; Group = functional. First person on scene (or ranking officer of the first company) takes Command; transfer to someone higher-ranking or more trained, face to face or by radio. Unified Command: all agencies with jurisdiction contribute, roles set by an MOU. Size and complexity drive the structure. Use common terminology.</p></div>
+`
 });

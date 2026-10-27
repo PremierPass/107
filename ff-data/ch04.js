@@ -160,5 +160,41 @@ terms:[
 ["Type III","Noncombustible exterior walls; interior partly or fully wood."],
 ["Type IV","Heavy timber interior framing larger than Type III; noncombustible walls."],
 ["Type V","Exterior walls, bearing walls, floors, roofs, and supports wholly or partly wood smaller than Type IV."]
-]
+],
+reference:`
+<div class="ref-section"><div class="ref-title">Five Construction Types</div>
+<p style="font-size:13px">NFPA and ICC codes use five types, set by the materials and how they perform in fire. Local codes regulate type by the building's intended use.</p>
+<table class="ref-table"><tr><th>Type</th><th>Materials</th><th>Fire concerns</th></tr>
+<tr><td><b>I</b> Fire-resistive</td><td>Protected noncombustible (concrete, protected steel)</td><td>Highest protection from spread and collapse, but the structure can still degrade</td></tr>
+<tr><td><b>II</b> Noncombustible</td><td>Metal framing, metal cladding, concrete block; materials don't add to the fire</td><td>Lower fire-resistance rating than Type I; unprotected steel fails early</td></tr>
+<tr><td><b>III</b> Ordinary</td><td>Noncombustible exterior walls, wood interior</td><td>Fire spreads through void spaces without fire stops</td></tr>
+<tr><td><b>IV</b> Heavy timber</td><td>Large-dimension lumber or laminated wood</td><td>High wood concentration adds to fire intensity</td></tr>
+<tr><td><b>V</b> Wood frame</td><td>Exterior load-bearing walls entirely wood</td><td>Balloon frame (studs run foundation to roof, fire races up) and platform frame. Veneer adds little protection. Dark oily smoke = vinyl siding</td></tr></table></div>
+
+<div class="ref-section"><div class="ref-title">Walls, Floors, and Roofs</div>
+<div class="ref-grid">
+<div class="ref-card blue"><h3>Walls</h3><p>Load-bearing walls carry loads above (party walls are load-bearing). Nonload-bearing support only themselves. Fire walls divide buildings to contain fire and, with exterior walls, are the hardest to breach. Unprotected penetrations weaken fire walls.</p></div>
+<div class="ref-card orange"><h3>Roofs</h3><p>Flat (slight slope, commercial), pitched (ridge to eaves), arched. Deck sits between supports and covering; beams sit right under the deck. Cold or rain roofs hide voids; smoke won't clear until the original roof is opened. Lightweight concrete is very hard to cut. Green roofs, PV panels, and rooftop units add load and hazards; PV panels stay energized.</p></div>
+<div class="ref-card red"><h3>Trusses and collapse</h3><p>Wood I-beams, box beams, and trusses fail early and create big open voids. Duration of the fire is a key collapse indicator. Protect steel trusses with gypsum or spray-on material.</p></div>
+<div class="ref-card yellow"><h3>Basements</h3><p>Limited access makes them more dangerous. With no exterior access, attack from the top of the interior stairs or through a floor opening.</p></div>
+</div></div>
+
+<div class="ref-section"><div class="ref-title">Doors</div>
+<table class="ref-table"><tr><th>Door</th><th>Key points</th></tr>
+<tr><td>Swinging</td><td>Usually required for exits. Solid-core is a good fire barrier. Needs clear space to close</td></tr>
+<tr><td>Sliding</td><td>Never allowed as part of a means of egress</td></tr>
+<tr><td>Revolving</td><td>Panels collapse under pressure to make an open path</td></tr>
+<tr><td>Folding</td><td>Homes, dividing assembly spaces, some horizontal fire doors</td></tr>
+<tr><td>Fire doors</td><td>Mostly metal, keep closed. Horizontal sliding on a track with a fusible link (old industrial); overhead rolling saves wall space; vertical (docks and garages, not egress)</td></tr>
+<tr><td>Glass doors</td><td>Tempered glass that resists breakage</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Doors are classified by how they operate. Protected stairs resist fire and smoke; keep their doors controlled. Egress corridor ceilings match the walls' fire rating.</p></div>
+
+<div class="ref-section"><div class="ref-title">Windows</div>
+<div class="ref-grid">
+<div class="ref-card blue"><h3>Double-hung</h3><p>Two sashes; airflow through top and bottom.</p></div>
+<div class="ref-card blue"><h3>Awning / hopper</h3><p>Awning hinges at the top, hopper at the bottom.</p></div>
+<div class="ref-card blue"><h3>Pivoting</h3><p>Gives the full opening for ventilation.</p></div>
+<div class="ref-card blue"><h3>Fixed</h3><p>Frame and glazed stationary sash. Fixed or no windows make access and venting harder. Security bars hurt life safety.</p></div>
+</div></div>
+`
 });

@@ -205,5 +205,59 @@ terms:[
 ["Vapor Pressure","Pressure where vapor is in equilibrium with its liquid. Higher means it evaporates more readily."],
 ["Ventilation-Limited","Fire whose HRR or growth is limited by available oxygen."],
 ["Watt (W)","SI unit of power, 1 joule per second."]
-]
+],
+reference:`
+<div class="ref-section"><div class="ref-title">Combustion Basics</div>
+<div class="ref-grid">
+<div class="ref-card orange"><h3>Fire triangle</h3><p>Fuel, oxygen, heat. Explains nonflaming (smoldering) combustion.</p></div>
+<div class="ref-card red"><h3>Fire tetrahedron</h3><p>Adds the self-sustained chemical chain reaction. Explains flaming combustion.</p></div>
+<div class="ref-card blue"><h3>Fuel and oxidizer</h3><p>Fuel is the reducing agent; oxygen is the main oxidizer. Combustion turns chemical energy into heat and light. Fire is exothermic.</p></div>
+<div class="ref-card yellow"><h3>Products</h3><p>Heat and smoke. Structure fire smoke comes from incomplete combustion. Most deaths come from low oxygen and toxic gases (CO, HCN from furniture and carpet).</p></div>
+</div></div>
+
+<div class="ref-section"><div class="ref-title">Heat Transfer</div>
+<table class="ref-table"><tr><th>Method</th><th>How</th></tr>
+<tr><td>Conduction</td><td>Direct contact, through and between solids</td></tr>
+<tr><td>Convection</td><td>Movement of hot smoke and fire gases</td></tr>
+<tr><td>Radiation</td><td>Electromagnetic waves; ignites objects at a distance. Common cause of exposure fires</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">They tend to happen together. Rate depends on temperature difference and conductivity; measured as heat flux. Heat sources: chemical (most common, including self-heating), electrical, mechanical (friction, compression).</p></div>
+
+<div class="ref-section"><div class="ref-title">Fuels</div>
+<table class="ref-table"><tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Pyrolysis</td><td>Solids breaking down into gases from heat</td></tr>
+<tr><td>Vaporization</td><td>Liquids turning to vapor (physical change)</td></tr>
+<tr><td>Surface-to-mass ratio</td><td>Controls how easily solids ignite</td></tr>
+<tr><td>Vapor density</td><td>Under 1 rises; over 1 sinks</td></tr>
+<tr><td>Specific gravity</td><td>Under 1 floats on water (gasoline) and is harder to put out with water</td></tr>
+<tr><td>Flash point / fire point</td><td>Flash point flashes but won't sustain; fire point sustains burning</td></tr>
+<tr><td>Flammable range</td><td>Above the UEL is too rich to burn</td></tr>
+<tr><td>Autoignition</td><td>Always higher than piloted ignition (which needs an outside source)</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Gases are most dangerous because they're already ready to ignite. Organic fuels contain carbon.</p></div>
+
+<div class="ref-section"><div class="ref-title">Stages of Fire</div>
+<svg viewBox="0 0 340 170" width="100%" style="max-width:440px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Heat release over time: incipient, growth, flashover, fully developed, decay. A ventilation-limited fire stalls then spikes when air is added.">
+<line x1="30" y1="140" x2="330" y2="140" stroke="#666"/><line x1="30" y1="140" x2="30" y2="15" stroke="#666"/>
+<path d="M30 138 C70 136 90 120 120 80 C135 55 145 40 160 32 L230 32 C260 34 290 90 325 132" fill="none" stroke="#e67e22" stroke-width="3"/>
+<path d="M120 80 C135 72 145 78 170 92 C190 100 200 100 210 40" fill="none" stroke="#3498db" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="55" y="155" fill="#aaa" font-size="10">Incipient</text><text x="105" y="155" fill="#aaa" font-size="10">Growth</text><text x="170" y="155" fill="#aaa" font-size="10">Fully developed</text><text x="280" y="155" fill="#aaa" font-size="10">Decay</text>
+<text x="150" y="26" fill="#e74c3c" font-size="10">flashover</text><text x="140" y="118" fill="#3498db" font-size="10">vent-limited, then air added</text>
+<text x="20" y="80" fill="#aaa" font-size="10" transform="rotate(-90 20 80)">Heat release</text>
+</svg>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Incipient growth depends on the fuel's makeup and arrangement; flame height shows it leaving incipient. Rapid fire development happens in the growth stage. Fully developed = burning as much as it can. Large compartments develop more slowly. Fires spread downward much more slowly than up.</p></div>
+
+<div class="ref-section"><div class="ref-title">Ventilation and Flow Path</div>
+<div class="ref-grid">
+<div class="ref-card green"><h3>Fuel-limited</h3><p>Enough oxygen; fuel controls growth.</p></div>
+<div class="ref-card red"><h3>Ventilation-limited</h3><p>Not enough oxygen; most structure fires. Adding air makes them spike. Cool gases before venting more.</p></div>
+<div class="ref-card blue"><h3>Flow path</h3><p>Set by the floor plan and openings. Gases move high to low pressure. Doors control air: close them. Don't linger in the exhaust path.</p></div>
+<div class="ref-card yellow"><h3>Neutral plane</h3><p>Where hot gas leaves and cool air enters. Thermal layering puts the hottest gas on top; ventilation and hose streams disturb it.</p></div>
+</div></div>
+
+<div class="ref-section"><div class="ref-title">Rapid Fire Development</div>
+<table class="ref-table"><tr><th>Event</th><th>Signs</th></tr>
+<tr><td>Flashover</td><td>Rapid jump from growth to fully developed. Large volumes of darkening smoke, isolated flames in the gas layer, rollover</td></tr>
+<tr><td>Rollover</td><td>Flames spread through the hot gas layer</td></tr>
+<tr><td>Backdraft</td><td>Air added to a ventilation-limited fire. Pulsing smoke at small openings, very low neutral plane. Prevent by limiting openings</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Unprotected engineered trusses can fail in 5 to 10 minutes with no warning. Buildings under construction, renovation, or demolition have sharply higher fire risk.</p></div>
+`
 });

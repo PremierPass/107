@@ -95,5 +95,39 @@ terms:[
 ["Utility Rope","Rope for any use except rescue: hoisting, securing objects, cordoning areas."],
 ["Webbing","Used for anchors, lashings, and packaging patients and rescuers. Same material as synthetic rope."],
 ["Working End","The end of the rope used to tie a knot."]
-]
+],
+reference:`
+<div class="ref-section"><div class="ref-title">Rope Types</div>
+<div class="ref-grid">
+<div class="ref-card red"><span class="tag tag-red">LIFE SAFETY</span><h3>Life safety rope</h3><p>Rescue and emergency operations only: lifting victims and rescuers. Kernmantle, block creel (one continuous fiber). Dynamic kernmantle stretches, used as a belay line.</p></div>
+<div class="ref-card yellow"><span class="tag tag-yellow">UTILITY</span><h3>Utility rope</h3><p>Hoisting tools, control zone perimeters, stabilizing objects. Natural fiber is allowed only as utility rope. Downgraded life safety rope can become utility rope.</p></div>
+<div class="ref-card blue"><h3>Construction</h3><p>Kernmantle: core plus sheath. Laid: twisted strands. Braided: less likely to twist. Braid-on-braid: braided core and sheath; lumps mean core damage.</p></div>
+<div class="ref-card green"><h3>Webbing</h3><p>Same materials as synthetic rope. Flat webbing for straps and harnesses; spiral weave tubular for rescue. Joined with a water knot.</p></div>
+</div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Synthetic rope lasts longer; natural fiber chars instead of melting. Reuse in life safety only if never exposed to chemicals or damaging materials.</p></div>
+
+<div class="ref-section"><div class="ref-title">Inspection and Care</div>
+<table class="ref-table"><tr><th>Item</th><th>Key points</th></tr>
+<tr><td>When</td><td>After each use. Keep a rope log to know when to retire it</td></tr>
+<tr><td>Kernmantle</td><td>Under slight tension, feel for lumps, depressions, and soft spots</td></tr>
+<tr><td>Laid rope</td><td>Untwist to check each strand</td></tr>
+<tr><td>Destroy if</td><td>Metal shavings or wood splinters are embedded</td></tr>
+<tr><td>Soiled</td><td>Brush off loose debris first. Synthetic: warm water and mild detergent. Natural: wipe or brush only</td></tr>
+<tr><td>Storage</td><td>In a rope bag; reverse the ends periodically</td></tr></table></div>
+
+<div class="ref-section"><div class="ref-title">Knots and Hitches</div>
+<table class="ref-table"><tr><th>Knot</th><th>Use</th></tr>
+<tr><td>Overhand safety</td><td>Keeps the working end from slipping back through a knot</td></tr>
+<tr><td>Half-hitch</td><td>Always combined with another knot or hitch</td></tr>
+<tr><td>Clove hitch</td><td>Attaching rope to an object</td></tr>
+<tr><td>Figure-eight</td><td>Stopper knot (pulleys, rope bag grommets)</td></tr>
+<tr><td>Figure-eight on a bight</td><td>Loop for hoisting; ladders and saws (through the closed handle)</td></tr>
+<tr><td>Figure-eight follow-through</td><td>Securing around objects</td></tr>
+<tr><td>Figure-eight bend</td><td>Joining two life safety ropes of equal size</td></tr>
+<tr><td>Water knot</td><td>Joining webbing or making a webbing loop</td></tr></table>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Parts: working end (ties the knot), running part (does the pulling or hoisting), standing part. A loop crosses the bight over the standing part. Dress knots snug with no slack. Fire service knots must be easy to tie and untie.</p></div>
+
+<div class="ref-section"><div class="ref-title">Hoisting</div>
+<p style="font-size:13px">Hoist hand over hand and use a tag line so the tool doesn't spin or snag. OSHA prohibits hoisting SCBA cylinders. Pike pole: clove hitch near the butt, half-hitch mid-handle, half-hitch around the head. Pulleys give mechanical advantage. When stabilizing, the rope and anchor must hold the object's weight.</p></div>
+`
 });
