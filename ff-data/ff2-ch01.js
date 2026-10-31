@@ -684,15 +684,15 @@ terms:[
 "Document that the IC may use on the fire ground to track units and record field notes during an incident; could evolve into a written IAP if an incident escalates in size or complexity."
 ]
 ],
-reference:`<div class="ref-section"><div class="ref-title">Leadership and Organization</div>
+reference:`<div class="ref-section"><h3 class="ref-title">Leadership and Organization</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Leading as a FF II</h3><p>Issue clear instructions, delegate, allow time for tasks, accept feedback, keep situational awareness, follow SOPs and a plan.</p></div>
-<div class="ref-card green"><h3>Principles</h3><p>Unity of command: one supervisor each. Span of control: 3 to 7 (5 is ideal). Division of labor: tasks assigned by skill. Scalar structure: decisions flow top-down through each level. Freelancing = working outside the IAP.</p></div>
-<div class="ref-card orange"><h3>Resources</h3><p>Strike team: same kind and type, set minimum staffing. Task force: mixed resources. Operations usually needs the most resources. Type 5 incidents are handled locally; Type 1 is the most complex.</p></div>
-<div class="ref-card yellow"><h3>Aid agreements</h3><p>Automatic: dispatched automatically by written agreement. Mutual: reciprocal, on request. Outside: from outside the AHJ, usually paid.</p></div>
+<div class="ref-card blue"><h4>Leading as a FF II</h4><p>Issue clear instructions, delegate, allow time for tasks, accept feedback, keep situational awareness, follow SOPs and a plan.</p></div>
+<div class="ref-card green"><h4>Principles</h4><p>Unity of command: one supervisor each. Span of control: 3 to 7 (5 is ideal). Division of labor: tasks assigned by skill. Scalar structure: decisions flow top-down through each level. Freelancing = working outside the IAP.</p></div>
+<div class="ref-card orange"><h4>Resources</h4><p>Strike team: same kind and type, set minimum staffing. Task force: mixed resources. Operations usually needs the most resources. Type 5 incidents are handled locally; Type 1 is the most complex.</p></div>
+<div class="ref-card yellow"><h4>Aid agreements</h4><p>Automatic: dispatched automatically by written agreement. Mutual: reciprocal, on request. Outside: from outside the AHJ, usually paid.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Planning and Strategy</div>
+<div class="ref-section"><h3 class="ref-title">Planning and Strategy</h3>
 <table class="ref-table"><tr><th>Item</th><th>Key points</th></tr>
 <tr><td>Priorities</td><td>Life safety, incident stabilization, property conservation. These are the strategic goals; tactical objectives are the tasks that reach them.</td></tr>
 <tr><td>Planning "P"</td><td>1 Understand the situation (size-up), 2 objectives, 3 develop the plan, 4 prepare and share it, 5 execute, evaluate, revise.</td></tr>
@@ -702,21 +702,21 @@ reference:`<div class="ref-section"><div class="ref-title">Leadership and Organi
 <tr><td>Transitions</td><td>Offensive to defensive when conditions deteriorate fast. Defensive to offensive when resources arrive or conditions improve. Take a PAR when the strategy changes.</td></tr>
 <tr><td>Briefings</td><td>Staff (IC to staff), section, and field (crews, at the beginning of an operational shift).</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Command and Communications</div>
+<div class="ref-section"><h3 class="ref-title">Command and Communications</h3>
 <p style="font-size:13px">First arriving firefighter acts as IC: size-up, then the arrival report (unit, conditions, actions, command name and post, staging, strategy, needs). Transfer command face to face to someone on scene. Formal vs. informal (between crewmembers) communication. Emergency traffic warns of an impending hazard. Evacuation: IC orders withdrawal by radio (repeated) and air horns, then PAR. Units give tactical progress reports (success, failure, delay). Victim found during fire attack: tell the IC or rescue crew first.</p></div>
 
-<div class="ref-section"><div class="ref-title">Coordinating Unit Operations</div>
+<div class="ref-section"><h3 class="ref-title">Coordinating Unit Operations</h3>
 <div class="ref-grid">
-<div class="ref-card red"><h3>Hoselines and nozzles</h3><p>Flow rate is the most important choice. Fog: radiant heat protection and hydraulic ventilation. Exterior control: solid stream from a smooth bore (or straight stream). Wye splits a line; a water thief takes a large line down to smaller ones.</p></div>
-<div class="ref-card blue"><h3>Entry</h3><p>IC or supervisor picks the entry. Attack with the wind at your back. K-tool for through-the-lock. Keep the door closed until the line is charged and the crew is ready. Bleed the line first. The lower part of a single doorway is the air intake.</p></div>
-<div class="ref-card green"><h3>Thermal imagers</h3><p>Find fire, victims, and liquid levels. Can't see through water, glass, or reflective surfaces, or a fire below a carpeted floor. Inspect after every use. NFPA 1408 and 1801.</p></div>
-<div class="ref-card orange"><h3>RIC and ventilation</h3><p>Assign a RIC whenever crews are in an IDLH. Vent crews must know where interior crews are so they don't pull the flow path onto them.</p></div>
+<div class="ref-card red"><h4>Hoselines and nozzles</h4><p>Flow rate is the most important choice. Fog: radiant heat protection and hydraulic ventilation. Exterior control: solid stream from a smooth bore (or straight stream). Wye splits a line; a water thief takes a large line down to smaller ones.</p></div>
+<div class="ref-card blue"><h4>Entry</h4><p>IC or supervisor picks the entry. Attack with the wind at your back. K-tool for through-the-lock. Keep the door closed until the line is charged and the crew is ready. Bleed the line first. The lower part of a single doorway is the air intake.</p></div>
+<div class="ref-card green"><h4>Thermal imagers</h4><p>Find fire, victims, and liquid levels. Can't see through water, glass, or reflective surfaces, or a fire below a carpeted floor. Inspect after every use. NFPA 1408 and 1801.</p></div>
+<div class="ref-card orange"><h4>RIC and ventilation</h4><p>Assign a RIC whenever crews are in an IDLH. Vent crews must know where interior crews are so they don't pull the flow path onto them.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Electrical and Underground</div>
+<div class="ref-section"><h3 class="ref-title">Electrical and Underground</h3>
 <p style="font-size:13px">Assume every wire is energized. Until the power is off, maintain the perimeter and protect exposures. Small electronics fires: isolate power, then use a Class C agent. Tingling in your feet: keep feet together and hop or shuffle out of the ground gradient. Stay inside a vehicle touching lines. Only the utility cuts lines. Underground and confined space fires: only trained technical rescue units go in.</p></div>
 
-<div class="ref-section"><div class="ref-title">Postincident Reports</div>
+<div class="ref-section"><h3 class="ref-title">Postincident Reports</h3>
 <p style="font-size:13px">Codes come from NFPA 901 or USFA's NFIRS, which builds national data to address the fire problem and shows response trends. Reports are public legal documents, so errors can have legal consequences. They include occupant and owner names and addresses, structure info, how the call came in, actions, injuries, units, cause, damage, and a narrative.</p></div>
 `
 });

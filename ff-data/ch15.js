@@ -548,16 +548,16 @@ terms:[
 "Combustible material, such as rolled rags, blankets, newspapers, or flammable liquid, often used to connect remote fuel packages (such as pools of ignitable liquid and other combustible materials) in order to spread fire from one point or area to other points or areas; frequently used in conjunction with an incendiary device."
 ]
 ],
-reference:`<div class="ref-section"><div class="ref-title">Overhaul</div>
+reference:`<div class="ref-section"><h3 class="ref-title">Overhaul</h3>
 <p style="font-size:13px">Overhaul starts after the main body of fire is out: find and kill hidden fire, make the building safe, find the cause, and preserve evidence. Main goal of the plan: the highest degree of safety. It starts in the area of most severe fire involvement when the IC orders it, coordinated with the investigator.</p>
 <div class="ref-grid">
-<div class="ref-card red"><h3>Safety</h3><p>Toxic gases and carcinogens: keep SCBA and PPE on, monitor the air. Charged 1½ or 1¾ inch line for rekindle. Stand between the ceiling being pulled and the door, never under it.</p></div>
-<div class="ref-card orange"><h3>Structural warning signs</h3><p>Burned joists, spalling concrete, sagging steel, walls pushed out, opened mortar joints, melted veneer ties, heavy storage up high, pooled water, wet insulation.</p></div>
-<div class="ref-card yellow"><h3>Hidden fire signs</h3><p>Cracked plaster, rippled wallpaper, hissing steam, smoke from cracks, heat on a TI. If the TI and other signs disagree, open it and look. Check chases, walls, ceilings, and insulation.</p></div>
-<div class="ref-card blue"><h3>Extinguishing</h3><p>Wetting agents like Class A foam. Submerge small burning objects in water. Baled rags, cotton, or hay: break them apart. Vehicles: may need to pull carpet, liner, and insulation.</p></div>
+<div class="ref-card red"><h4>Safety</h4><p>Toxic gases and carcinogens: keep SCBA and PPE on, monitor the air. Charged 1½ or 1¾ inch line for rekindle. Stand between the ceiling being pulled and the door, never under it.</p></div>
+<div class="ref-card orange"><h4>Structural warning signs</h4><p>Burned joists, spalling concrete, sagging steel, walls pushed out, opened mortar joints, melted veneer ties, heavy storage up high, pooled water, wet insulation.</p></div>
+<div class="ref-card yellow"><h4>Hidden fire signs</h4><p>Cracked plaster, rippled wallpaper, hissing steam, smoke from cracks, heat on a TI. If the TI and other signs disagree, open it and look. Check chases, walls, ceilings, and insulation.</p></div>
+<div class="ref-card blue"><h4>Extinguishing</h4><p>Wetting agents like Class A foam. Submerge small burning objects in water. Baled rags, cotton, or hay: break them apart. Vehicles: may need to pull carpet, liner, and insulation.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Salvage (Property Conservation)</div>
+<div class="ref-section"><h3 class="ref-title">Salvage (Property Conservation)</h3>
 <table class="ref-table"><tr><th>Item</th><th>Use</th></tr>
 <tr><td><b>Salvage cover</b></td><td>Protects unaffected furniture and areas. Most common method: pile contents in the room and cover them, with one high point so water runs off. Rolled or folded to carry. Balloon throw = two firefighters, folded cover.</td></tr>
 <tr><td><b>Carryall</b></td><td>Nonflammable. Carries debris or holds water for dunking small burning objects.</td></tr>
@@ -567,15 +567,20 @@ reference:`<div class="ref-section"><div class="ref-title">Overhaul</div>
 <tr><td><b>Dewatering / water vacuum</b></td><td>Pumps for basements and shafts. Vacuums for shallow water (backpack 4 to 5 gal, floor model up to 20 gal).</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Salvage runs from arrival until the last unit leaves. Carrying contents out can interfere with the flow path. Commercial: large stock is hard to cover; lift stock on pallets. Cover forced doors and windows with plywood or plastic. Clean covers with a hose and broom (detergent only if very dirty), dry them completely, then inspect for holes overhead and patch them.</p></div>
 
-<div class="ref-section"><div class="ref-title">Scene Preservation</div>
+<div class="ref-section"><h3 class="ref-title">Scene Preservation</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Origin</h3><p>Area of origin = the general room or area. Point of origin = the exact spot. The area of origin may not have the most damage. Wildland origin is harder to find. Next step after finding it: fire cause determination.</p></div>
-<div class="ref-card green"><h3>Chain of custody</h3><p>Scene security is the first step. Anyone who handles evidence becomes part of the chain. Don't disturb evidence unless you must; you only need to know how to preserve it.</p></div>
-<div class="ref-card orange"><h3>Perimeter</h3><p>Restrict access early. Beyond the farthest evidence, and bigger than you think you need. Explosions: 1.5x the distance to the farthest debris, expand as more is found. Keep an entry log and escort visitors.</p></div>
-<div class="ref-card red"><h3>Arson signs</h3><p>Odd odors, fire that grows when water hits it (accelerant), trailers, incendiary devices (glass, bottle fragments, metal parts), multiple fires, disabled alarms, missing possessions or records, people present after hours.</p></div>
+<div class="ref-card blue"><h4>Origin</h4><p>Area of origin = the general room or area. Point of origin = the exact spot. The area of origin may not have the most damage. Wildland origin is harder to find. Next step after finding it: fire cause determination.</p></div>
+<div class="ref-card green"><h4>Chain of custody</h4><p>Scene security is the first step. Anyone who handles evidence becomes part of the chain. Don't disturb evidence unless you must; you only need to know how to preserve it.</p></div>
+<div class="ref-card orange"><h4>Perimeter</h4><p>Restrict access early. Beyond the farthest evidence, and bigger than you think you need. Explosions: 1.5x the distance to the farthest debris, expand as more is found. Keep an entry log and escort visitors.</p></div>
+<div class="ref-card red"><h4>Arson signs</h4><p>Odd odors, fire that spreads unusually fast or flares up when water is applied (a possible accelerant: note it and report it; investigators decide), trailers, incendiary devices (glass, bottle fragments, metal parts), multiple fires, disabled alarms, missing possessions or records, people present after hours.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Field Reduction of Contaminants</div>
+<div class="ref-section"><h3 class="ref-title">Field Reduction of Contaminants</h3>
 <p style="font-size:13px">Before leaving the scene: brush off debris with a soft brush and damp towel, rinse PPE and tools with a hoseline, remove turnouts, wash your head, face, and neck, and bag contaminated gear. At the station: shower first, then clean gear and the apparatus. The goal is to keep carcinogens off you and others.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 15 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+</ul></div>
 `
 });

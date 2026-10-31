@@ -80,7 +80,7 @@ quiz:[
 ["Window giving the full opening for ventilation:","Pivoting","Fixed","Awning","Hopper"],
 ["Lightweight steel trusses in tilt-up buildings can be protected with:","Gypsum board or spray-on fire resistant material","Vinyl siding","Paint","Plywood"],
 ["Double-hung windows allow:","Circulation through top and bottom","No circulation","Full opening for ventilation","Opening only by crank"],
-["Sliding doors as part of a means of egress:","Never allowed","Always allowed","Allowed in homes","Allowed if tempered"],
+["Sliding doors as part of a means of egress:","Not normally used; swinging doors are the rule, with limited code exceptions","Always allowed","Allowed anywhere in homes","Allowed if the glass is tempered",{note:"The course test keyed \"never allowed.\" The building code is not that absolute. The 2021 IBC allows some sliding doors in a means of egress, such as power-operated doors with a breakaway feature and manual sliding doors serving 10 or fewer occupants. The code edition your jurisdiction adopted governs."}],
 ["Flat roof:","Slight slope for drainage; commercial, industrial, multifamily","Steep slope","Curved surface","Only on homes"],
 ["Revolving doors are designed to:","Collapse under pressure for an unobstructed opening","Never move","Lock during fires","Spin faster in fire"],
 ["Metal framing, metal cladding, concrete block walls:","Type II","Type IV","Type V","Type III"],
@@ -162,7 +162,7 @@ terms:[
 ["Type V","Exterior walls, bearing walls, floors, roofs, and supports wholly or partly wood smaller than Type IV."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Five Construction Types</div>
+<div class="ref-section"><h3 class="ref-title">Five Construction Types</h3>
 <p style="font-size:13px">NFPA and ICC codes use five types, set by the materials and how they perform in fire. Local codes regulate type by the building's intended use.</p>
 <table class="ref-table"><tr><th>Type</th><th>Materials</th><th>Fire concerns</th></tr>
 <tr><td><b>I</b> Fire-resistive</td><td>Protected noncombustible (concrete, protected steel)</td><td>Highest protection from spread and collapse, but the structure can still degrade</td></tr>
@@ -171,30 +171,36 @@ reference:`
 <tr><td><b>IV</b> Heavy timber</td><td>Large-dimension lumber or laminated wood</td><td>High wood concentration adds to fire intensity</td></tr>
 <tr><td><b>V</b> Wood frame</td><td>Exterior load-bearing walls entirely wood</td><td>Balloon frame (studs run foundation to roof, fire races up) and platform frame. Veneer adds little protection. Dark oily smoke = vinyl siding</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Walls, Floors, and Roofs</div>
+<div class="ref-section"><h3 class="ref-title">Walls, Floors, and Roofs</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Walls</h3><p>Load-bearing walls carry loads above (party walls are load-bearing). Nonload-bearing support only themselves. Fire walls divide buildings to contain fire and, with exterior walls, are the hardest to breach. Unprotected penetrations weaken fire walls.</p></div>
-<div class="ref-card orange"><h3>Roofs</h3><p>Flat (slight slope, commercial), pitched (ridge to eaves), arched. Deck sits between supports and covering; beams sit right under the deck. Cold or rain roofs hide voids; smoke won't clear until the original roof is opened. Lightweight concrete is very hard to cut. Green roofs, PV panels, and rooftop units add load and hazards; PV panels stay energized.</p></div>
-<div class="ref-card red"><h3>Trusses and collapse</h3><p>Wood I-beams, box beams, and trusses fail early and create big open voids. Duration of the fire is a key collapse indicator. Protect steel trusses with gypsum or spray-on material.</p></div>
-<div class="ref-card yellow"><h3>Basements</h3><p>Limited access makes them more dangerous. With no exterior access, attack from the top of the interior stairs or through a floor opening.</p></div>
+<div class="ref-card blue"><h4>Walls</h4><p>Load-bearing walls carry loads above (party walls are load-bearing). Nonload-bearing support only themselves. Fire walls divide buildings to contain fire and, with exterior walls, are the hardest to breach. Unprotected penetrations weaken fire walls.</p></div>
+<div class="ref-card orange"><h4>Roofs</h4><p>Flat (slight slope, commercial), pitched (ridge to eaves), arched. Deck sits between supports and covering; beams sit right under the deck. Cold or rain roofs hide voids; smoke won't clear until the original roof is opened. Lightweight concrete is very hard to cut. Green roofs, PV panels, and rooftop units add load and hazards; PV panels stay energized.</p></div>
+<div class="ref-card red"><h4>Trusses and collapse</h4><p>Wood I-beams, box beams, and trusses fail early and create big open voids. Duration of the fire is a key collapse indicator. Protect steel trusses with gypsum or spray-on material.</p></div>
+<div class="ref-card yellow"><h4>Basements</h4><p>Limited access makes them more dangerous. With no exterior access, attack from the top of the interior stairs or through a floor opening.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Doors</div>
+<div class="ref-section"><h3 class="ref-title">Doors</h3>
 <table class="ref-table"><tr><th>Door</th><th>Key points</th></tr>
 <tr><td>Swinging</td><td>Usually required for exits. Solid-core is a good fire barrier. Needs clear space to close</td></tr>
-<tr><td>Sliding</td><td>Never allowed as part of a means of egress</td></tr>
+<tr><td>Sliding</td><td>Not normally used in a means of egress; side-hinged swinging doors are the rule. Code exceptions exist (2021 IBC: power-operated sliding doors with breakaway, Section 1010.3.2; manual sliding doors serving 10 or fewer occupants; special-purpose horizontal sliding doors, Section 1010.3.3). The locally adopted code edition governs</td></tr>
 <tr><td>Revolving</td><td>Panels collapse under pressure to make an open path</td></tr>
 <tr><td>Folding</td><td>Homes, dividing assembly spaces, some horizontal fire doors</td></tr>
 <tr><td>Fire doors</td><td>Mostly metal, keep closed. Horizontal sliding on a track with a fusible link (old industrial); overhead rolling saves wall space; vertical (docks and garages, not egress)</td></tr>
 <tr><td>Glass doors</td><td>Tempered glass that resists breakage</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Doors are classified by how they operate. Protected stairs resist fire and smoke; keep their doors controlled. Egress corridor ceilings match the walls' fire rating.</p></div>
 
-<div class="ref-section"><div class="ref-title">Windows</div>
+<div class="ref-section"><h3 class="ref-title">Windows</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Double-hung</h3><p>Two sashes; airflow through top and bottom.</p></div>
-<div class="ref-card blue"><h3>Awning / hopper</h3><p>Awning hinges at the top, hopper at the bottom.</p></div>
-<div class="ref-card blue"><h3>Pivoting</h3><p>Gives the full opening for ventilation.</p></div>
-<div class="ref-card blue"><h3>Fixed</h3><p>Frame and glazed stationary sash. Fixed or no windows make access and venting harder. Security bars hurt life safety.</p></div>
+<div class="ref-card blue"><h4>Double-hung</h4><p>Two sashes; airflow through top and bottom.</p></div>
+<div class="ref-card blue"><h4>Awning / hopper</h4><p>Awning hinges at the top, hopper at the bottom.</p></div>
+<div class="ref-card blue"><h4>Pivoting</h4><p>Gives the full opening for ventilation.</p></div>
+<div class="ref-card blue"><h4>Fixed</h4><p>Frame and glazed stationary sash. Fixed or no windows make access and venting harder. Security bars hurt life safety.</p></div>
 </div></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 4 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://idighardware.com/2023/10/faqs-about-automatic-sliding-doors/" target="_blank" rel="noopener">iDigHardware (Lori Greene), FAQs about automatic sliding doors</a>: 2021 IBC Sections 1010.1.2, 1010.3.2, and 1010.3.3 on power-operated, manual, and special-purpose sliding doors in a means of egress.</li>
+</ul></div>
 `
 });

@@ -46,8 +46,7 @@ quiz:[
 ["Search method for a primary search of a large or complex smoke-filled area:","Wide area search method","Low-profile search method","VEIS method","Oriented-search method"],
 // Test
 ["To conduct a safer and faster primary search, firefighters should:","Always work in teams of two or more","Stay low when searching","Wait until after the fire is under control","Move through with a charged hoseline"],
-["Purpose of a bump test (as the course keyed it):","Calibrate a gas detector before it is taken to an incident","Test the amount of oxygen in the atmosphere","Recalibrate air monitors at an incident","Reset a gas detector to factory defaults"],
-["~What should you do if your SCBA cylinder is empty during a MAYDAY? (\"remove your regulator\" was marked wrong)","Break the seal of your mask and breathe through your protective hood","Remove your regulator while leaving the mask intact","Remove your mask and take deep breaths, holding each 10-15 seconds","Break the seal and cover your mouth and nose with your hand"],
+["Purpose of a bump test:","Check that the sensors and alarms respond to a known test gas before use","Calibrate (adjust) a gas detector before it is taken to an incident","Test the amount of oxygen in the atmosphere","Reset a gas detector to factory defaults",{note:"The course test keyed \"calibrate a gas detector before it is taken to an incident.\" A bump test is a function check, not a calibration. Calibration adjusts the readings against a known gas and is done on the manufacturer's schedule or when a bump test fails (ISEA definitions)."}],
 ["To be physically and mentally prepared for survival:","Practice basic skills and train for the hazards you will encounter","Push yourself past your limits in training","Let the IC look out for your crew's safety","Work in smaller teams that can easily be monitored"],
 ["Breaching an interior wall:","May give you access to a safe haven or a room you can safely exit from","Is much harder than breaching an exterior wall","Must be done with power or hydraulic tools","Is the preferred method for escaping to a safe haven"],
 ["If you become entangled while evacuating:","Broadcast the situation to the IC and attempt to free yourself","Remove your SCBA and cut the wires","Contact the RIC and wait for them to find you","Shelter in place until another firefighter finds you"],
@@ -142,44 +141,47 @@ terms:[
 ["Wide-Area Search Method","Tactic using a dedicated search line so a large team can search a large, open space."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Search Methods</div>
+<div class="ref-section"><h3 class="ref-title">Search Methods</h3>
 <table class="ref-table"><tr><th>Method</th><th>How it works</th><th>Use it for</th></tr>
 <tr><td><b>Oriented search</b></td><td>Leader anchored at the door, wall, or hoseline. Members spread out, stay in voice contact, and return to the leader before moving to the next room.</td><td>Rooms and hallways in homes and small buildings</td></tr>
 <tr><td><b>Wide-area search</b></td><td>Dedicated search line tied off about 10 ft outside the entry, about 3 ft up. Lead carries the bag, navigator stays close. Markers show distance from the entrance; tether lines let searchers move off the main line.</td><td>Warehouses, big-box stores, gyms, open floor plans</td></tr>
 <tr><td><b>VEIS</b></td><td>Vent the window and gauge survivability, Enter, Isolate (find and close the room's door first), then Search. One enters, one stays at the window.</td><td>One room reachable from outside, credible victim report, after a 360. Not for rooms showing flashover or backdraft signs.</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Primary vs. Secondary Search</div>
+<div class="ref-section"><h3 class="ref-title">Primary vs. Secondary Search</h3>
 <div class="ref-grid">
-<div class="ref-card red"><span class="tag tag-red">PRIMARY</span><h3>Fast but thorough</h3><p>Before or during suppression. Find victims quickly. Teams of two or more. Walk when possible unless heavy smoke or extreme heat. Check behind doors, below windows, and along exit paths.</p></div>
-<div class="ref-card green"><span class="tag tag-green">SECONDARY</span><h3>Slow and very thorough</h3><p>After the fire is under control. Done by different personnel than the primary. Makes sure no one was missed.</p></div>
+<div class="ref-card red"><span class="tag tag-red">PRIMARY</span><h4>Fast but thorough</h4><p>Before or during suppression. Find victims quickly. Teams of two or more. Walk when possible unless heavy smoke or extreme heat. Check behind doors, below windows, and along exit paths.</p></div>
+<div class="ref-card green"><span class="tag tag-green">SECONDARY</span><h4>Slow and very thorough</h4><p>After the fire is under control. Done by different personnel than the primary. Makes sure no one was missed.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Room Search Pattern</div>
+<div class="ref-section"><h3 class="ref-title">Room Search Pattern</h3>
 <svg viewBox="0 0 320 210" width="100%" style="max-width:420px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Right-hand search pattern around a room">
 <rect x="40" y="25" width="240" height="160" fill="none" stroke="#888" stroke-width="3"/>
 <rect x="135" y="179" width="50" height="12" fill="#1e1e1e"/><text x="160" y="205" fill="#e2aa3c" font-size="11" text-anchor="middle">DOOR (enter and exit here)</text>
-<path d="M150 170 L55 170 L55 40 L265 40 L265 170 L172 170" fill="none" stroke="#2ecc71" stroke-width="3" stroke-dasharray="7 5"/>
-<polygon points="55,100 50,112 60,112" fill="#2ecc71"/><polygon points="160,40 148,35 148,45" fill="#2ecc71"/><polygon points="265,100 260,88 270,88" fill="#2ecc71"/>
+<path d="M170 170 L265 170 L265 40 L55 40 L55 170 L148 170" fill="none" stroke="#2ecc71" stroke-width="3" stroke-dasharray="7 5"/>
+<polygon points="265,100 260,112 270,112" fill="#2ecc71"/><polygon points="160,40 172,35 172,45" fill="#2ecc71"/><polygon points="55,100 50,88 60,88" fill="#2ecc71"/>
+<text x="160" y="96" fill="#ccc" font-size="11" text-anchor="middle">Turn right; right hand on the wall</text>
 <text x="160" y="112" fill="#ccc" font-size="11" text-anchor="middle">Follow the walls all the way around</text>
-<text x="160" y="128" fill="#888" font-size="10" text-anchor="middle">Remember which way you turned</text>
+<text x="160" y="128" fill="#888" font-size="10" text-anchor="middle">Exit through the same door</text>
 </svg>
+<p class="ref-alt-h">Diagram in words</p><ul class="ref-alt"><li>Enter through the door and turn right.</li><li>Keep your right hand (or right side) on the wall: along the door wall, up the right wall, across the far wall, down the left wall.</li><li>You end back at the same door you came in.</li><li>For a left-hand search, do the mirror image.</li></ul>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Turn right or left on entering and follow the walls back to the door. Exit through the same doorway. To leave the building or bring a victim out, turn opposite the direction you turned to enter.</p></div>
 
-<div class="ref-section"><div class="ref-title">MAYDAY</div>
+<div class="ref-section"><h3 class="ref-title">MAYDAY</h3>
 <div class="ref-grid">
-<div class="ref-card red"><span class="tag tag-red">TRANSMIT FIRST</span><h3>"MAYDAY, MAYDAY, MAYDAY"</h3><p>Describe the problem and give your location. Transmit before activating PASS, since PASS can drown out your radio.</p></div>
-<div class="ref-card yellow"><span class="tag tag-yellow">LUNAR</span><h3>What to say</h3><p><b>L</b>ocation, <b>U</b>nit, <b>N</b>ame, <b>A</b>ssignment and air left, <b>R</b>esources needed.</p></div>
-<div class="ref-card blue"><span class="tag tag-blue">THEN</span><h3>Stay put and be found</h3><p>Activate PASS, control breathing, stay low, get to an uninvolved room and close the door, shine a light, tap a tool. All other radio traffic stops.</p></div>
+<div class="ref-card red"><span class="tag tag-red">TRANSMIT FIRST</span><h4>"MAYDAY, MAYDAY, MAYDAY"</h4><p>Describe the problem and give your location. Transmit before activating PASS, since PASS can drown out your radio.</p></div>
+<div class="ref-card yellow"><span class="tag tag-yellow">LUNAR</span><h4>What to say</h4><p><b>L</b>ocation, <b>U</b>nit, <b>N</b>ame, <b>A</b>ssignment and air left, <b>R</b>esources needed.</p></div>
+<div class="ref-card blue"><span class="tag tag-blue">THEN</span><h4>Help them find you</h4><p>Activate PASS, control breathing, stay low. Stay where you are unless conditions force you to move or a safe haven is close (an uninvolved room, door closed). If you move, radio your new location right away. Shine a light, tap a tool. Command clears the channel for the MAYDAY; others transmit only urgent safety traffic.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Air Management</div>
+<div class="ref-section"><h3 class="ref-title">Air Management</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Check your gauge</h3><p>Before entering the IDLH, when moving to a new area, after heavy work, when resting, at the start of the assignment, when you reach your area, and at SOP intervals.</p></div>
-<div class="ref-card yellow"><h3>Point of no return</h3><p>Based on how much air you consume. Rated cylinder time (30, 45, 60 min) is not actual working time. Low-pressure alarm is about 33%.</p></div>
-<div class="ref-card red"><h3>Air emergency</h3><p>MAYDAY, stay low, make sure the cylinder valve is fully open, fix or bypass the malfunction (open the bypass if the regulator fails), use approved air sharing. Never remove your facepiece to share air.</p></div>
+<div class="ref-card blue"><h4>Check your gauge</h4><p>Before entering the IDLH, when moving to a new area, after heavy work, when resting, at the start of the assignment, when you reach your area, and at SOP intervals.</p></div>
+<div class="ref-card yellow"><h4>Point of no return</h4><p>Based on how much air you consume. Rated cylinder time (30, 45, 60 min) is not actual working time. Low-pressure alarm is about 33%.</p></div>
+<div class="ref-card red"><h4>Air emergency</h4><p>MAYDAY, stay low, make sure the cylinder valve is fully open, fix or bypass the malfunction (open the bypass if the regulator fails), use approved air sharing. Never remove your facepiece to share air.</p></div>
 </div></div>
+<div class="ref-note"><b>Course answer discrepancy:</b> Pending instructor review. An unconfirmed course test item pointed to breaking the facepiece seal and breathing through the protective hood when the cylinder is empty. A hood is not respiratory protection; it does not filter smoke or toxic gases. That item was removed from the practice quiz. Follow your SCBA manufacturer's emergency procedures and department SOP: MAYDAY, cylinder valve fully open, bypass, approved emergency air (RIC air supply or universal air connection), and get out.</div>
 
-<div class="ref-section"><div class="ref-title">Drags and Carries</div>
+<div class="ref-section"><h3 class="ref-title">Drags and Carries</h3>
 <table class="ref-table"><tr><th>Technique</th><th>Best for</th></tr>
 <tr><td>Incline drag</td><td>Moving a victim up or down stairs</td></tr>
 <tr><td>Webbing drag</td><td>Staying low under heat and smoke</td></tr>
@@ -189,15 +191,21 @@ reference:`
 <tr><td>Clothes, blanket drags</td><td>Quick removal by one rescuer</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Don't move injured victims until assessed unless they're in immediate danger. The main danger in moving quickly is aggravating a spinal injury.</p></div>
 
-<div class="ref-section"><div class="ref-title">Rapid Intervention (RIC)</div>
+<div class="ref-section"><h3 class="ref-title">Rapid Intervention (RIC)</h3>
 <p style="font-size:13px;color:#ccc;line-height:1.6">Two or more firefighters stand by outside the hazard the whole incident (OSHA and NFPA 1550). Gear: spare SCBA or cylinder, radio, forcible entry tools, lights, search rope, TI, litter, power saw, attic ladder. Once found: <b>check air</b>, silence PASS, identify, notify Command, then remove. Getting out of the IDLH comes before treating injuries. Keep quiet to hear the PASS.</p></div>
 
-<div class="ref-section"><div class="ref-title">Air Monitoring</div>
+<div class="ref-section"><h3 class="ref-title">Air Monitoring</h3>
 <table class="ref-table"><tr><th>Reading</th><th>Means</th></tr>
 <tr><td>Oxygen below 19.5%</td><td>Oxygen deficient, IDLH</td></tr>
 <tr><td>Oxygen above 23.5%</td><td>Oxygen enriched, greater fire and explosion risk</td></tr>
 <tr><td>Over 10% of LEL</td><td>Hazardous flammable atmosphere</td></tr>
 <tr><td>Drop in oxygen %</td><td>May be the only clue to a gas your meter doesn't detect</td></tr></table>
-<p style="font-size:12px;color:#aaa;margin-top:8px">4-gas meter: LEL, O2, CO, H2S. Fresh-air (zero) calibration in clean air on arrival; bump test checks the alarms. CGIs read one calibrated gas and aren't accurate in low or high oxygen. Approach upwind, work with a buddy, sample at ground, waist, and overhead, and assume more than one hazard. Monitoring alone never justifies removing SCBA during overhaul.</p></div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">4-gas meter: LEL, O2, CO, H2S. Three different checks: <b>fresh-air zeroing</b> (the course calls it fresh-air calibration) sets the baseline in clean air; a <b>bump test</b> exposes the sensors to test gas to prove they and the alarms respond; a <b>calibration</b> adjusts the readings to a known gas concentration, per the manufacturer or after a failed bump test. CGIs read one calibrated gas and aren't accurate in low or high oxygen. Approach upwind, work with a buddy, sample at ground, waist, and overhead, and assume more than one hazard. Monitoring alone never justifies removing SCBA during overhaul.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 11 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://blog.msasafety.com/whats-the-difference-between-a-bump-test-and-calibration-and-why-should-you-care/" target="_blank" rel="noopener">MSA Safety, bump test vs. calibration (ISEA definitions)</a>: bump test = qualitative function check with challenge gas; calibration check = quantitative test that starts with zeroing; full calibration = adjusting the sensor response, also required after a failed bump test.</li>
+</ul></div>
 `
 });

@@ -997,7 +997,7 @@ terms:[
 "Hose appliance with one female inlet and multiple male outlets; the outlets are usually smaller than the inlet. Outlets are also usually gated."
 ]
 ],
-reference:`<div class="ref-section"><div class="ref-title">Hose Basics</div>
+reference:`<div class="ref-section"><h3 class="ref-title">Hose Basics</h3>
 <table class="ref-table"><tr><th>Item</th><th>Key points</th></tr>
 <tr><td><b>Supply hose</b></td><td>Water source to the pumper. LDH is 3½ inch and larger.</td></tr>
 <tr><td><b>Attack hose</b></td><td>Pumper to nozzle, pumper to FDC, or standpipe to the fire. Minimum 1½ inch.</td></tr>
@@ -1007,17 +1007,17 @@ reference:`<div class="ref-section"><div class="ref-title">Hose Basics</div>
 <tr><td><b>Lengths</b></td><td>Sections are usually 50 or 100 ft. Size = diameter and length.</td></tr>
 <tr><td><b>Inspection</b></td><td>NFPA 1962: before service, at least annually, and after every use.</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Couplings and Appliances</div>
+<div class="ref-section"><h3 class="ref-title">Couplings and Appliances</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Threaded</h3><p>Male threads on the outside, female threads inside the swivel. Hydrant outlets are male. Higbee cut = blunt first thread, Higbee indicators = notches on the lugs. Hand tight only.</p></div>
-<div class="ref-card blue"><h3>Nonthreaded</h3><p>Storz (LDH, grooved lugs and inset rings) and quarter-turn (hook lugs, 90° turn). Two-way, identical ends. Downside: hydrants need adapters.</p></div>
-<div class="ref-card green"><h3>Wye</h3><p>Splits: 1 female inlet, 2+ male outlets. Common: 2½ to two 1½.</p></div>
-<div class="ref-card green"><h3>Siamese</h3><p>Combines: 2+ female inlets, 1 male outlet. Clapper valves let water flow one way (also in FDCs).</p></div>
-<div class="ref-card green"><h3>Water thief</h3><p>One 2½ inlet, three gated outlets (two 1½, one 2½). LDH manifold: big volume near the end of the supply line.</p></div>
-<div class="ref-card orange"><h3>Valves and fittings</h3><p>Gate valve controls hydrant flow. Hydrant wrench opens hydrants and removes caps. Four-way hydrant valve lets a later pumper boost a forward lay from a weak hydrant. Reducer: female end larger.</p></div>
+<div class="ref-card blue"><h4>Threaded</h4><p>Male threads on the outside, female threads inside the swivel. Hydrant outlets are male. Higbee cut = blunt first thread, Higbee indicators = notches on the lugs. Hand tight only.</p></div>
+<div class="ref-card blue"><h4>Nonthreaded</h4><p>Storz (LDH, grooved lugs and inset rings) and quarter-turn (hook lugs, 90° turn). Two-way, identical ends. Downside: hydrants need adapters.</p></div>
+<div class="ref-card green"><h4>Wye</h4><p>Splits: 1 female inlet, 2+ male outlets. Common: 2½ to two 1½.</p></div>
+<div class="ref-card green"><h4>Siamese</h4><p>Combines: 2+ female inlets, 1 male outlet. Clapper valves let water flow one way (also in FDCs).</p></div>
+<div class="ref-card green"><h4>Water thief</h4><p>One 2½ inlet, three gated outlets (two 1½, one 2½). LDH manifold: big volume near the end of the supply line.</p></div>
+<div class="ref-card orange"><h4>Valves and fittings</h4><p>Gate valve controls hydrant flow. Hydrant wrench opens hydrants and removes caps. Four-way hydrant valve lets a later pumper boost a forward lay from a weak hydrant. Reducer: female end larger.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Rolls and Loads</div>
+<div class="ref-section"><h3 class="ref-title">Rolls and Loads</h3>
 <table class="ref-table"><tr><th>Roll / load</th><th>Key points</th></tr>
 <tr><td>Straight roll</td><td>Start at the male end. Male protected inside, female exposed. Storage and transport.</td></tr>
 <tr><td>Donut roll</td><td>Both couplings in hand, rolls out with fewer kinks. Twin donut: compact, for high-rise and standpipe.</td></tr>
@@ -1028,7 +1028,7 @@ reference:`<div class="ref-section"><div class="ref-title">Hose Basics</div>
 <tr><td>Triple layer</td><td>Folded in 3 layers, laid in an S. One person pulls. Any size line.</td></tr>
 <tr><td>Minuteman</td><td>Carried on the shoulder, deploys as you walk, doesn't drag. Awkward with SCBA.</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Hose Lays</div>
+<div class="ref-section"><h3 class="ref-title">Hose Lays</h3>
 <svg viewBox="0 0 340 150" width="100%" style="max-width:440px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Forward lay goes from hydrant to fire. Reverse lay goes from fire to hydrant.">
 <circle cx="40" cy="45" r="12" fill="#e74c3c"/><text x="40" y="75" fill="#aaa" font-size="10" text-anchor="middle">HYDRANT</text>
 <rect x="282" y="30" width="36" height="30" fill="#e67e22"/><text x="300" y="75" fill="#aaa" font-size="10" text-anchor="middle">FIRE</text>
@@ -1038,17 +1038,18 @@ reference:`<div class="ref-section"><div class="ref-title">Hose Basics</div>
 <text x="165" y="103" fill="#2ecc71" font-size="11" text-anchor="middle">REVERSE: fire to source</text>
 <text x="165" y="135" fill="#888" font-size="10" text-anchor="middle">Reverse: pumper goes to fire first, works alone, or relay pumping</text>
 </svg>
+<p class="ref-alt-h">Diagram in words</p><ul class="ref-alt"><li>Forward lay: the pumper lays hose from the hydrant (source) to the fire.</li><li>Reverse lay: the pumper goes to the fire first and lays hose back to the hydrant; used when it works alone or for relay pumping.</li></ul>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Forward lay advantage: the pumper stays at the fire with its equipment. Talk to the D/O so water arrives before the tank runs dry.</p></div>
 
-<div class="ref-section"><div class="ref-title">Water Supply</div>
+<div class="ref-section"><h3 class="ref-title">Water Supply</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Hydrants</h3><p>Dry-barrel: valve at the main, for freezing areas, open fully or close fully, verify it drains. Wet-barrel: water to the outlets, warm areas only. Dry hydrant: nonpressurized pipe at a pond for drafting. Open and close slowly.</p></div>
-<div class="ref-card orange"><h3>Friction loss</h3><p>Higher with smaller hose and longer lays. Reduce it with bigger hose, shorter lays, or more pump pressure. Nozzle above the pump = pressure loss.</p></div>
-<div class="ref-card red"><h3>Water hammer</h3><p>Pressure surge from closing a nozzle or valve too fast. Close everything slowly.</p></div>
-<div class="ref-card green"><h3>Water shuttle</h3><p>Fill site, tenders, dump site (portable tanks) near the fire. Usually rural. Tank on a tarp, level, easy access, not blocking apparatus.</p></div>
+<div class="ref-card blue"><h4>Hydrants</h4><p>Dry-barrel: valve at the main, for freezing areas, open fully or close fully, verify it drains. Wet-barrel: water to the outlets, warm areas only. Dry hydrant: nonpressurized pipe at a pond for drafting. Open and close slowly.</p></div>
+<div class="ref-card orange"><h4>Friction loss</h4><p>Higher with smaller hose and longer lays. Reduce it with bigger hose, shorter lays, or more pump pressure. Nozzle above the pump = pressure loss.</p></div>
+<div class="ref-card red"><h4>Water hammer</h4><p>Pressure surge from closing a nozzle or valve too fast. Close everything slowly.</p></div>
+<div class="ref-card green"><h4>Water shuttle</h4><p>Fill site, tenders, dump site (portable tanks) near the fire. Usually rural. Tank on a tarp, level, easy access, not blocking apparatus.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Nozzles and Streams</div>
+<div class="ref-section"><h3 class="ref-title">Nozzles and Streams</h3>
 <table class="ref-table"><tr><th>Type</th><th>Key points</th></tr>
 <tr><td><b>Solid stream</b></td><td>Smooth bore nozzle. Compact, best reach, low pressure, works with CAFS. Smaller surface area, absorbs heat less well. No solid streams on energized equipment.</td></tr>
 <tr><td><b>Straight stream</b></td><td>Fog nozzle's tightest pattern. Not as compact as solid.</td></tr>
@@ -1056,12 +1057,17 @@ reference:`<div class="ref-section"><div class="ref-title">Hose Basics</div>
 <tr><td><b>Broken stream</b></td><td>Coarse drops. Piercing and cellar nozzles for concealed spaces.</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Fog nozzle types: basic, constant gallonage (same flow at every pattern), constant/select gallonage, constant pressure (automatic). Control valves: ball, slide (no turbulence), rotary. Reach is limited by gravity, wind, air friction, and velocity. Water expands about 1,700 times as steam at 212°F.</p></div>
 
-<div class="ref-section"><div class="ref-title">Flow Rates and Handling</div>
+<div class="ref-section"><h3 class="ref-title">Flow Rates and Handling</h3>
 <div class="ref-grid">
-<div class="ref-card yellow"><h3>Booster</h3><p>Less than 50 gpm.</p></div>
-<div class="ref-card orange"><h3>Handline</h3><p>Less than 350 gpm. Minimum 2 firefighters for any attack line in structural operations. Backup about 3 ft behind, same side.</p></div>
-<div class="ref-card red"><h3>Master stream</h3><p>350 gpm or more. Two firefighters to set up, one to operate. Shut it down before moving it. Aim it upward to deflect off the ceiling. Extra water weight raises collapse risk.</p></div>
+<div class="ref-card yellow"><h4>Booster</h4><p>Less than 50 gpm.</p></div>
+<div class="ref-card orange"><h4>Handline</h4><p>Less than 350 gpm. Minimum 2 firefighters for any attack line in structural operations. Backup about 3 ft behind, same side.</p></div>
+<div class="ref-card red"><h4>Master stream</h4><p>350 gpm or more. Two firefighters to set up, one to operate. Shut it down before moving it. Aim it upward to deflect off the ceiling. Extra water weight raises collapse risk.</p></div>
 </div>
-<p style="font-size:12px;color:#aaa;margin-top:8px">Stairs: lay hose against the outside wall, put the excess on the stairs toward the floor above. Going down, stretch the excess outside the stairway. Standpipe: connect one floor below the fire. Two lines from one standpipe: one down the lower stairs, one up.</p></div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Stairs: lay hose against the outside wall, put the excess on the stairs toward the floor above. Going down, stretch the excess outside the stairway. Standpipe: normally connect one floor below the fire floor. In a protected stairway you may connect on the fire floor (Chapter 14). Follow your department's high-rise SOP. Two lines from one standpipe: one down the lower stairs, one up.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 13 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+</ul></div>
 `
 });

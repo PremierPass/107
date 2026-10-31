@@ -11,7 +11,7 @@ review:[
 ["Responder role in traffic control?","Position apparatus as a protective block, place signs and cones to divert traffic, and coordinate with law enforcement under TIM guidelines."],
 ["Command positions in NIMS-ICS?","Incident Commander (and deputy IC), Incident Safety Officer, Public Information Officer, and Liaison Officer."],
 ["Which section develops the IAP for the next operational period?","Planning Section."],
-["When is an Intelligence/Investigation section established?","When the incident involves possible criminal or terrorist activity requiring intelligence gathering and evidence handling."],
+["When is an Intelligence/Investigation section established?","When the incident needs intelligence gathering or an investigation: possible criminal or terrorist activity, or finding the cause of an incident such as a fire or disease outbreak. Command decides where it fits: Command Staff, Planning, Operations, or its own General Staff section."],
 ["Who assumes command?","The first person on scene or the ranking member of the first-arriving company, until a higher-ranking or better-trained responder takes over. At hazmat incidents, the IC must be trained to at least Operations level."],
 ["Crime or terrorism scene precautions?","Watch for secondary devices, don't touch suspicious items, limit entry, document and photograph, and preserve evidence."],
 ["What if you get a lawful command you aren't trained for?","Tell Command and ask for guidance or another assignment."]
@@ -50,7 +50,7 @@ quiz:[
 ["Transfer Command when:","A higher-ranking or more extensively trained responder arrives","The first engine leaves","Every 10 minutes","The media asks"],
 ["On a roadway, walk:","Facing oncoming traffic","With your back to traffic","Down the center line","Between moving cars"],
 ["Command Staff report directly to:","The IC","The Operations Chief","Dispatch","The Liaison Officer"],
-["Intelligence/Investigation Section is established if:","Criminal activity is suspected","It rains","More than three engines respond","The PIO requests it"],
+["Intelligence/Investigation function is established if:","Criminal activity is suspected or the cause of the incident must be investigated","It rains","More than three engines respond","The PIO requests it",{note:"The course test keyed \"criminal activity is suspected.\" That is one reason, but FEMA ICS guidance says the I/I function also covers non-criminal investigations, such as finding the cause of a fire or a disease outbreak, and Command can place it in the Command Staff, Planning, Operations, or as its own section."}],
 ["SCBA tag system: team exit time is based on:","The lowest-reading SCBA","The highest-reading SCBA","The average reading","The officer's reading"],
 ["Personnel accountability systems:","Track personnel","Track water supply","Track hose","Track the media"],
 ["Who decides where to position emergency vehicles?","Company officer and driver/operator","Law enforcement only","The PIO","The newest firefighter"],
@@ -100,37 +100,38 @@ terms:[
 ["Warm Zone","Area between the hot and cold zones. Holds the decon corridor at hazmat incidents."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Riding the Apparatus</div>
+<div class="ref-section"><h3 class="ref-title">Riding the Apparatus</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Mount and dismount</h3><p>Face the apparatus with three points of contact. Back out of the cab using handholds and steps, never face first. Use the side away from traffic.</p></div>
-<div class="ref-card orange"><h3>Riding</h3><p>Seated and belted before moving. No helmets in the cab (NFPA 1550). Hearing protection, secure loose tools, close doors. Never stand in a moving apparatus.</p></div>
+<div class="ref-card blue"><h4>Mount and dismount</h4><p>Face the apparatus with three points of contact. Back out of the cab using handholds and steps, never face first. Use the side away from traffic.</p></div>
+<div class="ref-card orange"><h4>Riding</h4><p>Seated and belted before moving. No helmets in the cab (NFPA 1550). Hearing protection, secure loose tools, close doors. Never stand in a moving apparatus.</p></div>
 </div>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Your response starts the moment you're notified. Situational awareness means staying observant about changing conditions and reporting them to leadership.</p></div>
 
-<div class="ref-section"><div class="ref-title">Control Zones</div>
+<div class="ref-section"><h3 class="ref-title">Control Zones</h3>
 <svg viewBox="0 0 340 200" width="100%" style="max-width:420px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Three nested zones: hot zone in the center, warm zone around it, cold zone outside">
 <rect x="10" y="10" width="320" height="180" rx="12" fill="#1f3b2a" stroke="#2ecc71"/><rect x="60" y="40" width="220" height="120" rx="10" fill="#3b3520" stroke="#f1c40f"/><rect x="110" y="70" width="120" height="60" rx="8" fill="#4a1f1f" stroke="#e74c3c"/>
 <text x="170" y="104" fill="#fff" font-size="13" text-anchor="middle" font-weight="bold">HOT</text><text x="170" y="57" fill="#f1c40f" font-size="12" text-anchor="middle">WARM</text><text x="170" y="27" fill="#2ecc71" font-size="12" text-anchor="middle">COLD</text>
 <text x="170" y="182" fill="#aaa" font-size="10" text-anchor="middle">ICP, staging, and rehab in the cold zone</text>
 </svg>
+<p class="ref-alt-h">Diagram in words</p><ul class="ref-alt"><li>Hot zone in the center: the hazard itself.</li><li>Warm zone surrounds the hot zone.</li><li>Cold zone is the outside ring: the ICP, staging, and rehab go here.</li></ul>
 <table class="ref-table" style="margin-top:8px"><tr><th>Zone</th><th>Who and what</th></tr>
 <tr><td>Hot</td><td>Trained personnel mitigating the problem, in full PPE</td></tr>
 <tr><td>Warm</td><td>Direct support for the hot zone (decon at hazmat). Same PPE as the hot zone</td></tr>
 <tr><td>Cold</td><td>ICP, rehab, staging, support</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Cordon with rope or fireline tape tied to fixed objects, never to vehicles.</p></div>
 
-<div class="ref-section"><div class="ref-title">Scene Lighting and Accountability</div>
+<div class="ref-section"><h3 class="ref-title">Scene Lighting and Accountability</h3>
 <div class="ref-grid">
-<div class="ref-card yellow"><h3>Lighting</h3><p>Portable (interiors, remote areas) or fixed (vehicle-mounted). Vehicle generators have more power; portable ones have limited mobility. Never connect more lights than the source can support. No generators in enclosed spaces. Twist-lock connectors.</p></div>
-<div class="ref-card green"><h3>Passport</h3><p>Turned in before entering the IDLH, collected after leaving.</p></div>
-<div class="ref-card green"><h3>SCBA tag</h3><p>Tags collected at entry. Team exit time is based on the lowest-reading SCBA.</p></div>
-<div class="ref-card green"><h3>Electronic</h3><p>Computer-based tracking, can give an even greater level of safety.</p></div>
+<div class="ref-card yellow"><h4>Lighting</h4><p>Portable (interiors, remote areas) or fixed (vehicle-mounted). Vehicle generators have more power; portable ones have limited mobility. Never connect more lights than the source can support. No generators in enclosed spaces. Twist-lock connectors.</p></div>
+<div class="ref-card green"><h4>Passport</h4><p>Turned in before entering the IDLH, collected after leaving.</p></div>
+<div class="ref-card green"><h4>SCBA tag</h4><p>Tags collected at entry. Team exit time is based on the lowest-reading SCBA.</p></div>
+<div class="ref-card green"><h4>Electronic</h4><p>Computer-based tracking, can give an even greater level of safety.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Roadway Incidents</div>
+<div class="ref-section"><h3 class="ref-title">Roadway Incidents</h3>
 <p style="font-size:13px">Wear a high-visibility garment, walk facing traffic, and work inside a protected area. The company officer and driver/operator position apparatus as a protective barrier. Use TIMS with law enforcement and set traffic control zones. Downed lines: secure the scene and have the power company shut off power; don't approach. Cover hydraulic and battery fluid spills with absorbent.</p></div>
 
-<div class="ref-section"><div class="ref-title">NIMS-ICS</div>
+<div class="ref-section"><h3 class="ref-title">NIMS-ICS</h3>
 <table class="ref-table"><tr><th>Part</th><th>Role</th></tr>
 <tr><td>Incident Commander</td><td>Top of the chain. Sets strategic goals and tactical objectives</td></tr>
 <tr><td>Safety Officer</td><td>Monitors hazards, can stop unsafe acts, gives safety briefings each operational period</td></tr>
@@ -140,7 +141,13 @@ reference:`
 <tr><td>Planning</td><td>Gathers information and helps develop the IAP for the next operational period</td></tr>
 <tr><td>Logistics</td><td>Services and support to everyone</td></tr>
 <tr><td>Finance/Admin</td><td>Optional, only when financial services are needed</td></tr>
-<tr><td>Intel/Investigation</td><td>Set up if criminal activity is suspected</td></tr></table>
+<tr><td>Intel/Investigation</td><td>Set up when the incident needs intelligence or an investigation: suspected crime or terrorism, or finding the cause of a fire, outbreak, or other incident. Command places it in the Command Staff, Planning, Operations, or its own General Staff section</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Branch sits between Section and Division/Group. Division = geographic; Group = functional. First person on scene (or ranking officer of the first company) takes Command; transfer to someone higher-ranking or more trained, face to face or by radio. Unified Command: all agencies with jurisdiction contribute, roles set by an MOU. Size and complexity drive the structure. Use common terminology.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 2 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://training.fema.gov/emiweb/is/icsresource/assets/ICS%20Review%20Document.pdf" target="_blank" rel="noopener">FEMA EMI, ICS Review Document</a>: the Intelligence/Investigations function covers criminal and non-criminal investigations (such as epidemiological or fire cause) and can be placed in Planning, Operations, the Command Staff, or a separate General Staff section; the IC or UC decides.</li>
+</ul></div>
 `
 });

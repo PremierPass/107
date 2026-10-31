@@ -66,7 +66,8 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 
 /* REFERENCE */
 .ref-section { margin-bottom: 24px; }
-.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+.ref-title { font-size: 14px; font-weight: 700; color: #c0392b; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 6px; margin: 0 0 12px; }
+.ref-chapter { font-size: 18px; margin: 6px 0 14px; }
 .ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
 .ref-card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 12px; }
 .ref-card.red { border-left: 3px solid #c0392b; }
@@ -75,8 +76,16 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 .ref-card.yellow { border-left: 3px solid #f39c12; }
 .ref-card.purple { border-left: 3px solid #8e44ad; }
 .ref-card.orange { border-left: 3px solid #e67e22; }
-.ref-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-.ref-card p { font-size: 12px; color: #aaa; line-height: 1.5; }
+.ref-card h3, .ref-card h4 { font-size: 14px; font-weight: 700; margin: 0 0 6px; }
+.ref-card p { font-size: 13px; color: #bbb; line-height: 1.55; }
+.ref-alt { font-size: 13px; color: #bbb; line-height: 1.55; margin: 8px 0 0 18px; }
+.ref-alt-h { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+.ref-note { background: #f39c1214; border: 1px solid #f39c1255; border-left: 3px solid #f39c12; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #ddd; line-height: 1.55; margin-top: 10px; }
+.ref-note b { color: #f39c12; }
+.ref-src { font-size: 13px; color: #bbb; line-height: 1.6; margin-left: 18px; }
+.ref-src a { color: #5dade2; word-break: break-word; }
+#ref-body svg text[font-size="10"] { font-size: 11px; }
+#ref-body p[style*="font-size:12px"] { font-size: 13px !important; color: #bbb !important; }
 .ref-card .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; font-weight: 700; }
 .tag-red { background: #c0392b22; color: #e74c3c; }
 .tag-green { background: #27ae6022; color: #2ecc71; }
@@ -84,9 +93,16 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 .tag-yellow { background: #f39c1222; color: #f39c12; }
 .tag-purple { background: #8e44ad22; color: #9b59b6; }
 .tag-orange { background: #e67e2222; color: #e67e22; }
-.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ref-table th { background: #2a2a2a; color: #c0392b; padding: 8px 10px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+@media (max-width: 600px) {
+  .ref-table th, .ref-table td { padding: 7px 6px; }
+  .ref-table td { font-size: 14px; line-height: 1.45; }
+  .ref-card p, .ref-alt, .ref-src, .ref-note { font-size: 14px; }
+  .ref-grid { grid-template-columns: 1fr; }
+}
+.q-note { font-size: 12px; margin-top: 8px; padding: 8px 12px; border-radius: 6px; background: #f39c1214; border: 1px solid #f39c1255; color: #f5d08a; line-height: 1.5; }
+.ref-table td { padding: 7px 10px; border-bottom: 1px solid #222; color: #ccc; vertical-align: top; }
 .ref-table tr:last-child td { border-bottom: none; }
 .ref-table tr:hover td { background: #1e1e1e; }
 
@@ -338,23 +354,23 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 const FF_CHAPTERS=[];
 function FF_ADD(ch){FF_CHAPTERS.push(ch);}
 </script>
-<script src="ff-data/ch01.js?v=12"></script>
-<script src="ff-data/ch02.js?v=12"></script>
-<script src="ff-data/ch03.js?v=12"></script>
-<script src="ff-data/ch04.js?v=12"></script>
-<script src="ff-data/ch05.js?v=12"></script>
-<script src="ff-data/ch06.js?v=12"></script>
-<script src="ff-data/ch07.js?v=12"></script>
-<script src="ff-data/ch08.js?v=12"></script>
-<script src="ff-data/ch09.js?v=12"></script>
-<script src="ff-data/ch10.js?v=12"></script>
-<script src="ff-data/ch11.js?v=11"></script>
-<script src="ff-data/ch12.js?v=11"></script>
-<script src="ff-data/ch13.js?v=11"></script>
-<script src="ff-data/ch14.js?v=11"></script>
-<script src="ff-data/ch15.js?v=11"></script>
-<script src="ff-data/ch16.js?v=11"></script>
-<script src="ff-data/ff2-ch01.js?v=11"></script>
+<script src="ff-data/ch01.js?v=13"></script>
+<script src="ff-data/ch02.js?v=13"></script>
+<script src="ff-data/ch03.js?v=13"></script>
+<script src="ff-data/ch04.js?v=13"></script>
+<script src="ff-data/ch05.js?v=13"></script>
+<script src="ff-data/ch06.js?v=13"></script>
+<script src="ff-data/ch07.js?v=13"></script>
+<script src="ff-data/ch08.js?v=13"></script>
+<script src="ff-data/ch09.js?v=13"></script>
+<script src="ff-data/ch10.js?v=13"></script>
+<script src="ff-data/ch11.js?v=13"></script>
+<script src="ff-data/ch12.js?v=13"></script>
+<script src="ff-data/ch13.js?v=13"></script>
+<script src="ff-data/ch14.js?v=13"></script>
+<script src="ff-data/ch15.js?v=13"></script>
+<script src="ff-data/ch16.js?v=13"></script>
+<script src="ff-data/ff2-ch01.js?v=13"></script>
 <script>
 // Book selector: FF I (book 1), FF II (book 2), or both
 FF_CHAPTERS.forEach(c=>{if(!c.book)c.book=1;});
@@ -380,8 +396,10 @@ FF_CHAPTERS.forEach(c=>{
   (c.terms||[]).forEach(([t,d])=>FC_TERMS.push({ch,q:'Define: '+t,a:d,kind:'Key term'}));
   (c.quiz||[]).forEach(([q,...opts])=>{
     const u=q.startsWith('~'); if(u)q=q.slice(1);
-    QUIZ_FACTS.push({ch,q,opts,ans:0,u});
-    FC_QUIZ.push({ch,q,a:opts[0]+(u?'\n\n('+UNCONF+')':''),kind:'Quiz/test question'});
+    const meta=(opts.length&&typeof opts[opts.length-1]==='object')?opts.pop():null;
+    const note=meta&&meta.note?meta.note:'';
+    QUIZ_FACTS.push({ch,q,opts,ans:0,u,note});
+    FC_QUIZ.push({ch,q,a:opts[0]+(u?'\n\n('+UNCONF+')':'')+(note?'\n\nCourse answer discrepancy: '+note:''),kind:'Quiz/test question'});
   });
 });
 const FC_ALL=FC_QUIZ.concat(FC_REVIEW,FC_TERMS);
@@ -525,7 +543,8 @@ function renderQ(){
     else b.onclick=()=>selectAnswer(i);
     opts.appendChild(b);
   });
-  if(qAnswered[qIdx]){const fb=document.getElementById('q-fb');if(qAnswers[qIdx]===q.ans){fb.className='q-feedback correct';fb.textContent='Correct!';}else{fb.className='q-feedback wrong';fb.textContent='Incorrect. Correct answer: '+q.opts[q.ans];}
+  if(qAnswered[qIdx]){let fb=document.getElementById('q-fb');if(qAnswers[qIdx]===q.ans){fb.className='q-feedback correct';fb.textContent='Correct!';}else{fb.className='q-feedback wrong';fb.textContent='Incorrect. Correct answer: '+q.opts[q.ans];}
+    if(q.note){const n=document.createElement('div');n.className='q-note';n.innerHTML='<b>Course answer discrepancy:</b> '+esc(q.note);fb.after(n);fb=n;}
     const fl=document.createElement('button');fl.className='sm-btn';fl.style.marginTop='10px';fl.innerHTML='&#9873; Flag this question';fl.onclick=()=>flagQuiz(q);fb.after(fl);}
   document.getElementById('q-prev-btn').style.display=qIdx>0?'block':'none';
   const isLast=qIdx===total-1;
@@ -584,7 +603,7 @@ function renderRef(){
   if(!refActive||!chs.find(c=>chKey(c)===refActive))refActive=chKey(chs[chs.length-1]);
   bar.innerHTML='';chs.forEach(c=>{const b=document.createElement('button');b.className='filter-btn'+(chKey(c)===refActive?' active':'');b.textContent=chShort(chKey(c))+': '+c.title;b.onclick=()=>{refActive=chKey(c);renderRef();};bar.appendChild(b);});
   const c=chs.find(x=>chKey(x)===refActive);
-  body.innerHTML='<h2 style="font-size:18px;margin:6px 0 14px">'+chName(chKey(c))+': '+esc(c.title)+'</h2>'+c.reference;
+  body.innerHTML='<h2 class="ref-chapter">'+chName(chKey(c))+': '+esc(c.title)+'</h2>'+c.reference;
 }
 
 // REVIEW

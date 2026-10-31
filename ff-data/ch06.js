@@ -155,7 +155,7 @@ terms:[
 ["Thermal Saturation","Point where a material can't absorb more heat without a physical change."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Structural PPE</div>
+<div class="ref-section"><h3 class="ref-title">Structural PPE</h3>
 <table class="ref-table"><tr><th>Item</th><th>Key points</th></tr>
 <tr><td>Standard</td><td>Structural and proximity PPE meet NFPA 1970 (station uniforms too). All parts must be compatible</td></tr>
 <tr><td>Helmet</td><td>Faceshield or goggles (NFPA 1550); helps identify personnel. SCBA facepiece is primary eye protection</td></tr>
@@ -166,24 +166,24 @@ reference:`
 <tr><td>Hearing</td><td>Required during pump operations and in loud apparatus</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Lower heat transfer rate = longer protection. PPE must be dry. Contact burns under PPE: withdraw immediately. Heat stress: open gear when safe. Wildland needs wildland PPE and a fire shelter. Hi-vis vests on roadways unless doing fire fighting or hazmat work. Keep two sets so one can be laundered.</p></div>
 
-<div class="ref-section"><div class="ref-title">Respiratory Protection</div>
+<div class="ref-section"><h3 class="ref-title">Respiratory Protection</h3>
 <div class="ref-grid">
-<div class="ref-card red"><h3>Hazards</h3><p>Oxygen deficiency is under 19.5% (NFPA and OSHA), usually from combustion. Heat, smoke particles, toxic gases (CO, HCN), and nonfire gases like CO2, SO2, chlorine.</p></div>
-<div class="ref-card blue"><h3>ASR</h3><p>Atmosphere-supplying respirators (SCBA) are the primary fire service protection for oxygen-deficient or toxic atmospheres.</p></div>
-<div class="ref-card yellow"><h3>APR / PAPR</h3><p>Filter particulates only; HEPA filters stop airborne pathogens. Not for IDLH.</p></div>
-<div class="ref-card green"><h3>Open vs. closed circuit</h3><p>Open-circuit uses compressed air. Closed-circuit uses compressed oxygen, for long hazmat jobs.</p></div>
+<div class="ref-card red"><h4>Hazards</h4><p>Oxygen deficiency is under 19.5% (NFPA and OSHA), usually from combustion. Heat, smoke particles, toxic gases (CO, HCN), and nonfire gases like CO2, SO2, chlorine.</p></div>
+<div class="ref-card blue"><h4>ASR</h4><p>Atmosphere-supplying respirators (SCBA) are the primary fire service protection for oxygen-deficient or toxic atmospheres.</p></div>
+<div class="ref-card yellow"><h4>APR / PAPR</h4><p>Clean the surrounding air with filters, cartridges, or canisters. The right approved filter or cartridge can remove particles (HEPA for airborne pathogens), and some cartridges remove specific gases and vapors. They supply no oxygen, so never use them in oxygen-deficient or IDLH atmospheres.</p></div>
+<div class="ref-card green"><h4>Open vs. closed circuit</h4><p>Open-circuit uses compressed air. Closed-circuit uses compressed oxygen, for long hazmat jobs.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">SCBA Numbers</div>
+<div class="ref-section"><h3 class="ref-title">SCBA Numbers</h3>
 <div class="ref-grid">
-<div class="ref-card orange"><h3>90%</h3><p>Minimum cylinder level to don or keep in service.</p></div>
-<div class="ref-card orange"><h3>33%</h3><p>End-of-service time indicator (EOSTI) alarm. Be out before it goes off.</p></div>
-<div class="ref-card orange"><h3>30 seconds</h3><p>PASS alarms after 30 seconds without motion, or when pressed.</p></div>
-<div class="ref-card orange"><h3>Weekly / yearly</h3><p>Inspect at least weekly. Fit test annually. Annual factory-qualified service goes in the log.</p></div>
+<div class="ref-card orange"><h4>90%</h4><p>Minimum cylinder level to don or keep in service.</p></div>
+<div class="ref-card orange"><h4>33%</h4><p>End-of-service time indicator (EOSTI) alarm. Be out before it goes off.</p></div>
+<div class="ref-card orange"><h4>30 seconds</h4><p>PASS alarms after 30 seconds without motion, or when pressed.</p></div>
+<div class="ref-card orange"><h4>Inspections</h4><p>Check before and after each use. Course standard: inspect at least weekly (OSHA's minimum for emergency-use respirators is monthly). Follow the manufacturer's schedule. Fit test and factory-qualified service annually, logged.</p></div>
 </div>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Regulator drops cylinder pressure to just above atmospheric. If gauges disagree, trust the lowest. Tighten the lower facepiece straps first. Air time varies; controlled breathing stretches it. Train and stay fit to offset weight and mobility limits.</p></div>
 
-<div class="ref-section"><div class="ref-title">Using SCBA</div>
+<div class="ref-section"><h3 class="ref-title">Using SCBA</h3>
 <table class="ref-table"><tr><th>Topic</th><th>Key points</th></tr>
 <tr><td>Donning</td><td>Over-the-head or coat method (SCBA on the ground in front of you); seat-mounted while seated. Compartment mounts keep it out of weather</td></tr>
 <tr><td>Exiting</td><td>Leave as a group or in pairs. Emergency exit signs: oxygen level changes, damaged SCBA. Nonemergency: cylinder needs changing</td></tr>
@@ -193,7 +193,14 @@ reference:`
 <tr><td>Doffing</td><td>Remove the backpack while still on air</td></tr>
 <tr><td>Cleaning</td><td>Facepiece: warm water and mild disinfectant, then lint-free cloth or air dry</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Contamination</div>
+<div class="ref-section"><h3 class="ref-title">Contamination</h3>
 <p style="font-size:13px">Brush off debris first (preliminary exposure reduction). Set a decon corridor as the gateway to rehab. Crews doing decon wear the structural ensemble or better. Advanced cleaning uses an extractor washer. Gear damaged beyond repair comes out of service right away. Inhaled hot gases: get medical attention. After field decon, go to medical monitoring.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 6 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://www.cdc.gov/niosh/publications/numbered/2018-176.html" target="_blank" rel="noopener">NIOSH, A Guide to Air-Purifying Respirators (Pub. 2018-176)</a>: APRs remove gases, vapors, and particles with filters, cartridges, or canisters, supply no oxygen, and cannot be used in oxygen-deficient or IDLH atmospheres.</li>
+<li><a href="https://www.nj.gov/health/workplacehealthandsafety/documents/occupational-health-surveillance/FF_SCBA_Maintenance.pdf" target="_blank" rel="noopener">New Jersey Dept. of Health, Firefighter SCBA maintenance</a>: inspect after each use, full inspections at least monthly and before each use, follow the manufacturer, flow test regulators annually.</li>
+</ul></div>
 `
 });

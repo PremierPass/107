@@ -101,14 +101,14 @@ terms:[
 ["Truss Block","Spacers between the rails of a trussed ladder."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Ladder Parts and Types</div>
+<div class="ref-section"><h3 class="ref-title">Ladder Parts and Types</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Parts</h3><p>Beams hold the rungs. Bed section stays on the ground; fly section moves, raised by the halyard and locked by pawls. Heat sensor labels on the inside of each beam; protection plates at chafing points; reflective tip for visibility. Inventory number and designated length on the beams (NFPA 1960).</p></div>
-<div class="ref-card green"><h3>Types</h3><p>Single: quick access to windows and roofs on one- and two-story buildings. Extension: sized by full extended length. Roof: folding hooks over the peak. Folding: attics and crawl spaces.</p></div>
+<div class="ref-card blue"><h4>Parts</h4><p>Beams hold the rungs. Bed section stays on the ground; fly section moves, raised by the halyard and locked by pawls. Heat sensor labels on the inside of each beam; protection plates at chafing points; reflective tip for visibility. Inventory number and designated length on the beams (NFPA 1960).</p></div>
+<div class="ref-card green"><h4>Types</h4><p>Single: quick access to windows and roofs on one- and two-story buildings. Extension: sized by full extended length. Roof: folding hooks over the peak. Folding: attics and crawl spaces.</p></div>
 </div>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Reach is less than designated length. A residential story averages about 10 ft. Aerials and quints carry ground ladders vertically on the sides or in bed racks.</p></div>
 
-<div class="ref-section"><div class="ref-title">Placement</div>
+<div class="ref-section"><h3 class="ref-title">Placement</h3>
 <svg viewBox="0 0 340 190" width="100%" style="max-width:420px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Ladder against a wall at about 75 degrees, with the butt about one quarter of the working length out from the wall">
 <line x1="250" y1="10" x2="250" y2="170" stroke="#888" stroke-width="4"/><line x1="20" y1="170" x2="330" y2="170" stroke="#888" stroke-width="2"/>
 <line x1="210" y1="170" x2="248" y2="25" stroke="#e2aa3c" stroke-width="5"/>
@@ -117,13 +117,14 @@ reference:`
 <text x="20" y="40" fill="#aaa" font-size="11">Under 70°: support it mechanically</text>
 <text x="20" y="56" fill="#aaa" font-size="11">Over 75°: butt may slip</text>
 </svg>
+<p class="ref-alt-h">Diagram in words</p><ul class="ref-alt"><li>Climbing angle: about 75 degrees.</li><li>Butt distance from the wall: about one-quarter of the working length.</li><li>Under 70 degrees: the ladder needs mechanical support.</li><li>Over 75 degrees: the butt may slip and the ladder can tip back.</li></ul>
 <table class="ref-table" style="margin-top:8px"><tr><th>Purpose</th><th>Tip placement</th></tr>
 <tr><td>Ventilation</td><td>Tip even with the top of the window, on the upwind side</td></tr>
 <tr><td>Rescue / entry</td><td>Tip slightly below the sill</td></tr>
-<tr><td>Roof work</td><td>Two separate ways off the roof</td></tr></table>
+<tr><td>Roof access</td><td>Extend the tip several rungs above the roof edge so it can be seen and used as a handhold getting on and off (published guidance ranges from about 3 to 5 rungs; follow the course text and your SOP). Plan two separate ways off the roof</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Stay at least 10 ft from power lines and avoid overhead obstructions. Fly faces away from the building on modern metal and fiberglass ladders. Pivot on the beam closest to the structure. Tie in to a fixed object; secure unattended ladders.</p></div>
 
-<div class="ref-section"><div class="ref-title">Carrying, Raising, Climbing</div>
+<div class="ref-section"><h3 class="ref-title">Carrying, Raising, Climbing</h3>
 <table class="ref-table"><tr><th>Topic</th><th>Key points</th></tr>
 <tr><td>Carrying</td><td>Butt end first. Lift with your legs on command of a leader who can see the whole team</td></tr>
 <tr><td>Raising</td><td>Butt on the ground first. Two-person: butt firefighter decides placement. Three-person: third on the beam. Four-person: flat raise. Call out wind direction and speed</td></tr>
@@ -131,7 +132,13 @@ reference:`
 <tr><td>Climbing</td><td>About 75 degrees. Palms down, thumbs under, alternate rungs, knees slightly bent. With a tool, slide the free hand on the beam. Leg lock or ladder belt to free both hands</td></tr>
 <tr><td>Victims</td><td>Lowered feet first. Conscious: faces the ladder. Unconscious: feet outside the rails</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Inspection and Care</div>
+<div class="ref-section"><h3 class="ref-title">Inspection and Care</h3>
 <p style="font-size:13px">Inspect after each use and monthly; service test annually. Clean with a soft bristle brush and running water and keep ladders dry. Wood: water damage. Metal and fiberglass: heat or flame damage; a changed heat sensor label means heat exposure. Extension: fly moves freely. Roof ladder hooks: rust.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 9 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://www.fireengineering.com/firefighting/throw-back-to-basics-ground-ladder-tip-placement/" target="_blank" rel="noopener">Fire Engineering, Throw Back to Basics: Ground Ladder Tip Placement</a>: recommends the tip three to four rungs above the roof edge for roof access (not an IFSTA or NFPA citation).</li>
+</ul></div>
 `
 });

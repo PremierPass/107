@@ -3,7 +3,7 @@ review:[
 ["What information does E-9-1-1 provide?","The caller's location (address and callback number) displays automatically for the dispatcher."],
 ["What information is broadcast to members at dispatch?","Type of emergency, location/address, units assigned, cross streets, hazards, number of people involved, and other known details like preincident plan info. Dispatch begins with an alert (tones, pagers, or sirens)."],
 ["What radio language does NIMS require?","Plain language (clear text). No 10-codes."],
-["Base vs. mobile vs. portable radios?","Base: fixed, building-powered, most powerful, best receivers. Mobile: vehicle-mounted and powered, external antenna. Portable: handheld, battery-powered, may have an emergency button, must be intrinsically safe in combustible atmospheres."],
+["Base vs. mobile vs. portable radios?","Base: fixed, building-powered, most powerful, best receivers. Mobile: vehicle-mounted and powered, external antenna. Portable: handheld, battery-powered, may have an emergency button. In a combustible atmosphere use only a radio certified intrinsically safe for that hazardous location, with the battery and accessories its approval lists."],
 ["Radio limitations and how to overcome them?","Distance, barriers, dead zones, interference, and ambient noise. Use repeaters, move to a better location, change channels, relay through another unit, shield the mic, and speak clearly."],
 ["Two basic radio rules?","Identify yourself in every transmission, and the receiver acknowledges the message."],
 ["What information should you collect from a caller?","Type of emergency, location, number and location of people involved, caller's name and location, and callback number. Give life safety directions if the caller is at risk."],
@@ -51,7 +51,7 @@ terms:[
 ["PSAP","Entity that receives 911 calls and processes them under a specific operational policy."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Receiving Emergency Calls</div>
+<div class="ref-section"><h3 class="ref-title">Receiving Emergency Calls</h3>
 <table class="ref-table"><tr><th>System</th><th>Key points</th></tr>
 <tr><td>PSAP</td><td>Central point that takes all 911 calls and routes them to the right agency</td></tr>
 <tr><td>Emergency Services Specific Center</td><td>Run by the fire department, EMS, or law enforcement</td></tr>
@@ -60,15 +60,15 @@ reference:`
 <tr><td>FirstNet</td><td>Nationwide network just for first responders</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">The dispatcher gathers the type and location of the emergency, number and location of people involved, the caller's name, location, and callback number (NFPA 1225). Time spent gathering info means the emergency goes unmitigated longer. If the public calls the station, follow the procedure for relaying it.</p></div>
 
-<div class="ref-section"><div class="ref-title">Radios</div>
+<div class="ref-section"><h3 class="ref-title">Radios</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Base station</h3><p>Fixed location, building power. Best performance.</p></div>
-<div class="ref-card blue"><h3>Mobile</h3><p>Vehicle power, mounted in the cab. Less powerful than base stations.</p></div>
-<div class="ref-card blue"><h3>Portable</h3><p>Rechargeable or replaceable batteries. Intrinsically safe in combustible atmospheres. Emergency button.</p></div>
+<div class="ref-card blue"><h4>Base station</h4><p>Fixed location, building power. Best performance.</p></div>
+<div class="ref-card blue"><h4>Mobile</h4><p>Vehicle power, mounted in the cab. Less powerful than base stations.</p></div>
+<div class="ref-card blue"><h4>Portable</h4><p>Rechargeable or replaceable batteries. Emergency button. Not automatically intrinsically safe: only a radio labeled and certified for that hazardous location (for example Class I, Division 1) qualifies, and only with the approved battery and accessories. A non-approved battery voids the approval.</p></div>
 </div>
 <p style="font-size:12px;color:#aaa;margin-top:8px">The FCC regulates all US radio. Radios are classified by location and size. Repeaters increase coverage. Two fireground channels: command and tactical (tactical for fireground operations). Transmissions may be recorded and become public records.</p></div>
 
-<div class="ref-section"><div class="ref-title">Radio Procedures</div>
+<div class="ref-section"><h3 class="ref-title">Radio Procedures</h3>
 <table class="ref-table"><tr><th>Rule</th><th>Detail</th></tr>
 <tr><td>Identify</td><td>Identify yourself in every transmission</td></tr>
 <tr><td>Acknowledge</td><td>The receiver acknowledges every message; wait for it</td></tr>
@@ -77,5 +77,12 @@ reference:`
 <tr><td>Dead zone</td><td>Move toward an outside wall</td></tr>
 <tr><td>Ambient noise</td><td>Shield the mic with your body or PPE</td></tr>
 <tr><td>IDLH</td><td>Never remove your facepiece to talk</td></tr></table></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 3 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://www.berkspa.gov/departments/emergency-services/911-communications-branch/9-1-1-communications-for-municipalities-emergency-responders/new-radios-main-page/factory-mutual" target="_blank" rel="noopener">Berks County (PA) 9-1-1, Factory Mutual (FM) radio approvals</a>: only the batteries the approval specifies may be used, non-specified batteries void the approval, and many radio models are not approved.</li>
+<li><a href="https://fmapprovals.com/products-we-certify/products-we-certify/equipment-for-explosive-atmospheres/land-mobile-radios" target="_blank" rel="noopener">FM Approvals, land mobile radios</a>: hazardous location ratings (Class I, Division 1) for radios under FM 3640.</li>
+</ul></div>
 `
 });
