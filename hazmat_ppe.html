@@ -7,7 +7,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hazmat — PPE Classes</title>
 <script>setTimeout(function(){var d=document.documentElement;if(d.hasAttribute("data-gate")&&!d.classList.contains("gate-ok")&&!document.querySelector(".acct-gate")){var g=document.createElement("div");g.className="acct-gate";g.style.cssText="position:fixed;inset:0;background:#111;color:#f0f0f0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:Segoe UI,Arial,sans-serif;z-index:9000";g.innerHTML="<div><h2 style=\"margin-bottom:10px\">Still loading...</h2><p style=\"color:#999;line-height:1.6;margin-bottom:16px\">The page didn't finish loading. Check your connection and try again.</p><button onclick=\"location.reload()\" style=\"background:#c0392b;color:#fff;border:0;border-radius:8px;padding:11px 18px;font-weight:700;font-size:14px\">Reload</button><br><a href=\"fire.html\" style=\"display:inline-block;margin-top:14px;color:#e2aa3c;font-size:13px\">Back to the Study Hub</a></div>";document.body.appendChild(g);}},9000);</script>
-<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
+<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}
+.ref-section h2.ref-title { margin-top: 0; }
+.ref-section { overflow-x: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.ref-alt { background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:12px 14px; margin-top:12px; font-size:14px; line-height:1.55; color:#ddd; }
+.ref-alt h3 { font-size:14px; color:#f0f0f0; margin:10px 0 6px; }
+.ref-alt h3:first-child { margin-top:0; }
+.ref-alt ul { margin:4px 0 8px 18px; }
+.ref-alt li { margin:3px 0; }
+.ref-alt table { width:100%; border-collapse:collapse; font-size:13px; margin:6px 0; }
+.ref-alt th, .ref-alt td { border-bottom:1px solid #2a2a2a; padding:6px; text-align:left; vertical-align:top; }
+.ref-alt th { color:#e2aa3c; font-size:12px; }
+.ref-note { background:#f39c1214; border:1px solid #f39c1255; border-left:3px solid #f39c12; border-radius:8px; padding:10px 12px; font-size:13px; color:#ddd; line-height:1.55; margin:10px 0; }
+.ref-note b { color:#f39c12; }
+.ref-src { font-size:13px; line-height:1.6; color:#bbb; margin-left:18px; }
+.ref-src a { color:#5dade2; word-break:break-word; }
+[role="button"]:focus-visible, .modal-close:focus-visible { outline:2px solid #e2aa3c; outline-offset:2px; }
+@media (max-width:600px){ .ref-table { font-size:13px; } .ref-table td, .ref-table th { padding:6px; } .modal-header { font-size:12px; } }
+</style>
 
 <style>
 
@@ -198,10 +216,11 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   <a href="hazmat_keyterms.html" class="nav-btn">Key Terms</a>
 </div>
 <div style="max-width:720px;margin:0 auto;padding:16px;">
+<h1 class="sr-only">Hazmat PPE</h1>
 <div id="page-ppe" class="page active">
 
   <div class="ref-section">
-    <div class="ref-title">NFPA PPE Classes — Tap Any Class for Full Reference Chart</div>
+    <h2 class="ref-title">NFPA PPE Classes — Tap Any Class for Full Reference Chart</h2>
     <div class="ppe-grid">
 
       <div class="ppe-card" onclick="openClassModal('ppe_all')" style="border: 2px solid #c0392b">
@@ -216,7 +235,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#c0392b;color:#fff">CLASS 1</div>
         <div class="ppe-info">
           <div class="ppe-name">Maximum Protection</div>
-          <div class="ppe-desc">OSHA/EPA Level A — Fully encapsulating — SCBA inside — Unknown/IDLH</div>
+          <div class="ppe-desc">Vapor-protective ensemble with SCBA; unknown or IDLH vapor hazards (roughly comparable to Level A)</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -224,7 +243,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#e67e22;color:#fff">CLASS 2</div>
         <div class="ppe-info">
           <div class="ppe-name">Max Respiratory Protection</div>
-          <div class="ppe-desc">OSHA/EPA Level B — Splash suit — SCBA outside — Known material/IDLH</div>
+          <div class="ppe-desc">CBRN SCBA; IDLH levels of vapors, liquids, and particulates</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -232,7 +251,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#f39c12;color:#000">CLASS 3</div>
         <div class="ppe-info">
           <div class="ppe-name">Low Vapor + Splash Protection</div>
-          <div class="ppe-desc">OSHA/EPA Level C — APR/PAPR — Known material — Below IDLH — Monitored air</div>
+          <div class="ppe-desc">CBRN APR/PAPR; low levels of chemical vapors and liquids, not IDLH</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -240,7 +259,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#27ae60;color:#fff">CLASS 4</div>
         <div class="ppe-info">
           <div class="ppe-name">Bio + Radiological Particulate</div>
-          <div class="ppe-desc">APR/PAPR with HEPA — Biological or radiological particulates only</div>
+          <div class="ppe-desc">CBRN APR/PAPR; biological and radiological particulates only, no chemical protection</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -248,7 +267,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#2980b9;color:#fff">CLASS 5</div>
         <div class="ppe-info">
           <div class="ppe-name">Thermal + Chemical Splash</div>
-          <div class="ppe-desc">Structural gear + SCBA — Flammable environments — Chemical NOT toxic via skin</div>
+          <div class="ppe-desc">Description pending instructor review</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -262,7 +281,13 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe_all')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe_all.webp" alt="NFPA PPE Quick Reference" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><table><tr><th>Class</th><th>Respirator</th><th>Use</th></tr>
+<tr><td>Class 1</td><td>SCBA</td><td>Vapor-protective; unknown or IDLH vapor hazards</td></tr>
+<tr><td>Class 2</td><td>CBRN SCBA</td><td>IDLH levels of chemical vapors, liquids, and particulates</td></tr>
+<tr><td>Class 3</td><td>CBRN APR or PAPR</td><td>Low levels of chemical vapors and liquids (plus particulates); not for IDLH or oxygen-deficient air</td></tr>
+<tr><td>Class 4</td><td>CBRN APR or PAPR</td><td>Biological and radiological particulates only; no chemical vapor or liquid protection</td></tr>
+<tr><td>Class 5</td><td colspan="2">Pending instructor review: this guide could not verify the course description</td></tr></table>
+<p>These are NFPA CBRN ensemble classes (NFPA 1994, now consolidated into NFPA 1990). OSHA/EPA Levels A to D are a different system; comparisons such as "Class 1 is like Level A" are rough, not equivalent.</p><div class="ref-note"><b>Why removed:</b> the poster listed fixed OSHA/EPA level equivalents, described Class 2 as splash-only, and described a Class 5 this guide could not verify.</div></div>
         </div>
       </div>
     </div>
@@ -273,7 +298,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe1')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe1_class1.webp" alt="Maximum Protection" class="modal-img">
+          <img src="images/ppe1_class1.webp" alt="Maximum Protection" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><p>Class 1: fully encapsulating vapor-protective ensemble with SCBA, for unknown or IDLH vapor hazards and skin-absorption hazards. Roughly comparable to OSHA/EPA Level A; the two systems are not identical.</p></div>
         </div>
       </div>
     </div>
@@ -284,7 +309,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe2')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe2_class2.webp" alt="Max Respiratory Protection" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><p><b>Class 2:</b> worn with a CBRN SCBA for IDLH environments with high levels of chemical vapors, liquids, or particulates. It covers vapors as well as liquids.</p><div class="ref-note"><b>Course answer discrepancy:</b> earlier study material described Class 2 as liquid-splash only (Level B) and said it does not protect against vapors. NFPA 1994 Class 2 ensembles protect against chemical vapors and liquids at IDLH levels.</div></div>
         </div>
       </div>
     </div>
@@ -295,7 +320,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe3')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe3_class3.webp" alt="Low Vapor + Splash Protection" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><p><b>Class 3:</b> worn with a CBRN APR or PAPR for low levels of chemical vapors, liquids, or particulates where the atmosphere is not IDLH and the contaminant is known and monitored.</p></div>
         </div>
       </div>
     </div>
@@ -306,7 +331,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe4')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe4_class4.webp" alt="Bio + Radiological Particulate" class="modal-img">
+          <img src="images/ppe4_class4.webp" alt="Bio + Radiological Particulate" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><p>Class 4: CBRN APR or PAPR with particulate-resistant clothing, for biological agents and radiological particulates only. No protection against chemical vapors, gases, liquid splashes, or oxygen deficiency.</p></div>
         </div>
       </div>
     </div>
@@ -317,14 +342,14 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe5')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe5_class5.webp" alt="Thermal + Chemical Splash" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><div class="ref-note"><b>Pending instructor review:</b> the course material describes Class 5 as structural firefighting gear with SCBA for flammable environments where the chemical isn't toxic through the skin. This guide could not verify that description against NFPA 1990, so it has been removed from the practice quiz until the instructor confirms it.</div></div>
         </div>
       </div>
     </div>
 
 
   <div class="ref-section">
-    <div class="ref-title">PPE Reference Charts — Tap Any Card for Full Chart</div>
+    <h2 class="ref-title">PPE Reference Charts — Tap Any Card for Full Chart</h2>
     <div class="ppe-grid">
 
       <div class="ppe-card" onclick="openClassModal('resp_types')" style="border-left: 4px solid #2980b9">
@@ -355,7 +380,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#27ae60;color:#fff;font-size:10px;">PPE SELECTION</div>
         <div class="ppe-info">
           <div class="ppe-name">Decision Guide</div>
-          <div class="ppe-desc">Flowchart + quick reference — Unknown=Class 1, Splash=Class 2, Monitored=Class 3, Bio/Rad=Class 4, Fire=Class 5</div>
+          <div class="ppe-desc">Hazard- and task-based selection steps</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -369,7 +394,12 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('resp_types')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe_respiratory.webp" alt="Protection Types" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><table><tr><th>Type</th><th>Air source</th><th>Key limits</th></tr>
+<tr><td>SCBA</td><td>Cylinder carried by the user</td><td>Required for unknown, IDLH, or oxygen-deficient atmospheres; limited air time; heavy</td></tr>
+<tr><td>Supplied-air respirator (SAR)</td><td>Air line from a stationary source</td><td>Hose limits movement; in IDLH conditions it needs an escape air supply</td></tr>
+<tr><td>Air-purifying respirator (APR)</td><td>Filters the surrounding air</td><td>Known contaminant below IDLH, oxygen at least 19.5%, correct cartridge; tight-fitting, so fit testing is required</td></tr>
+<tr><td>Powered APR (PAPR)</td><td>Blower pushes filtered air</td><td>Same limits as an APR; tight-fitting PAPR facepieces need fit testing, loose-fitting hoods do not</td></tr></table>
+<div class="ref-note"><b>Why removed:</b> the poster's row labels were out of line with their contents, and it said PAPRs never require fit testing.</div></div>
         </div>
       </div>
     </div>
@@ -380,7 +410,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('skin_protective')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe_skin_protective.webp" alt="Clothing Categories" class="modal-img">
+          <img src="images/ppe_skin_protective.webp" alt="Clothing Categories" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ul><li>Thermal protective clothing (structural gear, proximity, fire entry, flame-resistant, cold weather): structural gear is not vapor-tight.</li><li>Chemical protective clothing: vapor-protective, liquid splash-protective encapsulating, and nonencapsulating. No suit resists every chemical.</li><li>Ballistic protection does not protect against chemicals.</li></ul></div>
         </div>
       </div>
     </div>
@@ -391,7 +421,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('cpc_failure')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe_cpc_failure.webp" alt="Modes" class="modal-img">
+          <img src="images/ppe_cpc_failure.webp" alt="Modes" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ul><li>Permeation: the chemical passes through the material at the molecular level with no visible sign.</li><li>Degradation: the material breaks down (swelling, discoloration, stiffening).</li><li>Penetration: the chemical gets through openings such as zippers, seams, or tears.</li></ul></div>
         </div>
       </div>
     </div>
@@ -402,7 +432,18 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe_selection')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/ppe_selection.webp" alt="Decision Guide" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><h3>Selecting PPE</h3><ol style="margin-left:18px">
+<li>Identify the hazard: material, concentration, oxygen level, physical state, and routes of exposure.</li>
+<li>Match the task: entry, decon, or support work each have different exposures.</li>
+<li>Choose respiratory protection: SCBA for unknown, IDLH, or oxygen-deficient conditions; APR or PAPR only when the contaminant is known, measured below IDLH, oxygen is at least 19.5%, and the cartridge is approved for it.</li>
+<li>Choose clothing compatible with the chemical (check the manufacturer's chemical resistance data).</li>
+<li>Reassess as conditions change.</li></ol><table><tr><th>Class</th><th>Respirator</th><th>Use</th></tr>
+<tr><td>Class 1</td><td>SCBA</td><td>Vapor-protective; unknown or IDLH vapor hazards</td></tr>
+<tr><td>Class 2</td><td>CBRN SCBA</td><td>IDLH levels of chemical vapors, liquids, and particulates</td></tr>
+<tr><td>Class 3</td><td>CBRN APR or PAPR</td><td>Low levels of chemical vapors and liquids (plus particulates); not for IDLH or oxygen-deficient air</td></tr>
+<tr><td>Class 4</td><td>CBRN APR or PAPR</td><td>Biological and radiological particulates only; no chemical vapor or liquid protection</td></tr>
+<tr><td>Class 5</td><td colspan="2">Pending instructor review: this guide could not verify the course description</td></tr></table>
+<p>These are NFPA CBRN ensemble classes (NFPA 1994, now consolidated into NFPA 1990). OSHA/EPA Levels A to D are a different system; comparisons such as "Class 1 is like Level A" are rough, not equivalent.</p></div>
         </div>
       </div>
     </div>
@@ -411,6 +452,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 
 
 
+
+<div class="ref-section"><h2 class="ref-title">Decon Team PPE</h2>
+<p style="font-size:14px;line-height:1.55">Choose decon team PPE from a hazard and task assessment. Workers who first contact people and equipment leaving the hot zone may need the same protection as the entry team. A lower level is acceptable only when the assessment shows the exposure is lower, and that decision should be documented.</p>
+<div class="ref-note"><b>Course answer discrepancy:</b> earlier study material said decon personnel always wear one level below the entry team. Guidance says decon workers may need the same level as the entry team, and only some may be adequately protected one level lower.</div></div>
+<div class="ref-section"><h2 class="ref-title">Sources</h2><ul class="ref-src">
+<li><a href="https://www.firerescue1.com/archive/articles/new-options-for-cbrn-protection-part-1-pdVA9oc1H81xjF8h" target="_blank" rel="noopener">FireRescue1, New options for CBRN protection</a>: NFPA 1994 Class 2 (SCBA, IDLH vapors and liquids), Class 3 (APR/PAPR, non-IDLH), Class 4 (APR/PAPR, biological and radiological particulates only).</li>
+<li><a href="https://fireandsafetyjournalamericas.com/iafc-publishes-updated-guide-on-cbrn-ppe-for-emergency-response/" target="_blank" rel="noopener">IAFC CBRN PPE guide summary</a>: NFPA 1990 consolidates NFPA 1991, 1992, and 1994; classes range from 1 to 5.</li>
+<li><a href="https://www.cdc.gov/niosh/publications/numbered/2018-176.html" target="_blank" rel="noopener">NIOSH, A Guide to Air-Purifying Respirators</a>: APRs supply no oxygen and can't be used in oxygen-deficient or IDLH atmospheres.</li>
+<li><a href="https://www.oshacademy.com/courses/training/670-hazwoper-refresher-clean-up-operations/670-12-11.php" target="_blank" rel="noopener">OSHAcademy HAZWOPER, decontamination PPE</a>: decon workers may need the same PPE as entry workers; some may be protected one level lower.</li>
+<li>IFSTA <i>Hazardous Materials for First Responders</i> (course textbook): not inspected for this review; no page numbers given.</li>
+</ul></div>
 
 </div>
 <script>
@@ -430,6 +482,7 @@ function closeModal(event, key) {
 }
 
 </script>
+<script src="hazmat-ui.js?v=1"></script>
 <script type="module" src="cloud-sync.js?v=5"></script>
 </body>
 </html>

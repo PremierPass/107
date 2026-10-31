@@ -2,7 +2,7 @@
 <html lang="en" data-gate>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hazmat — Key Terms</title>
 <script>setTimeout(function(){var d=document.documentElement;if(d.hasAttribute("data-gate")&&!d.classList.contains("gate-ok")&&!document.querySelector(".acct-gate")){var g=document.createElement("div");g.className="acct-gate";g.style.cssText="position:fixed;inset:0;background:#111;color:#f0f0f0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:Segoe UI,Arial,sans-serif;z-index:9000";g.innerHTML="<div><h2 style=\"margin-bottom:10px\">Still loading...</h2><p style=\"color:#999;line-height:1.6;margin-bottom:16px\">The page didn't finish loading. Check your connection and try again.</p><button onclick=\"location.reload()\" style=\"background:#c0392b;color:#fff;border:0;border-radius:8px;padding:11px 18px;font-weight:700;font-size:14px\">Reload</button><br><a href=\"fire.html\" style=\"display:inline-block;margin-top:14px;color:#e2aa3c;font-size:13px\">Back to the Study Hub</a></div>";document.body.appendChild(g);}},9000);</script>
 <style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
@@ -158,7 +158,7 @@ const CARDS = [
 {ch:"Ch2",q:"Emergency Response Guidebook (ERG)",a:"DOT guidebook for first responders at transportation hazmat incidents."},
 {ch:"Ch2",q:"Energetic",a:"Material capable of rapid energy release, such as explosives."},
 {ch:"Ch2",q:"Explosive",a:"Material that undergoes rapid chemical reaction producing heat, gas, and pressure."},
-{ch:"Ch2",q:"Fentanyl",a:"Powerful synthetic opioid, dangerous in very small amounts."},
+{ch:"Ch2",q:"Fentanyl",a:"Powerful synthetic opioid, dangerous in very small amounts by inhalation, mucous membrane contact, ingestion, or needlestick. Brief skin contact is not expected to cause toxicity if washed off promptly with soap and water."},
 {ch:"Ch2",q:"Flammable",a:"Capable of igniting easily and burning rapidly."},
 {ch:"Ch2",q:"Flammable Liquid",a:"Liquid with a flash point below 100°F (37.8°C)."},
 {ch:"Ch2",q:"Fumigation",a:"Using a gas or vapor pesticide to treat an enclosed space."},
@@ -328,7 +328,7 @@ const CARDS = [
 {ch:"Ch5",q:"Froth-Overs",a:"Frothing overflow when water mixes with hot viscous oil and flashes to steam. Less violent than a boilover."},
 {ch:"Ch5",q:"Gauge Pressure",a:"Pressure relative to atmospheric. Negative gauge pressure means vacuum."},
 {ch:"Ch5",q:"High-Hazard Flammable Trains (HHFT)",a:"20+ continuous tank cars of flammable liquid, or 35+ dispersed through the train."},
-{ch:"Ch5",q:"Intermediate Bulk Container (IBC)",a:"Rigid or flexible portable container, max 3,000 L / 793 gal / 106 ft³."},
+{ch:"Ch5",q:"Intermediate Bulk Container (IBC)",a:"Rigid or flexible portable container, max 3,000 L / 793 gal / 106 ft³. Above 450 L (119 gal) of liquid it is bulk packaging."},
 {ch:"Ch5",q:"Intermodal Container",a:"Freight container built to move between two or more transport modes."},
 {ch:"Ch5",q:"Maximum Allowable Working Pressure (MAWP)",a:"A percentage of test pressure — the max the weakest component can safely hold."},
 {ch:"Ch5",q:"Pressure",a:"Force per unit area, measured in psi or kPa."},
@@ -425,11 +425,11 @@ const CARDS = [
 {ch:"Ch10",q:"Atmosphere-Supplying Respirator",a:"Supplies clean breathing air from a source independent of the surrounding air. Includes SCBA and SAR."},
 {ch:"Ch10",q:"Breakthrough",a:"When a chemical permeates through protective clothing material and reaches the inside."},
 {ch:"Ch10",q:"Chemical Degradation",a:"Loss of a protective material's physical properties from contact with a chemical."},
-{ch:"Ch10",q:"Class 1 Ensemble",a:"Highest level — vapor-tight total encapsulating suit with SCBA. Comparable to EPA Level A."},
-{ch:"Ch10",q:"Class 2 Ensemble",a:"Liquid splash-protective, non-vapor-tight, worn with SCBA. Comparable to Level B."},
-{ch:"Ch10",q:"Class 3 Ensemble",a:"Lower-level liquid splash protection, worn with APR or PAPR. Comparable to Level C."},
-{ch:"Ch10",q:"Class 4 Ensemble",a:"Protection against biological/radiological particulates and limited hazards."},
-{ch:"Ch10",q:"Class 5 Ensemble",a:"Flammable-environment protection based on structural firefighting gear with enhancements. Used when the chemical isn't toxic through skin."},
+{ch:"Ch10",q:"Class 1 Ensemble",a:"Highest level — vapor-tight total encapsulating suit with SCBA. Roughly comparable to EPA Level A."},
+{ch:"Ch10",q:"Class 2 Ensemble",a:"CBRN ensemble worn with SCBA for IDLH levels of chemical vapors, liquids, and particulates. Not the same as Level B."},
+{ch:"Ch10",q:"Class 3 Ensemble",a:"CBRN ensemble worn with APR or PAPR for low levels of chemical vapors and liquids, not IDLH. Roughly comparable to Level C."},
+{ch:"Ch10",q:"Class 4 Ensemble",a:"Worn with APR or PAPR; protects against biological and radiological particulates only, not chemical vapors or liquids."},
+{ch:"Ch10",q:"Class 5 Ensemble",a:"Course description: flammable-environment protection based on structural firefighting gear, used when the chemical isn't toxic through skin. Pending instructor review; not verified against NFPA 1990."},
 {ch:"Ch10",q:"Closed-Circuit SCBA",a:"Recycles exhaled air — scrubs CO2 and adds oxygen. Longer duration (rebreather)."},
 {ch:"Ch10",q:"Emergency Escape Bottle",a:"Small air cylinder giving a few minutes of air to escape a hazardous atmosphere."},
 {ch:"Ch10",q:"Encapsulating",a:"Suit that completely encloses the wearer, including the breathing apparatus."},

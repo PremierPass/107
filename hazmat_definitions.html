@@ -38,6 +38,8 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 .filter-btn.active { background: #c0392b; border-color: #c0392b; color: white; }
 .search-box { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #f0f0f0; padding: 9px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 10px; }
 .search-box:focus { outline: none; border-color: #c0392b; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+.def-card:focus-visible { outline:2px solid #e2aa3c; outline-offset:2px; }
 .card-counter { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
 .card-wrap { perspective: 1000px; margin-bottom: 12px; cursor: pointer; }
 .card { width: 100%; min-height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
@@ -221,7 +223,8 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
     <div class="def-stat" style="border:1px solid #f39c12"><div class="num" style="color:#f39c12" id="d-left">0</div><div class="lbl">Left</div></div>
   </div>
 
-  <input class="search-box" type="text" id="def-search" placeholder="Search terms..." oninput="filterDefs()">
+  <h1 class="sr-only">Hazmat Definitions</h1>
+  <input class="search-box" type="search" id="def-search" placeholder="Search terms..." aria-label="Search definitions" oninput="filterDefs()">
 
   <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
     <button class="filter-btn active" onclick="filterChapter('all',this)">All</button>
@@ -313,7 +316,7 @@ const DEFINITIONS = [
   {term:"MC-331/TC-331",def:"High pressure cargo tank truck used to transport compressed gases such as propane and anhydrous ammonia — identified by smooth sides, rounded ends, and white/silver color.",ch:"Ch5"},
   {term:"MC-338/TC-338",def:"Cryogenic cargo tank truck — identified by thermos bottle appearance, vacuum-jacketed insulation, and stainless steel construction.",ch:"Ch5"},
   {term:"DOT 111",def:"The most common low pressure railroad tank car — identified by large diameter dome on top. Used to transport flammable liquids and chemicals.",ch:"Ch5"},
-  {term:"IBC",def:"Intermediate Bulk Container — a portable packaging with maximum capacity of 793 gallons, often on a pallet. Also called a tote.",ch:"Ch5"},
+  {term:"IBC",def:"Intermediate Bulk Container — a portable packaging of up to 3,000 L (about 793 gallons), often on a pallet. Also called a tote. An IBC holding more than 450 L (119 gal) of liquid is bulk packaging.",ch:"Ch5"},
   {term:"T-Code",def:"A portable tank instruction code on intermodal containers that identifies the hazmat rating of the container.",ch:"Ch5"},
   {term:"HHFT",def:"High-Hazard Flammable Train — a train with 20 or more tank cars loaded with flammable liquid in a continuous block or 35 or more cars dispersed through the train.",ch:"Ch5"},
   {term:"Carboy",def:"A glass or plastic jug of 5-15 gallons usually used for corrosives, cushioned in a protective box or basket.",ch:"Ch5"},
@@ -356,18 +359,18 @@ const DEFINITIONS = [
   {term:"Off-Gassing",def:"The release of absorbed chemicals from a person's clothing or body — requires special decon approach for volatile materials.",ch:"Ch9"},
   // CH10 - PPE
   {term:"SCBA",def:"Self-Contained Breathing Apparatus — provides compressed air from a cylinder carried by the user. Required for IDLH and unknown atmospheres.",ch:"Ch10"},
-  {term:"SAR",def:"Supplied-Air Respirator — provides air from a stationary source via an air hose up to 300 feet. Must carry emergency escape bottle. NOT for firefighting.",ch:"Ch10"},
+  {term:"SAR",def:"Supplied-Air Respirator — provides air from a stationary source via an air hose up to 300 feet. In IDLH atmospheres it needs an escape air supply. NOT for firefighting.",ch:"Ch10"},
   {term:"APR",def:"Air-Purifying Respirator — filters ambient air through a canister or cartridge. Only used when contaminant is known, below IDLH, and oxygen is at least 19.5%.",ch:"Ch10"},
-  {term:"PAPR",def:"Powered Air-Purifying Respirator — a battery-powered blower system that delivers filtered air. Does not require fit testing.",ch:"Ch10"},
+  {term:"PAPR",def:"Powered Air-Purifying Respirator — a battery-powered blower system that delivers filtered air. Tight-fitting facepieces need fit testing; loose-fitting hoods do not. Same limits as an APR: not for IDLH or oxygen-deficient air.",ch:"Ch10"},
   {term:"CPC",def:"Chemical Protective Clothing — clothing designed to protect against chemical hazards. No single CPC protects against all chemicals.",ch:"Ch10"},
   {term:"Permeation",def:"A chemical passing through CPC fabric at the molecular level with no visible evidence. Decontamination will NOT stop permeation.",ch:"Ch10"},
   {term:"Degradation",def:"Physical or chemical breakdown of CPC material — visible signs include discoloration, swelling, stiffening, and loss of strength.",ch:"Ch10"},
   {term:"Penetration",def:"Hazardous material entering through a physical opening in CPC — rips, tears, cuts, punctures, unsealed seams, or open zippers.",ch:"Ch10"},
-  {term:"Class 1 PPE",def:"Fully encapsulating vapor-protective suit with SCBA worn inside — highest level of skin and respiratory protection. Equivalent to OSHA/EPA Level A.",ch:"Ch10"},
-  {term:"Class 2 PPE",def:"Liquid splash-protective suit with SCBA worn outside — highest respiratory protection with less skin protection than Class 1. Equivalent to OSHA/EPA Level B.",ch:"Ch10"},
-  {term:"Class 3 PPE",def:"Chemical-resistant clothing with APR or PAPR — used for known materials below IDLH with monitored atmosphere. Equivalent to OSHA/EPA Level C.",ch:"Ch10"},
+  {term:"Class 1 PPE",def:"Fully encapsulating vapor-protective suit with SCBA — highest level of skin and respiratory protection. Roughly comparable to OSHA/EPA Level A (the systems are not identical).",ch:"Ch10"},
+  {term:"Class 2 PPE",def:"CBRN ensemble worn with SCBA for IDLH levels of chemical vapors, liquids, and particulates (NFPA 1994, now in NFPA 1990). Not the same as OSHA/EPA Level B.",ch:"Ch10"},
+  {term:"Class 3 PPE",def:"CBRN ensemble worn with APR or PAPR for low levels of chemical vapors and liquids below IDLH, with a known, monitored contaminant. Roughly comparable to OSHA/EPA Level C.",ch:"Ch10"},
   {term:"Class 4 PPE",def:"Biological and radiological particulate-resistant clothing with APR or PAPR with HEPA filters — protects against biological agents and radiological particulates only.",ch:"Ch10"},
-  {term:"Class 5 PPE",def:"Structural firefighter gear with SCBA and enhanced splash protection — for flammable environments where the chemical is NOT toxic via skin absorption.",ch:"Ch10"},
+  {term:"Class 5 PPE",def:"Course description: structural firefighter gear with SCBA for flammable environments where the chemical is not toxic through the skin. Pending instructor review; not verified against NFPA 1990.",ch:"Ch10"},
   {term:"Heat Stroke",def:"The most serious heat-related disorder — characterized by high body temperature, hot red skin, rapid pulse, and possible unconsciousness. Life threatening.",ch:"Ch10"},
   {term:"Rehabilitation",def:"Rest, rehydration, and medical monitoring for responders between work cycles at a hazmat incident.",ch:"Ch10"},
   // CH11 - Decon
@@ -416,7 +419,7 @@ const DEFINITIONS = [
   {term:"Environmental Crime",def:"Illegal use and intentional release or disposal of hazardous substances that pollute air, water, or soil — typically falls under EPA jurisdiction.",ch:"Ch15"},
   // CH16 - Illicit Labs
   {term:"Illicit Laboratory",def:"A clandestine facility used to illegally manufacture drugs, explosives, chemical agents, or biological agents.",ch:"Ch16"},
-  {term:"Fentanyl",def:"A synthetic opioid approximately 100 times more potent than morphine — can be absorbed through skin, inhalation, ingestion, or mucous membranes. Extremely dangerous in small amounts.",ch:"Ch16"},
+  {term:"Fentanyl",def:"A synthetic opioid approximately 100 times more potent than morphine. Inhalation, contact with the eyes, nose, or mouth, ingestion, and needlesticks are the dangerous routes. Brief skin contact with powder is not expected to cause toxic effects if it is promptly washed off with soap and water (not hand sanitizer).",ch:"Ch16"},
   {term:"Carfentanil",def:"A synthetic opioid approximately 100 times more potent than fentanyl — used as a large animal tranquilizer. Extremely dangerous to humans even in tiny amounts.",ch:"Ch16"},
   {term:"NPS",def:"New Psychoactive Substances — synthetic drugs designed to mimic controlled substances, including synthetic cannabinoids (spice/K2) and synthetic cathinones (bath salts).",ch:"Ch16"},
   {term:"BHO",def:"Butane Hash Oil — a marijuana concentrate produced using butane gas. The flammability of butane has caused numerous fires and explosions during production.",ch:"Ch16"},
@@ -459,13 +462,13 @@ function renderDefs() {
   const list = document.getElementById('def-list');
   list.innerHTML = sorted.map(d => {
     const isKnown = knownDefs.has(d.term);
-    return `<div class="def-card ${isKnown ? 'revealed' : ''}" onclick="toggleDef(this,'${d.term.replace(/'/g,"\'")}')">
+    return `<div class="def-card ${isKnown ? 'revealed' : ''}" role="button" tabindex="0" aria-expanded="${isKnown}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}" onclick="toggleDef(this,'${d.term.replace(/'/g,"\'")}')">
       <div class="def-ch">${d.ch.replace('Ch','Chapter ')}</div>
       <div class="def-term">${d.term}</div>
       <div class="def-definition" style="display:${isKnown ? 'block' : 'none'}">${d.def}</div>
       <div class="def-hint">${isKnown ? '✓ Known — tap to hide' : 'Tap to reveal definition'}</div>
     </div>`;
-  }).join('');
+  }).join('') || '<div style="text-align:center;color:#888;padding:24px">No terms match. Clear the search or pick another chapter.</div>';
 }
 
 function toggleDef(card, term) {
@@ -476,12 +479,14 @@ function toggleDef(card, term) {
   if (isShowing) {
     defEl.style.display = 'none';
     card.classList.remove('revealed');
+    card.setAttribute('aria-expanded','false');
     hintEl.textContent = 'Tap to reveal definition';
     knownDefs.delete(term);
   } else {
     defEl.style.display = 'block';
     card.classList.add('revealed');
     hintEl.textContent = '✓ Known — tap to hide';
+    card.setAttribute('aria-expanded','true');
     knownDefs.add(term);
   }
   
