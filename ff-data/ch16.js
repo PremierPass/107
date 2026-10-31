@@ -10,7 +10,7 @@ review:[
 ],
 [
 "What does HIPAA regulate?",
-"The use, distribution, and storage of protected health information (PHI), and who it can be shared with. It sets civil and criminal penalties. PHI is released only with the patient's consent."
+"The use, distribution, and storage of protected health information (PHI), and who it can be shared with. It sets civil and criminal penalties. PHI may be shared without the patient's authorization for treatment, such as the handoff report to the receiving hospital or next provider, and in other ways the rule allows; otherwise it needs the patient's authorization. Never share it with the public or anyone not involved in care."
 ],
 [
 "What procedures should you follow to maintain proper body substance isolation (BSI)?",
@@ -34,7 +34,7 @@ review:[
 ],
 [
 "How does the administration of CPR differ between adults, children, and infants?",
-"All are 100 to 120 per minute. Adults: two hands, 2 to 2.4 inches deep. Children: one or two hands, about one-third of the chest, about 2 inches, 30:2. Infants: check the brachial pulse, two fingers in the center of the chest at the nipple line, about 1.5 inches deep. Infant arrests are usually airway problems, so clear any visible obstruction."
+"Rate is 100 to 120 per minute for all ages. Adults: two hands, at least 2 inches but no more than 2.4. Children: one or two hands, at least one-third of the chest (about 2 inches). Infants: check the brachial pulse; heel of one hand or the 2-thumb encircling hands technique, at least one-third of the chest (about 1.5 inches). The course text teaches two fingers, but the 2025 AHA guidelines removed that method. Ratio without an advanced airway: adults 30:2; children and infants 30:2 with one rescuer, 15:2 with two healthcare rescuers. With an advanced airway: continuous compressions, 1 breath every 6 seconds for adults, every 2 to 3 seconds for children and infants. Infant arrests are usually airway problems, so clear any visible obstruction."
 ],
 [
 "What is a sign that CPR can be discontinued?",
@@ -320,10 +320,11 @@ quiz:[
 ],
 [
 "Chest compressions should be performed on infants with the:",
+"heel of one hand or the 2-thumb encircling hands technique.",
 "index and middle fingers of one hand.",
 "heel of each hand.",
 "the index finger of one hand.",
-"heel of one hand."
+{note:"The course test keyed \"index and middle fingers of one hand.\" The 2025 AHA pediatric BLS guidelines removed two-finger compressions because they often fail to reach the right depth. Use the heel of one hand or the 2-thumb encircling hands technique."}
 ],
 [
 "Incidences of tuberculosis (TB) are more prevalent in:",
@@ -531,39 +532,41 @@ terms:[
 "Blood vessel that carries blood from the tissues to the heart."
 ]
 ],
-reference:`<div class="ref-section"><div class="ref-title">EMS Levels</div>
+reference:`<div class="ref-section"><h3 class="ref-title">EMS Levels</h3>
 <table class="ref-table"><tr><th>Level</th><th>Key points</th></tr>
 <tr><td>First aid provider</td><td>Minimum level for firefighters (NFPA 1010 Ch. 10). CPR, CCR, AED, basic first aid.</td></tr>
 <tr><td>EMR</td><td>Keep the patient alive until higher-trained help arrives. Usually no transport.</td></tr>
 <tr><td>EMT</td><td>Basic life support. In some jurisdictions also transports.</td></tr>
 <tr><td>Advanced EMT</td><td>More advanced skills. Scope covers acute management and transport of critical patients.</td></tr>
 <tr><td>Paramedic</td><td>Highest level. Advanced life support.</td></tr></table>
-<p style="font-size:12px;color:#aaa;margin-top:8px">EMS models: fire service-based (the FD runs the ambulances), third-service, and hospital-based. Fire units often arrive first. HIPAA protects PHI; release it only with patient consent.</p></div>
+<p style="font-size:12px;color:#aaa;margin-top:8px">EMS models: fire service-based (the FD runs the ambulances), third-service, and hospital-based. Fire units often arrive first. HIPAA protects PHI: share it for treatment (the handoff report to the hospital or next provider needs no authorization) and as the rule allows; otherwise it needs the patient's authorization. Never discuss it with the public or the media.</p></div>
 
-<div class="ref-section"><div class="ref-title">Infection Control</div>
+<div class="ref-section"><h3 class="ref-title">Infection Control</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>BSI</h3><p>Hand washing (30+ seconds, alcohol gel on scene), gloves (change between patients, peel off with two clean fingers inside), eye protection, masks, gowns, spare uniforms. More PPE is better than not enough.</p></div>
-<div class="ref-card orange"><h3>Decon</h3><p>Biohazard bags, take items to the designated disinfecting area, bleach and water or disinfectant. Never take contaminated uniforms home or to a public laundry.</p></div>
-<div class="ref-card red"><h3>Diseases</h3><p>Hep A: food or water, close contact. Hep B: blood, vaccine available. Hep C: may show no symptoms for years. TB: respiratory, crowded living areas, N-95, PPD test read in 48 to 72 hours. HIV: lower risk, short survival outside the body. MDROs: don't respond to normal antibiotics.</p></div>
+<div class="ref-card blue"><h4>BSI</h4><p>Hand washing (30+ seconds, alcohol gel on scene), gloves (change between patients, peel off with two clean fingers inside), eye protection, masks, gowns, spare uniforms. More PPE is better than not enough.</p></div>
+<div class="ref-card orange"><h4>Decon</h4><p>Biohazard bags, take items to the designated disinfecting area, bleach and water or disinfectant. Never take contaminated uniforms home or to a public laundry.</p></div>
+<div class="ref-card red"><h4>Diseases</h4><p>Hep A: food or water, close contact. Hep B: blood, vaccine available. Hep C: may show no symptoms for years. TB: respiratory, crowded living areas, N-95, PPD test read in 48 to 72 hours. HIV: lower risk, short survival outside the body. MDROs: don't respond to normal antibiotics.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Assessment and CPR</div>
+<div class="ref-section"><h3 class="ref-title">Assessment and CPR</h3>
 <p style="font-size:13px">Responsive: ABC (airway, breathing, circulation). Unresponsive and not breathing or gasping: CAB, starting with circulation. First step on arrival: check consciousness (tap and ask), then the pulse. Pulse is the easiest check for circulation: radial or carotid for adults and children, brachial for infants (10 seconds).</p>
 <table class="ref-table"><tr><th></th><th>Adult</th><th>Child</th><th>Infant</th></tr>
-<tr><td>Hands</td><td>Two hands, elbows locked, on a hard surface</td><td>One hand (two for larger kids)</td><td>Index and middle fingers, nipple line</td></tr>
-<tr><td>Depth</td><td>2 to 2.4 in, no farther</td><td>About 2 in (1/3 of the chest)</td><td>About 1.5 in (1/3)</td></tr>
-<tr><td>Rate</td><td colspan="3">100 to 120 per minute, 30:2, full recoil</td></tr></table>
+<tr><td>Hands</td><td>Two hands, center of the chest, elbows locked, hard surface</td><td>One or two hands, center of the chest</td><td>Heel of one hand, or 2-thumb encircling hands (2025 AHA)</td></tr>
+<tr><td>Depth</td><td>At least 2 in, no more than 2.4 in</td><td>At least 1/3 of the chest (about 2 in)</td><td>At least 1/3 of the chest (about 1.5 in)</td></tr>
+<tr><td>Rate</td><td colspan="3">100 to 120 compressions per minute, full recoil</td></tr>
+<tr><td>Ratio, no advanced airway</td><td>30:2 (1 or 2 rescuers)</td><td colspan="2">30:2 with 1 rescuer; 15:2 with 2 healthcare rescuers</td></tr>
+<tr><td>With advanced airway</td><td>Continuous compressions, 1 breath every 6 seconds</td><td colspan="2">Continuous compressions, 1 breath every 2 to 3 seconds</td></tr></table><div class="ref-note"><b>Course answer discrepancy:</b> The course test keyed two fingers (index and middle) for infant compressions. The 2025 AHA guidelines removed the two-finger method; the practice quiz uses the AHA answer.</div>
 <p style="font-size:12px;color:#aaa;margin-top:8px">CCR = compressions only, no rescue breaths. Layperson CPR prioritizes compressions. Use an AED as soon as one is available. Clinical death happens at arrest; biological death (irreversible brain damage) comes 4 to 10 minutes later. Stop when the patient revives, higher care takes over, you're exhausted, the scene turns unsafe, or there are obvious signs of death like rigor mortis.</p></div>
 
-<div class="ref-section"><div class="ref-title">Bleeding</div>
+<div class="ref-section"><h3 class="ref-title">Bleeding</h3>
 <div class="ref-grid">
-<div class="ref-card red"><h3>Arterial</h3><p>Bright red, spurting. Hardest to control. Transport without delay.</p></div>
-<div class="ref-card blue"><h3>Venous</h3><p>Darker, slow and steady flow.</p></div>
-<div class="ref-card yellow"><h3>Capillary</h3><p>Oozing from small vessels, minor.</p></div>
+<div class="ref-card red"><h4>Arterial</h4><p>Bright red, spurting. Hardest to control. Transport without delay.</p></div>
+<div class="ref-card blue"><h4>Venous</h4><p>Darker, slow and steady flow.</p></div>
+<div class="ref-card yellow"><h4>Capillary</h4><p>Oozing from small vessels, minor.</p></div>
 </div>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Direct pressure first (most common). Tourniquet: 2 to 3 in above the wound, not on a joint, twist the windlass until bleeding stops, note the time. Internal bleeding signs: torso bruising, bleeding from the mouth, nose, or rectum, bloody stool or urine, rigid abdomen, coffee-ground vomit, cool pale clammy skin.</p></div>
 
-<div class="ref-section"><div class="ref-title">Shock</div>
+<div class="ref-section"><h3 class="ref-title">Shock</h3>
 <table class="ref-table"><tr><th>Type</th><th>Cause</th></tr>
 <tr><td>Hypovolemic</td><td>Blood or fluid loss</td></tr>
 <tr><td>Cardiogenic</td><td>Heart can't pump enough (MI)</td></tr>
@@ -571,5 +574,13 @@ reference:`<div class="ref-section"><div class="ref-title">EMS Levels</div>
 <tr><td>Anaphylactic</td><td>Severe allergic reaction</td></tr>
 <tr><td>Septic</td><td>Severe infection</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Treat right away and prepare for transport: position for blood flow, control bleeding, oxygen per protocol, cover with a blanket.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 16 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/pediatric-basic-life-support" target="_blank" rel="noopener">American Heart Association, 2025 Guidelines Part 6: Pediatric Basic Life Support</a>: infant compressions with the heel of one hand or 2-thumb encircling hands; two-finger method eliminated; rate 100 to 120; 30:2 single rescuer, 15:2 two rescuers.</li>
+<li><a href="https://www.hutchcc.edu/cms/files/264" target="_blank" rel="noopener">AHA 2025 Summary of High-Quality CPR (copy hosted by Hutchinson Community College)</a>: adult depth at least 2 in, no more than 2.4 in; adult 30:2; with an advanced airway 1 breath every 6 seconds (adults), every 2 to 3 seconds (children).</li>
+<li><a href="https://www.hhs.gov/hipaa/for-professionals/faq/273/when-an-ambulance-delivers-a-patient-can-it-report-its-treatment-without-authorization/index.html" target="_blank" rel="noopener">HHS, HIPAA FAQ 273: Ambulance reporting to a hospital</a>: ambulance services may share patient information with the receiving hospital without authorization (45 CFR 164.506).</li>
+</ul></div>
 `
 });

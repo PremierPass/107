@@ -344,10 +344,11 @@ quiz:[
 ],
 [
 "What should you do if you are in a flat field and you get an indication lightning is about to strike?",
+"Get to a substantial building or hard-topped vehicle right away; no place outside is safe",
 "Drop to your knees and bend forward, putting your hands on your thighs",
 "Lie flat on your back with your arms fully spread out",
-"Lie flat on your belly with your arms fully spread out",
-"Curl into a ball, tucking your knees up to your chin"
+"Shelter under the tallest isolated tree nearby",
+{note:"The course test keyed the lightning crouch (drop to your knees, bend forward, hands on thighs). The National Weather Service stopped recommending the crouch in 2008 because it does not give significant protection. Get to shelter early; if stuck outside, avoid open areas, high ground, and isolated trees, and spread out."}
 ],
 [
 "One of the first priorities at a fire in a protected structure is to:",
@@ -672,11 +673,12 @@ quiz:[
 "direct a stream downward and allow the water to deflect up onto the passenger compartment."
 ],
 [
-"Which extinguishing agent should be applied on LNG fuel leaks?",
-"Water",
-"Dry powder",
-"Carbon dioxide (CO2)",
-"Purple K dry chemical"
+"LNG fuel leak: what does ERG Guide 115 say about agents and water?",
+"Dry chemical (such as Purple K) or CO2 for small fires; don't direct water at the spill or leak source",
+"Apply water directly onto the leak to warm it",
+"Dry powder (Class D agent) on the leak",
+"Cover the leak with Class A foam",
+{note:"The course test keyed \"Water.\" ERG Guide 115 (flammable gases, including refrigerated liquids like LNG) says not to direct water at the spill or the source of the leak. Water spray is for cooling containers and exposures and knocking down vapor; small fires get dry chemical or CO2."}
 ],
 [
 "If there is any question of the hazards present in a small, unattached structure, firefighters should:",
@@ -826,15 +828,15 @@ terms:[
 "Physical configuration of the land or terrain; often depicted using contour lines."
 ]
 ],
-reference:`<div class="ref-section"><div class="ref-title">Extinguishment Methods</div>
+reference:`<div class="ref-section"><h3 class="ref-title">Extinguishment Methods</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Cooling</h3><p>Best for smoldering fires. Water to steam absorbs 5x more energy than heating it to boiling and expands about 1,700x. Too much steam hurts visibility and burns crews.</p></div>
-<div class="ref-card green"><h3>Fuel removal</h3><p>Rare for structures. Used for ground cover, stacked material, vehicles, and liquid or gas fires. Closing doors also isolates fuel.</p></div>
-<div class="ref-card orange"><h3>Oxygen exclusion</h3><p>Limit the air supply (door control). Inert gas flooding works but hurts survivability.</p></div>
-<div class="ref-card red"><h3>Chemical inhibition</h3><p>Agents that interrupt the reaction. Good on flaming fires, poor on smoldering ones. Clean agents work this way.</p></div>
+<div class="ref-card blue"><h4>Cooling</h4><p>Best for smoldering fires. Water to steam absorbs 5x more energy than heating it to boiling and expands about 1,700x. Too much steam hurts visibility and burns crews.</p></div>
+<div class="ref-card green"><h4>Fuel removal</h4><p>Rare for structures. Used for ground cover, stacked material, vehicles, and liquid or gas fires. Closing doors also isolates fuel.</p></div>
+<div class="ref-card orange"><h4>Oxygen exclusion</h4><p>Limit the air supply (door control). Inert gas flooding works but hurts survivability.</p></div>
+<div class="ref-card red"><h4>Chemical inhibition</h4><p>Agents that interrupt the reaction. Good on flaming fires, poor on smoldering ones. Clean agents work this way.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Structure Fire Attack</div>
+<div class="ref-section"><h3 class="ref-title">Structure Fire Attack</h3>
 <table class="ref-table"><tr><th>Method</th><th>Key points</th></tr>
 <tr><td><b>Exterior fire control</b></td><td>Also called transitional attack or resetting the fire. A straight or solid stream through a door or window moves the fire from ventilation-limited to fuel-limited, then the interior crew enters.</td></tr>
 <tr><td><b>Direct</b></td><td>Solid or straight stream on the seat of the fire until it's out. Uses water most efficiently. Bouncing off the ceiling or frame also counts.</td></tr>
@@ -842,13 +844,13 @@ reference:`<div class="ref-section"><div class="ref-title">Extinguishment Method
 <tr><td><b>Interior advancement</b></td><td>Water into the hot gas layer while advancing (rotate the stream). Reduces radiant heat from the upper layer.</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Before entry: radio channel, full cylinder, PASS on, buddy check, bleed the line, test patterns. Stay low and out of the doorway, control the door. Low neutral plane and turbulent smoke at the door: cool the gas layer but don't go in. Signs it's working: temperature drops.</p></div>
 
-<div class="ref-section"><div class="ref-title">Upper Floors and Basements</div>
+<div class="ref-section"><h3 class="ref-title">Upper Floors and Basements</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Standpipes</h3><p>Unprotected location: connect on the floor below the fire. Protected stairway: you may connect on the fire floor. Never use elevators.</p></div>
-<div class="ref-card red"><h3>Basements</h3><p>Biggest risk is floor collapse. A TI won't reliably show floor strength; visually check the joists from outside. Coordinate any attack from above with ventilation. Use basement windows or a cellar nozzle when the floor is unsafe.</p></div>
+<div class="ref-card blue"><h4>Standpipes</h4><p>Unprotected location: connect on the floor below the fire. Protected stairway: you may connect on the fire floor. Don't rely on elevators; use them only under fire service control if your high-rise SOP allows it.</p></div>
+<div class="ref-card red"><h4>Basements</h4><p>Biggest risk is floor collapse. A TI won't reliably show floor strength; visually check the joists from outside. Coordinate any attack from above with ventilation. Use basement windows or a cellar nozzle when the floor is unsafe.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Fire Protection Systems</div>
+<div class="ref-section"><h3 class="ref-title">Fire Protection Systems</h3>
 <p style="font-size:13px">Connect a pumper to the FDC early. Close a sprinkler control valve only when the fire is under control and the IC orders it, and post a firefighter with a radio at the valve. Stop flowing heads with tongs, stoppers, or wedges to limit water damage.</p>
 <table class="ref-table"><tr><th>Valve</th><th>Where / how</th></tr>
 <tr><td>OS&amp;Y</td><td>Outside screw and yoke. Stem out = open.</td></tr>
@@ -856,7 +858,7 @@ reference:`<div class="ref-section"><div class="ref-title">Extinguishment Method
 <tr><td>WPIV</td><td>Wall post indicator valve on an outside wall.</td></tr>
 <tr><td>PIVA</td><td>Circular disk in a flat plate on top, built-in crank.</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Utilities</div>
+<div class="ref-section"><h3 class="ref-title">Utilities</h3>
 <table class="ref-table"><tr><th>Utility</th><th>Key points</th></tr>
 <tr><td>Electric</td><td>Leave it on until ordered (lights, elevators, fire pumps, smoke control). Safest: have the power company shut it off. Lockout/tagout keeps it off. Assume an alternate source.</td></tr>
 <tr><td>Solar</td><td>Always energized whenever there's light. Inverter switches cut power inside, not the array.</td></tr>
@@ -864,7 +866,7 @@ reference:`<div class="ref-section"><div class="ref-title">Extinguishment Method
 <tr><td>Natural gas</td><td>Shut off at the meter: tang 90° to the pipe. If that doesn't work, call the utility. Only the utility turns it back on.</td></tr>
 <tr><td>LPG</td><td>Mostly propane. 1½x heavier than air, explosive at 2 to 9.5%. Shutoff at the tank or where the line enters the building. Disperse vapor with a fog stream of at least 100 gpm.</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Vehicle Fires</div>
+<div class="ref-section"><h3 class="ref-title">Vehicle Fires</h3>
 <svg viewBox="0 0 340 150" width="100%" style="max-width:440px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Approach the vehicle at a 45 degree angle from the side, uphill and upwind, avoiding the front and rear bumpers">
 <rect x="120" y="55" width="120" height="44" rx="10" fill="#555"/><text x="180" y="82" fill="#ddd" font-size="11" text-anchor="middle">VEHICLE</text>
 <rect x="108" y="62" width="10" height="30" fill="#e74c3c"/><rect x="242" y="62" width="10" height="30" fill="#e74c3c"/>
@@ -873,21 +875,22 @@ reference:`<div class="ref-section"><div class="ref-title">Extinguishment Method
 <text x="30" y="128" fill="#3498db" font-size="11">45° approach</text>
 <text x="300" y="130" fill="#2ecc71" font-size="11" text-anchor="end">Stay uphill and upwind</text>
 </svg>
+<p class="ref-alt-h">Diagram in words</p><ul class="ref-alt"><li>Approach from the side at about a 45 degree angle, not straight at the front or rear.</li><li>Stay out of line with the front and rear bumpers; bumper struts can launch when heated.</li><li>Stay uphill and upwind of the vehicle.</li></ul>
 <p style="font-size:12px;color:#aaa;margin-top:8px">First action: decide on traffic control and request help (TIMS). Fire near occupants first, then ground fire, then the rest. Backup line ASAP. Engine or trunk: try the release first, cool the struts before forcing. Undercarriage: bounce the stream off the pavement. Overhaul: disconnect the battery, watch for airbags, cool tanks.</p></div>
 
-<div class="ref-section"><div class="ref-title">Alternative Fuel Vehicles</div>
+<div class="ref-section"><h3 class="ref-title">Alternative Fuel Vehicles</h3>
 <table class="ref-table"><tr><th>Fuel</th><th>Tactics</th></tr>
-<tr><td>EV / hybrid</td><td>Never cut orange cables. Turn off the ignition and remove the key. Don't pierce the hood. Batteries: water or foam, lots of it. Stranded energy can reignite.</td></tr>
+<tr><td>EV / hybrid</td><td>Never cut orange cables. Turn off the ignition and remove the key. Don't pierce the hood. Check the manufacturer's emergency response guide for that vehicle. Battery pack: large, sustained water supply to cool it (IAFC suggests planning for about 3,000 to 8,000 gallons). Put out the rest of the vehicle fire (interior, tires, fluids) normally. Stranded energy can reignite, so monitor the pack with a TIC</td></tr>
 <tr><td>CNG</td><td>2,400 to 3,600 psi, diamond logo. No fire: gas detector, eliminate ignition sources.</td></tr>
-<tr><td>LNG</td><td>Cryogenic. Frost on the tank = tank failure. Purple K on fires.</td></tr>
+<tr><td>LNG</td><td>Cryogenic. Frost on the tank = tank failure. Leak, no fire: eliminate ignition sources, stop the leak only if safe, never direct water at the spill or leak source; water spray may knock down vapor. Small fire: dry chemical (Purple K) or CO2. Large fire: water spray or fog to cool containers and exposures, not on the leak. Often let a pressure-fed fire burn until the fuel is shut off (ERG Guide 115)</td></tr>
 <tr><td>LPG</td><td>Let the fire self-extinguish. Cool the top of the tank. Stay out of vapor clouds.</td></tr>
 <tr><td>Ethanol / methanol</td><td>Leaking or burning: control zone and call hazmat.</td></tr>
 <tr><td>Hydrogen</td><td>Invisible flame: use a TI. Don't extinguish; let it burn off. Don't cut the C-posts (vents).</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Exterior Class A</div>
+<div class="ref-section"><h3 class="ref-title">Exterior Class A</h3>
 <p style="font-size:13px">Stacked or piled: the greatest danger is spread to exposures. Hit the fire's extreme edge, pull piles apart with pike poles so water reaches everything, and use Class A foam. Small unattached structures: attack from outside with a straight stream; if hazards are unknown, protect exposures and let it burn. Trash containers: always toxic, full PPE and SCBA.</p></div>
 
-<div class="ref-section"><div class="ref-title">Ground Cover Fires</div>
+<div class="ref-section"><h3 class="ref-title">Ground Cover Fires</h3>
 <svg viewBox="0 0 340 170" width="100%" style="max-width:440px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Ground cover fire parts: head downwind, heel at the origin, flanks on the sides, a finger, an island, and a spot fire ahead of the head">
 <path d="M60 85 C70 40,160 30,230 55 L250 45 L245 70 C280 80,280 95,245 105 C170 135,70 130,60 85 Z" fill="#2b1a10" stroke="#e67e22" stroke-width="3"/>
 <ellipse cx="160" cy="85" rx="16" ry="10" fill="#2e5e2e"/><text x="160" y="89" fill="#cfc" font-size="9" text-anchor="middle">island</text>
@@ -898,12 +901,22 @@ reference:`<div class="ref-section"><div class="ref-title">Extinguishment Method
 <text x="110" y="100" fill="#888" font-size="10">BLACK</text><text x="300" y="150" fill="#2ecc71" font-size="10" text-anchor="end">GREEN (unburned)</text>
 <text x="20" y="165" fill="#3498db" font-size="10">wind →</text>
 </svg>
+<p class="ref-alt-h">Diagram in words</p><ul class="ref-alt"><li>Head: the fastest-moving part, downwind. Control it first.</li><li>Heel: the origin end, burning slowly into the wind or downhill.</li><li>Flanks: the two sides between head and heel.</li><li>Finger: a narrow strip of fire reaching out from the main fire.</li><li>Island: an unburned patch inside the burned area.</li><li>Spot fire: a new fire ahead of the head, started by embers.</li><li>Black = already burned (relatively safe); green = unburned fuel.</li></ul>
 <table class="ref-table" style="margin-top:8px"><tr><th>Topic</th><th>Key points</th></tr>
 <tr><td>Influences</td><td>Fuel, weather (most significant), topography. Light fuels burn faster.</td></tr>
 <tr><td>Types</td><td>Ground fire: below the surface, forests, hard to put out. Surface fire: grass and shrubs. Crown or canopy: treetops, wind-driven.</td></tr>
 <tr><td>Parts</td><td>Head spreads fastest (control it). Heel burns slowly into the wind or downhill. Fingers form in light fuel with heavy patches. Island = unburned spot inside. Black is relatively safe.</td></tr>
 <tr><td>Attacks</td><td>Direct: at the edge. Indirect: line away from the fire, burn out between, for fires too hot, fast, or big. Flank: from an anchor point toward the head. Parallel: line along the edge with dozers, then burn out.</td></tr>
 <tr><td>Fire line</td><td>Dig to mineral soil. Burned material into the black, unburned into the green. Close to the edge, throw dirt onto the fire.</td></tr>
-<tr><td>Safety</td><td>Life safety first. LCES: Lookouts, Communications, Escape routes, Safety zones. Most LODDs are heart failure. Lightning: kneel, bend forward, hands on thighs. Broken oil well or pipeline: treat as hazmat and withdraw.</td></tr></table></div>
+<tr><td>Safety</td><td>Life safety first. LCES: Lookouts, Communications, Escape routes, Safety zones. Most LODDs are heart failure. Lightning: no place outside is safe; get to a substantial building or hard-topped vehicle early. If caught out, leave open areas and high ground, avoid isolated trees, and spread out. Broken oil well or pipeline: treat as hazmat and withdraw.</td></tr></table><div class="ref-note"><b>Course answer discrepancy:</b> The course test keyed the lightning crouch (kneel, bend forward, hands on thighs). The National Weather Service stopped recommending the crouch in 2008 because it does not give significant protection. The practice quiz now uses the NWS answer.</div></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 14 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://www.weather.gov/safety/lightning-crouch" target="_blank" rel="noopener">National Weather Service, Lightning crouch</a>: NWS stopped recommending the crouch in 2008; get inside a substantial building or hard-topped metal vehicle; no safe place outside.</li>
+<li><a href="https://cameochemicals.noaa.gov/report?key=UN1972" target="_blank" rel="noopener">NOAA CAMEO Chemicals, UN1972 (LNG)</a>: LNG is assigned ERG 2024 Guide 115.</li>
+<li><a href="https://www.oklahoma.gov/content/dam/ok/en/lpgas/documents/forms/Emergency%20Response%20Guide%20115.pdf" target="_blank" rel="noopener">ERG Guide 115 text (ERG 2004 retyped copy, Oklahoma LP Gas Administration)</a>: small fires: dry chemical or CO2; large fires: water spray or fog; do not direct water at spill or source of leak. Older edition; confirm against the printed ERG 2024.</li>
+<li><a href="https://www.iafc.org/topics-and-tools/resources/resource/iafc-s-fire-department-response-to-electric-vehicle-fires-bulletin" target="_blank" rel="noopener">IAFC, Fire Department Response to Electric Vehicle Fires bulletin</a>: water is the best agent for battery fires; plan a large, sustained supply (about 3,000 to 8,000 gallons); manufacturer guides; monitor for reignition.</li>
+</ul></div>
 `
 });

@@ -15,7 +15,7 @@ review:[
 ["Forcing sliding doors?","Break the glass with an axe or lift the panel up and out of its track. Don't spread the door from the frame; the glass will shatter."],
 ["Through-the-lock tools?","K-tool, A-tool, J-tool, shove knife, and key tools."],
 ["Padlock tools?","Bolt cutters, duck-billed lock breaker, rotary saw with metal-cutting blade, cutting torch, locking pliers to stabilize the lock, and hammerheaded pick or Halligan to break the shackle or hasp."],
-["Types of fire doors and the rule for passing through?","Interior fire doors (automatic or manual; swinging, sliding, or rolling) and exterior fire doors. Block them open so they don't close behind you."],
+["Types of fire doors and the rule for passing through?","Interior fire doors (automatic or manual; swinging, sliding, or rolling) and exterior fire doors. Chock or control them open only while you need the doorway (hoseline or escape path) so they can't close on you, then remove the chock so the door closes and keeps the fire compartmented."],
 ["Risks of breaking window glass?","Slows entry while clearing shards, flying glass, slippery footing, can injure victims inside, changes the flow path, and can't be undone."],
 ["Exterior wall breaching precautions?","Check for utilities, structural members, and what's behind the wall. Have a charged line or extinguisher ready when cutting metal. Consider collapse risk and EIFS foam behind stucco."],
 ["Interior wall materials?","Lath and plaster, gypsum wallboard, and reinforced gypsum. Relatively easy to breach with hand tools or saws."],
@@ -116,7 +116,7 @@ quiz:[
 ["Tempered glass doors:","Break the glass as a last resort","Break first","Use a K-tool first","Never break"],
 ["Projecting and pivoting windows:","Break glass or cut the panel out of the frame","Lift out of the track","Use a J-tool","Remove hinges"],
 ["Shove knife:","Between door and frame near the lock","Into the keyway","Under the door","Through the hinges"],
-["Fire doors:","Block open if the doorway is needed","Let them close behind you","Remove them","Lock them"],
+["Fire doors:","Block open only while the doorway is needed, then let them close","Let them close behind you","Remove them","Lock them"],
 ["Security doors padlocked inside usually mean:","There's a second means of entry","Nobody is home","The building is vacant","It's a trap"]
 ],
 terms:[
@@ -139,15 +139,15 @@ terms:[
 ["Tempered Plate Glass","Glass treated to be harder and more break-resistant than plate glass."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Before You Force</div>
+<div class="ref-section"><h3 class="ref-title">Before You Force</h3>
 <div class="ref-grid">
-<div class="ref-card green"><h3>Try before you pry</h3><p>Check every door and window to see if it's unlocked.</p></div>
-<div class="ref-card orange"><h3>Flow path</h3><p>Forcing entry adds air. Have the interior crew ready, station someone at the door, and keep it closed unless it must be open.</p></div>
-<div class="ref-card blue"><h3>Size it up</h3><p>Weigh how severe the emergency is and how fast you need in. Preincident surveys show lockboxes (usually by the main entrance) and security features.</p></div>
-<div class="ref-card red"><h3>Safety</h3><p>Full PPE, especially hand, eye, and ear protection. Use tools only as intended, with room to swing. Carry axes blade away.</p></div>
+<div class="ref-card green"><h4>Try before you pry</h4><p>Check every door and window to see if it's unlocked.</p></div>
+<div class="ref-card orange"><h4>Flow path</h4><p>Forcing entry adds air. Have the interior crew ready, station someone at the door, and keep it closed unless it must be open.</p></div>
+<div class="ref-card blue"><h4>Size it up</h4><p>Weigh how severe the emergency is and how fast you need in. Preincident surveys show lockboxes (usually by the main entrance) and security features.</p></div>
+<div class="ref-card red"><h4>Safety</h4><p>Full PPE, especially hand, eye, and ear protection. Use tools only as intended, with room to swing. Carry axes blade away.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Tools</div>
+<div class="ref-section"><h3 class="ref-title">Tools</h3>
 <table class="ref-table"><tr><th>Type</th><th>Examples and notes</th></tr>
 <tr><td>Cutting</td><td>Axes (most common), rotary saws (changeable blades), reciprocating saws (vehicle metal), handsaws in tight spaces, bolt cutters for bars. Manufacturer-approved blades only. No torches near explosive atmospheres</td></tr>
 <tr><td>Prying</td><td>Lever and fulcrum: longer handle, more force. Halligan; hydraulic spreaders</td></tr>
@@ -157,23 +157,28 @@ reference:`
 <tr><td>Through-the-lock</td><td>K-tool pulls cylinders; A-tool for collared or covered cylinders; key tool works the mechanism; J-tool for panic hardware; shove knife near the latch</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Care: wash wood and fiberglass handles with mild detergent and dry them; clean metal with emery cloth or steel wool; file axe edges by hand; rotate spare batteries.</p></div>
 
-<div class="ref-section"><div class="ref-title">Doors and Locks</div>
+<div class="ref-section"><h3 class="ref-title">Doors and Locks</h3>
 <table class="ref-table"><tr><th>Item</th><th>Method</th></tr>
 <tr><td>Swing</td><td>Visible hinges mean it swings toward you. Pry with a Halligan for inward or outward doors</td></tr>
 <tr><td>Double-swinging</td><td>Pry or cut where the doors meet; J-tool on panic hardware</td></tr>
 <tr><td>Sliding patio</td><td>Break the glass with an axe</td></tr>
 <tr><td>Overhead</td><td>Cut an opening with a rotary saw</td></tr>
 <tr><td>Tempered glass</td><td>Break only as a last resort</td></tr>
-<tr><td>Fire doors</td><td>Block open if you need the doorway</td></tr>
+<tr><td>Fire doors</td><td>Chock or control open only while the crew needs the doorway (hoseline, escape path). Remove the chock when you're done so the door closes; an open fire door defeats compartmentation</td></tr>
 <tr><td>Locks</td><td>Cylindrical (key-in-knob, most common in homes). Rim locks: night latch, deadbolt. Mortise: latch plus deadbolt. Electromagnetic: cut the power</td></tr>
 <tr><td>Padlocks</td><td>Case-hardened shackles: cut both sides. Duck-billed breaker or hammerhead pick in the shackle, struck with a maul. Locking pliers and chain hold the lock while cutting</td></tr></table>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Drop bars, chains, and surface bolts are hard to spot from outside. A security door padlocked inside usually means there's another way in.</p></div>
 
-<div class="ref-section"><div class="ref-title">Windows, Walls, Fences</div>
+<div class="ref-section"><h3 class="ref-title">Windows, Walls, Fences</h3>
 <div class="ref-grid">
-<div class="ref-card blue"><h3>Windows</h3><p>Easier than doors. Breaking glass is common but you lose flow path control. Casement: break, cut the screen, reach the crank. Awning: break or pry up. Jalousie: cut around the whole unit. Wire glass: pick-head axe. Fixed: last resort. Remove all security bars if possible.</p></div>
-<div class="ref-card orange"><h3>Walls</h3><p>Watch for collapse, especially load-bearing walls. Interior walls hide wires, pipes, ducts; gypsum adds fire resistance. Wood frame: cut toward the center first. Brick/block: rotary saw or jackhammer. Concrete: last resort. Metal: penetrating nozzle through the siding.</p></div>
-<div class="ref-card yellow"><h3>Fences and gates</h3><p>Through-the-lock on gates. A-frame ladder over barbed wire. Cut wire fence beside the post. De-energize electrified fences first.</p></div>
+<div class="ref-card blue"><h4>Windows</h4><p>Easier than doors. Breaking glass is common but you lose flow path control. Casement: break, cut the screen, reach the crank. Awning: break or pry up. Jalousie: cut around the whole unit. Wire glass: pick-head axe. Fixed: last resort. Remove all security bars if possible.</p></div>
+<div class="ref-card orange"><h4>Walls</h4><p>Watch for collapse, especially load-bearing walls. Interior walls hide wires, pipes, ducts; gypsum adds fire resistance. Wood frame: cut toward the center first. Brick/block: rotary saw or jackhammer. Concrete: last resort. Metal: penetrating nozzle through the siding.</p></div>
+<div class="ref-card yellow"><h4>Fences and gates</h4><p>Through-the-lock on gates. A-frame ladder over barbed wire. Cut wire fence beside the post. De-energize electrified fences first.</p></div>
 </div></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 10 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+</ul></div>
 `
 });

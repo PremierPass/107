@@ -119,7 +119,7 @@ terms:[
 ["Vertical Ventilation","Ventilating above the fire so contaminated air exits the top through roof openings, skylights, vents, or roof doors."]
 ],
 reference:`
-<div class="ref-section"><div class="ref-title">Ventilation Types</div>
+<div class="ref-section"><h3 class="ref-title">Ventilation Types</h3>
 <table class="ref-table"><tr><th>Type</th><th>How</th><th>Key points</th></tr>
 <tr><td><b>Natural horizontal</b></td><td>Open doors and windows</td><td>Wind-assisted: open the <b>downwind</b> side first (exhaust), then the upwind side (intake). Little equipment needed.</td></tr>
 <tr><td><b>PPA</b></td><td>Fan at the intake before suppression</td><td>Only if the fire location is known and the exhaust-to-intake ratio is <b>greater than 1:1</b>. Exhaust must be in the fire room.</td></tr>
@@ -128,7 +128,7 @@ reference:`
 <tr><td><b>Hydraulic</b></td><td>Fog pattern fills the exhaust opening, bale fully open</td><td>Water damage, uses water, nozzle crew stays in the hazard. Never fog into an exhaust with crews inside.</td></tr>
 <tr><td><b>Vertical</b></td><td>Roof cuts or existing roof openings</td><td>Needs a horizontal inlet at or below the fire. Put water on the fire when opening a ventilation-limited fire.</td></tr></table></div>
 
-<div class="ref-section"><div class="ref-title">Positive Pressure Setup</div>
+<div class="ref-section"><h3 class="ref-title">Positive Pressure Setup</h3>
 <svg viewBox="0 0 340 180" width="100%" style="max-width:440px;background:#1e1e1e;border:1px solid #333;border-radius:8px" role="img" aria-label="Fan at the front door blowing air through the house and out a window in the fire room">
 <rect x="70" y="30" width="240" height="120" fill="none" stroke="#888" stroke-width="3"/>
 <line x1="190" y1="30" x2="190" y2="95" stroke="#888" stroke-width="3"/>
@@ -136,32 +136,38 @@ reference:`
 <path d="M20 85 L52 95 L20 105 Z" fill="#3498db"/><text x="25" y="125" fill="#3498db" font-size="10">FAN</text>
 <path d="M80 95 L170 95 L215 70 L275 70" fill="none" stroke="#3498db" stroke-width="3" stroke-dasharray="6 4"/>
 <polygon points="275,64 287,70 275,76" fill="#3498db"/>
-<rect x="304" y="52" width="12" height="36" fill="#1e1e1e"/><text x="320" y="47" fill="#e74c3c" font-size="10" text-anchor="end">EXHAUST (window)</text>
+<rect x="304" y="42" width="12" height="58" fill="#1e1e1e"/><text x="320" y="22" fill="#e74c3c" font-size="10" text-anchor="end">EXHAUST (window)</text>
 <path d="M296 70 L330 70" stroke="#e74c3c" stroke-width="3"/><polygon points="330,64 340,70 330,76" fill="#e74c3c"/>
 <text x="250" y="120" fill="#e74c3c" font-size="12" text-anchor="middle">FIRE ROOM</text>
 <text x="130" y="135" fill="#888" font-size="10" text-anchor="middle">Exhaust larger than intake</text>
-</svg></div>
+</svg>
+<p class="ref-alt-h">Diagram in words</p><ul class="ref-alt"><li>The fan sits outside the intake (front door) and blows in.</li><li>Air moves through the house toward the fire room.</li><li>The exhaust opening (a window in the fire room) is larger than the intake, so the ratio of exhaust to intake is greater than 1:1.</li><li>Smoke and heat leave through the exhaust.</li></ul></div>
 
-<div class="ref-section"><div class="ref-title">Roof Cuts</div>
+<div class="ref-section"><h3 class="ref-title">Roof Cuts</h3>
 <div class="ref-grid">
-<div class="ref-card yellow"><span class="tag tag-yellow">INSPECTION</span><h3>Kerf cut</h3><p>One blade-width cut. Fastest and easiest. Only tells you if smoke or fire comes out.</p></div>
-<div class="ref-card yellow"><span class="tag tag-yellow">INSPECTION</span><h3>Triangle cut</h3><p>Three overlapping cuts. Better view of conditions below. If fire is present, report to IC and suspend ventilation.</p></div>
-<div class="ref-card red"><span class="tag tag-red">EXHAUST</span><h3>Square / rectangular</h3><p>Most common flat roof opening, cut between trusses. Louver cut: truss in the middle, deck tilts open.</p></div>
-<div class="ref-card orange"><span class="tag tag-orange">DEFENSIVE</span><h3>Trench cut</h3><p>Two parallel cuts wall to wall, at least 4 ft wide, ahead of the fire. Open only when the fire nears. Ordered when the main fire is too big to extinguish.</p></div>
+<div class="ref-card yellow"><span class="tag tag-yellow">INSPECTION</span><h4>Kerf cut</h4><p>One blade-width cut. Fastest and easiest. Only tells you if smoke or fire comes out.</p></div>
+<div class="ref-card yellow"><span class="tag tag-yellow">INSPECTION</span><h4>Triangle cut</h4><p>Three overlapping cuts. Better view of conditions below. If fire is present, report to IC and suspend ventilation.</p></div>
+<div class="ref-card red"><span class="tag tag-red">EXHAUST</span><h4>Square / rectangular</h4><p>Most common flat roof opening, cut between trusses. Louver cut: truss in the middle, deck tilts open.</p></div>
+<div class="ref-card orange"><span class="tag tag-orange">DEFENSIVE</span><h4>Trench cut</h4><p>Two parallel cuts wall to wall, at least 4 ft wide, ahead of the fire. Open only when the fire nears. Ordered when the main fire is too big to extinguish.</p></div>
 </div>
 <p style="font-size:12px;color:#aaa;margin-top:8px">Pitched shingle roof: cut a few inches below the peak on the downwind side from a roof ladder hooked over the ridge. Slate or tile: remove the tiles first. Metal: metal-cutting blade; it hides fire below.</p></div>
 
-<div class="ref-section"><div class="ref-title">Roof Safety</div>
+<div class="ref-section"><h3 class="ref-title">Roof Safety</h3>
 <div class="ref-grid">
-<div class="ref-card red"><h3>Collapse signs</h3><p>Melting asphalt, smoke or fire from the roof, sagging, spongy roof. If integrity goes, evacuate immediately and notify Command.</p></div>
-<div class="ref-card blue"><h3>Sounding</h3><p>Only tells you the sheathing is intact. Unreliable on lightweight construction. Roof ladders don't make a fire-weakened roof safe.</p></div>
-<div class="ref-card green"><h3>Working the roof</h3><p>Wind at your back or side. Ladder 3 rungs above the edge, secured. Two escape routes. Walk on load-bearing walls. Saw cut angled away from you; start saws on the ground, off when climbing. Punch the ceiling below. Leave when done.</p></div>
+<div class="ref-card red"><h4>Collapse signs</h4><p>Melting asphalt, smoke or fire from the roof, sagging, spongy roof. If integrity goes, evacuate immediately and notify Command.</p></div>
+<div class="ref-card blue"><h4>Sounding</h4><p>Only tells you the sheathing is intact. Unreliable on lightweight construction. Roof ladders don't make a fire-weakened roof safe.</p></div>
+<div class="ref-card green"><h4>Working the roof</h4><p>Wind at your back or side. Ladder 3 rungs above the edge, secured. Two escape routes. Walk on load-bearing walls. Saw cut angled away from you; start saws on the ground, off when climbing. Punch the ceiling below. Leave when done.</p></div>
 </div></div>
 
-<div class="ref-section"><div class="ref-title">Special Structures</div>
+<div class="ref-section"><h3 class="ref-title">Special Structures</h3>
 <table class="ref-table"><tr><th>Structure</th><th>Approach</th></tr>
 <tr><td>Basement</td><td>Likely ventilation-limited. Use windows and window wells for horizontal ventilation, natural paths if safe, mechanical after water. Breach the floor only as a last resort. Heat rides up the stairwell.</td></tr>
 <tr><td>Windowless buildings</td><td>Usually need mechanical ventilation.</td></tr>
 <tr><td>High-rise</td><td>Stack effect pulls smoke up shafts and stairwells. Plan vertical ventilation in preincident surveys. Pressurize stairwells with PPV. Never use the same stairwell or shaft for evacuation and exhaust.</td></tr></table></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., Chapter 12 (course textbook). Not inspected for this review, so no page numbers are given.</li>
+</ul></div>
 `
 });
