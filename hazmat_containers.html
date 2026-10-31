@@ -7,7 +7,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hazmat — Containers</title>
 <script>setTimeout(function(){var d=document.documentElement;if(d.hasAttribute("data-gate")&&!d.classList.contains("gate-ok")&&!document.querySelector(".acct-gate")){var g=document.createElement("div");g.className="acct-gate";g.style.cssText="position:fixed;inset:0;background:#111;color:#f0f0f0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:Segoe UI,Arial,sans-serif;z-index:9000";g.innerHTML="<div><h2 style=\"margin-bottom:10px\">Still loading...</h2><p style=\"color:#999;line-height:1.6;margin-bottom:16px\">The page didn't finish loading. Check your connection and try again.</p><button onclick=\"location.reload()\" style=\"background:#c0392b;color:#fff;border:0;border-radius:8px;padding:11px 18px;font-weight:700;font-size:14px\">Reload</button><br><a href=\"fire.html\" style=\"display:inline-block;margin-top:14px;color:#e2aa3c;font-size:13px\">Back to the Study Hub</a></div>";document.body.appendChild(g);}},9000);</script>
-<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
+<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}
+.ref-section h2.ref-title { margin-top: 0; }
+.ref-section { overflow-x: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.ref-alt { background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:12px 14px; margin-top:12px; font-size:14px; line-height:1.55; color:#ddd; }
+.ref-alt h3 { font-size:14px; color:#f0f0f0; margin:10px 0 6px; }
+.ref-alt h3:first-child { margin-top:0; }
+.ref-alt ul { margin:4px 0 8px 18px; }
+.ref-alt li { margin:3px 0; }
+.ref-alt table { width:100%; border-collapse:collapse; font-size:13px; margin:6px 0; }
+.ref-alt th, .ref-alt td { border-bottom:1px solid #2a2a2a; padding:6px; text-align:left; vertical-align:top; }
+.ref-alt th { color:#e2aa3c; font-size:12px; }
+.ref-note { background:#f39c1214; border:1px solid #f39c1255; border-left:3px solid #f39c12; border-radius:8px; padding:10px 12px; font-size:13px; color:#ddd; line-height:1.55; margin:10px 0; }
+.ref-note b { color:#f39c12; }
+.ref-src { font-size:13px; line-height:1.6; color:#bbb; margin-left:18px; }
+.ref-src a { color:#5dade2; word-break:break-word; }
+[role="button"]:focus-visible, .modal-close:focus-visible { outline:2px solid #e2aa3c; outline-offset:2px; }
+@media (max-width:600px){ .ref-table { font-size:13px; } .ref-table td, .ref-table th { padding:6px; } .modal-header { font-size:12px; } }
+</style>
 
 <style>
 
@@ -198,11 +216,12 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   <a href="hazmat_keyterms.html" class="nav-btn">Key Terms</a>
 </div>
 <div style="max-width:720px;margin:0 auto;padding:16px;">
+<h1 class="sr-only">Hazmat Containers</h1>
 <!-- CONTAINERS PAGE -->
 <div id="page-containers" class="page active">
 
   <div class="ref-section">
-    <div class="ref-title">Container Types — Tap Any Card for Full Reference Chart</div>
+    <h2 class="ref-title">Container Types — Tap Any Card for Full Reference Chart</h2>
     <div class="ppe-grid">
 
       <div class="ppe-card" onclick="openClassModal('shapes')" style="border-left: 4px solid #c0392b">
@@ -233,7 +252,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#8e44ad;color:#fff;font-size:10px;">RAIL CARS</div>
         <div class="ppe-info">
           <div class="ppe-name">Tank Cars</div>
-          <div class="ppe-desc">DOT 111 Low Pressure, DOT 112/114 Pressure, Cryogenic, Dedicated, Hazardous Waste (ends in W)</div>
+          <div class="ppe-desc">Nonpressure, pressure, and cryogenic tank cars; reporting marks vs. specification markings</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -257,7 +276,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#f39c12;color:#000;font-size:10px;">NONBULK</div>
         <div class="ppe-info">
           <div class="ppe-name">Packaging</div>
-          <div class="ppe-desc">119 gal or less — Drums, cylinders, bags, carboys, IBCs, boxes, Dewars</div>
+          <div class="ppe-desc">Liquids 119 gal (450 L) or less: drums, cylinders, bags, carboys, boxes, Dewars. Larger IBCs are bulk.</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -265,7 +284,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
         <div class="ppe-badge" style="background:#e74c3c;color:#fff;font-size:10px;">TON CONTAINERS</div>
         <div class="ppe-info">
           <div class="ppe-name">& Y Cylinders</div>
-          <div class="ppe-desc">1 ton toxic gas — Chlorine, sulfur dioxide, phosgene — ERG Guide 124 — large isolation zones</div>
+          <div class="ppe-desc">About 1 ton of toxic gas such as chlorine (UN1017, Guide 124); check ERG green Tables 1 and 3</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
       </div>
@@ -287,7 +306,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('shapes')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_shapes.webp" alt="Container Shapes Quick Reference" class="modal-img">
+          <img src="images/container_shapes.webp" alt="Container Shapes Quick Reference" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ul><li>Rounded ends: usually pressurized contents.</li><li>Flat ends: usually nonpressurized.</li><li>Spherical: high-pressure gases such as LPG at fixed sites.</li><li>Thermos-bottle shape: cryogenic liquids.</li><li>Cone bottom: dry bulk solids.</li><li>Rectangular: freight containers with mixed packaged cargo.</li></ul><p>Shape is a clue only. Confirm with placards, UN numbers, and shipping papers.</p></div>
         </div>
       </div>
     </div>
@@ -298,7 +317,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('fixed_facility')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_fixed_facility.webp" alt="Storage Tanks" class="modal-img">
+          <img src="images/container_fixed_facility.webp" alt="Storage Tanks" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ul><li>Atmospheric (about 0 to 0.5 psi): flat-bottom tanks with cone or floating roofs; flammable and combustible liquids.</li><li>Low pressure (0.5 to 15 psi): horizontal tanks on saddles.</li><li>Pressure vessels (over 15 psi): rounded ends, relief devices; LPG and other gases.</li><li>Cryogenic: insulated, often vertical; refrigerated liquids.</li><li>Dry bulk: silos with cone bottoms.</li></ul></div>
         </div>
       </div>
     </div>
@@ -309,7 +328,15 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('cargo_trucks')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_cargo_trucks.webp" alt="Tank Trucks" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><table><tr><th>Cargo tank</th><th>Typical contents</th><th>Clues</th></tr>
+<tr><td>MC-306 / DOT-406</td><td>Flammable and combustible liquids (atmospheric pressure)</td><td>Oval cross-section, rollover protection</td></tr>
+<tr><td>MC-307 / DOT-407</td><td>Chemicals, low pressure</td><td>Round or horseshoe cross-section, often external rings</td></tr>
+<tr><td>MC-312 / DOT-412</td><td>Corrosives</td><td>Small diameter, external stiffening rings</td></tr>
+<tr><td>MC-331</td><td>Liquefied gases under pressure (propane, anhydrous ammonia)</td><td>Rounded ends, unpainted or white</td></tr>
+<tr><td>MC-338</td><td>Cryogenic liquids</td><td>Thermos-bottle look, vacuum-insulated, vapor venting</td></tr>
+<tr><td>Tube trailer</td><td>Compressed gases</td><td>Several long cylinders bundled together</td></tr>
+<tr><td>Dry bulk</td><td>Powders, pellets</td><td>V-shaped hoppers</td></tr></table>
+<p>There is no "cryogenic" placard. Placards show the hazard class (for example 2.2 for liquid nitrogen); identify the exact material from the UN number and shipping papers.</p></div>
         </div>
       </div>
     </div>
@@ -320,7 +347,15 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('rail_cars')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_rail_cars.webp" alt="Tank Cars" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><h3>Tank car types</h3><ul>
+<li><b>Nonpressure (general service)</b>, such as the DOT-111: liquids and some solids; fittings visible on top.</li>
+<li><b>Pressure</b>, such as the DOT-112 and DOT-114: gases and liquefied gases; fittings inside a protective housing on top.</li>
+<li><b>Cryogenic</b>: refrigerated liquids; insulated tank within a tank.</li></ul>
+<h3>Markings</h3><ul>
+<li><b>Reporting marks and car number</b> (for example GATX 123456) identify the car's <b>owner</b>. Marks ending in X belong to private (non-railroad) owners. No letter in the reporting mark tells you what is inside.</li>
+<li><b>Specification marking</b> (for example DOT-111A100W1) describes how the tank was built and tested. It does not identify the contents.</li>
+<li><b>Contents</b>: read the placard and UN number, the commodity name stenciled on dedicated cars, and the shipping papers (train consist).</li></ul>
+<div class="ref-note"><b>Course answer discrepancy:</b> earlier study material said a railcar number ending in "W" means hazardous waste. Reporting marks identify the owner, not the cargo; identify contents from placards, UN numbers, and shipping papers.</div></div>
         </div>
       </div>
     </div>
@@ -331,7 +366,11 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('intermodal')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_intermodal.webp" alt="Containers" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><ul>
+<li><b>Freight containers</b> carry packaged goods; check placards on all four sides and the shipping papers.</li>
+<li><b>Intermodal tank containers</b> (portable tanks in a frame) carry liquids and gases in bulk; look for the UN number on the placard or orange panel.</li>
+<li>The owner code on an intermodal container ends in U and identifies the owner, not the contents.</li>
+<li>Portable tank codes such as "T11" are design instructions for the tank. They do not rank how hazardous the contents are.</li></ul></div>
         </div>
       </div>
     </div>
@@ -342,7 +381,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('pipelines')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_pipelines.webp" alt="Markers & Response" class="modal-img">
+          <img src="images/container_pipelines.webp" alt="Markers & Response" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ul><li>Markers show the product, the operator, and an emergency phone number. They don't show the exact location or depth of the line.</li><li>Leak clues: dead vegetation, bubbling water, hissing, frost on the ground, odors, vapor clouds.</li><li>Isolate, keep people upwind, eliminate ignition sources, and call the pipeline operator. Don't operate valves unless the operator directs it.</li></ul></div>
         </div>
       </div>
     </div>
@@ -353,7 +392,14 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('nonbulk')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_nonbulk.webp" alt="Packaging" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><h3>Bulk vs. nonbulk (49 CFR 171.8)</h3>
+<p>Bulk packaging holds the material with no intermediate form of containment and has:</p>
+<ul><li><b>Liquids:</b> capacity more than 450 L (119 gal)</li>
+<li><b>Solids:</b> net mass more than 400 kg (882 lb) or capacity more than 450 L (119 gal)</li>
+<li><b>Gases:</b> water capacity more than 454 kg (1,000 lb)</li></ul>
+<p>Anything at or below those limits is nonbulk: drums, cylinders, bags, carboys, boxes, Dewar flasks.</p>
+<p><b>IBCs (totes)</b> can hold up to 3,000 L (about 793 gal). A typical 275- or 330-gallon liquid tote is <b>bulk</b> packaging because it holds more than 119 gal.</p>
+<div class="ref-note"><b>Course answer discrepancy:</b> earlier study material listed IBCs as nonbulk packaging of 119 gallons or less. Most liquid IBCs exceed 119 gallons and are bulk packaging.</div></div>
         </div>
       </div>
     </div>
@@ -364,7 +410,14 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ton_containers')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_ton.webp" alt="& Y Cylinders" class="modal-img">
+          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><p>Ton containers are horizontal pressure vessels holding about one ton of a liquefied gas such as chlorine. Valves are on one end under a protective hood; fusible plugs on the ends relieve pressure in a fire. Never tamper with them.</p>
+<h3>Chlorine (UN1017, ERG 2024 Guide 124, highlighted green)</h3>
+<table><tr><th>Situation</th><th>Initial isolation (all directions)</th></tr>
+<tr><td>Small spill (Table 1)</td><td>60 m (200 ft); then protect downwind 0.2 mi by day, 0.9 mi at night</td></tr>
+<tr><td>Large spill, single ton cylinder or multiple small cylinders (Table 3)</td><td>500 ft, plus downwind distances by wind speed</td></tr>
+<tr><td>Large spill, multiple ton cylinders (Table 3)</td><td>1,000 ft, plus downwind distances by wind speed</td></tr></table>
+<p>Isolation is a circle around the release. Protective action distances are a separate downwind area.</p>
+<div class="ref-note"><b>Course answer discrepancy:</b> earlier study material gave 200 meters (600 feet) as the small-spill isolation distance for chlorine. ERG 2024 Table 1 lists 60 m (200 ft).</div></div>
         </div>
       </div>
     </div>
@@ -375,15 +428,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('marine')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/container_marine.webp" alt="Vessels" class="modal-img">
+          <img src="images/container_marine.webp" alt="Vessels" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ul><li>Tankers carry bulk liquids (crude oil, refined products, chemicals); gas carriers carry LNG or LPG; cargo ships carry containers and packaged goods.</li><li>The cargo manifest (dangerous cargo manifest) is the shipping paper for vessels.</li><li>Coordinate with the vessel operator and the U.S. Coast Guard; report spills to the National Response Center.</li></ul></div>
         </div>
       </div>
     </div>
 </div>
-
-
-
-
+<div class="ref-section"><h2 class="ref-title">Sources</h2><ul class="ref-src">
+<li><a href="https://www.thecompliancecenter.com/help-center/articles/bulk-vs-large-means-of-containment/" target="_blank" rel="noopener">ICC Compliance Center, bulk packaging thresholds</a> summarizing 49 CFR 171.8; <a href="https://www.phmsa.dot.gov/sites/phmsa.dot.gov/files/docs/standards-rulemaking/hazmat/interpretations/73126/190045.pdf" target="_blank" rel="noopener">PHMSA interpretation quoting the 171.8 bulk definition</a>.</li>
+<li><a href="https://cameochemicals.noaa.gov/unna/1017" target="_blank" rel="noopener">NOAA CAMEO Chemicals, UN1017 chlorine</a>: ERG 2024 Guide 124, Table 1 and Table 3 distances.</li>
+<li><a href="https://en.wikipedia.org/wiki/Reporting_mark" target="_blank" rel="noopener">Reporting marks</a> and <a href="https://open-exam-prep.com/study-guides/hazmat-awareness/hazardous-materials-containers/rail-cars-intermodal" target="_blank" rel="noopener">rail car markings overview</a>: reporting marks identify the owner (X = private owner); specification stencils such as DOT-111A100W1 describe the tank.</li>
+<li>IFSTA <i>Hazardous Materials for First Responders</i> (course textbook): not inspected for this review; no page numbers given.</li>
+</ul></div>
 </div>
 <script>
 
@@ -402,6 +457,7 @@ function closeModal(event, key) {
 }
 
 </script>
+<script src="hazmat-ui.js?v=1"></script>
 <script type="module" src="cloud-sync.js?v=5"></script>
 </body>
 </html>

@@ -7,7 +7,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hazmat — ERG Pages</title>
 <script>setTimeout(function(){var d=document.documentElement;if(d.hasAttribute("data-gate")&&!d.classList.contains("gate-ok")&&!document.querySelector(".acct-gate")){var g=document.createElement("div");g.className="acct-gate";g.style.cssText="position:fixed;inset:0;background:#111;color:#f0f0f0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:Segoe UI,Arial,sans-serif;z-index:9000";g.innerHTML="<div><h2 style=\"margin-bottom:10px\">Still loading...</h2><p style=\"color:#999;line-height:1.6;margin-bottom:16px\">The page didn't finish loading. Check your connection and try again.</p><button onclick=\"location.reload()\" style=\"background:#c0392b;color:#fff;border:0;border-radius:8px;padding:11px 18px;font-weight:700;font-size:14px\">Reload</button><br><a href=\"fire.html\" style=\"display:inline-block;margin-top:14px;color:#e2aa3c;font-size:13px\">Back to the Study Hub</a></div>";document.body.appendChild(g);}},9000);</script>
-<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}</style>
+<style>html[data-gate]:not(.gate-ok) body>*:not(.acct-gate):not(.acct-ov){display:none!important}
+.ref-section h2.ref-title { margin-top: 0; }
+.ref-section { overflow-x: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.ref-alt { background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:12px 14px; margin-top:12px; font-size:14px; line-height:1.55; color:#ddd; }
+.ref-alt h3 { font-size:14px; color:#f0f0f0; margin:10px 0 6px; }
+.ref-alt h3:first-child { margin-top:0; }
+.ref-alt ul { margin:4px 0 8px 18px; }
+.ref-alt li { margin:3px 0; }
+.ref-alt table { width:100%; border-collapse:collapse; font-size:13px; margin:6px 0; }
+.ref-alt th, .ref-alt td { border-bottom:1px solid #2a2a2a; padding:6px; text-align:left; vertical-align:top; }
+.ref-alt th { color:#e2aa3c; font-size:12px; }
+.ref-note { background:#f39c1214; border:1px solid #f39c1255; border-left:3px solid #f39c12; border-radius:8px; padding:10px 12px; font-size:13px; color:#ddd; line-height:1.55; margin:10px 0; }
+.ref-note b { color:#f39c12; }
+.ref-src { font-size:13px; line-height:1.6; color:#bbb; margin-left:18px; }
+.ref-src a { color:#5dade2; word-break:break-word; }
+[role="button"]:focus-visible, .modal-close:focus-visible { outline:2px solid #e2aa3c; outline-offset:2px; }
+@media (max-width:600px){ .ref-table { font-size:13px; } .ref-table td, .ref-table th { padding:6px; } .modal-header { font-size:12px; } }
+</style>
 
 <style>
 
@@ -198,11 +216,12 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   <a href="hazmat_keyterms.html" class="nav-btn">Key Terms</a>
 </div>
 <div style="max-width:720px;margin:0 auto;padding:16px;">
+<h1 class="sr-only">Emergency Response Guidebook (ERG)</h1>
 <!-- ERG PAGES -->
 <div id="page-erg" class="page active">
 
   <div class="ref-section">
-    <div class="ref-title">ERG Reference Charts — Tap for Full Chart</div>
+    <h2 class="ref-title">ERG Reference Charts — Tap for Full Chart</h2>
     <div class="ppe-grid">
 
       <div class="ppe-card" onclick="openClassModal('erg_overview')" style="border-left: 4px solid #c0392b">
@@ -231,7 +250,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('erg_overview')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/erg_overview.webp" alt="Color Coded Pages + Key Facts" class="modal-img">
+          <img src="images/erg_overview.webp" alt="Color Coded Pages + Key Facts" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ul><li>Yellow pages: index by UN/NA number. Blue pages: index by name. Both give the guide number.</li><li>Orange pages: the action guides (Potential Hazards, Public Safety, Emergency Response).</li><li>Green pages: Tables 1, 2, and 3 for green-highlighted materials.</li><li>White pages: user guide, placard and container charts, glossary, and emergency phone numbers.</li><li>A "P" after a guide number means the material may polymerize.</li><li>The ERG is for the initial phase of a transportation incident.</li><li>CHEMTREC: 1-800-424-9300.</li></ul></div>
         </div>
       </div>
     </div>
@@ -242,12 +261,12 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('erg_flowchart')">✕</button>
         </div>
         <div class="modal-body">
-          <img src="images/erg_flowchart.webp" alt="4-Step Process" class="modal-img">
+          <img src="images/erg_flowchart.webp" alt="4-Step Process" class="modal-img"><div class="ref-alt"><h3>Chart in words</h3><ol style="margin-left:18px"><li>Identify the material (UN number, name, placard, shipping papers).</li><li>Look it up in the yellow (number) or blue (name) pages to get the guide number.</li><li>If it is highlighted green: with no fire, go directly to Table 1; if a fire is involved, also use the orange guide's evacuation information.</li><li>Follow the orange guide. If the material can't be identified, use Guide 111.</li></ol><div class="ref-note"><b>Missing from the chart:</b> the fire or no-fire decision for green-highlighted materials and the purpose of each green table. Both are in the sections below.</div></div>
         </div>
       </div>
     </div>
   <div class="ref-section">
-    <div class="ref-title">ERG Color-Coded Sections</div>
+    <h2 class="ref-title">ERG Color-Coded Sections</h2>
     <div class="ref-grid">
       <div class="ref-card" style="border-left:3px solid #f5f500; background:#1e1e1e">
         <span class="tag tag-yellow">YELLOW PAGES</span>
@@ -282,15 +301,15 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
     </div>
   </div>
   <div class="ref-section">
-    <div class="ref-title">ERG Key Facts</div>
+    <h2 class="ref-title">ERG Key Facts</h2>
     <table class="ref-table">
       <tr><th>Feature</th><th>Detail</th></tr>
       <tr><td>Inside cover</td><td>Key to reading and understanding shipping papers/documents</td></tr>
       <tr><td>First page</td><td>ERG User's Guide decision-making flowchart</td></tr>
-      <tr><td>Green highlighted materials</td><td>TIH or water-reactive — refer to green pages for distances</td></tr>
+      <tr><td>Green highlighted materials</td><td>TIH materials, chemical warfare agents, and water-reactive materials that give off toxic gas. If there is NO fire, go straight to Table 1. If a fire is involved, also use the orange guide's evacuation information.</td></tr>
       <tr><td>P after guide number</td><td>Material polymerizes</td></tr>
       <tr><td>Guide number + P</td><td>Example: 131P — polymerizable material</td></tr>
-      <tr><td>Small spill vs large spill</td><td>Large spill = more than 55 gallons (208 L)</td></tr>
+      <tr><td>Small spill vs large spill</td><td>Small: a single small package (up to about 208 L / 55 gal) or a small leak from a large package. Large: a spill from a large package or from many small packages.</td></tr>
       <tr><td>Day vs Night distances</td><td>Both small and large spills divided into day/night protective distances</td></tr>
       <tr><td>Initial isolation zone</td><td>Circle around spill — evacuate all persons</td></tr>
       <tr><td>Protective action distance</td><td>Downwind distance — people may become incapacitated</td></tr>
@@ -300,14 +319,29 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
     </table>
   </div>
   <div class="ref-section">
-    <div class="ref-title">How to Use the ERG — Step by Step</div>
+    <h2 class="ref-title">How to Use the ERG — Step by Step</h2>
     <div class="ref-grid">
       <div class="ref-card red"><h3>Step 1</h3><p>Identify the material — use placard, label, shipping papers, or orange panel UN number</p></div>
       <div class="ref-card orange"><h3>Step 2</h3><p>Look up UN number in YELLOW pages or material name in BLUE pages to find guide number</p></div>
-      <div class="ref-card yellow"><h3>Step 3</h3><p>If material is highlighted GREEN, also check GREEN pages for isolation distances</p></div>
+      <div class="ref-card yellow"><h3>Step 3</h3><p>If the entry is highlighted GREEN: with <b>no fire</b>, go directly to Table 1 for isolation and protective action distances; if a <b>fire</b> is involved, also consult the orange guide and apply its evacuation information</p></div>
       <div class="ref-card green"><h3>Step 4</h3><p>Turn to ORANGE pages — find the guide number. Read Potential Hazards, Public Safety, Emergency Response</p></div>
     </div>
   </div>
+  <div class="ref-section">
+    <h2 class="ref-title">The Three Green Tables</h2>
+    <table class="ref-table">
+      <tr><th>Table</th><th>What it is for</th></tr>
+      <tr><td>Table 1</td><td>Initial isolation and protective action distances for each green-highlighted material, small and large spills, day and night. Water-reactive materials have separate land and water entries.</td></tr>
+      <tr><td>Table 2</td><td>Water-reactive materials and the toxic gases they produce when spilled in water (for information only).</td></tr>
+      <tr><td>Table 3</td><td>Large-spill distances for certain common TIH gases (chlorine is one) by container type, wind speed, and day or night.</td></tr>
+    </table>
+    <div class="ref-note"><b>Isolation vs. protective action:</b> the initial isolation distance is a circle in all directions around the release. The protective action distance is a separate area downwind where people should be evacuated or sheltered in place.</div>
+  </div>
+  <div class="ref-section"><h2 class="ref-title">Sources</h2><ul class="ref-src">
+    <li><a href="https://www.phmsa.dot.gov/training/hazmat/erg/emergency-response-guidebook-erg" target="_blank" rel="noopener">PHMSA, Emergency Response Guidebook</a> (ERG 2024 download page).</li>
+    <li><a href="https://cdp.dhs.gov/shared/se/courses/default/AWR-358%20dL%20040921/groups/179.html" target="_blank" rel="noopener">DHS CDP AWR-358, Using the ERG: green bordered pages</a>: no fire, go directly to Table 1; fire involved, also consult the orange guide; Table 2 lists gases from water-reactive materials.</li>
+    <li><a href="https://cameochemicals.noaa.gov/unna/1017" target="_blank" rel="noopener">NOAA CAMEO Chemicals, UN1017 chlorine</a>: example Table 1 and Table 3 entries.</li>
+  </ul></div>
 </div>
 
 <!-- PPE CLASSES PAGE -->
@@ -330,6 +364,7 @@ function closeModal(event, key) {
 }
 
 </script>
+<script src="hazmat-ui.js?v=1"></script>
 <script type="module" src="cloud-sync.js?v=5"></script>
 </body>
 </html>
