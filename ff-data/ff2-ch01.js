@@ -14,7 +14,7 @@ review:[
 ],
 [
 "What are the differences between an offensive and defensive strategy?",
-"Offensive: direct interior or transitional attack, search, and rescue inside the building. Defensive: protect exposures and confine the fire from outside without entering, used when lives can't be saved and the risk outweighs the gain."
+"Offensive: direct interior or transitional attack, search, and rescue inside the building. Defensive: protect exposures and confine the fire from outside without entering, used when there are no savable lives or property worth the risk, or the building is unsafe."
 ],
 [
 "Define each type of aid agreement.",
@@ -22,7 +22,7 @@ review:[
 ],
 [
 "How do the three levels of briefings differ from each other?",
-"Staff level: the IC briefs command and general staff. Section level: a section chief briefs the section's personnel. Field level: unit leaders or supervisors brief crews in the field right before work begins."
+"Staff level: the IC briefs command and general staff. Section level: a section chief briefs the section's personnel. Field level: unit leaders or supervisors brief crews in the field on their specific tasks, at the start of their assignment or shift and again whenever assignments or hazards change. Separate from these, each operational period on a larger incident starts with an operational period briefing, where supervisors get the IAP and then brief their own personnel."
 ],
 [
 "What information may be included in an IAP?",
@@ -50,7 +50,7 @@ review:[
 ],
 [
 "During transfer of command, what information should be relayed to the relieving officer?",
-"Done face to face if possible (never to someone not on scene). Pass on the current situation, incident objectives and the IAP, resources assigned and where they are, safety concerns, accountability status, and resources requested."
+"Face to face whenever possible, to an officer who is on scene, following your agency's procedures. Give a complete briefing: situation status, objectives and priorities, current organization, resource assignments and locations, resources en route or ordered, facilities, the communications plan, safety concerns and accountability status, and the outlook. Then announce the effective time of the transfer to all personnel on the incident."
 ],
 [
 "What is the most important variable when choosing the appropriate hoseline at an incident?",
@@ -86,7 +86,7 @@ review:[
 ],
 [
 "What types of general information may be included in incident reports?",
-"Department name, incident and district numbers, shift and alarms; occupant and owner info; structure type, use, construction, and stories; how it was reported; call type; actions taken; property use; injuries and fatalities; personnel and apparatus; how and where the fire started; extinguishing method; estimated damage; and a narrative. Uses NFPA 901 or NFIRS codes."
+"Department name, incident and district numbers, shift and alarms; occupant and owner info; structure type, use, construction, and stories; how it was reported; call type; actions taken; property use; injuries and fatalities; personnel and apparatus; how and where the fire started; extinguishing method; estimated damage; and a narrative. Uses NFPA 901 codes and the national reporting system: the course text names NFIRS, but USFA replaced NFIRS with NERIS (National Emergency Response Information System). Since January 1, 2026, incidents are reported only in NERIS."
 ]
 ],
 quiz:[
@@ -98,11 +98,12 @@ quiz:[
 "Organize rescue efforts"
 ],
 [
-"The two main national codes for postincident reports are NFPA 901 and the:",
-"USFA's National Fire Incident Reporting System (NFIRS)",
+"The two national code sources for postincident reports named in the course are NFPA 901 and USFA's national reporting system. For incidents since January 1, 2026, that system is:",
+"NERIS (National Emergency Response Information System), which replaced NFIRS",
 "OSHA Code of Federal Regulations",
 "Pro Board",
-"ISO 9001"
+"ISO 9001",
+{note:"The course quiz keyed \"USFA's National Fire Incident Reporting System (NFIRS).\" That was correct when the course was written. USFA retired NFIRS: incidents from January 1, 2026 on are reported only in NERIS, and NFIRS went offline in February 2026."}
 ],
 [
 "Fast air moving in at the bottom of a door and smoke moving out the top indicates a(an):",
@@ -322,16 +323,17 @@ quiz:[
 "Briefing"
 ],
 [
-"Which type of hose appliance allows you to turn one hoseline into two or more?",
-"Wye appliance",
+"Which hose appliance splits one hoseline into exactly two outlets, with no outlet that continues the original line?",
+"Gated wye",
 "Water thief",
 "Siamese appliance",
-"Gate valve"
+"Gate valve",
+{note:"The course test asked which appliance turns \"one hoseline into two or more\" and keyed \"Wye appliance.\" A water thief also splits one line into several outlets, so the question now names the wye's configuration."}
 ],
 [
 "Personnel can use a thermal imager to:",
-"identify the possible location of fire, victims, or liquid levels with containers or a structure.",
-"analyze smoke movement and air flow in a compartment.",
+"identify the possible location of fire, victims, or liquid levels in containers by reading surface heat.",
+"see through walls and floors to view the room on the other side.",
 "determine the best entry point based on wind direction.",
 "ensure that self-contained breathing apparatus (SCBA) is on, cylinder is full, and operating properly."
 ],
@@ -366,8 +368,8 @@ quiz:[
 [
 "In which situation would the IC likely communicate the need for a transition from an offensive strategy to a defensive strategy?",
 "Conditions in a structure deteriorate rapidly and unexpectedly.",
-"There are not enough personnel on the scene when starting out.",
-"Adequate water flow is not available.",
+"A second engine company has arrived and is ready for assignment.",
+"The primary search is complete and the fire is knocked down.",
 "The amount of fire has been reduced or extinguished to safe levels."
 ],
 [
@@ -385,7 +387,7 @@ quiz:[
 "wait for a technician to arrive."
 ],
 [
-"The purpose of the United States Fire Administration’s National Fire Incident Reporting System (NFIRS) is to:",
+"The purpose of the United States Fire Administration's national incident reporting system (NFIRS in the course, now replaced by NERIS) is to:",
 "create data for analyses and assist in addressing the nation's fire problem.",
 "provide consistency for national code reporting.",
 "keep a record of all fire response-related costs.",
@@ -421,10 +423,11 @@ quiz:[
 ],
 [
 "One limitation of thermal imagers is that they cannot:",
-"detect a fire in the next lower floor through a carpeted floor.",
+"see through a floor, wall, or furnishing; they only read the heat on its surface.",
 "provide information about interior conditions during search and rescue.",
-"\"see\" through synthetic materials and furnishings.",
-"locate the seat of the fire or hidden fires."
+"show a heated area on a wall surface that may point to hidden fire behind it.",
+"locate the seat of the fire.",
+{note:"The course test keyed \"detect a fire in the next lower floor through a carpeted floor,\" with \"see through synthetic materials and furnishings\" as a wrong choice. Both are true, because an imager can't see through any solid object. The question was rewritten so only one answer is right. A fire below may still show as surface heat on the floor once it heats through."}
 ],
 [
 "What is one guideline for forcing a door to begin interior fire suppression?",
@@ -456,17 +459,18 @@ quiz:[
 ],
 [
 "What is a consideration when conducting a risk assessment?",
-"Do not commit to interior offensive fire fighting operations in abandoned or derelict buildings.",
+"Don't commit to interior offensive operations in abandoned or derelict buildings known or reasonably believed to be unoccupied, unless a size-up shows a known life hazard and acceptable risk.",
 "Always consider property conservation the highest priority at an incident.",
 "The life of victims always takes priority over firefighter life safety.",
 "The cost of a structure and its contents must be less than the cost of fire fighting operations to save it."
 ],
 [
-"Field Level briefings occur at the:",
-"beginning of an operational shift.",
-"end of an incident.",
-"end of an operational shift.",
-"beginning of an incident and as necessary throughout."
+"Which briefing is given by a supervisor to crews in the field about their specific tasks, at the start of their shift and again when assignments or hazards change?",
+"Field-level briefing",
+"Staff-level briefing",
+"Section-level briefing",
+"Planning meeting",
+{note:"The course test asked when field-level briefings occur. \"Beginning of an incident and as necessary throughout\" was marked wrong, so the key is most likely \"beginning of an operational shift\" (not confirmed). Field briefings also need updating whenever assignments or hazards change, so the question now asks which briefing fits that description."}
 ],
 [
 "One common characteristic of NIMS-ICS is that it:",
@@ -504,11 +508,12 @@ quiz:[
 "Give time constraints to crew members to complete tasks quickly."
 ],
 [
-"What type of materials can thermal imagers not \"see\" through?",
-"Water, glass, or other reflective surfaces",
-"Wood and vinyl flooring",
-"Synthetic furnishings",
-"Gypsum board and insulation"
+"Why can a thermal imager give a false reading on glass, water, or polished metal?",
+"They reflect heat from other sources, so the image may show a reflection instead of the surface's own temperature",
+"They are transparent to infrared, so the imager sees clearly through them",
+"They are always hotter than the surrounding room",
+"They block the imager's battery signal",
+{note:"The course test asked what materials imagers can't \"see\" through and keyed \"water, glass, or other reflective surfaces.\" Imagers can't see through wood flooring, furnishings, or gypsum board either, so every option was technically correct. The question now covers the reflection limitation instead."}
 ],
 [
 "The number of subordinates within a supervisor's control is usually:",
@@ -589,10 +594,11 @@ quiz:[
 ],
 [
 "In which situation would the IC likely communicate the need for a transition from a defensive strategy to an offensive strategy?",
-"There are not enough personnel on the scene when starting out.",
-"Conditions in a structure deteriorate rapidly and unexpectedly.",
-"Firefighters cannot use fire streams at the scene.",
-"An emergency evacuation is necessary."
+"Enough resources are now on scene, the fire has been knocked down, the building is stable, and a new risk assessment finds interior work acceptable.",
+"There are not enough personnel on the scene.",
+"Conditions in the structure are deteriorating rapidly.",
+"An emergency evacuation has just been ordered.",
+{note:"The course test keyed \"There are not enough personnel on the scene when starting out.\" A shortage of personnel is a reason to stay defensive, not to go offensive, and none of the course options supported the transition. Going from defensive to offensive needs enough resources, improved conditions, and a new risk assessment that accepts the risk."}
 ],
 [
 "Most emergency incident operations will be managed with a(an) _____ along with a tactical worksheet.",
@@ -602,18 +608,19 @@ quiz:[
 "incident briefing"
 ],
 [
-"Which type of information is typically included on a postincident report?",
+"Which type of information about the property is typically included on a postincident report?",
 "Names and addresses of occupant and/or owner",
-"Names of personnel that responded",
+"The owner's credit history",
 "Legal action to be taken",
 "Property owner insurance coverage"
 ],
 [
-"Which hose appliance adapts a larger hoseline to a smaller hoseline?",
+"Which appliance has one large inlet, one large outlet that continues the line, and two smaller outlets for smaller lines?",
 "Water thief",
-"Fitting",
+"Gated wye",
 "Siamese appliance",
-"Gate valve"
+"Gate valve",
+{note:"The course test asked which appliance \"adapts a larger hoseline to a smaller hoseline.\" \"Fitting\" was marked wrong, so the key is most likely \"water thief\" (not confirmed). A reducer fitting also adapts larger hose to smaller, so the question now describes the water thief's layout."}
 ],
 [
 "Which type of fire department communication is used whenever the IC makes changes to strategies and tactics at the scene?",
@@ -653,7 +660,11 @@ terms:[
 ],
 [
 "National Fire Incident Reporting System (NFIRS)",
-"National fire incident data collection system managed by the United States Fire Administration. Local fire departments forward incident data to a state coordinator. The coordinator collects statewide fire incident data and reports information to the USFA."
+"Former national fire incident data collection system managed by the United States Fire Administration; local departments sent incident data through a state coordinator to the USFA. Replaced by NERIS: incidents from January 1, 2026 on go only to NERIS, and NFIRS was retired in February 2026."
+],
+[
+"National Emergency Response Information System (NERIS)",
+"USFA's current national incident reporting system, which replaced NFIRS. All incidents from January 1, 2026 on are reported in NERIS."
 ],
 [
 "Offensive Strategy",
@@ -698,25 +709,38 @@ reference:`<div class="ref-section"><h3 class="ref-title">Leadership and Organiz
 <tr><td>Planning "P"</td><td>1 Understand the situation (size-up), 2 objectives, 3 develop the plan, 4 prepare and share it, 5 execute, evaluate, revise.</td></tr>
 <tr><td>IAP</td><td>Most incidents: a verbal IAP plus a tactical worksheet. A written IAP comes with growth or the next operational period.</td></tr>
 <tr><td>Offensive</td><td>Interior or transitional attack, search, rescue. Chosen when benefits outweigh firefighter risk.</td></tr>
-<tr><td>Defensive</td><td>Protect exposures and confine the fire from outside. No interior offense in abandoned or derelict buildings.</td></tr>
-<tr><td>Transitions</td><td>Offensive to defensive when conditions deteriorate fast. Defensive to offensive when resources arrive or conditions improve. Take a PAR when the strategy changes.</td></tr>
-<tr><td>Briefings</td><td>Staff (IC to staff), section, and field (crews, at the beginning of an operational shift).</td></tr></table></div>
+<tr><td>Defensive</td><td>Protect exposures and confine the fire from outside.</td></tr>
+<tr><td>Abandoned or vacant buildings</td><td>Do a 360 size-up and try to find out if anyone is inside. Check structural condition and any hazard markings (such as a red placard with an X). If the building is known or reasonably believed to be unoccupied, don't go offensive inside. Commit interior crews only for a known life hazard with acceptable risk, and follow department policy.</td></tr>
+<tr><td>Transitions</td><td>Offensive to defensive when conditions deteriorate fast, collapse signs appear, or water or resources run short. Defensive to offensive only when enough resources are on scene, conditions improve (fire knocked down, building stable), and a new risk assessment accepts the risk. Too few personnel never justifies going offensive. Take a PAR when the strategy changes.</td></tr>
+<tr><td>Briefings</td><td>Staff level (IC to command and general staff), section level (section chief to the section), and field level (supervisor to crews on their tasks, at the start of the shift and again when assignments or hazards change). The operational period briefing opens each operational period on a larger incident: supervisors get the IAP, then brief their own people.</td></tr></table><div class="ref-note"><b>Course answer discrepancy:</b> The course test answer for when field-level briefings occur appears to be "beginning of an operational shift" ("beginning of an incident and as necessary throughout" was marked wrong). In practice, a field briefing should be repeated whenever assignments or hazards change.</div></div>
 
 <div class="ref-section"><h3 class="ref-title">Command and Communications</h3>
-<p style="font-size:13px">First arriving firefighter acts as IC: size-up, then the arrival report (unit, conditions, actions, command name and post, staging, strategy, needs). Transfer command face to face to someone on scene. Formal vs. informal (between crewmembers) communication. Emergency traffic warns of an impending hazard. Evacuation: IC orders withdrawal by radio (repeated) and air horns, then PAR. Units give tactical progress reports (success, failure, delay). Victim found during fire attack: tell the IC or rescue crew first.</p></div>
+<p style="font-size:13px">First arriving firefighter acts as IC: size-up, then the arrival report (unit, conditions, actions, command name and post, staging, strategy, needs). Transfer command face to face whenever possible, to someone on scene, following agency procedures. Give a complete briefing (situation, objectives, organization, assignments, resources en route, communications plan, safety concerns, outlook), then announce the effective time of the transfer to everyone on the incident. Formal vs. informal (between crewmembers) communication. Emergency traffic warns of an impending hazard. Evacuation: IC orders withdrawal by radio (repeated) and air horns, then PAR. Units give tactical progress reports (success, failure, delay). Victim found during fire attack: tell the IC or rescue crew first.</p></div>
 
 <div class="ref-section"><h3 class="ref-title">Coordinating Unit Operations</h3>
 <div class="ref-grid">
-<div class="ref-card red"><h4>Hoselines and nozzles</h4><p>Flow rate is the most important choice. Fog: radiant heat protection and hydraulic ventilation. Exterior control: solid stream from a smooth bore (or straight stream). Wye splits a line; a water thief takes a large line down to smaller ones.</p></div>
+<div class="ref-card red"><h4>Hoselines and nozzles</h4><p>Flow rate is the most important choice. Fog: radiant heat protection and hydraulic ventilation. Exterior control: solid stream from a smooth bore (or straight stream). Gated wye: one line into exactly two outlets. Water thief: one large inlet, one large outlet that continues the line, and two smaller outlets. Reducer: a fitting that adapts larger hose to smaller.</p></div>
 <div class="ref-card blue"><h4>Entry</h4><p>IC or supervisor picks the entry. Attack with the wind at your back. K-tool for through-the-lock. Keep the door closed until the line is charged and the crew is ready. Bleed the line first. The lower part of a single doorway is the air intake.</p></div>
-<div class="ref-card green"><h4>Thermal imagers</h4><p>Find fire, victims, and liquid levels. Can't see through water, glass, or reflective surfaces, or a fire below a carpeted floor. Inspect after every use. NFPA 1408 and 1801.</p></div>
+<div class="ref-card green"><h4>Thermal imagers</h4><p>Read infrared heat from the surface of whatever they point at. They can't see through walls, floors, furnishings, glass, or water; hidden fire shows only when it heats a surface. Glass, water, and shiny metal reflect heat, so readings there can be false. Use them to find fire, victims, and liquid levels. Inspect after every use and per the manufacturer. NFPA 1408 and 1801 (course).</p></div>
 <div class="ref-card orange"><h4>RIC and ventilation</h4><p>Assign a RIC whenever crews are in an IDLH. Vent crews must know where interior crews are so they don't pull the flow path onto them.</p></div>
 </div></div>
 
 <div class="ref-section"><h3 class="ref-title">Electrical and Underground</h3>
-<p style="font-size:13px">Assume every wire is energized. Until the power is off, maintain the perimeter and protect exposures. Small electronics fires: isolate power, then use a Class C agent. Tingling in your feet: keep feet together and hop or shuffle out of the ground gradient. Stay inside a vehicle touching lines. Only the utility cuts lines. Underground and confined space fires: only trained technical rescue units go in.</p></div>
+<p style="font-size:13px">Assume every wire is energized. Until the power is off, maintain the perimeter and protect exposures. Small electronics fires: isolate power, then use a Class C agent. Tingling in your feet: keep feet together and hop or shuffle out of the ground gradient. Stay inside a vehicle touching lines. Only the utility cuts lines. Underground and confined space fires: entry is for personnel trained and equipped for that space (in the course, technical rescue units).</p></div>
 
 <div class="ref-section"><h3 class="ref-title">Postincident Reports</h3>
-<p style="font-size:13px">Codes come from NFPA 901 or USFA's NFIRS, which builds national data to address the fire problem and shows response trends. Reports are public legal documents, so errors can have legal consequences. They include occupant and owner names and addresses, structure info, how the call came in, actions, injuries, units, cause, damage, and a narrative.</p></div>
+<p style="font-size:13px">Codes come from NFPA 901 and USFA's national reporting system, which builds national data to address the fire problem and shows response trends. The course text names <b>NFIRS</b>. USFA replaced it with <b>NERIS</b>: 2025 was a hybrid year, all incidents from January 1, 2026 go only to NERIS, and NFIRS went offline in February 2026. Reports are public legal documents, so errors can have legal consequences. They include occupant and owner names and addresses, structure info, how the call came in, actions, injuries, units, cause, damage, and a narrative.</p></div>
+
+<div class="ref-section"><h3 class="ref-title">Sources</h3>
+<ul class="ref-src">
+<li>IFSTA <i>Essentials of Fire Fighting</i>, 8th ed., FF II chapter on incident scene operations (course textbook). Not inspected for this review, so no page numbers are given.</li>
+<li><a href="https://www.usfa.fema.gov/nfirs/sunset/" target="_blank" rel="noopener">USFA, NFIRS Sunset</a>: 2025 hybrid year; NERIS only from January 1, 2026; NFIRS unavailable from February 2026.</li>
+<li><a href="https://training.fema.gov/emiweb/is/icsresource/assets/Transfer%20of%20Command.pdf" target="_blank" rel="noopener">FEMA EMI, Transfer of Command</a>: face to face when possible, complete briefing, announce the effective time to all personnel.</li>
+<li><a href="https://www.usda.gov/sites/default/files/documents/ICS200Lesson05.pdf" target="_blank" rel="noopener">ICS-200 Lesson 5 (USDA copy of FEMA course material)</a>: transfer-of-command briefing elements.</li>
+<li><a href="https://training.fema.gov/emiweb/is/icsresource/assets/ICS%20Review%20Document.pdf" target="_blank" rel="noopener">FEMA EMI, ICS Review Document</a>: each operational period starts with an operational period briefing; the jurisdiction sets the protocol for transferring command, which includes notifying all personnel.</li>
+<li><a href="https://www.cdc.gov/niosh/docs/2010-153/pdfs/2010-153.pdf" target="_blank" rel="noopener">NIOSH Alert 2010-153, Preventing deaths and injuries of fire fighters using risk management principles at structure fires</a>: 360 size-up and occupancy check for vacant or abandoned buildings, marking systems, structural condition, offensive operations only with sufficient resources.</li>
+<li><a href="https://www.rfs.nsw.gov.au/__data/assets/pdf_file/0014/33125/Vol-37-No-2-Liftout-Thermal-Imaging-cameras-for-website.pdf" target="_blank" rel="noopener">NSW Rural Fire Service, Thermal imaging cameras</a>: imagers detect infrared heat, can't see through walls, and read glass inaccurately because it is reflective.</li>
+<li><a href="https://www.fireapparatusmagazine.com/?p=195686" target="_blank" rel="noopener">Fire Apparatus Magazine, TIC Talk: Temperature Measurement</a>: imagers detect surface heat; glass and shiny surfaces cause reflections.</li>
+</ul></div>
 `
 });
