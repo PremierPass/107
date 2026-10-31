@@ -99,6 +99,11 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
 .quiz-start-btn:hover { background: #e74c3c; }
 .q-card { background: #1e1e1e; border-radius: 10px; padding: 18px; margin-bottom: 12px; }
 .q-num { font-size: 11px; color: #666; margin-bottom: 8px; }
+.q-supp { display:inline-block; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#5dade2; border:1px solid #5dade255; background:#5dade214; border-radius:4px; padding:2px 6px; margin-bottom:8px; }
+.q-exp { font-size:12px; margin-top:8px; padding:8px 12px; border-radius:6px; background:#ffffff0a; border:1px solid #ffffff1f; color:#ccc; line-height:1.5; overflow-wrap:anywhere; }
+.q-exp a, .missed-card-exp a { color:#5dade2; }
+.missed-card-exp { font-size:12px; color:#bbb; margin-top:8px; line-height:1.5; overflow-wrap:anywhere; }
+.missed-card-note { font-size:12px; color:#f5d08a; margin-top:6px; line-height:1.5; }
 .q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
 .q-options { display: flex; flex-direction: column; gap: 8px; }
 .q-opt { background: #2a2a2a; border: 1px solid #333; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-size: 13px; color: #ccc; transition: all 0.2s; text-align: left; }
@@ -237,10 +242,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
     </div>
   </div>
   <div id="fc-done" class="done-screen" style="display:none">
-    <h2>Deck Complete!</h2>
-    <p id="fc-done-stats"></p>
-    <button class="btn btn-green" onclick="fcRestartDeck()" style="margin-right:8px">Start Over</button>
-    <button class="btn btn-red" onclick="fcStudyUnknown()">Review Missed</button>
+    <h2 id="fc-done-title">Deck Complete!</h2>
+    <p id="fc-done-stats" role="status"></p>
+    <button class="btn btn-green" id="fc-done-restart" onclick="fcRestartDeck()" style="margin-right:8px">Start Over</button>
+    <button class="btn btn-red" id="fc-done-review" onclick="fcStudyUnknown()">Review Missed</button>
   </div>
 </div>
 
@@ -253,6 +258,13 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
     <p style="font-size:13px;color:#888;margin-bottom:12px">Select topics and number of questions</p>
     <div style="font-size:12px;color:#aaa;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Topics</div>
     <div class="quiz-option-grid" id="quiz-topic-opts"></div>
+    <div style="font-size:12px;color:#aaa;margin-bottom:8px;margin-top:12px;text-transform:uppercase;letter-spacing:1px">Question Set</div>
+    <div class="quiz-option-grid" id="quiz-set-opts">
+      <div class="quiz-opt selected" data-set="all" onclick="selectSet(this)">All Questions</div>
+      <div class="quiz-opt" data-set="course" onclick="selectSet(this)">Course Study Questions</div>
+      <div class="quiz-opt" data-set="supp" onclick="selectSet(this)">Supplemental Practice</div>
+    </div>
+    <p id="quiz-set-note" style="font-size:12px;color:#888;margin-top:6px;line-height:1.5">Supplemental practice questions are written from cited public sources (ERG 2024, OSHA, EPA, NIOSH, CDC, FEMA, and others). They are not actual course or certification-exam questions.</p>
     <div style="font-size:12px;color:#aaa;margin-bottom:8px;margin-top:12px;text-transform:uppercase;letter-spacing:1px">Number of Questions</div>
     <div class="quiz-option-grid" id="quiz-num-opts">
       <div class="quiz-opt selected" data-num="10" onclick="selectNum(this)">10 Questions</div>
@@ -304,12 +316,15 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
     <li><a style="color:#5dade2" href="https://stacks.cdc.gov/view/cdc/52812/cdc_52812_DS1.pdf" target="_blank" rel="noopener">NIOSH, Fentanyl: Preventing Occupational Exposure to Emergency Responders</a>: brief skin contact not expected to cause toxic effects if visible contamination is promptly removed; inhalation, mucous membranes, ingestion, and needlesticks are the main concerns.</li>
     <li><a style="color:#5dade2" href="https://training.fema.gov/emiweb/is/icsresource/assets/ICS%20Review%20Document.pdf" target="_blank" rel="noopener">FEMA EMI, ICS Review Document</a>: Intelligence/Investigations function, criminal or noncriminal, placed by the IC.</li>
     <li><a style="color:#5dade2" href="https://www.law.cornell.edu/cfr/text/49/172.504" target="_blank" rel="noopener">49 CFR 172.504</a> and <a style="color:#5dade2" href="https://www.law.cornell.edu/cfr/text/49/172.514" target="_blank" rel="noopener">172.514</a>: placarding triggers and the 640 cubic foot placement alternative.</li>
-    <li><a style="color:#5dade2" href="https://cameochemicals.noaa.gov/unna/1017" target="_blank" rel="noopener">NOAA CAMEO Chemicals (ERG 2024 data)</a>: chlorine, lithium ion batteries, dry ice, LNG, and refrigerated nitrogen entries; <a style="color:#5dade2" href="https://cameochemicals.noaa.gov/erg_guides/en/Guide_120.pdf" target="_blank" rel="noopener">ERG 2024 Guide 120</a>; <a style="color:#5dade2" href="https://www.stoodyind.com/Safety/ER/Guide115.pdf" target="_blank" rel="noopener">Guide 115 (older-edition copy; confirm in ERG 2024)</a>.</li>
+    <li><a style="color:#5dade2" href="https://cameochemicals.noaa.gov/unna/1017" target="_blank" rel="noopener">NOAA CAMEO Chemicals (ERG 2024 data)</a>: chlorine, lithium ion batteries, dry ice, LNG, and refrigerated nitrogen entries; <a style="color:#5dade2" href="https://cameochemicals.noaa.gov/erg_guides/en/Guide_120.pdf" target="_blank" rel="noopener">ERG 2024 Guide 120</a>; <a style="color:#5dade2" href="https://cameochemicals.noaa.gov/erg_guides/en/Guide_115.pdf" target="_blank" rel="noopener">ERG 2024 Guide 115</a>.</li>
+    <li><a style="color:#5dade2" href="https://www.phmsa.dot.gov/sites/phmsa.dot.gov/files/2022-10/Chart17-10-06-2022-508-REM.pdf" target="_blank" rel="noopener">USDOT/PHMSA Chart 17</a>: placards at least 250 mm (9.84 in) per side; Division 6.2 has no placard; Class 9 placards are not required domestically, but Class 9 bulk packagings must show the ID number.</li>
     <li><a style="color:#5dade2" href="https://www.oshacademy.com/courses/training/670-hazwoper-refresher-clean-up-operations/670-12-11.php" target="_blank" rel="noopener">HAZWOPER decontamination PPE</a>: decon workers may need the same PPE as entry workers.</li>
   </ul>
+  <p style="font-size:13px;line-height:1.6;color:#999;margin-top:12px">Supplemental practice questions in the quiz are not course or certification-exam questions. Each one shows its explanation and source after you answer, and again here if you miss it.</p>
 </div>
 
 
+<script src="hazmat-bank.js?v=1"></script>
 <script>
 
 const FC_CARDS = [
@@ -411,17 +426,17 @@ const FC_CARDS = [
   {ch:"Ch2",q:"What does Class 1 placard indicate?",a:"Explosives. Orange diamond with division number and compatibility group letter."},
   {ch:"Ch2",q:"What does a red placard indicate?",a:"Flammability hazard — Class 2.1 flammable gas, Class 3 flammable liquid, or Class 4 flammable solid."},
   {ch:"Ch2",q:"What does a green placard indicate?",a:"Class 2.2 — Non-flammable, non-toxic gas such as nitrogen, CO2, or helium."},
-  {ch:"Ch2",q:"What does a white placard indicate?",a:"Class 2.3 toxic gas or Class 6 toxic/infectious substances."},
+  {ch:"Ch2",q:"What does a white placard indicate?",a:"Division 2.3 poison gas or Division 6.1 poison (including POISON INHALATION HAZARD). Division 6.2 infectious substances are labeled on packages but have no placard."},
   {ch:"Ch2",q:"What does a yellow placard indicate?",a:"Class 5.1 oxidizer or Class 5.2 organic peroxide."},
   {ch:"Ch2",q:"What does a blue placard indicate?",a:"Class 4.3 — Dangerous when wet materials like sodium or calcium carbide."},
   {ch:"Ch2",q:"What does a black and white placard indicate?",a:"Class 8 corrosives like sulfuric acid or sodium hydroxide."},
-  {ch:"Ch2",q:"What does a black and white striped placard indicate?",a:"Class 9 miscellaneous hazardous materials like lithium batteries, dry ice, or PCBs. Each material has its own ERG guide (lithium ion batteries 147, dry ice 120)."},
+  {ch:"Ch2",q:"What does a black and white striped placard indicate?",a:"Class 9 miscellaneous hazardous materials like lithium batteries, dry ice, or PCBs. Each material has its own ERG guide (lithium ion batteries 147, dry ice 120). A CLASS 9 placard is not required for domestic transportation, so a domestic Class 9 load may have no placard; a bulk packaging must still display the ID number."},
   {ch:"Ch2",q:"What does a yellow and white placard with radiation symbol indicate?",a:"Class 7 radioactive materials."},
   {ch:"Ch2",q:"What is the NFPA 704 rating scale?",a:"0 to 4 for each category. 0 = minimal hazard, 4 = severe/extreme hazard."},
   {ch:"Ch2",q:"What does NFPA 704 rating of 4 in the red quadrant mean?",a:"Extremely flammable — flash point below 73°F and boiling point below 100°F."},
   {ch:"Ch2",q:"What does NFPA 704 rating of 4 in the blue quadrant mean?",a:"Extremely dangerous health hazard — can cause death or major injury even with brief exposure."},
   {ch:"Ch2",q:"What shape are all DOT hazmat placards?",a:"Diamond shape (square on point)."},
-  {ch:"Ch2",q:"What decides whether a shipment needs placards?",a:"Hazard class and quantity (49 CFR 172.504). Bulk packaging and Table 1 materials need placards in any amount. Table 2 materials on a vehicle need them at 1,001 lb (454 kg) or more aggregate gross weight. The 640 cubic foot figure only allows some smaller bulk packagings to be placarded on two sides or labeled instead; it is not the trigger."},
+  {ch:"Ch2",q:"What decides whether a shipment needs placards?",a:"Hazard class and quantity (49 CFR 172.504). Bulk packaging and Table 1 materials need placards in any amount. Table 2 materials on a vehicle need them at 1,001 lb (454 kg) or more aggregate gross weight. The 640 cubic foot figure only allows some smaller bulk packagings to be placarded on two sides or labeled instead; it is not the trigger. Exceptions apply: Division 6.2 (infectious substances) has no placard (Table 2 lists none), and a CLASS 9 placard is not required for domestic transportation, although a bulk packaging of a Class 9 material must still show its ID number (on a Class 9 placard, orange panel, or white square-on-point display). See 172.504(f) for other exceptions."},
   {ch:"Ch2",q:"What are the nine UN hazard classes?",a:"1-Explosives, 2-Gases, 3-Flammable Liquids, 4-Flammable Solids, 5-Oxidizers, 6-Toxic/Infectious, 7-Radioactive, 8-Corrosives, 9-Miscellaneous."},
   {ch:"Ch4",q:"What is the pH scale?",a:"A scale from 0-14 measuring acidity or alkalinity. 0-6 is acidic, 7 is neutral, 8-14 is basic (alkaline)."},
   {ch:"Ch4",q:"What pH range indicates especially corrosive acids?",a:"pH 0-2."},
@@ -521,7 +536,7 @@ const FC_CARDS = [
   {ch:"Ch2",q:"What are shipping papers on an aircraft called?",a:"Air bill or air waybill."},
   {ch:"Ch2",q:"What information must shipping papers include?",a:"Proper shipping name, hazard class, UN/NA identification number, packing group, and quantity."},
   {ch:"Ch2",q:"What does packing group indicate?",a:"Degree of danger — PG I is greatest danger, PG II is medium danger, PG III is minor danger."},
-  {ch:"Ch2",q:"What is a placard?",a:"A diamond-shaped sign at least 10.8 inches on each side placed on vehicles transporting hazardous materials."},
+  {ch:"Ch2",q:"What is a placard?",a:"A diamond-shaped (square-on-point) sign at least 250 mm (9.84 inches) on each side, displayed on transport vehicles, freight containers, and bulk packagings to show the hazard class (USDOT Chart 17)."},
   {ch:"Ch2",q:"What does an NFPA 704 health rating of 4 mean?",a:"Deadly — short exposure could cause death or major injury."},
   {ch:"Ch2",q:"What does an NFPA 704 health rating of 3 mean?",a:"Serious — short exposure could cause serious temporary or residual injury."},
   {ch:"Ch2",q:"What does an NFPA 704 flammability rating of 4 mean?",a:"Extremely flammable — vapors or gases will burn at ambient temperature and pressure."},
@@ -878,6 +893,8 @@ const QUIZ_QUESTIONS = [
 ];
 
 let fcDeck=[], fcIdx=0, fcKnown=new Set(), fcUnknown=new Set(), fcActive='all', fcFlipped=false;
+// Review Only mode walks the Need Review cards in order and shows completion only after the last one.
+let fcReviewMode=false;
 const fcIdOf=c=>c.ch+'::'+c.q;
 function fcPersist(){ if(window.hazmatPersist) window.hazmatPersist(); }
 
@@ -902,6 +919,7 @@ function fcSetCh(ch){
 }
 function fcSearchCards(){ fcBuildDeck(); fcShow(); }
 function fcBuildDeck(){
+  fcReviewMode=false;
   const s=document.getElementById('fc-search').value.toLowerCase().trim();
   fcDeck=FC_CARDS.filter(c=>{
     const mc=fcActive==='all'||c.ch===fcActive;
@@ -947,6 +965,7 @@ function fcShow(){
   fcFlipped=false;
   document.getElementById('fc-card').classList.remove('flipped');
   fcUpdateStats();
+  if(fcReviewMode){main.style.display='block';done.style.display='none';return;}
   const allDone=fcDeck.every(c=>fcKnown.has(fcIdOf(c))||fcUnknown.has(fcIdOf(c)));
   if(allDone){fcShowDone();}else{main.style.display='block';done.style.display='none';}
 }
@@ -959,9 +978,15 @@ function fcMark(s){
   fcPersist();
   fcNext();
 }
-function fcNext(){if(!fcDeck.length)return;if(fcIdx<fcDeck.length-1){fcIdx++;}else{fcIdx=0;}fcShow();}
+function fcNext(){
+  if(!fcDeck.length)return;
+  if(fcReviewMode&&fcIdx>=fcDeck.length-1){fcShowDone();return;}
+  if(fcIdx<fcDeck.length-1){fcIdx++;}else{fcIdx=0;}
+  fcShow();
+}
 // Clears progress for the cards currently shown (this chapter or search), after confirming.
 function fcRestartDeck(){
+  if(fcReviewMode){fcBuildDeck();fcShuffle();return;}
   fcDeck.forEach(c=>{fcKnown.delete(fcIdOf(c));fcUnknown.delete(fcIdOf(c));});
   fcPersist(); fcShuffle();
 }
@@ -977,28 +1002,43 @@ function fcShuffle(){
 function fcStudyUnknown(){
   const missed=FC_CARDS.filter(c=>fcUnknown.has(fcIdOf(c)));
   if(!missed.length){alert('No review cards yet. Mark some as Need Review first.');return;}
-  fcDeck=[...missed];fcIdx=0;
-  // Review mode: show the cards even though they are already marked.
-  document.getElementById('fc-main').style.display='block';
-  document.getElementById('fc-done').style.display='none';
-  const c=fcDeck[0];
-  fcSetButtons(true);
-  document.getElementById('fc-ch').textContent=c.ch.replace('Ch','Chapter ');
-  document.getElementById('fc-ch-b').textContent=c.ch.replace('Ch','Chapter ');
-  document.getElementById('fc-q').textContent=c.q;
-  document.getElementById('fc-a').textContent=c.a;
-  fcUpdateStats();
+  fcDeck=[...missed];
+  for(let i=fcDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcDeck[i],fcDeck[j]]=[fcDeck[j],fcDeck[i]];}
+  fcIdx=0; fcReviewMode=true;
+  fcShow();
 }
 function fcShowDone(){
   document.getElementById('fc-main').style.display='none';
   document.getElementById('fc-done').style.display='block';
   const total=fcDeck.length, known=fcDeck.filter(c=>fcKnown.has(fcIdOf(c))).length;
-  document.getElementById('fc-done-stats').textContent='You got '+known+' of '+total+' correct ('+(total?Math.round(known/total*100):0)+'%).';
+  const h=document.getElementById('fc-done-title'), b1=document.getElementById('fc-done-restart'), b2=document.getElementById('fc-done-review');
+  if(fcReviewMode){
+    const still=fcDeck.filter(c=>fcUnknown.has(fcIdOf(c))).length;
+    h.textContent='Review Pass Complete';
+    document.getElementById('fc-done-stats').textContent='You reviewed '+total+' card'+(total===1?'':'s')+'. '+known+' now marked Got It, '+still+' still need review.';
+    b1.textContent='Back to Deck'; b2.textContent='Review Again'; b2.style.display=still?'':'none';
+  } else {
+    h.textContent='Deck Complete!';
+    document.getElementById('fc-done-stats').textContent='You got '+known+' of '+total+' correct ('+(total?Math.round(known/total*100):0)+'%).';
+    b1.textContent='Start Over'; b2.textContent='Review Missed'; b2.style.display='';
+  }
 }
 
 // QUIZ
-const TOPICS=[...new Set(QUIZ_QUESTIONS.map(q=>q.topic))];
-let selectedTopics=new Set(TOPICS), selectedNum=10;
+// Supplemental practice bank (hazmat-bank.js). Each item keeps its explanation and source.
+const HAZMAT_SOURCES=(window.HAZMAT_BANK&&window.HAZMAT_BANK.sources)||{};
+(window.HAZMAT_BANK?window.HAZMAT_BANK.questions:[]).forEach(r=>{
+  QUIZ_QUESTIONS.push({id:r[0],topic:r[1],q:r[2],opts:r[3],ans:0,exp:r[4],src:r[5],supp:true});
+});
+const TOPICS=[...new Set(QUIZ_QUESTIONS.map(q=>q.topic))].sort((a,b)=>{const n=t=>{const m=/^Ch(\d+) /.exec(t);return m?+m[1]:99;};return n(a)-n(b);});
+let selectedTopics=new Set(TOPICS), selectedNum=10, selectedSet='all';
+function selectSet(el){
+  document.querySelectorAll('#quiz-set-opts .quiz-opt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected'); selectedSet=el.dataset.set||'all';
+}
+function srcInfo(k){const v=HAZMAT_SOURCES[k];return v?{t:v.t||v[0],u:v.u||v[1]}:null;}
+function escHtml(t){return String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function safeUrl(u){return /^https:\/\//.test(String(u||''))?String(u):'';}
 let quizDeck=[], qIdx=0, qAnswers=[], qAnswered=[];
 
 function buildQuizTopicOpts(){
@@ -1021,7 +1061,10 @@ function selectNum(el){
 }
 function startQuiz(){
   const seenQ=new Set();
-  let pool=QUIZ_QUESTIONS.filter(q=>selectedTopics.has(q.topic)).filter(q=>{if(seenQ.has(q.q))return false;seenQ.add(q.q);return true;});
+  let pool=QUIZ_QUESTIONS.filter(q=>selectedTopics.has(q.topic))
+    .filter(q=>selectedSet==='all'||(selectedSet==='supp')===!!q.supp)
+    .filter(q=>{if(seenQ.has(q.q))return false;seenQ.add(q.q);return true;});
+  if(!pool.length){alert('No questions match those topics in this question set. Pick more topics or another set.');return;}
   for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
   // Shuffle options for each question while keeping correct answer tracking
   pool = pool.map(q => {
@@ -1047,7 +1090,7 @@ function renderQ(){
   });
   const q=quizDeck[qIdx];
   const container=document.getElementById('quiz-questions');
-  container.innerHTML='<div class="q-card"><div class="q-num">Question '+(qIdx+1)+' of '+total+' — '+q.topic+'</div><div class="q-text">'+q.q+'</div><div class="q-options" id="q-opts"></div><div id="q-fb"></div></div>';
+  container.innerHTML='<div class="q-card">'+(q.supp?'<div class="q-supp" title="Written from a cited public source. Not an actual course or certification-exam question.">Supplemental practice</div>':'')+'<div class="q-num">Question '+(qIdx+1)+' of '+total+' &middot; '+escHtml(q.topic)+'</div><div class="q-text">'+escHtml(q.q)+'</div><div class="q-options" id="q-opts"></div><div id="q-fb" role="status"></div></div>';
   const opts=document.getElementById('q-opts');
   q.opts.forEach((opt,i)=>{
     const b=document.createElement('button'); b.className='q-opt'; b.textContent=opt;
@@ -1064,7 +1107,11 @@ function renderQ(){
     const fb=document.getElementById('q-fb');
     if(qAnswers[qIdx]===q.ans){fb.className='q-feedback correct';fb.textContent='Correct!';}
     else{fb.className='q-feedback wrong';fb.textContent='Incorrect. Correct answer: '+q.opts[q.ans];}
-    if(q.note){const n=document.createElement('div');n.className='q-note';n.innerHTML='<b>Course answer discrepancy:</b> ';n.appendChild(document.createTextNode(q.note));fb.after(n);}
+    let last=fb;
+    if(q.note){const n=document.createElement('div');n.className='q-note';n.innerHTML='<b>Course answer discrepancy:</b> ';n.appendChild(document.createTextNode(q.note));last.after(n);last=n;}
+    if(q.exp){const x=document.createElement('div');x.className='q-exp';x.innerHTML='<b>Why:</b> '+escHtml(q.exp);
+      const si=srcInfo(q.src);if(si){const u=safeUrl(si.u);x.innerHTML+='<br><span style="color:#888">Source:</span> '+(u?'<a href="'+escHtml(u)+'" target="_blank" rel="noopener">'+escHtml(si.t)+'</a>':escHtml(si.t));}
+      last.after(x);last=x;}
   }
   document.getElementById('q-prev-btn').style.display=qIdx>0?'block':'none';
   const isLast=qIdx===total-1;
@@ -1092,7 +1139,7 @@ function submitQuiz(){
   const numEl=document.getElementById('q-score-num');
   numEl.textContent=pct+'%';
   numEl.className='score-num '+(pct>=70?'score-pass':'score-fail');
-  document.getElementById('q-score-label').textContent=pct>=70?'PASS — Great job!':'FAIL — Keep studying!';
+  document.getElementById('q-score-label').textContent=pct>=70?'PASS: Great job!':'FAIL: Keep studying!';
   document.getElementById('q-score-detail').textContent=correct+' of '+total+' correct';
 }
 function retryQuiz(){
@@ -1159,13 +1206,17 @@ function updateReviewPage() {
   if (missedQuestions.length === 0) {
     missedContent.innerHTML = '<div class="empty-state">No missed quiz questions yet. Take a quiz and missed questions will appear here.</div>';
   } else {
-    missedContent.innerHTML = missedQuestions.map(m => `
+    missedContent.innerHTML = missedQuestions.map(m => {
+      const si = srcInfo(m.src), u = si ? safeUrl(si.u) : '';
+      return `
       <div class="missed-card">
-        <div class="missed-card-topic">${m.topic}</div>
-        <div class="missed-card-q">${m.q}</div>
-        <div class="missed-card-wrong">✗ Your answer: ${m.yourAnswer}</div>
-        <div class="missed-card-correct">✓ Correct: ${m.correct}</div>
-      </div>`).join('');
+        <div class="missed-card-topic">${escHtml(m.topic)}${m.supp ? ' &middot; Supplemental practice' : ''}</div>
+        <div class="missed-card-q">${escHtml(m.q)}</div>
+        <div class="missed-card-wrong">✗ Your answer: ${escHtml(m.yourAnswer)}</div>
+        <div class="missed-card-correct">✓ Correct: ${escHtml(m.correct)}</div>
+        ${m.note ? `<div class="missed-card-note"><b>Course answer discrepancy:</b> ${escHtml(m.note)}</div>` : ''}
+        ${m.exp ? `<div class="missed-card-exp"><b>Why:</b> ${escHtml(m.exp)}${si ? `<br>Source: ${u ? `<a href="${escHtml(u)}" target="_blank" rel="noopener">${escHtml(si.t)}</a>` : escHtml(si.t)}` : ''}</div>` : ''}
+      </div>`;}).join('');
   }
 }
 
@@ -1183,16 +1234,22 @@ function submitQuizWithTracking() {
         topic: q.topic,
         q: q.q,
         yourAnswer: q.opts[qAnswers[i]] || 'Not answered',
-        correct: q.opts[q.ans]
+        correct: q.opts[q.ans],
+        exp: q.exp || '',
+        note: q.note || '',
+        src: q.src || '',
+        supp: !!q.supp
       });
     }
   });
+  // Keep the newest attempt of each question (it carries the explanation fields).
+  missedQuestions.reverse();
   const seen = new Set();
   missedQuestions = missedQuestions.filter(m => {
     if (seen.has(m.q)) return false;
     seen.add(m.q);
     return true;
-  });
+  }).reverse();
   submitQuiz();
 }
 
@@ -1238,7 +1295,7 @@ function cancelQuiz() {
   const _renderQ=window.renderQ;
   window.renderQ=function(){_renderQ();const q=quizDeck[qIdx];if(!q||!qAnswered[qIdx])return;const fb=document.getElementById('q-fb');if(!fb)return;
     const b=document.createElement('button');b.className='sm-btn';b.style.marginTop='10px';b.innerHTML='&#9873; Flag this question';
-    b.onclick=()=>flag({app:'hazmat',ch:q.topic||'',q:String(q.q).replace(/<[^>]+>/g,' '),answer:q.opts[q.ans]});fb.after(b);};
+    b.onclick=()=>flag({app:'hazmat',ch:q.topic||'',q:String(q.q).replace(/<[^>]+>/g,' '),answer:q.opts[q.ans]});fb.parentNode.appendChild(b);};
   const _clearMissed=window.clearMissedQuestions;
   window.clearMissedQuestions=function(){_clearMissed();persist();};
   window.appSync={key:'hazmat',
