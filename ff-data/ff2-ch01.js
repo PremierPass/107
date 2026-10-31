@@ -487,11 +487,12 @@ quiz:[
 "Logistics"
 ],
 [
-"Which two NFPA standards include information about the use and requirements for thermal imagers (TIs)?",
-"1408 and 1801",
+"Which two NFPA standards does the course name for thermal imager (TI) training and requirements?",
+"1408 and 1801 (now consolidated into NFPA 1400 and NFPA 1930)",
 "472 and 901",
 "1010 and 1970",
-"1500 and 1901"
+"1500 and 1901",
+{note:"The course keyed \"1408 and 1801,\" which are legacy standard numbers. NFPA has consolidated them: NFPA 1408 (TI training) is now part of NFPA 1400, Standard on Fire Service Training (2026 edition), and NFPA 1801 (thermal imagers) is now part of NFPA 1930 (2025 edition). Answer 1408 and 1801 on the course test; look them up today as 1400 and 1930."}
 ],
 [
 "An example of employing a defensive strategy is:",
@@ -721,7 +722,7 @@ reference:`<div class="ref-section"><h3 class="ref-title">Leadership and Organiz
 <div class="ref-grid">
 <div class="ref-card red"><h4>Hoselines and nozzles</h4><p>Flow rate is the most important choice. Fog: radiant heat protection and hydraulic ventilation. Exterior control: solid stream from a smooth bore (or straight stream). Gated wye: one line into exactly two outlets. Water thief: one large inlet, one large outlet that continues the line, and two smaller outlets. Reducer: a fitting that adapts larger hose to smaller.</p></div>
 <div class="ref-card blue"><h4>Entry</h4><p>IC or supervisor picks the entry. Attack with the wind at your back. K-tool for through-the-lock. Keep the door closed until the line is charged and the crew is ready. Bleed the line first. The lower part of a single doorway is the air intake.</p></div>
-<div class="ref-card green"><h4>Thermal imagers</h4><p>Read infrared heat from the surface of whatever they point at. They can't see through walls, floors, furnishings, glass, or water; hidden fire shows only when it heats a surface. Glass, water, and shiny metal reflect heat, so readings there can be false. Use them to find fire, victims, and liquid levels. Inspect after every use and per the manufacturer. NFPA 1408 and 1801 (course).</p></div>
+<div class="ref-card green"><h4>Thermal imagers</h4><p>Read infrared heat from the surface of whatever they point at. They can't see through walls, floors, furnishings, glass, or water; hidden fire shows only when it heats a surface. Glass, water, and shiny metal reflect heat, so readings there can be false. Use them to find fire, victims, and liquid levels. Inspect after every use and per the manufacturer.</p><p><b>Standards:</b> the course names NFPA 1408 (TI training) and NFPA 1801 (thermal imagers). These are legacy numbers: 1408 is now part of <b>NFPA 1400</b>, Standard on Fire Service Training (2026), and 1801 is now part of <b>NFPA 1930</b> (2025).</p></div>
 <div class="ref-card orange"><h4>RIC and ventilation</h4><p>Assign a RIC whenever crews are in an IDLH. Vent crews must know where interior crews are so they don't pull the flow path onto them.</p></div>
 </div></div>
 
@@ -740,6 +741,8 @@ reference:`<div class="ref-section"><h3 class="ref-title">Leadership and Organiz
 <li><a href="https://training.fema.gov/emiweb/is/icsresource/assets/ICS%20Review%20Document.pdf" target="_blank" rel="noopener">FEMA EMI, ICS Review Document</a>: each operational period starts with an operational period briefing; the jurisdiction sets the protocol for transferring command, which includes notifying all personnel.</li>
 <li><a href="https://www.cdc.gov/niosh/docs/2010-153/pdfs/2010-153.pdf" target="_blank" rel="noopener">NIOSH Alert 2010-153, Preventing deaths and injuries of fire fighters using risk management principles at structure fires</a>: 360 size-up and occupancy check for vacant or abandoned buildings, marking systems, structural condition, offensive operations only with sufficient resources.</li>
 <li><a href="https://www.rfs.nsw.gov.au/__data/assets/pdf_file/0014/33125/Vol-37-No-2-Liftout-Thermal-Imaging-cameras-for-website.pdf" target="_blank" rel="noopener">NSW Rural Fire Service, Thermal imaging cameras</a>: imagers detect infrared heat, can't see through walls, and read glass inaccurately because it is reflective.</li>
+<li><a href="https://www.nfpa.org/codes-and-standards/nfpa-1400-standard-development/1400" target="_blank" rel="noopener">NFPA 1400, Standard on Fire Service Training (2026)</a>: consolidates NFPA 1402, 1403, 1404, 1407, 1408, 1410, and 1451. Confirmed in NFPA's <a href="https://docinfofiles.nfpa.org/files/AboutTheCodes/1400/1400_CustF2025_FIY_AAA_FD_PIresponses.pdf" target="_blank" rel="noopener">NFPA 1400 First Draft</a>, Section 1.3 (Chapters 1 to 3, 33 to 37, and Annex N constitute NFPA 1408).</li>
+<li><a href="https://www.nfpa.org/codes-and-standards/nfpa-1930-standard-development/1930" target="_blank" rel="noopener">NFPA 1930 (2025)</a>: consolidates NFPA 1801 (thermal imagers) with NFPA 1802, 1932, 1937, and 1962.</li>
 <li><a href="https://www.fireapparatusmagazine.com/?p=195686" target="_blank" rel="noopener">Fire Apparatus Magazine, TIC Talk: Temperature Measurement</a>: imagers detect surface heat; glass and shiny surfaces cause reflections.</li>
 </ul></div>
 `
