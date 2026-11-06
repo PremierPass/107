@@ -203,6 +203,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   html, body { background-color: #111111 !important; color: #f0f0f0 !important; }
   .ref-table td, .ref-table th { color: inherit; }
 </style>
+  <link rel="stylesheet" href="hazmat-posters.css">
 </head>
 <body>
 <div class="nav">
@@ -266,7 +267,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
       <div class="ppe-card" onclick="openClassModal('ppe5')" style="border-left: 4px solid #2980b9">
         <div class="ppe-badge" style="background:#2980b9;color:#fff">CLASS 5</div>
         <div class="ppe-info">
-          <div class="ppe-name">Thermal + Chemical Splash</div>
+          <div class="ppe-name">Course definition pending</div>
           <div class="ppe-desc">Description pending instructor review</div>
           <div class="hclass-tap">Tap for full reference chart →</div>
         </div>
@@ -281,13 +282,23 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe_all')">✕</button>
         </div>
         <div class="modal-body">
-          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><table><tr><th>Class</th><th>Respirator</th><th>Use</th></tr>
+          <figure class="haz-poster">
+            <figcaption><span>PPE reference</span><strong>CBRN ensemble comparison</strong></figcaption>
+            <ul class="haz-poster-grid" role="list">
+              <li><span class="haz-poster-badge">1</span><strong>Vapor protection</strong><span>SCBA</span></li>
+              <li><span class="haz-poster-badge">2</span><strong>Chemical vapor, liquid &amp; particulate protection</strong><span>CBRN SCBA</span></li>
+              <li><span class="haz-poster-badge">3</span><strong>Low-level chemical vapor, liquid &amp; particulate protection</strong><span>CBRN APR or PAPR</span></li>
+              <li><span class="haz-poster-badge">4</span><strong>Biological &amp; radiological particulate protection</strong><span>CBRN APR or PAPR</span></li>
+            </ul>
+            <p>The course’s Class 5 description is tracked separately for instructor review.</p>
+          </figure>
+          <div class="ref-alt"><table><tr><th>Class</th><th>Respirator</th><th>Use</th></tr>
 <tr><td>Class 1</td><td>SCBA</td><td>Vapor-protective; unknown or IDLH vapor hazards</td></tr>
 <tr><td>Class 2</td><td>CBRN SCBA</td><td>IDLH levels of chemical vapors, liquids, and particulates</td></tr>
 <tr><td>Class 3</td><td>CBRN APR or PAPR</td><td>Low levels of chemical vapors and liquids (plus particulates); not for IDLH or oxygen-deficient air</td></tr>
 <tr><td>Class 4</td><td>CBRN APR or PAPR</td><td>Biological and radiological particulates only; no chemical vapor or liquid protection</td></tr>
 <tr><td>Class 5</td><td colspan="2">Pending instructor review: this guide could not verify the course description</td></tr></table>
-<p>These are NFPA CBRN ensemble classes (NFPA 1994, now consolidated into NFPA 1990). OSHA/EPA Levels A to D are a different system; comparisons such as "Class 1 is like Level A" are rough, not equivalent.</p><div class="ref-note"><b>Why removed:</b> the poster listed fixed OSHA/EPA level equivalents, described Class 2 as splash-only, and described a Class 5 this guide could not verify.</div></div>
+<p>These are NFPA CBRN ensemble classes (NFPA 1994, now consolidated into NFPA 1990). OSHA/EPA Levels A to D are a different system; comparisons such as "Class 1 is like Level A" are rough, not equivalent.</p></div>
         </div>
       </div>
     </div>
@@ -309,7 +320,15 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe2')">✕</button>
         </div>
         <div class="modal-body">
-          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><p><b>Class 2:</b> worn with a CBRN SCBA for IDLH environments with high levels of chemical vapors, liquids, or particulates. It covers vapors as well as liquids.</p><div class="ref-note"><b>Course answer discrepancy:</b> earlier study material described Class 2 as liquid-splash only (Level B) and said it does not protect against vapors. NFPA 1994 Class 2 ensembles protect against chemical vapors and liquids at IDLH levels.</div></div>
+          <figure class="haz-poster">
+            <figcaption><span>PPE reference</span><strong>Class 2 ensemble</strong></figcaption>
+            <ul class="haz-poster-grid" role="list">
+              <li><span class="haz-poster-badge">01</span><strong>Respiratory protection</strong><span>CBRN SCBA</span></li>
+              <li><span class="haz-poster-badge">02</span><strong>Exposure protection</strong><span>Chemical vapors, liquids and particulates</span></li>
+              <li><span class="haz-poster-badge">03</span><strong>Study distinction</strong><span>Class 2 includes vapor protection.</span></li>
+            </ul>
+          </figure>
+          <div class="ref-alt"><p><b>Class 2:</b> worn with a CBRN SCBA for IDLH environments with high levels of chemical vapors, liquids, or particulates. It covers vapors as well as liquids.</p><div class="ref-note"><b>Course answer discrepancy:</b> earlier study material described Class 2 as liquid-splash only (Level B) and said it does not protect against vapors. NFPA 1994 Class 2 ensembles protect against chemical vapors and liquids at IDLH levels.</div></div>
         </div>
       </div>
     </div>
@@ -320,7 +339,15 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe3')">✕</button>
         </div>
         <div class="modal-body">
-          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><p><b>Class 3:</b> worn with a CBRN APR or PAPR for low levels of chemical vapors, liquids, or particulates where the atmosphere is not IDLH and the contaminant is known and monitored.</p></div>
+          <figure class="haz-poster">
+            <figcaption><span>PPE reference</span><strong>Class 3 ensemble</strong></figcaption>
+            <ul class="haz-poster-grid" role="list">
+              <li><span class="haz-poster-badge">01</span><strong>Respiratory protection</strong><span>CBRN APR or PAPR</span></li>
+              <li><span class="haz-poster-badge">02</span><strong>Exposure protection</strong><span>Low levels of chemical vapors, liquids and particulates</span></li>
+              <li><span class="haz-poster-badge">03</span><strong>Atmosphere</strong><span>Known, monitored contaminants below IDLH and adequate oxygen.</span></li>
+            </ul>
+          </figure>
+          <div class="ref-alt"><p><b>Class 3:</b> worn with a CBRN APR or PAPR for low levels of chemical vapors, liquids, or particulates where the atmosphere is not IDLH and the contaminant is known and monitored.</p></div>
         </div>
       </div>
     </div>
@@ -338,11 +365,18 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
     <div id="modal-ppe5" class="class-modal" onclick="closeModal(event, 'ppe5')">
       <div class="modal-inner">
         <div class="modal-header">
-          <span>CLASS 5 — Thermal + Chemical Splash</span>
+          <span>CLASS 5 — Course definition pending</span>
           <button class="modal-close" onclick="closeClassModal('ppe5')">✕</button>
         </div>
         <div class="modal-body">
-          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><div class="ref-note"><b>Pending instructor review:</b> the course material describes Class 5 as structural firefighting gear with SCBA for flammable environments where the chemical isn't toxic through the skin. This guide could not verify that description against NFPA 1990, so it has been removed from the practice quiz until the instructor confirms it.</div></div>
+          <figure class="haz-poster">
+            <figcaption><span>PPE • instructor review</span><strong>Class 5 course item</strong></figcaption>
+            <ul class="haz-poster-grid" role="list">
+              <li><span class="haz-poster-badge">?</span><strong>Definition pending</strong><span>Ask the instructor for the course source and standard edition.</span></li>
+              <li><span class="haz-poster-badge">✓</span><strong>Study the verified material</strong><span>Use the Classes 1–4 comparison and the respiratory protection chart.</span></li>
+            </ul>
+          </figure>
+          <div class="ref-alt"><div class="ref-note"><b>Pending instructor review:</b> the course material describes Class 5 as structural firefighting gear with SCBA for flammable environments where the chemical isn't toxic through the skin. This guide could not verify that description against NFPA 1990, so it has been removed from the practice quiz until the instructor confirms it.</div></div>
         </div>
       </div>
     </div>
@@ -394,12 +428,22 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('resp_types')">✕</button>
         </div>
         <div class="modal-body">
-          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><table><tr><th>Type</th><th>Air source</th><th>Key limits</th></tr>
-<tr><td>SCBA</td><td>Cylinder carried by the user</td><td>Required for unknown, IDLH, or oxygen-deficient atmospheres; limited air time; heavy</td></tr>
+          <figure class="haz-poster">
+            <figcaption><span>PPE reference</span><strong>Respiratory protection types</strong></figcaption>
+            <ul class="haz-poster-grid" role="list">
+              <li><span class="haz-poster-badge">SCBA</span><strong>Carried air cylinder</strong><span>Air supply duration is limited.</span></li>
+              <li><span class="haz-poster-badge">SAR</span><strong>Air supplied through a hose</strong><span>For IDLH use, the appropriate supplied-air configuration includes an auxiliary self-contained air supply.</span></li>
+              <li><span class="haz-poster-badge">APR</span><strong>Filters ambient air</strong><span>Tight-fitting facepieces require fit testing.</span></li>
+              <li><span class="haz-poster-badge">PAPR</span><strong>Blower moves filtered ambient air</strong><span>Fit testing applies to tight-fitting facepieces. Loose-fitting hoods are exempt.</span></li>
+            </ul>
+            <p>Air-purifying respirators require a suitable filter or cartridge, adequate oxygen and conditions below IDLH.</p>
+          </figure>
+          <div class="ref-alt"><table><tr><th>Type</th><th>Air source</th><th>Key limits</th></tr>
+<tr><td>SCBA</td><td>Cylinder carried by the user</td><td>Supplies breathing air independently of the ambient atmosphere; limited air time</td></tr>
 <tr><td>Supplied-air respirator (SAR)</td><td>Air line from a stationary source</td><td>Hose limits movement; in IDLH conditions it needs an escape air supply</td></tr>
 <tr><td>Air-purifying respirator (APR)</td><td>Filters the surrounding air</td><td>Known contaminant below IDLH, oxygen at least 19.5%, correct cartridge; tight-fitting, so fit testing is required</td></tr>
 <tr><td>Powered APR (PAPR)</td><td>Blower pushes filtered air</td><td>Same limits as an APR; tight-fitting PAPR facepieces need fit testing, loose-fitting hoods do not</td></tr></table>
-<div class="ref-note"><b>Why removed:</b> the poster's row labels were out of line with their contents, and it said PAPRs never require fit testing.</div></div>
+</div>
         </div>
       </div>
     </div>
@@ -432,10 +476,19 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('ppe_selection')">✕</button>
         </div>
         <div class="modal-body">
-          <div class="ref-alt"><div class="ref-note"><b>Chart removed:</b> the earlier poster for this topic contained errors, so its key information is shown here as text.</div><h3>Selecting PPE</h3><ol style="margin-left:18px">
+          <figure class="haz-poster">
+            <figcaption><span>PPE reference</span><strong>PPE selection factors</strong></figcaption>
+            <ul class="haz-poster-grid" role="list">
+              <li><span class="haz-poster-badge">01</span><strong>Identify the hazard</strong><span>Material, concentration, oxygen and exposure routes.</span></li>
+              <li><span class="haz-poster-badge">02</span><strong>Match the task</strong><span>Account for entry, decontamination or support duties.</span></li>
+              <li><span class="haz-poster-badge">03</span><strong>Check equipment compatibility</strong><span>Use the respiratory protection program and the manufacturer’s chemical resistance data.</span></li>
+              <li><span class="haz-poster-badge">04</span><strong>Reassess conditions</strong><span>Reevaluate protection when the task or hazard changes.</span></li>
+            </ul>
+          </figure>
+          <div class="ref-alt"><h3>Selecting PPE</h3><ol style="margin-left:18px">
 <li>Identify the hazard: material, concentration, oxygen level, physical state, and routes of exposure.</li>
 <li>Match the task: entry, decon, or support work each have different exposures.</li>
-<li>Choose respiratory protection: SCBA for unknown, IDLH, or oxygen-deficient conditions; APR or PAPR only when the contaminant is known, measured below IDLH, oxygen is at least 19.5%, and the cartridge is approved for it.</li>
+<li>Choose respiratory protection: Use IDLH-approved respiratory protection for unknown, IDLH, or oxygen-deficient conditions; use an APR or PAPR only when the contaminant is known, measured below IDLH, oxygen is at least 19.5%, and the cartridge is approved for it.</li>
 <li>Choose clothing compatible with the chemical (check the manufacturer's chemical resistance data).</li>
 <li>Reassess as conditions change.</li></ol><table><tr><th>Class</th><th>Respirator</th><th>Use</th></tr>
 <tr><td>Class 1</td><td>SCBA</td><td>Vapor-protective; unknown or IDLH vapor hazards</td></tr>
