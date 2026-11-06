@@ -1,3 +1,11 @@
+# Hazmat chart restoration
+
+PR #5 returns all 20 reference pop-ups to a visual layout. Four container posters use corrected versions of the original artwork. The other 16 use editable web graphics styled after the originals, including a Class 5 instructor-review card. The original assets remain in `images/` for reference.
+
+The historical inventory below records the original problems and proposed corrections. Replacement graphics use the sourced study summaries and omit unsupported operational details. The Class 5 course definition remains pending instructor review.
+
+---
+
 # Hazmat chart inventory and repair list
 
 These are the original ChatGPT-made chart posters (`images/*.png`, with `.webp` copies served on the pages). PR #4 replaced the posters that had errors with text summaries. This list records every replaced chart, where it appeared, the errors found, and its current status.

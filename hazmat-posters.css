@@ -1,0 +1,80 @@
+/* Poster-style study graphics. Labels stay selectable and scale with text zoom. */
+.haz-poster {
+  margin: 0 0 1rem;
+  padding: clamp(.65rem, 3vw, 1rem);
+  border: 1px solid #655433;
+  border-radius: .65rem;
+  background: #151515;
+  color: #f7f4ec;
+  overflow-wrap: anywhere;
+}
+
+.haz-poster figcaption {
+  margin-bottom: .9rem;
+  text-align: center;
+}
+
+.haz-poster figcaption span {
+  display: block;
+  color: #ffd36a;
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.haz-poster figcaption strong {
+  display: block;
+  margin-top: .25rem;
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.haz-poster .haz-poster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: .55rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.haz-poster-grid li {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: .35rem;
+  padding: .7rem;
+  border-top: .25rem solid #d28b27;
+  border-radius: .35rem;
+  background: #fcf6e8;
+  color: #24201a;
+  font-size: .95rem;
+  line-height: 1.4;
+}
+
+.haz-poster-badge {
+  padding: .16rem .45rem;
+  border-radius: .25rem;
+  background: #402c17;
+  color: #ffe0a0;
+  font-weight: 800;
+}
+
+.haz-poster p {
+  margin: .65rem 0 0;
+  font-size: .9rem;
+  line-height: 1.45;
+}
+
+.haz-poster .haz-poster-lookup {
+  padding: .55rem;
+  border-inline-start: .25rem solid #ffd36a;
+  background: #2e2618;
+}
+
+.haz-poster a {
+  color: #ffe1a0;
+  text-decoration: underline;
+}

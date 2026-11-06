@@ -203,6 +203,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
   html, body { background-color: #111111 !important; color: #f0f0f0 !important; }
   .ref-table td, .ref-table th { color: inherit; }
 </style>
+  <link rel="stylesheet" href="hazmat-posters.css">
 </head>
 <body>
 <div class="nav">
@@ -347,7 +348,16 @@ body { font-family: 'Segoe UI', sans-serif; background: #111 !important; color: 
           <button class="modal-close" onclick="closeClassModal('rail_cars')">✕</button>
         </div>
         <div class="modal-body">
-          <div class="ref-alt"><div class="ref-note"><b>Chart pending repair:</b> the original poster for this topic has errors, so its key information is shown here as text until a corrected version is ready.</div><h3>Tank car types</h3><ul>
+          <figure class="haz-poster">
+            <figcaption><span>Container reference</span><strong>Tank car recognition</strong></figcaption>
+            <ul class="haz-poster-grid" role="list">
+              <li><span class="haz-poster-badge">01</span><strong>General service</strong><span>Example: DOT-111 nonpressure car.</span></li>
+              <li><span class="haz-poster-badge">02</span><strong>Pressure</strong><span>Protective housing covers fittings on top.</span></li>
+              <li><span class="haz-poster-badge">03</span><strong>Cryogenic</strong><span>Insulated tank within a tank.</span></li>
+              <li><span class="haz-poster-badge">ID</span><strong>Reporting marks</strong><span>GATX 123456 identifies the car. Use the placard, UN number and train consist to identify the cargo.</span></li>
+            </ul>
+          </figure>
+          <div class="ref-alt"><h3>Tank car types</h3><ul>
 <li><b>Nonpressure (general service)</b>, such as the DOT-111: liquids and some solids; fittings visible on top.</li>
 <li><b>Pressure</b>, such as the DOT-112 and DOT-114: gases and liquefied gases; fittings inside a protective housing on top.</li>
 <li><b>Cryogenic</b>: refrigerated liquids; insulated tank within a tank.</li></ul>
