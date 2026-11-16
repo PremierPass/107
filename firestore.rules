@@ -88,7 +88,8 @@ service cloud.firestore {
     }
     // classMembers/{classId}__{email} = a student admitted to a class, plus a small study summary.
     match /classMembers/{id} {
-      allow read: if isAdmin() || isInstructorOf(resource.data.classId) || (verified() && resource.data.email == myEmail());
+      allow get: if (verified() && resource == null) || isAdmin() || isInstructorOf(resource.data.classId) || (verified() && resource.data.email == myEmail());
+      allow list: if isAdmin() || isInstructorOf(resource.data.classId) || (verified() && resource.data.email == myEmail());
       allow create: if ((isAdmin() || isInstructorOf(request.resource.data.classId))
         || (verified() && request.resource.data.email == myEmail()
           && request.resource.data.uid == request.auth.uid
