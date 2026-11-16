@@ -72,7 +72,10 @@ service cloud.firestore {
       allow read: if signedIn();
       allow create, delete: if isAdmin();
       allow update: if isAdmin() ||
-        (isInstructorOf(classId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['capacity', 'inviteEnabled', 'inviteCode', 'enrollmentCount', 'blockedEmails'])) ||
+        (isInstructorOf(classId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['capacity', 'inviteEnabled', 'inviteCode', 'blockedEmails'])
+          && request.resource.data.get('capacity', 25) is int
+          && request.resource.data.get('capacity', 25) >= request.resource.data.get('enrollmentCount', 0)
+          && request.resource.data.get('capacity', 25) <= 500) ||
         (verified() && resource.data.get('inviteEnabled', false) == true
           && resource.data.get('inviteCode', '') is string
           && resource.data.get('inviteCode', '').size() > 0
@@ -99,9 +102,9 @@ service cloud.firestore {
         && id == request.resource.data.classId + '__' + request.resource.data.email;
       allow update: if isAdmin() || isInstructorOf(resource.data.classId)
         || (verified() && resource.data.email == myEmail()
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uid', 'last', 'quizzes', 'qScore', 'qTotal', 'byCh', 'prereqs', 'name', 'dept'])
             && request.resource.data.classId == resource.data.classId
-            && request.resource.data.email == resource.data.email
-            && request.resource.data.className == resource.data.className);
+            && request.resource.data.email == resource.data.email);
       allow delete: if isAdmin() || isInstructorOf(resource.data.classId);
     }
 
