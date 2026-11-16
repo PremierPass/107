@@ -1,0 +1,13 @@
+{
+  "name": "premierpass-fire-rules-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:fire-rules": "firebase emulators:exec --only firestore --project demo-premierpass-fire 'node --test tests/fire-class-rules.test.mjs'"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^10.12.2",
+    "firebase-tools": "^13.35.1"
+  }
+}
