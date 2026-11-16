@@ -91,3 +91,51 @@ test('instructor cannot move students to an unauthorized class',async()=>{
   tx.delete(member(db,classA));
  }));
 });
+
+test('instructor removal updates seat count atomically',async()=>{
+ await assertSucceeds(join(student()));
+ const db=instructor();
+ await assertSucceeds(runTransaction(db,async tx=>{
+  const c=await tx.get(cls(db,classA)),m=await tx.get(member(db,classA));
+  assert.ok(m.exists());
+  tx.delete(member(db,classA));
+  tx.update(cls(db,classA),{enrollmentCount:c.data().enrollmentCount-1});
+ }));
+ const c=await getDoc(cls(db,classA));
+ assert.equal(c.data().enrollmentCount,0);
+});
+test('instructor transfer preserves progress and both seat counts',async()=>{
+ await assertSucceeds(join(student()));
+ await env.withSecurityRulesDisabled(async ctx=>{
+  await updateDoc(member(ctx.firestore(),classA),{quizzes:7,qScore:85,byCh:{ch01:85}});
+ });
+ const db=instructor();
+ await assertSucceeds(runTransaction(db,async tx=>{
+  const a=await tx.get(cls(db,classA)),b=await tx.get(cls(db,classB)),m=await tx.get(member(db,classA));
+  assert.ok(m.exists());
+  tx.update(cls(db,classA),{enrollmentCount:a.data().enrollmentCount-1});
+  tx.update(cls(db,classB),{enrollmentCount:b.data().enrollmentCount+1});
+  tx.set(member(db,classB),{...m.data(),classId:classB,className:b.data().name});
+  tx.delete(member(db,classA));
+ }));
+ const moved=await getDoc(member(db,classB));
+ assert.equal(moved.data().quizzes,7);
+ assert.equal(moved.data().qScore,85);
+ assert.deepEqual(moved.data().byCh,{ch01:85});
+ assert.equal((await getDoc(cls(db,classA))).data().enrollmentCount,0);
+ assert.equal((await getDoc(cls(db,classB))).data().enrollmentCount,1);
+});
+test('instructor cannot overfill destination class during transfer',async()=>{
+ await assertSucceeds(join(student()));
+ await env.withSecurityRulesDisabled(async ctx=>{
+  await updateDoc(cls(ctx.firestore(),classB),{capacity:1,enrollmentCount:1});
+ });
+ const db=instructor();
+ await assertFails(runTransaction(db,async tx=>{
+  const a=await tx.get(cls(db,classA)),b=await tx.get(cls(db,classB)),m=await tx.get(member(db,classA));
+  tx.update(cls(db,classA),{enrollmentCount:a.data().enrollmentCount-1});
+  tx.update(cls(db,classB),{enrollmentCount:b.data().enrollmentCount+1});
+  tx.set(member(db,classB),{...m.data(),classId:classB,className:b.data().name});
+  tx.delete(member(db,classA));
+ }));
+});
