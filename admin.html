@@ -318,7 +318,7 @@ async function renderClasses(){
    ${admin?'<div class="card"><h2>New class</h2><div class="row"><input id="c-name" placeholder="Class name, e.g. BCFFA FF I & II 2026"><button class="btn" id="c-add">Create</button></div><div class="status" id="c-st"></div></div>':''}
    <div class="depts">${classes.length?classes.map(c=>`<div class="dept" data-id="${esc(c.id)}"><b>${esc(c.name)}</b><span>Instructor${(c.instructors||[]).length===1?'':'s'}: ${(c.instructors||[]).length?esc(c.instructors.join(', ')):'<span style="color:#e2aa3c">none yet</span>'}</span></div>`).join(''):'<p class="empty">No classes yet.</p>'}</div>`;
   if(admin)$('c-add').onclick=async()=>{const name=$('c-name').value.trim();if(!name)return;
-    try{const id=slug(name);await F.setDoc(F.doc(db,'classes',id),{name,instructors:[],created:F.serverTimestamp()});curClass={id,name,instructors:[]};go('class');}
+    try{const id=slug(name);await F.setDoc(F.doc(db,'classes',id),{name,instructors:[],capacity:25,enrollmentCount:0,inviteEnabled:false,inviteCode:'',created:F.serverTimestamp()});curClass={id,name,instructors:[]};go('class');}
     catch(e){$('c-st').textContent='Could not create: '+(e.code||e.message);$('c-st').className='status err';}};
   document.querySelectorAll('.dept').forEach(el=>el.onclick=()=>{curClass=classes.find(c=>c.id===el.dataset.id);go('class');});
 }
@@ -330,6 +330,10 @@ async function renderClass(c){
    <p class="lead">Admit students by the email they sign in with. They stay on their department roster too. Students can send you questions from any flashcard or quiz question.</p>
    ${admin?`<div class="card"><h2>Instructors</h2><div id="inst">${(c.instructors||[]).length?c.instructors.map(e=>`<div class="req"><div class="who">${esc(e)}</div><button class="btn sm ghost" data-rmi="${esc(e)}">Remove</button></div>`).join(''):'<p class="empty">No instructors yet.</p>'}</div>
      <div class="row" style="margin-top:10px"><input id="in-email" type="email" placeholder="instructor@email.com"><button class="btn" id="in-add">Add instructor</button></div><div class="status" id="in-st"></div></div>`:''}
+   <div class="card"><h2>Share enrollment link</h2><p class="sub">Verified students can join directly with this link and select their department. The link is separate from department membership permissions.</p>
+     <div class="row" style="margin-top:10px"><label>Maximum seats <input id="seat-limit" type="number" min="1" max="500" value="${Number(c.capacity)||25}" style="width:90px"></label><button class="btn sm" id="save-seats">Save seats</button><label><input type="checkbox" id="invite-open" ${c.inviteEnabled?'checked':''}> Link enabled</label></div>
+     <div class="row" style="margin-top:10px"><input id="join-url" readonly style="flex:1" value="${esc(location.origin+location.pathname.replace(/[^/]*$/, 'join-fire.html')+'?class='+encodeURIComponent(c.id)+'&code='+encodeURIComponent(c.inviteCode||''))}"><button class="btn sm gold" id="copy-join">Copy link</button><button class="btn sm ghost" id="rotate-join">New link</button></div>
+     <div class="status" id="join-st"></div></div>
    <div class="card"><h2>Admit students</h2><div class="row"><input id="s-email" type="email" placeholder="student@email.com"><button class="btn" id="s-add">Admit</button></div>
      <p class="sub" style="margin:8px 0 0">Several at once? Separate emails with commas or new lines.</p><textarea id="s-bulk" rows="2" style="width:100%;margin-top:6px" placeholder="one@email.com, two@email.com"></textarea><div class="status" id="s-st"></div></div>
    <div class="card"><h2>Class roster</h2><div id="croster"><p class="empty">Loading...</p></div></div>`;
@@ -339,6 +343,10 @@ async function renderClass(c){
       try{await F.updateDoc(F.doc(db,'classes',c.id),{instructors:F.arrayUnion(e)});renderClass(c);}catch(err){$('in-st').textContent='Could not add: '+(err.code||err.message);$('in-st').className='status err';}};
     document.querySelectorAll('[data-rmi]').forEach(b=>b.onclick=async()=>{if(!confirm('Remove this instructor?'))return;await F.updateDoc(F.doc(db,'classes',c.id),{instructors:F.arrayRemove(b.dataset.rmi)});renderClass(c);});
   }
+  $('copy-join').onclick=async()=>{try{await navigator.clipboard.writeText($('join-url').value);$('join-st').textContent='Link copied.';}catch(e){prompt('Copy invitation link',$('join-url').value);}};
+  $('save-seats').onclick=async()=>{const capacity=Number($('seat-limit').value);if(!Number.isInteger(capacity)||capacity<1||capacity>500){$('join-st').textContent='Enter 1 to 500 seats.';return;}try{await F.updateDoc(F.doc(db,'classes',c.id),{capacity,inviteEnabled:$('invite-open').checked});renderClass(c);}catch(e){$('join-st').textContent=e.message;}};
+  $('invite-open').onchange=async()=>{try{await F.updateDoc(F.doc(db,'classes',c.id),{inviteEnabled:$('invite-open').checked});renderClass(c);}catch(e){$('join-st').textContent=e.message;}};
+  $('rotate-join').onclick=async()=>{if(!confirm('Replace the existing link? The old link will stop working.'))return;const bytes=crypto.getRandomValues(new Uint8Array(18));const code=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');try{await F.updateDoc(F.doc(db,'classes',c.id),{inviteCode:code,inviteEnabled:true});renderClass(c);}catch(e){$('join-st').textContent=e.message;}};
   const admit=async emails=>{const st=$('s-st');let ok=0,bad=[];
     for(const e of emails){if(!/^\S+@\S+\.\S+$/.test(e)){bad.push(e);continue;}
       try{await F.setDoc(F.doc(db,'classMembers',csKey(c.id,e)),{classId:c.id,className:c.name,email:e,added:F.serverTimestamp(),addedBy:lower(H.user().email)},{merge:true});ok++;}catch(err){bad.push(e+' ('+(err.code||err.message)+')');}}
