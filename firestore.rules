@@ -64,22 +64,48 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    function memberDoc(classId) { return /databases/$(database)/documents/classMembers/$(classId + '__' + myEmail()); }
+
     // ---------- Classes ----------
     // classes/{classId} = a class (e.g. FF I & II 2026) with a list of instructor emails.
     match /classes/{classId} {
       allow read: if signedIn();
-      allow write: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() ||
+        (isInstructorOf(classId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['capacity', 'inviteEnabled', 'inviteCode', 'blockedEmails'])
+          && request.resource.data.get('capacity', 25) is int
+          && request.resource.data.get('capacity', 25) >= request.resource.data.get('enrollmentCount', 0)
+          && request.resource.data.get('capacity', 25) <= 500) ||
+        (verified() && resource.data.get('inviteEnabled', false) == true
+          && resource.data.get('inviteCode', '') is string
+          && resource.data.get('inviteCode', '').size() > 0
+          && !exists(memberDoc(classId)) && existsAfter(memberDoc(classId))
+          && getAfter(memberDoc(classId)).data.uid == request.auth.uid
+          && getAfter(memberDoc(classId)).data.inviteCode == resource.data.inviteCode
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['enrollmentCount'])
+          && request.resource.data.enrollmentCount == resource.data.get('enrollmentCount', 0) + 1
+          && request.resource.data.enrollmentCount <= resource.data.get('capacity', 25));
     }
     // classMembers/{classId}__{email} = a student admitted to a class, plus a small study summary.
     match /classMembers/{id} {
-      allow read: if isAdmin() || isInstructorOf(resource.data.classId) || (verified() && resource.data.email == myEmail());
-      allow create: if (isAdmin() || isInstructorOf(request.resource.data.classId))
+      allow get: if (verified() && resource == null) || isAdmin() || isInstructorOf(resource.data.classId) || (verified() && resource.data.email == myEmail());
+      allow list: if isAdmin() || isInstructorOf(resource.data.classId) || (verified() && resource.data.email == myEmail());
+      allow create: if ((isAdmin() || isInstructorOf(request.resource.data.classId))
+        || (verified() && request.resource.data.email == myEmail()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.status == 'approved'
+          && !(myEmail() in get(classDoc(request.resource.data.classId)).data.get('blockedEmails', []))
+          && request.resource.data.addedBy == 'invitation-link'
+          && request.resource.data.inviteCode == get(classDoc(request.resource.data.classId)).data.get('inviteCode', '')
+          && get(classDoc(request.resource.data.classId)).data.get('inviteEnabled', false) == true
+          && getAfter(classDoc(request.resource.data.classId)).data.enrollmentCount == get(classDoc(request.resource.data.classId)).data.get('enrollmentCount', 0) + 1
+          && getAfter(classDoc(request.resource.data.classId)).data.enrollmentCount <= get(classDoc(request.resource.data.classId)).data.get('capacity', 25)))
         && id == request.resource.data.classId + '__' + request.resource.data.email;
       allow update: if isAdmin() || isInstructorOf(resource.data.classId)
         || (verified() && resource.data.email == myEmail()
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uid', 'last', 'quizzes', 'qScore', 'qTotal', 'byCh', 'prereqs', 'name', 'dept'])
             && request.resource.data.classId == resource.data.classId
-            && request.resource.data.email == resource.data.email
-            && request.resource.data.className == resource.data.className);
+            && request.resource.data.email == resource.data.email);
       allow delete: if isAdmin() || isInstructorOf(resource.data.classId);
     }
 

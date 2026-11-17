@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111111"><title>Join Fire Training Class | PremierPass</title>
+<style>body{margin:0;background:#111;color:#eee;font:15px system-ui,Arial}main{max-width:540px;margin:40px auto;padding:24px;background:#202020;border:1px solid #444;border-radius:12px}h1{margin:0 0 10px}p{line-height:1.5;color:#bbb}label{display:block;margin:15px 0 6px}input,select,button{box-sizing:border-box;width:100%;padding:12px;border-radius:7px;font:inherit}input,select{background:#111;border:1px solid #555;color:#fff}button{margin-top:18px;background:#c0392b;color:white;border:0;font-weight:700;cursor:pointer}button:disabled{opacity:.5}a{color:#e2aa3c}#msg{margin-top:12px;white-space:pre-wrap}.muted{color:#999;font-size:13px}</style></head>
+<body><main><h1>Join a Fire Training Class</h1><p id="summary">Loading invitation...</p><div id="form" hidden><label for="fullName">Full name</label><input id="fullName" maxlength="120" autocomplete="name" required><label for="department">Fire department / agency</label><select id="department"><option value="">Select a department</option></select><div id="otherBox" hidden><label for="other">Department or agency name</label><input id="other" maxlength="120"></div><button id="join">Join class</button></div><p id="msg" role="status"></p><p class="muted">Enrollment in a class does not grant access to a department's private roster.</p><p><a href="fire.html">Fire Study Hub</a></p></main>
+<script type="module">
+import {firebaseConfig} from './firebase-config.js?v=5';
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {getAuth,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {getFirestore,doc,getDoc,collection,getDocs,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+const $=id=>document.getElementById(id),params=new URLSearchParams(location.search);
+const classId=params.get('class')||'',code=params.get('code')||'';
+const msg=s=>$('msg').textContent=s;
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const validId=/^[a-z0-9-]{3,100}$/.test(classId);
+let classData=null,user=null;
+$('department').onchange=()=>{$('otherBox').hidden=$('department').value!=='__other';};
+async function load(){
+ if(!validId||!code){$('summary').textContent='This invitation link is incomplete.';return;}
+ const snap=await getDoc(doc(db,'classes',classId));
+ if(!snap.exists()){ $('summary').textContent='Class not found.';return;}
+ classData=snap.data();
+ if(!classData.inviteEnabled||classData.inviteCode!==code){$('summary').textContent='This invitation has expired or was disabled.';return;}
+ const max=Number(classData.capacity)||25,count=Number(classData.enrollmentCount)||0;
+ $('summary').textContent=classData.name+' • '+Math.max(0,max-count)+' of '+max+' seats available';
+ if(count>=max){msg('This class is currently full. Contact the instructor.');return;}
+ const options=$('department');
+ try{const d=await getDocs(collection(db,'departments'));d.forEach(x=>{const o=document.createElement('option');o.value=x.data().name||x.id;o.textContent=o.value;options.append(o);});}catch(e){}
+ const other=document.createElement('option');other.value='__other';other.textContent='Other department / agency';options.append(other);
+ $('form').hidden=false;
+}
+$('join').onclick=async()=>{
+ const name=$('fullName').value.trim(),department=$('department').value==='__other'?$('other').value.trim():$('department').value;
+ if(!name||!department){msg('Enter your name and department.');return;}
+ if(!user){msg('Sign in to your account first.');return;}
+ if(!user.emailVerified){msg('Verify your email address before joining.');return;}
+ $('join').disabled=true;msg('Enrolling...');
+ try{
+  const cr=doc(db,'classes',classId),mr=doc(db,'classMembers',classId+'__'+user.email.toLowerCase());
+  const result=await runTransaction(db,async tx=>{
+   const c=await tx.get(cr),m=await tx.get(mr);
+   if(!c.exists())throw Error('Class not found.');
+   const data=c.data();
+   if(!data.inviteEnabled||data.inviteCode!==code)throw Error('Invitation link no longer active.');
+   if(m.exists())return 'already';
+   const count=Number(data.enrollmentCount)||0,max=Number(data.capacity)||25;
+   if(count>=max)throw Error('Class is full.');
+   tx.update(cr,{enrollmentCount:count+1});
+   tx.set(mr,{classId,className:data.name,email:user.email.toLowerCase(),uid:user.uid,name,dept:department,status:'approved',inviteCode:code,added:serverTimestamp(),addedBy:'invitation-link'});
+   return 'joined';
+  });
+  $('form').hidden=true;msg(result==='already'?'You are already enrolled.':'Enrollment confirmed! You can now open the Fire Study Hub.');
+ }catch(e){msg('Could not enroll: '+(e.message||e.code));$('join').disabled=false;}
+};
+onAuthStateChanged(auth,async u=>{user=u;if(!u){$('summary').textContent='Please sign in at the Fire Study Hub, then return to this invitation link.';msg('Sign in first: use the Fire Study Hub link below.');return;}try{await load();}catch(e){msg('Could not load class: '+(e.message||e.code));}});
+</script></body></html>
